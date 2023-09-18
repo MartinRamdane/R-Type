@@ -7,8 +7,6 @@ endif()
 # Include the Conan-generated toolchain file
 include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
-# Find and link to the ZLIB library
-find_package(ZLIB REQUIRED)
 
 # Gather all source files recursively
 file(GLOB SRC_LIST src/*.cpp)
