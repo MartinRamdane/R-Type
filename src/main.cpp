@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Player.hpp"
-#include "Socket.hpp"
+#include "server/Socket.hpp"
 int main()
 {
     Player player;
