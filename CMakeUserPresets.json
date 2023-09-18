@@ -1,0 +1,9 @@
+{
+    "version": 4,
+    "vendor": {
+        "conan": {}
+    },
+    "include": [
+        "/Users/bluefox/Desktop/epitech/delivery/B-CPP-500-MAR-5-1-rtype-martin.ramdane/build/CMakePresets.json"
+    ]
+}
