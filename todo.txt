@@ -1,0 +1,20 @@
+For conan:
+
+pip install conan
+
+conan profile detect --force # if your profile is not already created
+
+conan install . --output-folder=build --build=missing
+
+For windows:
+
+cd build
+cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake # depending of your vs version
+cmake --build . --config Release
+Release\${PROJECT_NAME}.exe
+
+For others:
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+cmake --build .
+./${PROJECT_NAME}
