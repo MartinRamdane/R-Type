@@ -9,7 +9,7 @@ conan install . --output-folder=build --build=missing
 For windows:
 
 cd build
-cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake # depending of your vs version
+cmake .. -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake # depending of your vs version
 cmake --build . --config Release
 Release\${PROJECT_NAME}.exe
 
