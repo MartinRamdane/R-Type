@@ -1,2 +1,4 @@
 build/
 CMakeUserPresets.json
+r-type_client
+r-type_server
