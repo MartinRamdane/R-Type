@@ -9,6 +9,13 @@
 
 Projectile::Projectile(std::string path, float x, float y, float angle, float scaleX, float scaleY, float speed)
 {
+    _path = path;
+    _x = x;
+    _y = y;
+    _angle = angle;
+    _scaleX = scaleX;
+    _scaleY = scaleY;
+    _speed = speed;
 }
 
 Projectile::~Projectile()

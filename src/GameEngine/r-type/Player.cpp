@@ -48,3 +48,8 @@ int Player::getFireRate() const
 {
     return _fireRate;
 }
+
+void Player::hurtProjectile(IEntity &self, IEntity &you)
+{
+    std::cout << "Player hurt" << std::endl;
+}

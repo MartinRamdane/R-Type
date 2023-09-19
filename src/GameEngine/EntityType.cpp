@@ -9,7 +9,7 @@
 #include "Engine.hpp"
 
 template <class T>
-EntityType<T>::EntityType()
+EntityType<T>::EntityType(float radius) : _radius(radius)
 {
     Engine::instance->addEntityType(this);
 }

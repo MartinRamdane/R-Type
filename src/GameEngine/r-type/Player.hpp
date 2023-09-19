@@ -8,6 +8,7 @@
 #pragma once
 
 #include "../Character.hpp"
+#include <iostream>
 
 class Player : public Character
 {
@@ -20,6 +21,7 @@ public:
     int getDamage() const;
     void setFireRate(int fireRate);
     int getFireRate() const;
+    static void hurtProjectile(IEntity &self, IEntity &you);
 
 protected:
 private:

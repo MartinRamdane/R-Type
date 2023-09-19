@@ -7,6 +7,6 @@
 int main()
 {
     Core core;
-    Projectile projectile("path", 0, 0);
+    core.mainLoop();
     return 0;
 }

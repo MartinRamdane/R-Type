@@ -7,6 +7,10 @@
 
 #pragma once
 #include "Engine.hpp"
+#include "IEntity.hpp"
+#include "r-type/Player.hpp"
+#include "r-type/Projectile.hpp"
+#include <iostream>
 
 class Game
 {
@@ -18,4 +22,8 @@ public:
 
 private:
     std::shared_ptr<Engine> _engine;
+    std::shared_ptr<EntityType<IEntity>> _playersGroups;
+    std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
+    std::vector<std::shared_ptr<Player>> _players;
+    std::vector<std::shared_ptr<Projectile>> _projectiles;
 };

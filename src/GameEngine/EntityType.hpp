@@ -9,13 +9,16 @@
 #include <list>
 #include <memory>
 #include "IEntity.hpp"
+#include <iostream>
 
 template <class T>
 class EntityType
 {
 public:
-    EntityType();
+    EntityType(float radius);
     ~EntityType();
+    EntityType(const EntityType &cpy) = default;
+    EntityType &operator=(const EntityType &src) = default;
 
     void insert(std::shared_ptr<T> entity)
     {
@@ -37,6 +40,7 @@ public:
             }
         }
     }
+    float getRadius() const {return _radius;}
     void updateAll()
     {
         for (auto &entity : entities)
@@ -46,4 +50,5 @@ public:
 protected:
 private:
     std::list<std::shared_ptr<T>> entities;
+    const float _radius;
 };
