@@ -4,6 +4,7 @@
 ** File description:
 ** UDPServer
 */
+#include <asio.hpp>
 
 class UDPServer
 {

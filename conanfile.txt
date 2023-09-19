@@ -1,8 +1,6 @@
 [requires]
-asio/1.28.1
 sfml/2.6.0
+asio/1.18.1
 [generators]
 CMakeDeps
 CMakeToolchain
-[layout]
-cmake_layout

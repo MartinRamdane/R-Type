@@ -14,9 +14,9 @@ int main()
         asio::io_context io_context;
 
         UDPServer server(io_context, 1234);
-        UDPClient client(io_context, "127.0.0.1", 1234);
+        // UDPClient client(io_context, "127.0.0.1", 1234);
 
-        client.Send("Hello, server!");
+        // client.Send("Hello, server!");
 
         io_context.run();
     }
