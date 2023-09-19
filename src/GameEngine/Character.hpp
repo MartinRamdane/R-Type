@@ -2,18 +2,18 @@
 ** EPITECH PROJECT, 2023
 ** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
-** AEntity
+** Character
 */
 
 #pragma once
 
 #include "IEntity.hpp"
 
-class AEntity : public IEntity
+class Character : public IEntity
 {
 public:
-    AEntity(std::string path, float x, float y, float angle = 0, float scaleX = 1, float scaleY = 1);
-    ~AEntity();
+    Character(std::string path, float x, float y, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1);
+    ~Character();
     void setPosition(float x, float y);
     void setRotation(float angle);
     void move(float x, float y);
@@ -25,6 +25,8 @@ public:
     std::tuple<float, float> getScale();
     std::string getPath();
     void setPath(std::string path);
+    float setSpeed(int speed);
+    float getSpeed() const;
 
 private:
     std::string _path;
@@ -33,4 +35,5 @@ private:
     float _angle;
     float _scaleX;
     float _scaleY;
+    float _speed;
 };

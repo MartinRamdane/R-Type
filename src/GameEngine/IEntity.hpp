@@ -13,7 +13,6 @@ class IEntity
 {
 public:
     virtual ~IEntity() = default;
-
     virtual void setPosition(float x, float y) = 0;
     virtual void setRotation(float angle) = 0;
     virtual void move(float x, float y) = 0;
@@ -25,6 +24,8 @@ public:
     virtual std::tuple<float, float> getScale() = 0;
     virtual std::string getPath() = 0;
     virtual void setPath(std::string path) = 0;
+    virtual float getSpeed() = 0;
+    virtual void setSpeed(float speed) = 0;
 
 protected:
 private:
