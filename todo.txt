@@ -6,6 +6,9 @@ conan profile detect --force # if your profile is not already created
 
 conan install . --output-folder=build --build=missing
 
+if you have installed a new package :
+conan install conanfile.txt --build=missing
+
 For windows:
 
 cd build

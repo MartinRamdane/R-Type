@@ -1,7 +1,8 @@
 [requires]
-zlib/1.2.13
+asio/1.28.1
 sfml/2.6.0
-
 [generators]
 CMakeDeps
 CMakeToolchain
+[layout]
+cmake_layout
