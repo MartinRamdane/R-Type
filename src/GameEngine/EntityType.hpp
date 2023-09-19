@@ -26,7 +26,7 @@ public:
         entities.push_back(entity);
     }
     template <class T2>
-    void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(Entity &, Entity &))
+    void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(IEntity &, IEntity &))
     {
         for (auto &target : t2->entities)
         {
