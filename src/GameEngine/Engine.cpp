@@ -29,12 +29,12 @@ void Engine::update(std::string event)
         entity->updateAll();
 }
 
-void Engine::addEntityType(EntityType<AEntity> *type)
+void Engine::addEntityType(EntityType<IEntity> *type)
 {
     entities.push_back(type);
 }
 
-void Engine::removeEntityType(EntityType<AEntity> *type)
+void Engine::removeEntityType(EntityType<IEntity> *type)
 {
     entities.remove(type);
 }

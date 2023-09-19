@@ -20,4 +20,4 @@ EntityType<T>::~EntityType()
     Engine::instance->removeEntityType(this);
 }
 
-template class EntityType<AEntity>;
+template class EntityType<IEntity>;

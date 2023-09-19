@@ -8,7 +8,7 @@
 #pragma once
 #include <list>
 #include <memory>
-#include "AEntity.hpp"
+#include "IEntity.hpp"
 
 template <class T>
 class EntityType
@@ -22,16 +22,16 @@ public:
         entities.push_back(entity);
     }
     template <class T2>
-    void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(AEntity &, AEntity &))
+    void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(IEntity &, IEntity &))
     {
         for (auto &target : t2->entities)
         {
-            const float x2 = target->refX;
-            const float y2 = target->refY;
+            const float x2 = std::get<0>(target->getPosition());
+            const float y2 = std::get<1>(target->getPosition());
             for (auto &self : entities)
             {
-                const float x = x2 - self->refX;
-                const float y = y2 - self->refY;
+                const float x = x2 - std::get<0>(self->getPosition());
+                const float y = y2 - std::get<1>(self->getPosition());
                 if (x * x + y * y < radius && self != target)
                     func(*self, *target);
             }
