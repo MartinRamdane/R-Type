@@ -19,14 +19,14 @@ public:
     void move(float x, float y);
     void rotate(float angle);
     void update(std::string event);
-    std::tuple<float, float> getPosition();
-    float getRotation();
+    std::tuple<float, float> getPosition() const;
+    float getRotation() const;
     void setScale(float x, float y);
-    std::tuple<float, float> getScale();
-    std::string getPath();
+    std::tuple<float, float> getScale() const;
+    std::string getPath() const;
     void setPath(std::string path);
-    float setSpeed(int speed);
     float getSpeed() const;
+    void setSpeed(float speed);
 
 private:
     std::string _path;

@@ -61,6 +61,13 @@
     "memory_resource": "cpp",
     "random": "cpp",
     "utility": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "clocale": "cpp",
+    "cmath": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "numeric": "cpp",
+    "optional": "cpp",
+    "numbers": "cpp"
   }
 }

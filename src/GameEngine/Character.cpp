@@ -48,12 +48,12 @@ void Character::update(std::string event)
 {
 }
 
-std::tuple<float, float> Character::getPosition()
+std::tuple<float, float> Character::getPosition() const
 {
     return std::make_tuple(_x, _y);
 }
 
-float Character::getRotation()
+float Character::getRotation() const
 {
     return _angle;
 }
@@ -64,12 +64,12 @@ void Character::setScale(float x, float y)
     _scaleY = y;
 }
 
-std::tuple<float, float> Character::getScale()
+std::tuple<float, float> Character::getScale() const
 {
     return std::make_tuple(_scaleX, _scaleY);
 }
 
-std::string Character::getPath()
+std::string Character::getPath() const
 {
     return _path;
 }
@@ -79,7 +79,7 @@ void Character::setPath(std::string path)
     _path = path;
 }
 
-float Character::setSpeed(int speed)
+void Character::setSpeed(float speed)
 {
     _speed = speed;
 }

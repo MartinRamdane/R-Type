@@ -9,13 +9,15 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
 
 # Gather all source files recursively
-file(GLOB SRC_LIST src/*.cpp src/server/*.cpp)
+file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp src/GameEngine/r-type/*.cpp)
+
+# Set the C++ standard to C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Create an executable from the source files
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
-# Set the C++ standard to C++17
-set(CMAKE_CXX_STANDARD 17)
 
 # Specify the output directory for the binary
 set_target_properties(${PROJECT_NAME} PROPERTIES
