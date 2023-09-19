@@ -1,39 +1,35 @@
 /*
 ** EPITECH PROJECT, 2023
-** UDPServer
+** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
 ** UDPServer
 */
+
+#pragma once
 #include <asio.hpp>
+#include <iostream>
+#include <utility>
+#include <chrono>
+#include <thread>
+#include "Mutex.hpp"
 
-class UDPServer
-{
-public:
-  UDPServer(asio::io_context &io_context, short port)
-      : socket_(io_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), port))
-  {
-    StartReceive();
-  }
+struct Client {
+    asio::ip::udp::endpoint client;
+    std::chrono::system_clock::time_point timestamp;
+};
 
-private:
-  void StartReceive()
-  {
-    socket_.async_receive_from(asio::buffer(data_, max_length), sender_endpoint_,
-                               [this](std::error_code ec, std::size_t bytes_received)
-                               {
-                                 if (!ec && bytes_received > 0)
-                                 {
-                                   std::cout << "Received from " << sender_endpoint_.address() << ": " << data_ << std::endl;
-                                   StartReceive(); // Continue to receive
-                                 }
-                               });
-  }
-
-  asio::ip::udp::socket socket_;
-  asio::ip::udp::endpoint sender_endpoint_;
-  enum
-  {
-    max_length = 1024
-  };
-  char data_[max_length];
+class UDPServer {
+    public:
+        UDPServer(asio::io_service& io_service, int port);
+        ~UDPServer();
+    private:
+        void start_receive();
+        void handler(const std::error_code& error, std::size_t bytes_recvd);
+        void send_ping_to_clients();
+        asio::ip::udp::socket socket_;
+        asio::ip::udp::endpoint remote_endpoint_;
+        std::vector<Client> clients_;
+        std::array<char, 1024> recv_buffer_;
+        std::thread ping_thread_;
+        Mutex mutex_;
 };

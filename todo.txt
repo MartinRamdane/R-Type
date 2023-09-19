@@ -13,7 +13,7 @@ For windows:
 
 cd build
 cmake .. -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake # depending of your vs version
-cmake --build . --config Release
+cmake --build . --config Debug
 Release\${PROJECT_NAME}.exe
 
 For others:

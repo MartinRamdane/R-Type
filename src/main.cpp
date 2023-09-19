@@ -1,29 +1,34 @@
 #include <iostream>
 #include "Player.hpp"
-#include "server/Socket.hpp"
 #include "server/UDPServer.hpp"
 #include <asio.hpp>
 #include "server/UDPClient.hpp"
+#include <thread>
+#include <chrono>
+
 int main(int ac, char **av)
 {
     if (ac == 1) {
-        asio::io_context io_context;
-        Player player;
-        player.setXPos(5);
-        std::cout << "player x pos: " << player.getXPos() << std::endl;
-        Socket socket(io_context);
-        socket.Bind(4545);
-        while (1) {
-            if (socket.receive_data_blocking() > 0) {
-                socket.send_data("Salut ça va ?");
+        try {
+            asio::io_service io_service;
+            UDPServer server(io_service, 4241);
+            std::thread serverThread([&io_service]() { //todo: implémenter ça proprement, voir avec @fgrimaepitech la threadpool & la gestion des mutex
+                io_service.run(); //threadpool vrmt utile pour un seul thread ?
+            });
+            while (1) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(2000)); //debug pour tester les 2 threads
             }
+        } catch (const std::exception& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
         }
-        return (0);
+
     } else {
         UDPClient client;
-        client.send_data("Salut ça va ?", "127.0.0.1", 4545);
-        std::string received_data = client.receive_data();
+        client.connect_to("127.0.0.1", 4241);
+        while (1) {
+        std::string received_data = client.receive_data(); //TODO: foutre ça dans un thread non ??? Parce que c'est bloquant
         std::cout << "Received: " << received_data << std::endl;
+        }
         return 0;
     }
 }
