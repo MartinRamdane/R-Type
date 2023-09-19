@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(R_type)
+project(r-type_server)
 if(POLICY CMP0091)
     cmake_policy(SET CMP0091 NEW)
 endif()
@@ -18,7 +18,9 @@ add_executable(${PROJECT_NAME} ${SRC_LIST})
 set(CMAKE_CXX_STANDARD 17)
 
 # Specify the output directory for the binary
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
+)
 
 # Build the project
 add_custom_target(run
