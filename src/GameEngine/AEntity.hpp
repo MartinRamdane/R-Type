@@ -25,6 +25,8 @@ public:
     std::tuple<float, float> getScale();
     std::string getPath();
     void setPath(std::string path);
+    const float &refX;
+    const float &refY;
 
 private:
     std::string _path;

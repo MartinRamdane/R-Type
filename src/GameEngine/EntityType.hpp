@@ -6,27 +6,23 @@
 */
 
 #pragma once
-#include "Engine.hpp"
+#include <list>
+#include <memory>
+#include "AEntity.hpp"
 
 template <class T>
 class EntityType
 {
 public:
-    EntityType()
-    {
-        Engine::instance->addEntityType(this);
-    }
-    ~EntityType()
-    {
-        Engine::instance->removeEntityType(this);
-    }
+    EntityType();
+    ~EntityType();
 
     void insert(std::shared_ptr<T> entity)
     {
         entities.push_back(entity);
     }
     template <class T2>
-    void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(IEntity &, IEntity &))
+    void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(AEntity &, AEntity &))
     {
         for (auto &target : t2->entities)
         {
@@ -44,7 +40,7 @@ public:
     void updateAll()
     {
         for (auto &entity : entities)
-            entity->update();
+            entity->update("");
     }
 
 protected:

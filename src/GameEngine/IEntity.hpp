@@ -25,7 +25,4 @@ public:
     virtual std::tuple<float, float> getScale() = 0;
     virtual std::string getPath() = 0;
     virtual void setPath(std::string path) = 0;
-
-protected:
-private:
 };

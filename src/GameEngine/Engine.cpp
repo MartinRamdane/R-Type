@@ -7,6 +7,8 @@
 
 #include "Engine.hpp"
 
+Engine *Engine::instance = nullptr;
+
 Engine::Engine()
 {
     instance = this;
@@ -27,12 +29,17 @@ void Engine::update(std::string event)
         entity->updateAll();
 }
 
-void Engine::addEntityType(EntityType<IEntity> *type)
+void Engine::addEntityType(EntityType<AEntity> *type)
 {
     entities.push_back(type);
 }
 
-void Engine::removeEntityType(EntityType<IEntity> *type)
+void Engine::removeEntityType(EntityType<AEntity> *type)
 {
     entities.remove(type);
+}
+
+bool Engine::isRunning() const
+{
+    return _isRunning;
 }

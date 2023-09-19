@@ -7,7 +7,7 @@
 
 #include "AEntity.hpp"
 
-AEntity::AEntity(std::string path, float x, float y, float angle, float scaleX, float scaleY)
+AEntity::AEntity(std::string path, float x, float y, float angle, float scaleX, float scaleY) : refX(_x), refY(_y)
 {
     _path = path;
     _x = x;

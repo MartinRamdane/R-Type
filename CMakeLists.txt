@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16)
 
 project(r-type_server)
 if(POLICY CMP0091)
@@ -9,24 +9,25 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
 
 # Gather all source files recursively
-file(GLOB SRC_LIST src/*.cpp src/server/*.cpp)
-
-# Create an executable from the source files
-add_executable(${PROJECT_NAME} ${SRC_LIST})
+file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp)
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
-
-# Specify the output directory for the binary
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
-)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Build the project
 add_custom_target(run
     COMMAND cmake --build ${CMAKE_BINARY_DIR} --config Release
     DEPENDS ${PROJECT_NAME}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+# Create an executable from the source files
+add_executable(${PROJECT_NAME} ${SRC_LIST})
+
+# Specify the output directory for the binary
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
 )
 
 # For Windows, apply /FORCE:MULTIPLE linker option
