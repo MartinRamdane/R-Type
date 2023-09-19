@@ -62,7 +62,12 @@
     "random": "cpp",
     "utility": "cpp",
     "cinttypes": "cpp",
-    "list": "cpp"
-  },
-  "C_Cpp.default.compilerPath": "/usr/bin/g++"
+    "clocale": "cpp",
+    "cmath": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "numeric": "cpp",
+    "optional": "cpp",
+    "numbers": "cpp"
+  }
 }

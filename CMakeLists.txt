@@ -9,7 +9,7 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
 
 # Gather all source files recursively
-file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp)
+file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp src/GameEngine/r-type/*.cpp)
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
