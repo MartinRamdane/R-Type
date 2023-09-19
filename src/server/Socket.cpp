@@ -1,58 +1,22 @@
-/*
-** EPITECH PROJECT, 2023
-** B-CPP-500-MAR-5-1-rtype-martin.ramdane
-** File description:
-** Socket
-*/
-
 #include "Socket.hpp"
 
-Socket::Socket()
-{
-    #ifdef _WIN32
-        WSADATA WSAData;
-        if (WSAStartup(MAKEWORD(2,0), &WSAData) != 0) {
-            std::cerr << "WSAStartup failed !" << std::endl;
-        } else {
-            std::cout << "WSAStartup success !" << std::endl;
-        }
-    #endif
+Socket::~Socket() {
+    socket_.close();
 }
 
-Socket::~Socket()
-{
-    #ifdef _WIN32
-        closesocket(sockfd);
-        WSACleanup();
-    #else
-        close(sockfd);
-    #endif
-
+void Socket::connect_to(const std::string& host, int port) {
+    // asio::ip::udp::resolver resolver(io_context_);
+    // asio::ip::udp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
+    // asio::connect(socket_, endpoints);
 }
 
-void Socket::connect_to(char *ip, int port)
-{
-    struct sockaddr_in server;
-    #ifdef _WIN32
-        sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    #else
-        sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    #endif
-    if (sockfd == -1) {
-        std::cerr << "Failed to create socket." << std::endl;
-    }
-    struct sockaddr_in serverAddr;
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(port);
-    #ifdef _WIN32
-        serverAddr.sin_addr.s_addr = inet_addr(ip);
-    #else
-        inet_pton(AF_INET, ip, &serverAddr.sin_addr);
-    #endif
-    if (connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
-        std::cerr << "Failed to connect to server." << std::endl;
-    } else {
-        std::cout << "Connected to server." << std::endl;
+void Socket::Bind(int port) {
+    try {
+        asio::ip::udp::endpoint endpoint(asio::ip::udp::v4(), port);
+        socket_.open(endpoint.protocol());
+        socket_.bind(endpoint);
+    } catch (const std::exception& e) {
+        std::cerr << "Error binding UDP socket: " << e.what() << std::endl;
+        // Handle the error as needed.
     }
 }
-
