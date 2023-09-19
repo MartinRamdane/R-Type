@@ -24,6 +24,7 @@ add_custom_target(run
 )
 
 if (WIN32)
+    add_definitions(-D_WIN32_WINNT=0x0601)
     target_link_options(${PROJECT_NAME} PRIVATE)
 endif()
 find_package(asio REQUIRED)

@@ -2,27 +2,28 @@
 #include "Player.hpp"
 #include "server/Socket.hpp"
 #include "server/UDPServer.hpp"
-int main()
+#include <asio.hpp>
+#include "server/UDPClient.hpp"
+int main(int ac, char **av)
 {
-    Player player;
-    player.setXPos(5);
-    std::cout << "player x pos: " << player.getXPos() << std::endl;
-    Socket socket;
-    socket.connect_to("127.0.0.1", 8080);
-    try
-    {
+    if (ac == 1) {
         asio::io_context io_context;
-
-        UDPServer server(io_context, 1234);
-        // UDPClient client(io_context, "127.0.0.1", 1234);
-
-        // client.Send("Hello, server!");
-
-        io_context.run();
+        Player player;
+        player.setXPos(5);
+        std::cout << "player x pos: " << player.getXPos() << std::endl;
+        Socket socket(io_context);
+        socket.Bind(4545);
+        while (1) {
+            if (socket.receive_data_blocking() > 0) {
+                socket.send_data("Salut ça va ?");
+            }
+        }
+        return (0);
+    } else {
+        UDPClient client;
+        client.send_data("Salut ça va ?", "127.0.0.1", 4545);
+        std::string received_data = client.receive_data();
+        std::cout << "Received: " << received_data << std::endl;
+        return 0;
     }
-    catch (std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-    return (0);
 }
