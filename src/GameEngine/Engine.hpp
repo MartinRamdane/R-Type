@@ -5,22 +5,21 @@
 ** Engine.hpp
 */
 
-#ifndef Engine
-    #define Engine
+#pragma once
 
-class Engine {
-    public:
-        Engine();
-        ~Engine();
+class Engine
+{
+public:
+    Engine();
+    ~Engine();
 
-        void init();
-        void update();
-        void drawAll();
-        void getInput();
-        void gameLoop();
+    void init();
+    void update();
+    void drawAll();
+    void getInput();
+    void gameLoop();
 
-    protected:
-    private:
+protected:
+private:
 };
 
-#endif /* !Engine */
