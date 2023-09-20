@@ -27,9 +27,6 @@ public:
         socket_.send_to(asio::buffer(data), remote_endpoint);
     }
     void connect_to(const std::string& host, int port) {
-        asio::ip::udp::resolver resolver(io_context_);
-        asio::ip::udp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
-        asio::connect(socket_, endpoints);
         send_data("Hello", host, port);
     }
 
