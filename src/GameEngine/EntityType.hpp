@@ -44,7 +44,7 @@ public:
     void updateAll()
     {
         for (auto &entity : entities)
-            entity->update("");
+            entity->update();
     }
 
 protected:

@@ -44,7 +44,7 @@ void Projectile::rotate(float angle)
     _angle += angle;
 }
 
-void Projectile::update(std::string event)
+void Projectile::update()
 {
 }
 

@@ -44,7 +44,7 @@ void Character::rotate(float angle)
     _angle += angle;
 }
 
-void Character::update(std::string event)
+void Character::update()
 {
 }
 
