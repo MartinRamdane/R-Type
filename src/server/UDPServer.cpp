@@ -6,8 +6,9 @@
 */
 
 #include "UDPServer.hpp"
+#include "ServerClass.hpp"
 
-UDPServer::UDPServer(asio::io_service &io_service, int port, Server& server) : socket_(io_service, asio::ip::udp::endpoint(asio::ip::udp::v4(), port)), _server(server)
+UDPServer::UDPServer(asio::io_service& io_service, int port) : socket_(io_service, asio::ip::udp::endpoint(asio::ip::udp::v4(), port))
 {
     try
     {

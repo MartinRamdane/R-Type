@@ -5,16 +5,15 @@
 ** Server
 */
 
-#ifndef HEADER_SERVER
-#define HEADER_SERVER
+#pragma once
 #include <iostream>
 #include "UDPServer.hpp"
 #include "ThreadPool.hpp"
 
-class Server {
+class ServerClass {
   public:
-    Server();
-    ~Server();
+    ServerClass();
+    ~ServerClass();
     void createInstance();
 
   protected:
@@ -23,5 +22,3 @@ class Server {
     ThreadPool _threadPool;
     UDPServer _udpServer;
 };
-
-#endif /* !HEADER_SERVER */

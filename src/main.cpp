@@ -5,7 +5,7 @@
 #include "server/UDPClient.hpp"
 #include <thread>
 #include <chrono>
-#include "server/Server.hpp"
+#include "server/ServerClass.hpp"
 
 int main(int ac, char **av)
 {
@@ -23,7 +23,7 @@ int main(int ac, char **av)
         //     std::cerr << "Error: " << e.what() << std::endl;
         // }
         try {
-            Server server;
+            ServerClass server;
             while (1) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(2000)); //debug pour tester les 2 threads
             }
