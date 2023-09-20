@@ -19,8 +19,12 @@ Core::~Core()
 
 void Core::mainLoop()
 {
-    while (_engine->isRunning()) {
-        _engine->update();
-        _game->update(Game::Event::UNKNOWN);
+    while (_engine->isRunning())
+    {
+        if (_engine->frameRateControl())
+        {
+            _engine->update();
+            _game->update(Game::Event::UNKNOWN);
+        }
     }
 }

@@ -11,6 +11,7 @@
 #include "r-type/Player.hpp"
 #include "r-type/Projectile.hpp"
 #include <iostream>
+#include <vector>
 
 class Game
 {

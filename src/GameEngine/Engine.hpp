@@ -8,6 +8,9 @@
 #pragma once
 #include <string>
 #include <list>
+#include <vector>
+#include <chrono>
+#include <thread>
 #include "IEntity.hpp"
 #include "EntityType.hpp"
 
@@ -28,6 +31,7 @@ public:
     void addEntityType(EntityType<IEntity> *type);
     void removeEntityType(EntityType<IEntity> *type);
     bool isRunning() const;
+    bool frameRateControl();
 
 private:
     std::list<EntityType<IEntity> *> entities;
@@ -40,4 +44,8 @@ private:
     };
     std::vector<Collider> colliders;
     bool _isRunning;
+
+    std::chrono::duration<double> _targetFrameDuration;
+    std::chrono::high_resolution_clock::time_point _lastFrameTime;
+    std::chrono::high_resolution_clock::time_point _currentTime;
 };
