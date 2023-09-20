@@ -21,7 +21,6 @@ public:
     ~Entity(){};
     void setTexture(const std::string &path);
     void setSprite();
-    void setSpriteScaleToWindow(const sf::RenderWindow &window);
     void setSpriteScale(const sf::Vector2f &scale);
     void setSpritePosition(const sf::Vector2f &pos);
     void setSpriteOrigin();

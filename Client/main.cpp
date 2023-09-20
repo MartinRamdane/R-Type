@@ -10,7 +10,7 @@
 
 int main()
 {
-    // struct Login login = startgame();
+    // struct Login login = startgame();                         start login menu !!!!!
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
     sf::View view(sf::FloatRect(0, 0, 800, 600));
 
@@ -20,7 +20,7 @@ int main()
     RessourceManager ressourceManager;
     std::map<int, Entity> entities;
     parseMessage("ecreate 1 100 100 ../assets/Spaceship1.png 0 1", entities, ressourceManager);
-    // parseMessage("pmove 1 190 356", entities, ressourceManager);
+    parseMessage("pmove 1 190 356", entities, ressourceManager);
     // parseMessage("dead 1\n", entities, ressourceManager);
 
     // open window si la connexion est valide

@@ -38,20 +38,6 @@ sf::Vector2f Entity::getSpritePosition() const
     return _sprite.getPosition();
 }
 
-void Entity::setSpriteScaleToWindow(const sf::RenderWindow &window)
-{
-    // sf::Vector2u windowSize = window.getSize();
-    // sf::Vector2u textureSize = _texture->getSize();
-
-    // // Calculate the scaling factors for width and height
-    // float scaleX = static_cast<float>(windowSize.x) / textureSize.x;
-    // float scaleY = static_cast<float>(windowSize.y) / textureSize.y;
-
-    // // Set the scale of the sprite to fit the window
-    // _sprite.setScale(scaleX, scaleY);
-    ;
-}
-
 void Entity::setSpriteScale(const sf::Vector2f &scale)
 {
     _sprite.setScale(scale);
@@ -59,9 +45,8 @@ void Entity::setSpriteScale(const sf::Vector2f &scale)
 
 void Entity::setSpriteOrigin()
 {
-    // sf::Vector2u textureSize = this->_texture->getSize();
-    // _sprite.setOrigin(textureSize.x / 2, textureSize.y / 2);
-    ;
+    sf::Vector2u textureSize = this->_texture->getSize();
+    _sprite.setOrigin(textureSize.x / 2, textureSize.y / 2);
 }
 
 void Entity::setSpriteRotation(const float &rotation)
@@ -78,4 +63,3 @@ void Entity::setSpriteRotation(const float &rotation)
 //     //     _sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
 //     //     clock.restart();
 //     // }
-// }
