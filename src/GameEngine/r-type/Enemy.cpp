@@ -7,8 +7,8 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(std::string path, float x, float y, float angle, float scaleX, float scaleY, int life, float speed, int damage, int fireRate)
-    : Character(path, x, y, angle, scaleX, scaleY, speed)
+Enemy::Enemy(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int life, float speed, int damage, int fireRate)
+    : Character(path, x, y, id, angle, scaleX, scaleY, speed)
 {
     _life = life;
     _damage = damage;

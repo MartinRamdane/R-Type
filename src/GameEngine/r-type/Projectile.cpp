@@ -7,7 +7,7 @@
 
 #include "Projectile.hpp"
 
-Projectile::Projectile(std::string path, float x, float y, float angle, float scaleX, float scaleY, float speed)
+Projectile::Projectile(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed)
 {
     _path = path;
     _x = x;
@@ -16,6 +16,9 @@ Projectile::Projectile(std::string path, float x, float y, float angle, float sc
     _scaleX = scaleX;
     _scaleY = scaleY;
     _speed = speed;
+    _id = id;
+    _oldX = x;
+    _oldY = y;
 }
 
 Projectile::~Projectile()
@@ -24,6 +27,7 @@ Projectile::~Projectile()
 
 void Projectile::setPosition(float x, float y)
 {
+    setOldPosition(_x, _y);
     _x = x;
     _y = y;
 }
@@ -35,6 +39,7 @@ void Projectile::setRotation(float angle)
 
 void Projectile::move(float x, float y)
 {
+    setOldPosition(_x, _y);
     _x += x;
     _y += y;
 }
@@ -46,6 +51,7 @@ void Projectile::rotate(float angle)
 
 void Projectile::update()
 {
+    setPosition(_x - _speed, _y);
 }
 
 std::tuple<float, float> Projectile::getPosition() const
@@ -87,4 +93,20 @@ float Projectile::getSpeed() const
 void Projectile::setSpeed(float speed)
 {
     _speed = speed;
+}
+
+void Projectile::setOldPosition(float x, float y)
+{
+    _oldX = x;
+    _oldY = y;
+}
+
+std::tuple<float, float> Projectile::getOldPosition() const
+{
+    return std::make_tuple(_oldX, _oldY);
+}
+
+int Projectile::getId() const
+{
+    return _id;
 }

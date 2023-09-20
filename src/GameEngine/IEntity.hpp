@@ -26,7 +26,13 @@ public:
     virtual void setPath(std::string path) = 0;
     virtual float getSpeed() const = 0;
     virtual void setSpeed(float speed) = 0;
+    virtual void setOldPosition(float x, float y) = 0;
+    virtual std::tuple<float, float> getOldPosition() const = 0;
+    virtual int getId() const = 0;
 
 protected:
+    float _oldX;
+    float _oldY;
+    int _id;
 private:
 };

@@ -20,6 +20,7 @@ public:
     ~Protocol();
 
     static std::vector<std::string> transformEntityInitToProtocol(std::list<EntityType<IEntity> *> entities);
+    static std::vector<std::string> transformEntityChangeToProtocol(std::list<EntityType<IEntity> *> entities);
 
 protected:
 private:

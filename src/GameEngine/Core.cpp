@@ -13,8 +13,9 @@ Core::Core()
     _game = std::make_shared<Game>(_engine);
     auto entities = _engine->getEntities();
     std::vector<std::string> protocol = Protocol::transformEntityInitToProtocol(entities);
-    for (auto line : protocol)
-        std::cout << line << std::endl;
+    // for (auto line : protocol)
+    //     std::cout << line << std::endl;
+    // send protocol to client
 }
 
 Core::~Core()
@@ -27,8 +28,14 @@ void Core::mainLoop()
     {
         if (_engine->frameRateControl())
         {
+            std::cout << "update" << std::endl;
             _engine->update();
             _game->update(Game::Event::UNKNOWN);
+            auto entities = _engine->getEntities();
+            std::vector<std::string> protocol = Protocol::transformEntityChangeToProtocol(entities);
+            // for (auto line : protocol)
+            //     std::cout << line << std::endl;
+            // send protocol to client
         }
     }
 }

@@ -38,4 +38,5 @@ private:
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
     std::vector<std::shared_ptr<Player>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
+    int _lastId = 0;
 };

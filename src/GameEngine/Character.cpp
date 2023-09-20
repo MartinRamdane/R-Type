@@ -7,7 +7,7 @@
 
 #include "Character.hpp"
 
-Character::Character(std::string path, float x, float y, float angle, float scaleX, float scaleY, float speed)
+Character::Character(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed)
 {
     _path = path;
     _x = x;
@@ -16,6 +16,9 @@ Character::Character(std::string path, float x, float y, float angle, float scal
     _scaleX = scaleX;
     _scaleY = scaleY;
     _speed = speed;
+    _id = id;
+    _oldX = x;
+    _oldY = y;
 }
 
 Character::~Character()
@@ -24,6 +27,7 @@ Character::~Character()
 
 void Character::setPosition(float x, float y)
 {
+    setOldPosition(_x, _y);
     _x = x;
     _y = y;
 }
@@ -35,6 +39,7 @@ void Character::setRotation(float angle)
 
 void Character::move(float x, float y)
 {
+    setOldPosition(_x, _y);
     _x += x;
     _y += y;
 }
@@ -87,4 +92,20 @@ void Character::setSpeed(float speed)
 float Character::getSpeed() const
 {
     return _speed;
+}
+
+void Character::setOldPosition(float x, float y)
+{
+    _oldX = x;
+    _oldY = y;
+}
+
+std::tuple<float, float> Character::getOldPosition() const
+{
+    return std::make_tuple(_oldX, _oldY);
+}
+
+int Character::getId() const
+{
+    return _id;
 }

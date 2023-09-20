@@ -12,7 +12,7 @@
 class Character : public IEntity
 {
 public:
-    Character(std::string path, float x, float y, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1);
+    Character(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1);
     ~Character();
     void setPosition(float x, float y);
     void setRotation(float angle);
@@ -27,6 +27,9 @@ public:
     void setPath(std::string path);
     float getSpeed() const;
     void setSpeed(float speed);
+    void setOldPosition(float x, float y);
+    std::tuple<float, float> getOldPosition() const;
+    int getId() const;
 
 private:
     std::string _path;
