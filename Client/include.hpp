@@ -13,6 +13,7 @@
 #include <map>
 #include <sstream>
 #include "Entity.hpp"
+#include "RessourceManager.hpp"
 
 #ifndef structure
 #define structure
@@ -27,4 +28,4 @@ struct Login
 #endif
 
 struct Login startgame();
-std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &entities);
+std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &entities, RessourceManager &ressourceManager);

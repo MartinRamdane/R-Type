@@ -20,12 +20,13 @@ public:
     Entity(){};
     ~Entity(){};
     void setTexture(const std::string &path);
-    void setSprite(const std::string &path);
+    void setSprite();
     void setSpriteScaleToWindow(const sf::RenderWindow &window);
     void setSpriteScale(const sf::Vector2f &scale);
     void setSpritePosition(const sf::Vector2f &pos);
     void setSpriteOrigin();
     void setSpriteRotation(const float &rotation);
+    // void animateSprite(const float frameDuration, const int &width, const int &height, sf::Clock);
     sf::Sprite getSprite() const;
     sf::Texture getTexture() const;
     sf::Vector2f getSpritePosition() const;

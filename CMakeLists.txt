@@ -16,7 +16,7 @@ add_executable(${PROJECT_NAME} ${SRC_LIST})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 if (UNIX)
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
 endif (UNIX)
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
 
