@@ -14,7 +14,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _players.push_back(std::make_shared<Player>("./assets/ship.png", 0, 0));
     _playersGroups->insert(_players[0]);
-    _projectiles.push_back(std::make_shared<Projectile>("./assets/ship.png", 19, 0));
+    _projectiles.push_back(std::make_shared<Projectile>("./assets/ship.png", 18, 0));
     _projectilesGroups->insert(_projectiles[0]);
 
     // Add collision
@@ -28,7 +28,7 @@ Game::~Game()
     _projectiles.clear();
 }
 
-void Game::update(Core::Event event)
+void Game::update(Event event)
 {
     // Update the game
 }

@@ -11,15 +11,25 @@
 #include "r-type/Player.hpp"
 #include "r-type/Projectile.hpp"
 #include <iostream>
-#include "Core.hpp"
 
 class Game
 {
 public:
+    enum Event
+    {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        SPACE,
+        ENTER,
+        ESCAPE,
+        UNKNOWN
+    };
     Game(std::shared_ptr<Engine> &engine);
     ~Game();
 
-    void update(Core::Event event);
+    void update(Event event);
 
 private:
     std::shared_ptr<Engine> _engine;

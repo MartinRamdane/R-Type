@@ -21,6 +21,6 @@ void Core::mainLoop()
 {
     while (_engine->isRunning()) {
         _engine->update();
-        _game->update(Event::UNKNOWN);
+        _game->update(Game::Event::UNKNOWN);
     }
 }
