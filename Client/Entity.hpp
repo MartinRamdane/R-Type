@@ -6,7 +6,6 @@
 */
 
 #pragma once
-// #include "include.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -24,13 +23,14 @@ public:
     void setSprite(const std::string &path);
     void setSpriteScaleToWindow(const sf::RenderWindow &window);
     void setSpriteScale(const sf::Vector2f &scale);
+    void setSpritePosition(const sf::Vector2f &pos);
+    void setSpriteOrigin();
+    void setSpriteRotation(const float &rotation);
     sf::Sprite getSprite() const;
     sf::Texture getTexture() const;
-    void setSpritePosition(const sf::Vector2f &pos);
     sf::Vector2f getSpritePosition() const;
-    void setSpriteOrigin();
 
 public:
     sf::Sprite _sprite;
-    sf::Texture _texture;
+    std::shared_ptr<sf::Texture> _texture;
 };

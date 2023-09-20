@@ -34,20 +34,112 @@
 // score n s\n	...	                the player N's score
 
 // Entities
-// Server	    Client	            Info
-// emove i X Y	...	                the entity I is moving
-// edead i\n	...	                the entity I is dead
+// Server	        Client	            Info
+// ecreate i X Y asset rotation? scale?\n ...                 the entity I is set with the position X Y, the path P, the rotation R and the scale S
+// emove i X Y	    ...	                the entity I is moving
+// edead i\n	    ...	                the entity I is dead
+
+bool findEntity(int id, std::map<int, Entity> &entities)
+{
+    std::map<int, Entity>::iterator it = entities.begin();
+    while (it != entities.end())
+    {
+        if (it->first == id)
+            return true;
+        it++;
+    }
+    return false;
+}
+
+std::map<int, Entity> addEntity(std::map<int, Entity> &entities, std::map<std::string, std::string> value)
+{
+    int id = std::stoi(value["id"]);
+    if (findEntity(id, entities) == false)
+    {
+        Entity entity;
+        entity._texture = std::make_shared<sf::Texture>();
+        entity.setSprite(value["path"]);
+        entity.setSpriteScale(sf::Vector2f(std::stoi(value["scale"]), std::stoi(value["scale"])));
+        entity.setSpriteOrigin();
+        entity.setSpriteRotation(std::stoi(value["rotation"]));
+        entity.setSpritePosition(sf::Vector2f(std::stoi(value["x"]), std::stoi(value["y"])));
+        entities[id] = entity;
+    }
+    return entities;
+}
+
+std::map<int, Entity> removeEntity(std::map<int, Entity> &entities, std::map<std::string, std::string> value)
+{
+    int id = std::stoi(value["id"]);
+    if (findEntity(id, entities) == true)
+    {
+        entities.erase(id);
+    }
+    return entities;
+}
+
+std::map<int, Entity> modifyPosEntity(std::map<int, Entity> &entities, std::map<std::string, std::string> value)
+{
+    int id = std::stoi(value["id"]);
+    if (findEntity(id, entities) == true)
+    {
+        entities[id].setSpritePosition(sf::Vector2f(std::stoi(value["x"]), std::stoi(value["y"])));
+    }
+    return entities;
+}
+
+std::string setKey(std::string key, int i)
+{
+    if (i == 0)
+        key = "id";
+    else if (i == 1)
+        key = "x";
+    else if (i == 2)
+        key = "y";
+    else if (i == 3)
+        key = "path";
+    else if (i == 4)
+        key = "rotation";
+    else if (i == 5)
+        key = "scale";
+    return key;
+}
 
 std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &entities)
 {
-    std::string delimiter = " ";
-    std::string token;
-    size_t pos = 0;
-
-    while ((pos = message.find(delimiter)) != std::string::npos)
+    std::size_t com = message.find(' ');
+    if (com != std::string::npos)
     {
-        token = message.substr(0, pos);
-        std::cout << token << std::endl;
-        message.erase(0, pos + delimiter.length());
+        std::string commande = message.substr(0, com);
+        std::string tmp = message.substr(com);
+        if (commande == "ecreate")
+        {
+            std::istringstream iss(tmp);
+            std::map<std::string, std::string> valueMap;
+            std::string key;
+            std::string token;
+            for (int i = 0; iss >> token; i++)
+            {
+                key = setKey(key, i);
+                valueMap[key] = token;
+                key.clear();
+            }
+            entities = addEntity(entities, valueMap);
+        }
+        else if (commande == "pup" || commande == "pdown" || commande == "pleft" || commande == "pright" || commande == "emove")
+        {
+            std::istringstream iss(tmp);
+            std::map<std::string, std::string> valueMap;
+            std::string key;
+            std::string token;
+            for (int i = 0; iss >> token; i++)
+            {
+                key = setKey(key, i);
+                valueMap[key] = token;
+                key.clear();
+            }
+            entities = modifyPosEntity(entities, valueMap);
+        }
     }
+    return entities;
 }

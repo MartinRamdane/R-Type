@@ -9,14 +9,14 @@
 
 void Entity::setTexture(const std::string &path)
 {
-    if (!_texture.loadFromFile(path))
+    if (!_texture->loadFromFile(path))
         std::cerr << "Error: could not load texture" << std::endl;
 }
 
 void Entity::setSprite(const std::string &path)
 {
     setTexture(path);
-    _sprite.setTexture(_texture);
+    _sprite.setTexture(*_texture);
 }
 
 sf::Sprite Entity::getSprite() const
@@ -26,7 +26,7 @@ sf::Sprite Entity::getSprite() const
 
 sf::Texture Entity::getTexture() const
 {
-    return _texture;
+    return *_texture;
 }
 
 void Entity::setSpritePosition(const sf::Vector2f &pos)
@@ -42,7 +42,7 @@ sf::Vector2f Entity::getSpritePosition() const
 void Entity::setSpriteScaleToWindow(const sf::RenderWindow &window)
 {
     sf::Vector2u windowSize = window.getSize();
-    sf::Vector2u textureSize = _texture.getSize();
+    sf::Vector2u textureSize = _texture->getSize();
 
     // Calculate the scaling factors for width and height
     float scaleX = static_cast<float>(windowSize.x) / textureSize.x;
@@ -59,6 +59,11 @@ void Entity::setSpriteScale(const sf::Vector2f &scale)
 
 void Entity::setSpriteOrigin()
 {
-    sf::Vector2u textureSize = _texture.getSize();
+    sf::Vector2u textureSize = _texture->getSize();
     _sprite.setOrigin(textureSize.x / 2, textureSize.y / 2);
+}
+
+void Entity::setSpriteRotation(const float &rotation)
+{
+    _sprite.setRotation(rotation);
 }
