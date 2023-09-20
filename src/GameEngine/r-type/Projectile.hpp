@@ -18,7 +18,7 @@ public:
     void setRotation(float angle);
     void move(float x, float y);
     void rotate(float angle);
-    void update(std::string event);
+    void update();
     std::tuple<float, float> getPosition() const;
     float getRotation() const;
     void setScale(float x, float y);

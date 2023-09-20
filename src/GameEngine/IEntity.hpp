@@ -17,7 +17,7 @@ public:
     virtual void setRotation(float angle) = 0;
     virtual void move(float x, float y) = 0;
     virtual void rotate(float angle) = 0;
-    virtual void update(std::string event) = 0;
+    virtual void update() = 0;
     virtual std::tuple<float, float> getPosition() const = 0;
     virtual float getRotation() const = 0;
     virtual void setScale(float x, float y) = 0;
