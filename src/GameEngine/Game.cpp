@@ -28,7 +28,7 @@ Game::~Game()
     _projectiles.clear();
 }
 
-void Game::update()
+void Game::update(Core::Event event)
 {
     // Update the game
 }

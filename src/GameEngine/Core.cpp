@@ -20,7 +20,7 @@ Core::~Core()
 void Core::mainLoop()
 {
     while (_engine->isRunning()) {
-        _engine->update("event");
-        _game->update();
+        _engine->update();
+        _game->update(Event::UNKNOWN);
     }
 }

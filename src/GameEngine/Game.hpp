@@ -11,6 +11,7 @@
 #include "r-type/Player.hpp"
 #include "r-type/Projectile.hpp"
 #include <iostream>
+#include "Core.hpp"
 
 class Game
 {
@@ -18,7 +19,7 @@ public:
     Game(std::shared_ptr<Engine> &engine);
     ~Game();
 
-    void update();
+    void update(Core::Event event);
 
 private:
     std::shared_ptr<Engine> _engine;

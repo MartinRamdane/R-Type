@@ -24,7 +24,7 @@ public:
         colliders.push_back({type1, type2, radius * radius, reinterpret_cast<void (*)(IEntity &, IEntity &)>(func)});
     }
 
-    void update(std::string event);
+    void update();
     void addEntityType(EntityType<IEntity> *type);
     void removeEntityType(EntityType<IEntity> *type);
     bool isRunning() const;

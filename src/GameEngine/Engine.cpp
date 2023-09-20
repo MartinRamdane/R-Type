@@ -21,7 +21,7 @@ Engine::~Engine()
     _isRunning = false;
 }
 
-void Engine::update(std::string event)
+void Engine::update()
 {
     for (auto &collider : colliders)
         collider.type1->collideAll(collider.type2, collider.squaredRadius, collider.func);

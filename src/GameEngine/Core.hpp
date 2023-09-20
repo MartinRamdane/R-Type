@@ -12,6 +12,17 @@
 class Core
 {
 public:
+    enum Event
+    {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        SPACE,
+        ENTER,
+        ESCAPE,
+        UNKNOWN
+    };
     Core();
     ~Core();
 
