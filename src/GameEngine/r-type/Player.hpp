@@ -13,14 +13,6 @@
 class Player : public Character
 {
 public:
-    enum PlayerType
-    {
-        SHIELD,
-        SPEED,
-        TANK,
-        SHOOTER
-    };
-
     Player(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int life, float speed, int damage, int fireRate);
     ~Player();
     void setLife(int life);
