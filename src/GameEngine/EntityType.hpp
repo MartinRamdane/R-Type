@@ -40,12 +40,13 @@ public:
             }
         }
     }
-    float getRadius() const {return _radius;}
+    float getRadius() const { return _radius; }
     void updateAll()
     {
         for (auto &entity : entities)
             entity->update();
     }
+    std::list<std::shared_ptr<T>> &getEntities() { return entities; }
 
 protected:
 private:

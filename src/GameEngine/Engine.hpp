@@ -28,6 +28,7 @@ public:
     void addEntityType(EntityType<IEntity> *type);
     void removeEntityType(EntityType<IEntity> *type);
     bool isRunning() const;
+    std::list<EntityType<IEntity> *> &getEntities() { return entities; }
 
 private:
     std::list<EntityType<IEntity> *> entities;

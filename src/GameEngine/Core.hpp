@@ -8,6 +8,7 @@
 #pragma once
 #include "Engine.hpp"
 #include "Game.hpp"
+#include "Protocol.hpp"
 
 class Core
 {
