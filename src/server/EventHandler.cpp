@@ -9,8 +9,7 @@
 
 EventHandler::EventHandler(int requestId, std::string event)
 {
-  _requestId = requestId;
-  _event = event;
+  addEvent(requestId, event);
   std::cout << "[DEBUG] Event created: " << _requestId << " " << _event << std::endl;
 }
 
@@ -32,4 +31,10 @@ Event EventHandler::decodeMessage(std::vector<char> data)
   memcpy(&event.requestId, data.data(), sizeof(int));
   event.event = std::string(data.data() + sizeof(int), data.size() - sizeof(int));
   return event;
+}
+
+void EventHandler::addEvent(int requestId, std::string event)
+{
+  _requestId = requestId;
+  _event = event;
 }

@@ -29,15 +29,16 @@ class ThreadPool {
 
        condition.notify_one();
      }
+     void addThread();
 
-  protected:
-  private:
-    std::vector<std::thread> workers;
-    std::queue<std::function<void()>> tasks;
+   protected:
+   private:
+     std::vector<std::thread> workers;
+     std::queue<std::function<void()>> tasks;
 
-    std::mutex queueMutex;
-    std::condition_variable condition;
-    bool stop;
+     std::mutex queueMutex;
+     std::condition_variable condition;
+     bool stop;
 };
 
 #endif /* !HEADER_THREADPOOL */

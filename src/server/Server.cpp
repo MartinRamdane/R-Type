@@ -7,10 +7,14 @@
 
 #include "Server.hpp"
 
-Server::Server()
+Server::Server() : _threadPool(1), _udpServer(_io_service, 4241)
 {
 }
 
 Server::~Server()
+{
+}
+
+void Server::createInstance()
 {
 }

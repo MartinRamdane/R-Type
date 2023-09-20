@@ -1,5 +1,13 @@
 # Request
 
+All requests are sent and received in binary protocol.
+Example : 
+
+> Encoded data: 42 0 0 0 112 117 112 32 49 32 49 48 32 50 48 10
+> Decoded data: pup 1 10 20
+
+So you only see the decoded values of the queries.
+
 ## Legend
 
 X - Width position value
@@ -34,6 +42,7 @@ Requests beginning with 'e' correspond to entity informations or actions (like e
 ### Entities
 |Server| Client | Info|
 |--|--|--|
+|epos i X Y\n|...|the entity I's position|
 |emove i X Y\n|...|the entity I is moving|
 |edead i\n|...|the entity I is dead or destroyed|
 

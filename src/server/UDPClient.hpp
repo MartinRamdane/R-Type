@@ -42,7 +42,6 @@ public:
         }
         return std::string(recv_buffer.data(), bytes_received);
     }
-    
     bool check_ping(const std::string& data) {
         std::cout << "Received:3 " << data << std::endl;
         return data == "Ping";
