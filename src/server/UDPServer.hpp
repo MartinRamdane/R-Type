@@ -12,6 +12,7 @@
 #include <chrono>
 #include <thread>
 #include "Mutex.hpp"
+#include "Server.hpp"
 
 struct Client {
     asio::ip::udp::endpoint client;
@@ -20,7 +21,7 @@ struct Client {
 
 class UDPServer {
     public:
-        UDPServer(asio::io_service& io_service, int port);
+        UDPServer(asio::io_service& io_service, int port, Server& server);
         ~UDPServer();
     private:
         void start_receive();
@@ -32,4 +33,5 @@ class UDPServer {
         std::array<char, 1024> recv_buffer_;
         std::thread ping_thread_;
         Mutex mutex_;
+        Server& _server;
 };

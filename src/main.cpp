@@ -5,23 +5,33 @@
 #include "server/UDPClient.hpp"
 #include <thread>
 #include <chrono>
+#include "server/Server.hpp"
 
 int main(int ac, char **av)
 {
     if (ac == 1) {
+        // try {
+        //     asio::io_service io_service;
+        //     UDPServer server(io_service, 4241);
+        //     std::thread serverThread([&io_service]() { //todo: implémenter ça proprement, voir avec @fgrimaepitech la threadpool & la gestion des mutex
+        //         io_service.run(); //threadpool vrmt utile pour un seul thread ?
+        //     });
+        //     while (1) {
+        //         std::this_thread::sleep_for(std::chrono::milliseconds(2000)); //debug pour tester les 2 threads
+        //     }
+        // } catch (const std::exception& e) {
+        //     std::cerr << "Error: " << e.what() << std::endl;
+        // }
         try {
-            asio::io_service io_service;
-            UDPServer server(io_service, 4241);
-            std::thread serverThread([&io_service]() { //todo: implémenter ça proprement, voir avec @fgrimaepitech la threadpool & la gestion des mutex
-                io_service.run(); //threadpool vrmt utile pour un seul thread ?
-            });
+            Server server;
             while (1) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(2000)); //debug pour tester les 2 threads
             }
-        } catch (const std::exception& e) {
+        }
+        catch (const std::exception &e)
+        {
             std::cerr << "Error: " << e.what() << std::endl;
         }
-
     } else {
         UDPClient client;
         client.connect_to("127.0.0.1", 4241);

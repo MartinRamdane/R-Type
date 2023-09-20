@@ -7,7 +7,7 @@
 
 #include "UDPServer.hpp"
 
-UDPServer::UDPServer(asio::io_service &io_service, int port) : socket_(io_service, asio::ip::udp::endpoint(asio::ip::udp::v4(), port))
+UDPServer::UDPServer(asio::io_service &io_service, int port, Server& server) : socket_(io_service, asio::ip::udp::endpoint(asio::ip::udp::v4(), port)), _server(server)
 {
     try
     {
@@ -50,6 +50,7 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
         {
             clients_.push_back(client);
             std::cout << "New client connected: " << client.client.address().to_string() << ":" << client.client.port() << std::endl;
+            // create an instance thread
             std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
             std::cout << "vector size : " << clients_.size() << std::endl;
         }

@@ -7,8 +7,11 @@
 
 #include "Server.hpp"
 
-Server::Server() : _threadPool(1), _udpServer(_io_service, 4241)
+Server::Server() : _threadPool(1), _udpServer(_io_service, 4241, *this)
 {
+  _threadPool.enqueue([this]() {
+    _io_service.run();
+  });
 }
 
 Server::~Server()
