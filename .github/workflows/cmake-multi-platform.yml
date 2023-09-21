@@ -53,12 +53,17 @@ jobs:
       run: |
         pip install conan
         conan profile detect --force
-        if ($env:MATRIX_OS -eq "ubuntu-latest") {
-          sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
-        }
-        else {
-          conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
-        }
+    - name:  Install conan packages
+      run:   |
+             if [ "$RUNNER_OS" == "Linux" ]; then
+                  sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
+             elif [ "$RUNNER_OS" == "Windows" ]; then
+                  conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
+             else
+                  echo "$RUNNER_OS not supported"
+                  exit 1
+             fi
+      shell: bash
     - name: Test compilation with conan & cmake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
