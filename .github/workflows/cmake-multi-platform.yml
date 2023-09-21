@@ -42,26 +42,22 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    - name: Set up compilers
+      run: |
+        if [[ "$MATRIX_OS" == "ubuntu-latest" ]]; then
+          export CC="${{ matrix.c_compiler }}"
+          export CXX="${{ matrix.cpp_compiler }}"
+        fi
+      shell: bash
     - name: Set up Conan
       run: |
         pip install conan
         conan profile detect --force
         conan install . --output-folder=build --build=missing
-    - name: Configure CMake
+    - name: Test compilation with conan & cmake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
-
-    - name: Test compilation with conan & cmake
       run: |
-        mkdir build
         cd build
         cmake -DCMAKE_BUILD_TYPE=Release ..
-        conan install ..
         cmake --build .
-        cmake --build . --target run
