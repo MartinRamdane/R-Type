@@ -19,6 +19,7 @@ if (UNIX)
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
 endif (UNIX)
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
+find_package(asio REQUIRED)
 
 # Set the C++ standard to C++17
 
@@ -34,5 +35,5 @@ add_custom_target(run
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
-# For Windows, apply /FORCE:MULTIPLE linker option
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system)
+target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system  ${asio_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${asio_INCLUDE_DIRS})

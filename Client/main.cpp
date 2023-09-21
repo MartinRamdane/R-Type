@@ -19,13 +19,13 @@ int main()
 
     RessourceManager ressourceManager;
     std::map<int, Entity> entities;
-    parseMessage("ecreate 1 100 100 ../assets/Spaceship1.png 0 1", entities, ressourceManager);
+    parseMessage("ecreate 1 100 100 ../assets/players/Spaceship1.png 0 1", entities, ressourceManager);
     parseMessage("pmove 1 190 356", entities, ressourceManager);
     // parseMessage("dead 1\n", entities, ressourceManager);
 
-    // open window si la connexion est valide
+    // // open window si la connexion est valide
 
-    // sf::Clock clock;
+    // // sf::Clock clock;
     while (window.isOpen())
     {
         sf::Event event;
