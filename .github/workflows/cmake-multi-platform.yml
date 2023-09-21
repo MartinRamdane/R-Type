@@ -20,8 +20,7 @@ jobs:
     - name: Set up Conan
       run: |
         pip install conan
-        conan profile new default --detect
-        conan profile update settings.compiler.libcxx=libstdc++17 default
+        conan profile detect --force
 
     - name: Test compilation with conan & cmake
       run: |
