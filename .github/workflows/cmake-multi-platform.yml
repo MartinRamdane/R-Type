@@ -51,10 +51,24 @@ jobs:
       shell: bash
     - name: Set up Conan
       run: |
-        pip install conan
-        conan profile detect --force
         if [ "$RUNNER_OS" == "Linux" ]; then
-            sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
+            sudo pip install conan
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+            pip install conan
+        else
+            echo "$RUNNER_OS not supported"
+            exit 1
+        fi
+        if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo conan profile detect --force
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+            conan profile detect --force
+        else
+            echo "$RUNNER_OS not supported"
+            exit 1
+        fi
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
         elif [ "$RUNNER_OS" == "Windows" ]; then
             conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
         else
