@@ -1,0 +1,33 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        conan_os: [Linux, MacOS, Windows]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Conan
+      run: |
+        pip install conan
+        conan profile new default --detect
+        conan profile update settings.compiler.libcxx=libstdc++17 default
+
+    - name: Test compilation with conan & cmake
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release ..
+        conan install ..
+        cmake --build .
+        cmake --build . --target run
