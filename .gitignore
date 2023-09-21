@@ -1,2 +1,7 @@
 build/
 CMakeUserPresets.json
+r-type_client
+*.
+.vs/
+.vscode/
+Debug/
