@@ -49,6 +49,13 @@ jobs:
           export CXX="${{ matrix.cpp_compiler }}"
         fi
       shell: bash
+    - name: Install pkg on ubuntu
+      run: |
+        if [[ "$MATRIX_OS" == "ubuntu-latest" ]]; then
+          sudo apt-get update
+          sudo apt-get install -y pkg-config
+        fi
+      shell: bash
     - name: Set up Conan
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
