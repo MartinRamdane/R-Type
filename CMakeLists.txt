@@ -9,12 +9,7 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
 
 # Gather all source files recursively
-IF(EXISTS Client/)
-    file(GLOB SRC_LIST Client/*.cpp)
-endif()
-IF (EXISTS src/)
-    file(GLOB SRC_LIST src/*.cpp)
-endif()
+file(GLOB SRC_LIST Client/*.cpp)
 
 # Create an executable from the source files
 add_executable(${PROJECT_NAME} ${SRC_LIST})
