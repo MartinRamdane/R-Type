@@ -97,7 +97,7 @@ jobs:
     - name: Give build folder permissions
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo chown -R $(user -u):$(group -g) build/
+          sudo chown -R $(user -u):$(group -g) build/ && sudo chmod -R 777 build/ && ls -la build/
         fi
       shell: bash
     - name: Test compilation with conan & cmake
