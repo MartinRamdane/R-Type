@@ -37,3 +37,4 @@ add_custom_target(run
 
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system  ${asio_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${asio_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})
