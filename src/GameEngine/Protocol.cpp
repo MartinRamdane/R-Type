@@ -24,7 +24,7 @@ std::vector<std::string> Protocol::transformEntityInitToProtocol(std::list<Entit
         {
             auto pos = entity->getPosition();
             auto scale = entity->getScale();
-            protocol.push_back("ecreate " + std::to_string(entity->getId()) + " " + entity->getPath() + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)));
+            protocol.push_back("ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)));
         }
     }
     return protocol;

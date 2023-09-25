@@ -12,6 +12,7 @@
 #include "r-type/Projectile.hpp"
 #include <iostream>
 #include <vector>
+#include "StaticObject.hpp"
 
 class Game
 {
@@ -36,6 +37,7 @@ private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
+    std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
     std::vector<std::shared_ptr<Player>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     int _lastId = 0;

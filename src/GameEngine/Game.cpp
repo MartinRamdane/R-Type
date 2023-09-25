@@ -10,11 +10,13 @@
 Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
 {
     // Create all entities
+    _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
+    _staticObjectsGroups->insert(std::make_shared<StaticObject>("background.png", 0, 0, _lastId++, 0, 1, 1));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Player>("./assets/ship.png", 0, 50, _lastId++, 0, 1, 1, 100, 1, 1, 1));
+    _players.push_back(std::make_shared<Player>("Spaceship1.png", 0, 50, _lastId++, 0, 1, 1, 100, 1, 1, 1));
     _playersGroups->insert(_players[0]);
-    _projectiles.push_back(std::make_shared<Projectile>("./assets/ship.png", 25, 50, _lastId++));
+    _projectiles.push_back(std::make_shared<Projectile>("shoot_type_left2.png", 500, 50, _lastId++));
     _projectilesGroups->insert(_projectiles[0]);
 
     // Add collision
