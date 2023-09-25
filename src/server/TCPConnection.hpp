@@ -8,14 +8,15 @@
 #ifndef HEADER_TCPCONNECTION
 #define HEADER_TCPCONNECTION
 #include <iostream>
+#include <boost/system/error_code.hpp>
 #include <asio.hpp>
 
 using asio::ip::tcp;
 
-class TCPConnection : public enable_shared_from_this<TCPConnection>
+class TCPConnection : public std::enable_shared_from_this<TCPConnection>
 {
 public:
-  typedef shared_ptr<TCPConnection> pointer;
+  typedef std::shared_ptr<TCPConnection> pointer;
 
   static pointer create(asio::io_service &ios)
   {
@@ -31,7 +32,7 @@ public:
 
 private:
   TCPConnection(asio::io_service &io_service);
-  void handleWrite(const system::error_code &error);
+  void handleWrite(const boost::system::error_code &error);
   tcp::socket _socket;
   std::string _message;
 };

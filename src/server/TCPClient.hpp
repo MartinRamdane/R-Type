@@ -16,7 +16,7 @@ public:
 
 private:
   void connect(tcp::endpoint &endpoint);
-  void handleConnect(TCPConnection::pointer new_connection, const system::error_code &error);
+  void handleConnect(TCPConnection::pointer new_connection, const boost::system::error_code &error);
   asio::io_service &_io_service;
 };
 

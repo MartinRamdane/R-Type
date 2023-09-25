@@ -19,10 +19,10 @@ void TCPConnection::start()
 {
   _message = "Bienvenue sur le serveur!";
 
-  asio::async_write(_socket, asio::buffer(m_message), bind(&TCPConnection::handleWrite, shared_from_this(), asio::placeholders::error));
+  asio::async_write(_socket, asio::buffer(_message), bind(&TCPConnection::handleWrite, shared_from_this(), asio::placeholders::error));
 }
 
-void TCPConnection::handleWrite(const system::error_code &error)
+void TCPConnection::handleWrite(const boost::system::error_code &error)
 {
   if (!error)
   {

@@ -36,8 +36,8 @@ int main(int ac, char **av)
         UDPClient client;
         client.connect_to("127.0.0.1", 4241);
         while (1) {
-        std::string received_data = client.receive_data(); //TODO: foutre ça dans un thread non ??? Parce que c'est bloquant
-        std::cout << "Received: " << received_data << std::endl;
+            std::string received_data = client.receive_data(); //TODO: foutre ça dans un thread non ??? Parce que c'est bloquant
+            std::cout << "Received: " << received_data << std::endl;
         }
         return 0;
     }
