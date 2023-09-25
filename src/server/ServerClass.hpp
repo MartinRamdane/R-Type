@@ -18,7 +18,7 @@ class ServerClass {
 
   protected:
   private:
-    asio::io_service _io_service;
+    boost::asio::io_service _io_service;
     ThreadPool _threadPool;
     UDPServer _udpServer;
 };

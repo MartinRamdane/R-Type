@@ -8,7 +8,7 @@
 #include "UDPServer.hpp"
 #include "ServerClass.hpp"
 
-UDPServer::UDPServer(asio::io_service& io_service, int port) : socket_(io_service, asio::ip::udp::endpoint(asio::ip::udp::v4(), port))
+UDPServer::UDPServer(boost::asio::io_service& io_service, int port) : socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
 {
     try
     {
@@ -31,7 +31,7 @@ void UDPServer::start_receive()
     try
     {
         socket_.async_receive_from(
-            asio::buffer(recv_buffer_), remote_endpoint_, [this](const std::error_code &error, std::size_t bytes_recvd)
+            boost::asio::buffer(recv_buffer_), remote_endpoint_, [this](const std::error_code &error, std::size_t bytes_recvd)
             { handler(error, bytes_recvd); });
     }
     catch (const std::exception &e)
@@ -68,7 +68,7 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
         mutex_.unlock();
         start_receive();
     }
-    else if (error == asio::error::eof)
+    else if (error.value() == boost::asio::error::eof)
     {
         // Connection was closed by the remote host (client left)
         // std::cout << "Client disconnected." << std::endl;
@@ -113,7 +113,7 @@ void UDPServer::send_ping_to_clients()
             }
             else
             {
-                socket_.send_to(asio::buffer("Ping", 4), it->client);
+                socket_.send_to(boost::asio::buffer("Ping", 4), it->client);
                 ++it;
             }
         }
