@@ -9,6 +9,8 @@
 #include <map>
 #include <sstream>
 #include "Entity.hpp"
+#include "RessourceManager.hpp"
+
 class Game
 {
 public:
@@ -23,5 +25,8 @@ public:
     sf::RenderWindow _window;
     sf::View _view;
     sf::Event _event;
+    RessourceManager _ressourceManager;
     std::map<int, Entity> _entities;
 };
+
+std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &entities, RessourceManager &ressourceManager);

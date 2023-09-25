@@ -12,6 +12,7 @@ Game::Game()
     _window.create(sf::VideoMode(1920, 1080), "R-TYPE");
     _window.setFramerateLimit(60);
     _view = _window.getDefaultView();
+    _ressourceManager = RessourceManager();
 }
 
 Game::~Game()
@@ -34,6 +35,10 @@ void Game::handleEvent()
     {
         if (_event.type == sf::Event::Closed)
             _window.close();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            std::cout << "up" << std::endl;
+            parseMessage("emove 1 190 256", _entities, _ressourceManager);
+        }
     }
 }
 
@@ -47,6 +52,7 @@ void Game::update()
         it++;
     }
     _window.display();
+    // _window.clear();
 }
 
 void Game::updateEntities(std::map<int, Entity> entities)
