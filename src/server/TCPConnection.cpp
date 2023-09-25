@@ -19,8 +19,9 @@ void TCPConnection::start()
 
 void TCPConnection::handleWrite(const boost::system::error_code &error)
 {
-  if (!error)
+  if (error)
   {
     std::cout << "Error: " << error.message() << std::endl;
+    // write here
   }
 }

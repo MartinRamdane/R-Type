@@ -9,10 +9,13 @@
 #define HEADER_TCPServer
 #include "TCPConnection.hpp"
 
+class ServerClass;
+
 class TCPServer {
   public:
     TCPServer(boost::asio::io_context &io_context, int port);
     ~TCPServer();
+    void setServer(ServerClass *server) { _server = server; }
 
   protected:
   private:
@@ -20,6 +23,7 @@ class TCPServer {
     void handleAccept(TCPConnection::pointer new_connection, const boost::system::error_code &error);
     tcp::acceptor _acceptor;
     boost::asio::io_context &io_context_;
+    ServerClass *_server;
 };
 
 #endif /* !HEADER_TCPServer */

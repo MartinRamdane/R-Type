@@ -27,9 +27,10 @@ int main(int ac, char **av)
         // }
         try
         {
-            boost::asio::io_context io_context;
-            TCPServer server(io_context, 4242);
-            io_context.run();
+            // boost::asio::io_context io_context;
+            // TCPServer server(io_context, 4242);
+            // io_context.run();
+            ServerClass server;
             while (1)
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // debug pour tester les 2 threads

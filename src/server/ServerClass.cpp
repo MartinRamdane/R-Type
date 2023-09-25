@@ -7,9 +7,9 @@
 
 #include "ServerClass.hpp"
 
-ServerClass::ServerClass() : _threadPool(1), _udpServer(_io_service, 4241)
+ServerClass::ServerClass() : _threadPool(1), _tcpServer(_io_service, 4242)
 {
-  _udpServer.setServer(this);
+  _tcpServer.setServer(this);
   _threadPool.enqueue([this]() {
     _io_service.run();
   });

@@ -7,7 +7,7 @@
 
 #pragma once
 #include <iostream>
-#include "UDPServer.hpp"
+#include "TCPServer.hpp"
 #include "ThreadPool.hpp"
 
 class ServerClass {
@@ -20,5 +20,5 @@ class ServerClass {
   private:
     boost::asio::io_service _io_service;
     ThreadPool _threadPool;
-    UDPServer _udpServer;
+    TCPServer _tcpServer;
 };
