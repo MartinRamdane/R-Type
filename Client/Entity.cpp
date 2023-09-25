@@ -45,8 +45,9 @@ void Entity::setSpriteScale(const sf::Vector2f &scale)
 
 void Entity::setSpriteOrigin()
 {
-    sf::Vector2u textureSize = this->_texture->getSize();
-    _sprite.setOrigin(textureSize.x / 2, textureSize.y / 2);
+    // sf::Vector2u textureSize = this->_texture->getSize();
+    // _sprite.setOrigin(textureSize.x / 2, textureSize.y / 2);
+    ;
 }
 
 void Entity::setSpriteRotation(const float &rotation)
@@ -54,10 +55,10 @@ void Entity::setSpriteRotation(const float &rotation)
     _sprite.setRotation(rotation);
 }
 
-void Entity::animateSprite(sf::Clock clock)
-{
-    ;
-}
+// void Entity::animateSprite(sf::Clock clock)
+// {
+//     ;
+// }
 
 void Entity::setSpriteRect(const sf::IntRect &rect)
 {

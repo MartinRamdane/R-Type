@@ -19,7 +19,7 @@ int main()
 
     RessourceManager ressourceManager;
     std::map<int, Entity> entities;
-    parseMessage("ecreate 1 100 100 ../assets/players/Spaceship1.png 0 1", entities, ressourceManager);
+    parseMessage("ecreate 1 100 100 Spaceship1.png 0 1", entities, ressourceManager);
     parseMessage("pmove 1 190 356", entities, ressourceManager);
     // parseMessage("dead 1\n", entities, ressourceManager);
 

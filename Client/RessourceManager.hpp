@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <filesystem>
 #include <map>
 
 class RessourceManager

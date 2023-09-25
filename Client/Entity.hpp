@@ -27,7 +27,7 @@ public:
     void setSpriteOrigin();
     void setSpriteRotation(const float &rotation);
     void setSpriteRect(const sf::IntRect &rect);
-    void Entity::animateSprite(sf::Clock clock);
+    // void Entity::animateSprite(sf::Clock clock);
     sf::Sprite getSprite() const;
     sf::Texture getTexture() const;
     sf::Vector2f getSpritePosition() const;

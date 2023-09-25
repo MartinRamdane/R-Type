@@ -9,18 +9,30 @@
 
 RessourceManager::RessourceManager()
 {
-    this->_textures["../assets/cenario/background.png"] = std::make_shared<sf::Texture>();
-    this->_textures["../assets/cenario/background.png"]->loadFromFile("../assets/cenario/background.png");
-    this->_textures["../assets/players/Spaceship1.png"] = std::make_shared<sf::Texture>();
-    this->_textures["../assets/players/Spaceship1.png"]->loadFromFile("../assets/players/Spaceship1.png");
-    this->_textures["../assets/players/Spaceship2.png"] = std::make_shared<sf::Texture>();
-    this->_textures["../assets/players/Spaceship2.png"]->loadFromFile("../assets/players/Spaceship2.png");
-    this->_textures["../assets/players/Spaceship3.png"] = std::make_shared<sf::Texture>();
-    this->_textures["../assets/players/Spaceship3.png"]->loadFromFile("../assets/players/Spaceship3.png");
-    this->_textures["../assets/players/Spaceship4.png"] = std::make_shared<sf::Texture>();
-    this->_textures["../assets/players/Spaceship4.png"]->loadFromFile("../assets/players/Spaceship4.png");
-    this->_textures["../assets/players/Spaceship5.png"] = std::make_shared<sf::Texture>();
-    this->_textures["../assets/players/Spaceship5.png"]->loadFromFile("../assets/players/Spaceship5.png");
+    std::string directory = "assets";
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(directory))
+    {
+        if (entry.is_regular_file())
+        {
+            std::string filePath = entry.path().string();
+            std::string key = entry.path().stem().string();
+            key = key + ".png";
+            std::shared_ptr<sf::Texture> texture = std::make_shared<sf::Texture>();
+            if (texture->loadFromFile(filePath))
+            {
+                _textures[key] = texture;
+                std::cout << "Texture chargée : " << key << std::endl;
+            }
+            else
+            {
+                std::cerr << "Impossible de charger la texture : " << key << std::endl;
+            }
+        }
+    }
+    for (auto it = _textures.begin(); it != _textures.end(); it++)
+    {
+        std::cout << it->first << std::endl;
+    }
 }
 
 std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManager::getTextures() const
