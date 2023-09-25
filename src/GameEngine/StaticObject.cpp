@@ -7,7 +7,7 @@
 
 #include "StaticObject.hpp"
 
-StaticObject::StaticObject(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY)
+StaticObject::StaticObject(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int nbSprite)
 {
     _path = path;
     _x = x;
@@ -19,6 +19,8 @@ StaticObject::StaticObject(std::string path, float x, float y, int id, float ang
     _id = id;
     _oldX = x;
     _oldY = y;
+    _nbSprite = nbSprite;
+    _created = false;
 }
 
 StaticObject::~StaticObject()
@@ -108,4 +110,19 @@ std::tuple<float, float> StaticObject::getOldPosition() const
 int StaticObject::getId() const
 {
     return _id;
+}
+
+int StaticObject::getNbSprite() const
+{
+    return _nbSprite;
+}
+
+bool StaticObject::isCreated() const
+{
+    return _created;
+}
+
+void StaticObject::setCreated(bool created)
+{
+    _created = created;
 }

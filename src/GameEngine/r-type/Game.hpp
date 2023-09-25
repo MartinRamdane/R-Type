@@ -6,13 +6,14 @@
 */
 
 #pragma once
-#include "Engine.hpp"
-#include "IEntity.hpp"
-#include "r-type/Player.hpp"
-#include "r-type/Projectile.hpp"
+#include "../Engine.hpp"
+#include "../IEntity.hpp"
+#include "Projectile.hpp"
 #include <iostream>
 #include <vector>
-#include "StaticObject.hpp"
+#include "../StaticObject.hpp"
+
+class Player;
 
 class Game
 {
@@ -29,8 +30,10 @@ public:
     };
     Game(std::shared_ptr<Engine> &engine);
     ~Game();
+    static Game *instance;
 
     void update(Event event);
+    void createExplosion(int x, int y);
 
 private:
     std::shared_ptr<Engine> _engine;

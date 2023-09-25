@@ -7,7 +7,7 @@
 
 #include "Projectile.hpp"
 
-Projectile::Projectile(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed)
+Projectile::Projectile(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed, int nbSprite)
 {
     _path = path;
     _x = x;
@@ -19,6 +19,8 @@ Projectile::Projectile(std::string path, float x, float y, int id, float angle, 
     _id = id;
     _oldX = x;
     _oldY = y;
+    _nbSprite = nbSprite;
+    _created = false;
 }
 
 Projectile::~Projectile()
@@ -109,4 +111,19 @@ std::tuple<float, float> Projectile::getOldPosition() const
 int Projectile::getId() const
 {
     return _id;
+}
+
+int Projectile::getNbSprite() const
+{
+    return _nbSprite;
+}
+
+bool Projectile::isCreated() const
+{
+    return _created;
+}
+
+void Projectile::setCreated(bool created)
+{
+    _created = created;
 }

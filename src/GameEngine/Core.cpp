@@ -11,31 +11,34 @@ Core::Core()
 {
     _engine = std::make_shared<Engine>();
     _game = std::make_shared<Game>(_engine);
-    auto entities = _engine->getEntities();
-    std::vector<std::string> protocol = Protocol::transformEntityInitToProtocol(entities);
+    // auto entities = _engine->getEntities();
+    // std::vector<std::string> protocol = Protocol::transformEntityInitToProtocol(entities);
     // for (auto line : protocol)
     //     std::cout << line << std::endl;
     // send protocol to client
 }
 
+
 Core::~Core()
 {
 }
 
-void Core::mainLoop()
+std::vector<std::string> Core::mainLoop(std::string event)
 {
-    while (_engine->isRunning())
+    // while (_engine->isRunning())
+    // {
+    if (_engine->frameRateControl())
     {
-        if (_engine->frameRateControl())
-        {
-            std::cout << "update" << std::endl;
-            _engine->update();
-            _game->update(Game::Event::UNKNOWN);
-            auto entities = _engine->getEntities();
-            std::vector<std::string> protocol = Protocol::transformEntityChangeToProtocol(entities);
-            // for (auto line : protocol)
-            //     std::cout << line << std::endl;
-            // send protocol to client
-        }
+        // get events
+        _engine->update();
+        auto gameEvent = Protocol::transformProtocolToEvent(event);
+        _game->update(gameEvent);
+        auto entities = _engine->getEntities();
+        std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
+        // for (auto line : protocol)
+        //     std::cout << line << std::endl;
+        // send protocol to client
+        return protocol;
     }
+    // }
 }

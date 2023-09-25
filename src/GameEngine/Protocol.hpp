@@ -12,7 +12,7 @@
 #include "IEntity.hpp"
 #include "EntityType.hpp"
 #include <iostream>
-#include "Game.hpp"
+#include "r-type/Game.hpp"
 
 class Protocol
 {
@@ -20,8 +20,9 @@ public:
     Protocol();
     ~Protocol();
 
-    static std::vector<std::string> transformEntityInitToProtocol(std::list<EntityType<IEntity> *> entities);
-    static std::vector<std::string> transformEntityChangeToProtocol(std::list<EntityType<IEntity> *> entities);
+    static std::string transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity);
+    static std::string transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity);
+    static std::vector<std::string> transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities);
     static Game::Event transformProtocolToEvent(std::string event);
 
 protected:

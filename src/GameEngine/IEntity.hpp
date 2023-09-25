@@ -30,6 +30,9 @@ public:
     virtual void setOldPosition(float x, float y) = 0;
     virtual std::tuple<float, float> getOldPosition() const = 0;
     virtual int getId() const = 0;
+    virtual int getNbSprite() const = 0;
+    virtual bool isCreated() const = 0;
+    virtual void setCreated(bool created) = 0;
 
 protected:
     float _oldX;

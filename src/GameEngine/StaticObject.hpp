@@ -12,7 +12,7 @@
 class StaticObject : public IEntity
 {
 public:
-    StaticObject(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1);
+    StaticObject(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, int nbSprite = 1);
     ~StaticObject();
     void setPosition(float x, float y);
     void setRotation(float angle);
@@ -30,6 +30,9 @@ public:
     void setOldPosition(float x, float y);
     std::tuple<float, float> getOldPosition() const;
     int getId() const;
+    int getNbSprite() const;
+    bool isCreated() const;
+    void setCreated(bool created);
 
 private:
     std::string _path;
@@ -39,4 +42,6 @@ private:
     float _scaleX;
     float _scaleY;
     float _speed;
+    int _nbSprite;
+    bool _created;
 };

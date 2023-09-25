@@ -7,7 +7,7 @@
 
 #include "Character.hpp"
 
-Character::Character(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed)
+Character::Character(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed, int nbSprite)
 {
     _path = path;
     _x = x;
@@ -19,6 +19,8 @@ Character::Character(std::string path, float x, float y, int id, float angle, fl
     _id = id;
     _oldX = x;
     _oldY = y;
+    _nbSprite = nbSprite;
+    _created = false;
 }
 
 Character::~Character()
@@ -108,4 +110,19 @@ std::tuple<float, float> Character::getOldPosition() const
 int Character::getId() const
 {
     return _id;
+}
+
+int Character::getNbSprite() const
+{
+    return _nbSprite;
+}
+
+bool Character::isCreated() const
+{
+    return _created;
+}
+
+void Character::setCreated(bool created)
+{
+    _created = created;
 }

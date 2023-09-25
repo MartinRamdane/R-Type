@@ -7,7 +7,7 @@
 
 #pragma once
 #include "Engine.hpp"
-#include "Game.hpp"
+#include "r-type/Game.hpp"
 #include "Protocol.hpp"
 
 class Core
@@ -16,7 +16,7 @@ public:
     Core();
     ~Core();
 
-    void mainLoop();
+    std::vector<std::string> mainLoop(std::string event);
 
 private:
     std::shared_ptr<Engine> _engine;

@@ -7,8 +7,8 @@
 
 #include "Player.hpp"
 
-Player::Player(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int life, float speed, int damage, int fireRate)
-    : Character(path, x, y, id, angle, scaleX, scaleY, speed)
+Player::Player(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int life, float speed, int damage, int fireRate, int nbSprite)
+    : Character(path, x, y, id, angle, scaleX, scaleY, speed, nbSprite)
 {
     _life = life;
     _damage = damage;
@@ -51,5 +51,6 @@ int Player::getFireRate() const
 
 void Player::hurtProjectile(IEntity &self, IEntity &you)
 {
-    std::cout << "Player hurt" << std::endl;
+    auto pos = self.getPosition();
+    Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
 }

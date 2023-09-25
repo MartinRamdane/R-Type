@@ -15,32 +15,41 @@ Protocol::~Protocol()
 {
 }
 
-std::vector<std::string> Protocol::transformEntityInitToProtocol(std::list<EntityType<IEntity> *> entities)
+std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity)
 {
-    std::vector<std::string> protocol;
-    for (auto entityType : entities)
-    {
-        for (auto entity : entityType->getEntities())
-        {
-            auto pos = entity->getPosition();
-            auto scale = entity->getScale();
-            protocol.push_back("ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)));
-        }
-    }
-    return protocol;
+    auto pos = entity->getPosition();
+    auto scale = entity->getScale();
+    return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + std::to_string(entity->getNbSprite());
 }
 
-std::vector<std::string> Protocol::transformEntityChangeToProtocol(std::list<EntityType<IEntity> *> entities)
+std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity)
+{
+    const auto pos = entity->getPosition();
+    const auto oldPos = entity->getOldPosition();
+    if (std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos))
+        return "emove " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos));
+    return "";
+}
+
+std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities)
 {
     std::vector<std::string> protocol;
     for (auto entityType : entities)
     {
         for (auto entity : entityType->getEntities())
         {
-            const auto pos = entity->getPosition();
-            const auto oldPos = entity->getOldPosition();
-            if (std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos))
-                protocol.push_back("emove " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)));
+            if (!entity->isCreated())
+            {
+                protocol.push_back(transformEntityCreateToProtocol(entity));
+                entity->setCreated(true);
+            }
+            else
+            {
+
+                std::string move = transformEntityMoveToProtocol(entity);
+                if (move != "")
+                    protocol.push_back(move);
+            }
         }
     }
     return protocol;

@@ -13,7 +13,7 @@
 class Tank : public Player
 {
 public:
-    Tank(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, int life = 250, float speed = 0.6, int damage = 25, int fireRate = 0.8);
+    Tank(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, int life = 250, float speed = 0.6, int damage = 25, int fireRate = 0.8, int nbSprite = 1);
     ~Tank();
 
 protected:

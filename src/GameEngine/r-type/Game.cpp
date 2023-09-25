@@ -6,15 +6,19 @@
 */
 
 #include "Game.hpp"
+#include "Player.hpp"
+
+Game *Game::instance = nullptr;
 
 Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
 {
+    instance = this;
     // Create all entities
     _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _staticObjectsGroups->insert(std::make_shared<StaticObject>("background.png", 0, 0, _lastId++, 0, 1, 1));
+    _staticObjectsGroups->insert(std::make_shared<StaticObject>("background.png", 0, 0, _lastId++));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Player>("Spaceship1.png", 0, 50, _lastId++, 0, 1, 1, 100, 1, 1, 1));
+    _players.push_back(std::make_shared<Player>("Spaceship1.png", 0, 50, _lastId++, 0, 1, 1, 100, 1, 1, 1, 5));
     _playersGroups->insert(_players[0]);
     _projectiles.push_back(std::make_shared<Projectile>("shoot_type_left2.png", 500, 50, _lastId++));
     _projectilesGroups->insert(_projectiles[0]);
@@ -48,4 +52,9 @@ void Game::update(Event event)
         default:
             break;
     }
+}
+
+void Game::createExplosion(int x, int y)
+{
+    _staticObjectsGroups->insert(std::make_shared<StaticObject>("explosion_type_left1.png", x, y, _lastId++));
 }
