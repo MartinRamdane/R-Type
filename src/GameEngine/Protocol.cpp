@@ -45,3 +45,20 @@ std::vector<std::string> Protocol::transformEntityChangeToProtocol(std::list<Ent
     }
     return protocol;
 }
+
+Game::Event Protocol::transformProtocolToEvent(std::string event)
+{
+    if (event == "LEFT")
+        return Game::Event::LEFT;
+    if (event == "RIGHT")
+        return Game::Event::RIGHT;
+    if (event == "UP")
+        return Game::Event::UP;
+    if (event == "DOWN")
+        return Game::Event::DOWN;
+    if (event == "SHOOT")
+        return Game::Event::SHOOT;
+    if (event == "QUIT")
+        return Game::Event::QUIT;
+    return Game::Event::UNKNOWN;
+}

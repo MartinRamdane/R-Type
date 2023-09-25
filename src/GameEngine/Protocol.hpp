@@ -12,6 +12,7 @@
 #include "IEntity.hpp"
 #include "EntityType.hpp"
 #include <iostream>
+#include "Game.hpp"
 
 class Protocol
 {
@@ -21,6 +22,7 @@ public:
 
     static std::vector<std::string> transformEntityInitToProtocol(std::list<EntityType<IEntity> *> entities);
     static std::vector<std::string> transformEntityChangeToProtocol(std::list<EntityType<IEntity> *> entities);
+    static Game::Event transformProtocolToEvent(std::string event);
 
 protected:
 private:

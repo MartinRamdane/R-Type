@@ -19,13 +19,12 @@ class Game
 public:
     enum Event
     {
-        UP,
-        DOWN,
         LEFT,
         RIGHT,
-        SPACE,
-        ENTER,
-        ESCAPE,
+        UP,
+        DOWN,
+        SHOOT,
+        QUIT,
         UNKNOWN
     };
     Game(std::shared_ptr<Engine> &engine);

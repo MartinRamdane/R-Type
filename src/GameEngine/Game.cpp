@@ -32,5 +32,20 @@ Game::~Game()
 
 void Game::update(Event event)
 {
-    // Update the game
+    switch (event) {
+        case LEFT:
+            _players[0]->move(-1, 0);
+            break;
+        case RIGHT:
+            _players[0]->move(1, 0);
+            break;
+        case UP:
+            _players[0]->move(0, -1);
+            break;
+        case DOWN:
+            _players[0]->move(0, 1);
+            break;
+        default:
+            break;
+    }
 }
