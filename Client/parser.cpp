@@ -43,10 +43,10 @@ std::map<int, Entity> addEntity(std::map<int, Entity> &entities, std::map<std::s
     {
         Entity entity;
         entity = loadTexture(entity, value["path"], ressourceManager);
-        entity.setSpriteScale(sf::Vector2f(std::stoi(value["scale"]), std::stoi(value["scale"])));
+        entity.setSpriteScale(sf::Vector2f(std::stof(value["scale"]), std::stof(value["scale"])));
         entity.setSpriteOrigin();
-        entity.setSpriteRotation(std::stoi(value["rotation"]));
-        entity.setSpritePosition(sf::Vector2f(std::stoi(value["x"]), std::stoi(value["y"])));
+        entity.setSpriteRotation(std::stof(value["rotation"]));
+        entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
         entities[id] = entity;
     }
     return entities;
@@ -67,7 +67,7 @@ std::map<int, Entity> modifyPosEntity(std::map<int, Entity> &entities, std::map<
     int id = std::stoi(value["id"]);
     if (findEntity(id, entities) == true)
     {
-        entities[id].setSpritePosition(sf::Vector2f(std::stoi(value["x"]), std::stoi(value["y"])));
+        entities[id].setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     }
     return entities;
 }
