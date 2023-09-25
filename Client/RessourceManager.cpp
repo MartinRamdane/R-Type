@@ -19,20 +19,13 @@ RessourceManager::RessourceManager()
             key = key + ".png";
             std::shared_ptr<sf::Texture> texture = std::make_shared<sf::Texture>();
             if (texture->loadFromFile(filePath))
-            {
                 _textures[key] = texture;
-                std::cout << "Texture chargée : " << key << std::endl;
-            }
             else
-            {
                 std::cerr << "Impossible de charger la texture : " << key << std::endl;
-            }
         }
     }
     for (auto it = _textures.begin(); it != _textures.end(); it++)
-    {
         std::cout << it->first << std::endl;
-    }
 }
 
 std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManager::getTextures() const

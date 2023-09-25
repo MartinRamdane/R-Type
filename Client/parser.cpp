@@ -43,7 +43,7 @@ std::map<int, Entity> addEntity(std::map<int, Entity> &entities, std::map<std::s
     {
         Entity entity;
         entity = loadTexture(entity, value["path"], ressourceManager);
-        entity.setSpriteScale(sf::Vector2f(std::stof(value["scale"]), std::stof(value["scale"])));
+        entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
         entity.setSpriteOrigin();
         entity.setSpriteRotation(std::stof(value["rotation"]));
         entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
@@ -85,7 +85,9 @@ std::string setKey(std::string key, int i)
     else if (i == 4)
         key = "rotation";
     else if (i == 5)
-        key = "scale";
+        key = "scale.x";
+    else if (i == 6)
+        key = "scale.y";
     return key;
 }
 

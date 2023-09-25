@@ -14,12 +14,12 @@ Login startgame()
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 
     sf::Font font;
-    if (!font.loadFromFile("../font/pixel.ttf"))
+    if (!font.loadFromFile("font/pixel.ttf"))
         std::cerr << "Error: could not load font" << std::endl;
 
     Entity background;
     background._texture = std::make_shared<sf::Texture>();
-    background.setTexture("../assets/background.png");
+    background.setTexture("assets/background.png");
     background.setSprite();
     background.setSpritePosition(sf::Vector2f(0, 0));
 
