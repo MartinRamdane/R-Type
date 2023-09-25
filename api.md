@@ -14,8 +14,6 @@ X - Width position value
 Y - Height position value
 r - Rotation value
 asset - path of sprite
-rotation - rotation of sprite
-scale - scale of sprite
 n - user id
 i - entity id
 b - bonus id
@@ -29,10 +27,11 @@ Requests beginning with 'e' correspond to entity informations or actions (like e
 ### User
 |Server| Client | Info|
 |--|--|--|
-|pup n X Y\n|pup n\n  |the player N is going up |
-|pdown n X Y\n|pdown n\n  |the player N is going down |
-|pleft n X Y\n|pleft n\n  |the player N is going left |
-|pright n X Y\n|pright n\n  |the player N is going right |
+|...|pup n\n  |the player N is going up |
+|...|pdown n\n  |the player N is going down |
+|...|pleft n\n  |the player N is going left |
+|...|pright n\n  |the player N is going right |
+|pmove n X Y\n|...|the player N is moving |
 |901/902|pinteract n\n  |the player N has pressed the interact input |
 |901/902|pmenu n\n  |the player N has pressed the menu input |
 |pbonus n b\n|...|the player N get the bonus B |
@@ -40,15 +39,17 @@ Requests beginning with 'e' correspond to entity informations or actions (like e
 ### Game
 |Server| Client | Info|
 |--|--|--|
+|create n\n|...|the player N creates a new instance|
+|join id_instance\n|...|the player N joins an instance|
 |dead n\n|...|the player N is dead|
 |score n s\n|...|the player N's score|
 
 ### Entities
 |Server| Client | Info|
 |--|--|--|
-|ecreate i X Y asset rotation? scale?\n|...|create an entity|
-|epos i X Y\n|...|the entity I's position|
-|emove i X Y\n|...|the entity I is moving|
+|ecreate i X Y asset rotation? scale?\n|...|create an entity with ID, X and Y positions, the sprite path, the rotation and scale|
+|epos i X Y\n|epos i\n|send the entity I's position|
+|emove i X Y\n|...|send the new entity's position|
 |edead i\n|...|the entity I is dead or destroyed|
 
 Table ronde ©
