@@ -30,5 +30,7 @@ void TCPServer::handleAccept(TCPConnection::pointer new_connection, const boost:
     std::cout << "Client is connected" << std::endl;
     new_connection->start();
     startAccept();
+  } else {
+    std::cout << "Error: " << error.message() << std::endl;
   }
 }

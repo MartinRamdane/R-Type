@@ -24,5 +24,7 @@ void TCPClient::handleConnect(TCPConnection::pointer new_connection, const boost
   if (!error)
   {
     new_connection->start();
+  } else {
+    std::cout << "Error: " << error.message() << std::endl;
   }
 }
