@@ -21,6 +21,7 @@ void TCPClient::connect(tcp::endpoint &endpoint)
 
 void TCPClient::handleConnect(TCPConnection::pointer new_connection, const boost::system::error_code &error)
 {
+  std::cout << "handle connect" << std::endl;
   if (!error)
   {
     new_connection->start();

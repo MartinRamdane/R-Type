@@ -29,6 +29,7 @@ int main(int ac, char **av)
         {
             boost::asio::io_context io_context;
             TCPServer server(io_context, 4242);
+            io_context.run();
             while (1)
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // debug pour tester les 2 threads
@@ -44,6 +45,7 @@ int main(int ac, char **av)
         boost::asio::io_service io_service;
         tcp::endpoint endpoint = boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 4242);
         TCPClient client(io_service, endpoint);
+        io_service.run();
         return 0;
     }
 }
