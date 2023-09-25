@@ -28,8 +28,6 @@ add_custom_target(run
 # Create an executable from the source files
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
-find_package(SFML 2.6 COMPONENTS system window graphics system audio REQUIRED)
-
 # Specify the output directory for the binary
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
@@ -39,5 +37,3 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 if (WIN32)
     target_link_options(${PROJECT_NAME} PRIVATE)
 endif()
-
-target_link_libraries(${PROJECT_NAME} sfml-system sfml-window sfml-graphics sfml-audio)
