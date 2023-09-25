@@ -12,12 +12,12 @@
 class TCPClient
 {
 public:
-  TCPClient(asio::io_service &io_service, tcp::endpoint &endpoint);
+  TCPClient(boost::asio::io_service &io_service, tcp::endpoint &endpoint);
 
 private:
   void connect(tcp::endpoint &endpoint);
   void handleConnect(TCPConnection::pointer new_connection, const boost::system::error_code &error);
-  asio::io_service &_io_service;
+  boost::asio::io_service &_io_service;
 };
 
 #endif /* !HEADER_TCPCLIENT */

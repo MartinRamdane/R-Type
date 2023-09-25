@@ -7,19 +7,14 @@
 
 #include "TCPConnection.hpp"
 
-TCPConnection::TCPConnection(asio::io_service &io_service) : _socket(io_service)
-{
-}
-
-TCPConnection::~TCPConnection()
+TCPConnection::TCPConnection(boost::asio::io_service &io_service) : _socket(io_service)
 {
 }
 
 void TCPConnection::start()
 {
   _message = "Bienvenue sur le serveur!";
-
-  asio::async_write(_socket, asio::buffer(_message), bind(&TCPConnection::handleWrite, shared_from_this(), asio::placeholders::error));
+  boost::asio::async_write(_socket, boost::asio::buffer(_message), boost::bind(&TCPConnection::handleWrite, shared_from_this(), boost::asio::placeholders::error));
 }
 
 void TCPConnection::handleWrite(const boost::system::error_code &error)

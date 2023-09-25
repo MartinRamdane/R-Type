@@ -11,14 +11,15 @@
 
 class TCPServer {
   public:
-    TCPServer(asio::io_service &io_service, int port);
+    TCPServer(boost::asio::io_context &io_context, int port);
     ~TCPServer();
 
   protected:
   private:
     void startAccept();
-    void handleAccept(TCPConnection &new_connection, const system::error_code &error)
+    void handleAccept(TCPConnection::pointer new_connection, const boost::system::error_code &error);
     tcp::acceptor _acceptor;
+    boost::asio::io_context &io_context_;
 };
 
 #endif /* !HEADER_TCPServer */
