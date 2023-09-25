@@ -10,23 +10,24 @@
 #include <sstream>
 #include "Entity.hpp"
 #include "RessourceManager.hpp"
+#include "Parser.hpp"
 
 class Game
 {
 public:
     Game();
     ~Game();
-    void run(std::map<int, Entity> entities);
+    void run();
     void handleEvent();
     void update();
-    void updateEntities(std::map<int, Entity> entities);
+    void getinfos(){};
 
 public:
     sf::RenderWindow _window;
     sf::View _view;
     sf::Event _event;
+    sf::Clock _clock;
+    
     RessourceManager _ressourceManager;
-    std::map<int, Entity> _entities;
+    Parser _parser;
 };
-
-std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &entities, RessourceManager &ressourceManager);

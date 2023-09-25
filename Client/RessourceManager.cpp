@@ -24,8 +24,8 @@ RessourceManager::RessourceManager()
                 std::cerr << "Impossible de charger la texture : " << key << std::endl;
         }
     }
-    for (auto it = _textures.begin(); it != _textures.end(); it++)
-        std::cout << it->first << std::endl;
+    // for (auto it = _textures.begin(); it != _textures.end(); it++)
+    //     std::cout << it->first << std::endl;
 }
 
 std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManager::getTextures() const

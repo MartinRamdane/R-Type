@@ -13,17 +13,19 @@ Game::Game()
     _window.setFramerateLimit(60);
     _view = _window.getDefaultView();
     _ressourceManager = RessourceManager();
+    _parser = Parser();
+    _parser.parseMessage("ecreate 1 100 100 Spaceship1.png 0 1 1 5", _ressourceManager);
 }
 
 Game::~Game()
 {
 }
 
-void Game::run(std::map<int, Entity> entities)
+void Game::run()
 {
     while (_window.isOpen())
     {
-        updateEntities(entities);
+        // getinfos -> appel de parseMessage
         handleEvent();
         update();
     }
@@ -35,27 +37,39 @@ void Game::handleEvent()
     {
         if (_event.type == sf::Event::Closed)
             _window.close();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            std::cout << "up" << std::endl;
-            parseMessage("emove 1 190 256", _entities, _ressourceManager);
+        if (_event.type == sf::Event::KeyPressed)
+        {
+            switch (_event.key.code)
+            {
+            case sf::Keyboard::Left:
+                // send left;
+                break;
+            case sf::Keyboard::Right:
+                // send right
+                break;
+            case sf::Keyboard::Up:
+                // send up
+                break;
+            case sf::Keyboard::Down:
+                // send down
+                break;
+            default:
+                break;
+            }
         }
     }
 }
 
 void Game::update()
 {
-    std::map<int, Entity>::iterator it = _entities.begin();
-    while (it != _entities.end())
+    _window.clear();
+    std::map<int, Entity>::iterator it = _parser._entities.begin();
+    while (it != _parser._entities.end())
     {
-        // it->second.animateSprite(1, 100, 100, clock);
+        it->second.animateSprite(_clock);
         _window.draw(it->second.getSprite());
         it++;
     }
+    _window.setView(_view);
     _window.display();
-    // _window.clear();
-}
-
-void Game::updateEntities(std::map<int, Entity> entities)
-{
-    _entities = entities;
 }

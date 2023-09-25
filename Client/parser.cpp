@@ -5,12 +5,20 @@
 ** parcer.cpp
 */
 
-#include "include.hpp"
+#include "Parser.hpp"
 
-bool findEntity(int id, std::map<int, Entity> &entities)
+Parser::Parser()
 {
-    std::map<int, Entity>::iterator it = entities.begin();
-    while (it != entities.end())
+}
+
+Parser::~Parser()
+{
+}
+
+bool Parser::findEntity(int id)
+{
+    std::map<int, Entity>::iterator it = _entities.begin();
+    while (it != _entities.end())
     {
         if (it->first == id)
             return true;
@@ -19,7 +27,7 @@ bool findEntity(int id, std::map<int, Entity> &entities)
     return false;
 }
 
-Entity loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager)
+Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager)
 {
     std::map<std::string, std::shared_ptr<sf::Texture>> textures = ressourceManager.getTextures();
     std::map<std::string, std::shared_ptr<sf::Texture>>::iterator it = textures.begin();
@@ -36,10 +44,10 @@ Entity loadTexture(Entity entity, std::string path, RessourceManager &ressourceM
     return entity;
 }
 
-std::map<int, Entity> addEntity(std::map<int, Entity> &entities, std::map<std::string, std::string> value, RessourceManager &ressourceManager)
+void Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
 {
     int id = std::stoi(value["id"]);
-    if (findEntity(id, entities) == false)
+    if (findEntity(id) == false)
     {
         Entity entity;
         entity = loadTexture(entity, value["path"], ressourceManager);
@@ -47,32 +55,32 @@ std::map<int, Entity> addEntity(std::map<int, Entity> &entities, std::map<std::s
         entity.setSpriteOrigin();
         entity.setSpriteRotation(std::stof(value["rotation"]));
         entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-        entities[id] = entity;
+        entity.setRect(std::stoi(value["nbRect"]));
+        _entities[id] = entity;
     }
-    return entities;
 }
 
-std::map<int, Entity> removeEntity(std::map<int, Entity> &entities, std::map<std::string, std::string> value)
+void Parser::removeEntity(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
-    if (findEntity(id, entities) == true)
+    if (findEntity(id) == true)
     {
-        entities.erase(id);
+        _entities.erase(id);
     }
-    return entities;
 }
 
-std::map<int, Entity> modifyPosEntity(std::map<int, Entity> &entities, std::map<std::string, std::string> value)
+void Parser::modifyPosEntity(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
-    if (findEntity(id, entities) == true)
+    std::cout << "entities len " << _entities.size() << std::endl;
+    if (findEntity(id) == true)
     {
-        entities[id].setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+        _entities[id].setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     }
-    return entities;
+    std::cout << "entities len " << _entities.size() << std::endl;
 }
 
-std::string setKey(std::string key, int i)
+std::string Parser::setKey(std::string key, int i)
 {
     if (i == 0)
         key = "id";
@@ -88,10 +96,12 @@ std::string setKey(std::string key, int i)
         key = "scale.x";
     else if (i == 6)
         key = "scale.y";
+    else if (i == 7)
+        key = "nbRect";
     return key;
 }
 
-std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &entities, RessourceManager &ressourceManager)
+void Parser::parseMessage(std::string message, RessourceManager &ressourceManager)
 {
     std::size_t com = message.find(' ');
     if (com != std::string::npos)
@@ -110,7 +120,7 @@ std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &e
                 valueMap[key] = token;
                 key.clear();
             }
-            entities = addEntity(entities, valueMap, ressourceManager);
+            addEntity(valueMap, ressourceManager);
         }
         else if (commande == "pmove" || commande == "emove")
         {
@@ -124,7 +134,7 @@ std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &e
                 valueMap[key] = token;
                 key.clear();
             }
-            entities = modifyPosEntity(entities, valueMap);
+            modifyPosEntity(valueMap);
         }
         else if (commande == "dead" || commande == "edead")
         {
@@ -138,8 +148,7 @@ std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &e
                 valueMap[key] = token;
                 key.clear();
             }
-            entities = removeEntity(entities, valueMap);
+            removeEntity(valueMap);
         }
     }
-    return entities;
 }

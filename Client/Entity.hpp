@@ -26,8 +26,8 @@ public:
     void setSpritePosition(const sf::Vector2f &pos);
     void setSpriteOrigin();
     void setSpriteRotation(const float &rotation);
-    void setSpriteRect(const sf::IntRect &rect);
-    // void Entity::animateSprite(sf::Clock clock);
+    void setRect(int nb);
+    void animateSprite(sf::Clock clock);
     sf::Sprite getSprite() const;
     sf::Texture getTexture() const;
     sf::Vector2f getSpritePosition() const;
@@ -35,4 +35,5 @@ public:
 public:
     sf::Sprite _sprite;
     std::shared_ptr<sf::Texture> _texture;
+    int _nbRect;
 };

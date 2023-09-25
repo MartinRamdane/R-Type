@@ -28,4 +28,3 @@ struct Login
 #endif
 
 struct Login startgame();
-std::map<int, Entity> parseMessage(std::string message, std::map<int, Entity> &entities, RessourceManager &ressourceManager);

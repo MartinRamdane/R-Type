@@ -55,12 +55,27 @@ void Entity::setSpriteRotation(const float &rotation)
     _sprite.setRotation(rotation);
 }
 
-// void Entity::animateSprite(sf::Clock clock)
-// {
-//     ;
-// }
-
-void Entity::setSpriteRect(const sf::IntRect &rect)
+void Entity::animateSprite(sf::Clock clock)
 {
+    float size = _texture->getSize().x / _nbRect;
+    sf::IntRect rect = _sprite.getTextureRect();
+    if (clock.getElapsedTime().asMilliseconds() > 500)
+    {
+        sleep(sf::milliseconds(100));
+        if (rect.left == size * (_nbRect - 1))
+            rect.left = 0;
+        else
+            rect.left += size;
+        _sprite.setTextureRect(rect);
+        clock.restart();
+    }
+
+}
+
+void Entity::setRect(int nb)
+{
+    _nbRect = nb;
+    float size = _texture->getSize().x / nb;
+    sf::IntRect rect(0, 0, size, _texture->getSize().y);
     _sprite.setTextureRect(rect);
 }

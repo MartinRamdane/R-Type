@@ -7,6 +7,7 @@
 
 #include "Game.hpp"
 #include "include.hpp"
+#include "Parser.hpp"
 
 int main()
 {
@@ -14,16 +15,10 @@ int main()
 
     // // add connexion to server
 
-    RessourceManager ressourceManager;
-    std::map<int, Entity> entities;
-    parseMessage("ecreate 1 100 100 Spaceship1.png 0 1 1", entities, ressourceManager);
-    // parseMessage("emove 1 190 356", entities, ressourceManager);
-    // parseMessage("dead 1\n", entities, ressourceManager);
-
     // // open window si la connexion est valide
 
     Game game;
-    game.run(entities);
+    game.run();
 
     return 0;
 }
