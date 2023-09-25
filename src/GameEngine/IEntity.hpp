@@ -33,6 +33,7 @@ public:
     virtual int getNbSprite() const = 0;
     virtual bool isCreated() const = 0;
     virtual void setCreated(bool created) = 0;
+    virtual bool isDead() const = 0;
 
 protected:
     float _oldX;

@@ -21,6 +21,7 @@ Character::Character(std::string path, float x, float y, int id, float angle, fl
     _oldY = y;
     _nbSprite = nbSprite;
     _created = false;
+    _isDead = false;
 }
 
 Character::~Character()
@@ -125,4 +126,9 @@ bool Character::isCreated() const
 void Character::setCreated(bool created)
 {
     _created = created;
+}
+
+bool Character::isDead() const
+{
+    return _isDead;
 }

@@ -43,6 +43,10 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityT
                 protocol.push_back(transformEntityCreateToProtocol(entity));
                 entity->setCreated(true);
             }
+            else if (entity->isDead())
+            {
+                protocol.push_back("edead " + std::to_string(entity->getId()));
+            }
             else
             {
 

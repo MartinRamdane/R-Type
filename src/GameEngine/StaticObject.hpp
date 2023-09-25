@@ -33,6 +33,7 @@ public:
     int getNbSprite() const;
     bool isCreated() const;
     void setCreated(bool created);
+    bool isDead() const;
 
 private:
     std::string _path;
@@ -44,4 +45,5 @@ private:
     float _speed;
     int _nbSprite;
     bool _created;
+    bool _isDead;
 };

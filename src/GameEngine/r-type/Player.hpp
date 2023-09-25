@@ -22,6 +22,7 @@ public:
     int getDamage() const;
     void setFireRate(int fireRate);
     int getFireRate() const;
+    void shoot();
     static void hurtProjectile(IEntity &self, IEntity &you);
 
 protected:

@@ -33,6 +33,7 @@ public:
     int getNbSprite() const;
     bool isCreated() const;
     void setCreated(bool created);
+    bool isDead() const;
 
 protected:
 private:
@@ -45,4 +46,5 @@ private:
     float _speed;
     int _nbSprite;
     bool _created;
+    bool _isDead;
 };

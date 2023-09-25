@@ -34,6 +34,7 @@ public:
 
     void update(Event event);
     void createExplosion(int x, int y);
+    void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed);
 
 private:
     std::shared_ptr<Engine> _engine;
@@ -41,6 +42,5 @@ private:
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
     std::vector<std::shared_ptr<Player>> _players;
-    std::vector<std::shared_ptr<Projectile>> _projectiles;
     int _lastId = 0;
 };

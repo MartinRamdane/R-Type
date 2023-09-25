@@ -21,6 +21,7 @@ Projectile::Projectile(std::string path, float x, float y, int id, float angle, 
     _oldY = y;
     _nbSprite = nbSprite;
     _created = false;
+    _isDead = false;
 }
 
 Projectile::~Projectile()
@@ -53,7 +54,9 @@ void Projectile::rotate(float angle)
 
 void Projectile::update()
 {
-    setPosition(_x - _speed, _y);
+    setPosition(_x + _speed, _y);
+    if (_x > 850)
+        _isDead = true;
 }
 
 std::tuple<float, float> Projectile::getPosition() const
@@ -126,4 +129,9 @@ bool Projectile::isCreated() const
 void Projectile::setCreated(bool created)
 {
     _created = created;
+}
+
+bool Projectile::isDead() const
+{
+    return _isDead;
 }

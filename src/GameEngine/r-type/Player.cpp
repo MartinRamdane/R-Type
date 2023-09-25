@@ -54,3 +54,9 @@ void Player::hurtProjectile(IEntity &self, IEntity &you)
     auto pos = self.getPosition();
     Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
 }
+
+void Player::shoot()
+{
+    auto pos = getPosition();
+    Game::instance->createProjectile(std::get<0>(pos) + 33, std::get<1>(pos) + 8, "shoot_type_right6.png", 0.25, 0.25, 5);
+}

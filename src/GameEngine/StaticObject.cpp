@@ -21,6 +21,7 @@ StaticObject::StaticObject(std::string path, float x, float y, int id, float ang
     _oldY = y;
     _nbSprite = nbSprite;
     _created = false;
+    _isDead = false;
 }
 
 StaticObject::~StaticObject()
@@ -125,4 +126,9 @@ bool StaticObject::isCreated() const
 void StaticObject::setCreated(bool created)
 {
     _created = created;
+}
+
+bool StaticObject::isDead() const
+{
+    return _isDead;
 }
