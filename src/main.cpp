@@ -6,7 +6,7 @@
 
 int main()
 {
-    Core core;
-    core.mainLoop();
+    // Core core;
+    // core.mainLoop();
     return 0;
 }
