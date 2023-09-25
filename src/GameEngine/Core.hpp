@@ -16,7 +16,9 @@ public:
     Core();
     ~Core();
 
-    void mainLoop();
+    std::vector<std::string> getEntitiesProtocol();
+
+    std::vector<std::string> mainLoop();
 
 private:
     std::shared_ptr<Engine> _engine;

@@ -9,11 +9,14 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
 
 # Gather all source files recursively
-file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp src/GameEngine/r-type/*.cpp)
+file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp src/GameEngine/r-type/*.cpp Client/*.cpp)
 
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+if (UNIX)
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
+endif (UNIX)
 
 # Build the project
 add_custom_target(run
@@ -25,6 +28,8 @@ add_custom_target(run
 # Create an executable from the source files
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
+find_package(SFML 2.6 COMPONENTS system window graphics system audio REQUIRED)
+
 # Specify the output directory for the binary
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
@@ -34,3 +39,5 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 if (WIN32)
     target_link_options(${PROJECT_NAME} PRIVATE)
 endif()
+
+target_link_libraries(${PROJECT_NAME} sfml-system sfml-window sfml-graphics sfml-audio)
