@@ -10,6 +10,7 @@
 #include "IEntity.hpp"
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 class Character : public IEntity
 {
@@ -43,6 +44,7 @@ public:
     int getDamage() const;
     void setFireRate(int fireRate);
     int getFireRate() const;
+    void takeDamage(int damage);
 
 private:
     std::string _path;

@@ -7,7 +7,7 @@
 
 #include "Projectile.hpp"
 
-Projectile::Projectile(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed, int nbSprite)
+Projectile::Projectile(std::string path, float x, float y, int id, int damage, float angle, float scaleX, float scaleY, float speed, int nbSprite)
 {
     _path = path;
     _x = x;
@@ -22,6 +22,7 @@ Projectile::Projectile(std::string path, float x, float y, int id, float angle, 
     _nbSprite = nbSprite;
     _created = false;
     _isDead = false;
+    _damage = damage;
 }
 
 Projectile::~Projectile()
@@ -134,4 +135,34 @@ void Projectile::setCreated(bool created)
 bool Projectile::isDead() const
 {
     return _isDead;
+}
+
+void Projectile::setDamage(int damage)
+{
+    _damage = damage;
+}
+
+int Projectile::getDamage() const
+{
+    return _damage;
+}
+
+void Projectile::takeDamage(int damage)
+{
+    _damage -= damage;
+    if (_damage <= 0)
+        _isDead = true;
+}
+
+void Projectile::hurtEntity(IEntity &self, IEntity &you)
+{
+    if (self.isDead() || you.isDead())
+        return;
+    you.takeDamage(self.getDamage());
+    self.takeDamage(100);
+    if (you.isDead())
+    {
+        auto pos = you.getPosition();
+        Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+    }
 }

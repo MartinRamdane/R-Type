@@ -41,4 +41,5 @@ std::vector<std::string> Core::mainLoop(std::string event)
         return protocol;
     }
     // }
+    return {};
 }

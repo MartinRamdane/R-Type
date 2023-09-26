@@ -8,11 +8,12 @@
 #pragma once
 
 #include "../IEntity.hpp"
+#include "Game.hpp"
 
 class Projectile : public IEntity
 {
 public:
-    Projectile(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1, int nbSprite = 1);
+    Projectile(std::string path, float x, float y, int id, int damage, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1, int nbSprite = 1);
     ~Projectile();
     void setPosition(float x, float y);
     void setRotation(float angle);
@@ -34,6 +35,10 @@ public:
     bool isCreated() const;
     void setCreated(bool created);
     bool isDead() const;
+    static void hurtEntity(IEntity &self, IEntity &you);
+    void setDamage(int damage);
+    int getDamage() const;
+    void takeDamage(int damage);
 
 protected:
 private:
@@ -47,4 +52,5 @@ private:
     int _nbSprite;
     bool _created;
     bool _isDead;
+    int _damage;
 };

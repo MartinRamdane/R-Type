@@ -132,3 +132,16 @@ bool StaticObject::isDead() const
 {
     return _isDead;
 }
+
+void StaticObject::setDamage(int damage)
+{
+}
+
+int StaticObject::getDamage() const
+{
+    return 0;
+}
+
+void StaticObject::takeDamage(int damage)
+{
+}

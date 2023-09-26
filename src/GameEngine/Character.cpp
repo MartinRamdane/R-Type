@@ -169,6 +169,13 @@ int Character::getFireRate() const
     return _fireRate;
 }
 
+void Character::takeDamage(int damage)
+{
+    _life -= damage;
+    if (_life <= 0)
+        _isDead = true;
+}
+
 bool Character::canShoot()
 {
     _currentTime = std::chrono::high_resolution_clock::now();
