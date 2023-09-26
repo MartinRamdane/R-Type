@@ -37,6 +37,7 @@ public:
     virtual void setDamage(int damage) = 0;
     virtual int getDamage() const = 0;
     virtual void takeDamage(int damage) = 0;
+    virtual void kill() = 0;
 
 protected:
     float _oldX;

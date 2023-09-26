@@ -145,3 +145,8 @@ int StaticObject::getDamage() const
 void StaticObject::takeDamage(int damage)
 {
 }
+
+void StaticObject::kill()
+{
+    _isDead = true;
+}

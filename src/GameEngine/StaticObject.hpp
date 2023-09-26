@@ -37,6 +37,7 @@ public:
     void setDamage(int damage);
     int getDamage() const;
     void takeDamage(int damage);
+    void kill();
 
 private:
     std::string _path;

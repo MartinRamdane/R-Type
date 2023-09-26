@@ -27,6 +27,7 @@ public:
         DOWN,
         SHOOT,
         QUIT,
+        SHIELD,
         UNKNOWN
     };
     Game(std::shared_ptr<Engine> &engine);
@@ -36,6 +37,7 @@ public:
     void update(Event event);
     void createExplosion(int x, int y);
     void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage);
+    std::shared_ptr<StaticObject> createShield(int x, int y);
 
 private:
     std::shared_ptr<Engine> _engine;

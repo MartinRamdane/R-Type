@@ -11,6 +11,7 @@
 #include "Speed.hpp"
 #include "Shooter.hpp"
 #include "Tank.hpp"
+#include "Shield.hpp"
 
 Game *Game::instance = nullptr;
 
@@ -22,7 +23,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"], 0, 239, _lastId++));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Tank>(_assets["Tank"], 50, 100, _lastId++, 5));
+    _players.push_back(std::make_shared<Shield>(_assets["ShieldSpaceship"], 50, 100, _lastId++, 5));
     _playersGroups->insert(_players[0]);
     _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
     _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"], 500, 100, _lastId++, 0, 1, 1, 100, 1, 1, 3, 2));
@@ -56,6 +57,9 @@ void Game::update(Event event)
     case SHOOT:
         _players[0]->shoot();
         break;
+    case SHIELD:
+        _players[0]->action();
+        break;
     default:
         break;
     }
@@ -70,6 +74,14 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
 {
     _projectilesGroups->insert(std::make_shared<Projectile>(path, x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2));
 }
+
+std::shared_ptr<StaticObject> Game::createShield(int x, int y)
+{
+    std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"], x, y, _lastId++, 0, 1, 1, 1);
+    _staticObjectsGroups->insert(_shield);
+    return (_shield);
+}
+
 
 std::map<std::string, std::string> Game::_assets = {
     {"Background", "background.png"},

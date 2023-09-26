@@ -166,3 +166,8 @@ void Projectile::hurtEntity(IEntity &self, IEntity &you)
         Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
     }
 }
+
+void Projectile::kill()
+{
+    _isDead = true;
+}

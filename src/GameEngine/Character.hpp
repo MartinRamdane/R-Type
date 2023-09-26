@@ -22,7 +22,7 @@ public:
     void setRotation(float angle);
     void move(float x, float y);
     void rotate(float angle);
-    void update();
+    virtual void update();
     std::tuple<float, float> getPosition() const;
     float getRotation() const;
     void setScale(float x, float y);
@@ -45,9 +45,11 @@ public:
     int getDamage() const;
     void setFireRate(float fireRate);
     float getFireRate() const;
-    void takeDamage(int damage);
+    virtual void takeDamage(int damage);
     virtual void shoot();
     static void hurtProjectile(IEntity &self, IEntity &you);
+    virtual void action() {};
+    void kill();
 
 private:
     std::string _path;
