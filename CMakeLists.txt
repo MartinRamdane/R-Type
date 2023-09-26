@@ -20,6 +20,7 @@ if (UNIX)
 endif (UNIX)
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
 find_package(asio REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 # Set the C++ standard to C++17
 
@@ -35,6 +36,6 @@ add_custom_target(run
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system  ${asio_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system  ${asio_LIBRARIES} nlohmann_json::nlohmann_json)
 target_include_directories(${PROJECT_NAME} PRIVATE ${asio_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})

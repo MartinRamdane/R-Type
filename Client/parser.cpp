@@ -44,6 +44,17 @@ Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &re
     return entity;
 }
 
+void Parser::getConfig(std::string path, std::string type, Entity *entity)
+{
+    JsonParser jsonParser;
+    nlohmann::json jsonfile =  jsonParser.readFile(path);
+    std::string nbRect = jsonParser.get<std::string>(jsonfile, type + ".nb_rect");
+    std::string initRect = jsonParser.get<std::string>(jsonfile, type + ".rect_init");
+    entity->setRect(std::stoi(nbRect), std::stoi(initRect));
+    entity->_event_form = jsonParser.get<std::string>(jsonfile, type + ".form");
+    entity->_object_type = type;
+}
+
 void Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
 {
     int id = std::stoi(value["id"]);
@@ -55,7 +66,7 @@ void Parser::addEntity(std::map<std::string, std::string> value, RessourceManage
         entity.setSpriteOrigin();
         entity.setSpriteRotation(std::stof(value["rotation"]));
         entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-        entity.setRect(std::stoi(value["nbRect"]));
+        getConfig(value["config_path"], value["object_type"], &entity);
         _entities[id] = entity;
     }
 }
@@ -72,12 +83,10 @@ void Parser::removeEntity(std::map<std::string, std::string> value)
 void Parser::modifyPosEntity(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
-    std::cout << "entities len " << _entities.size() << std::endl;
     if (findEntity(id) == true)
     {
         _entities[id].setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     }
-    std::cout << "entities len " << _entities.size() << std::endl;
 }
 
 std::string Parser::setKey(std::string key, int i)
@@ -97,7 +106,9 @@ std::string Parser::setKey(std::string key, int i)
     else if (i == 6)
         key = "scale.y";
     else if (i == 7)
-        key = "nbRect";
+        key = "config_path";
+    else if (i == 8)
+        key = "object_type";
     return key;
 }
 

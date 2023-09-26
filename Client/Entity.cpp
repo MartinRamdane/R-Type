@@ -9,7 +9,7 @@
 
 Entity::Entity()
 {
-   _clock.restart();
+    _clock.restart();
 }
 
 void Entity::setTexture(const std::string &path)
@@ -60,40 +60,43 @@ void Entity::setSpriteRotation(const float &rotation)
     _sprite.setRotation(rotation);
 }
 
-void Entity::animateSprite()
+void Entity::animateSprite(const int ei)
 {
     float size = _texture->getSize().x / _nbRect;
     sf::IntRect rect = _sprite.getTextureRect();
     if (_clock.getElapsedTime().asMilliseconds() > 100)
     {
-        if (rect.left == size * (_nbRect - 1))
-            rect.left = 0;
-        else
+        if (ei == 0)
+        {
+            if (rect.left == size * (_nbRect - 1))
+                rect.left = size * _init_rect;
+            else
+                rect.left += size;
+        }
+        else if (ei == 1)
+        {
+            if (rect.left != size * (_nbRect - 1))
+                rect.left += size;
+        }
+        else if (ei == 2)
+        {
+            if (rect.left != 0)
+                rect.left -= size;
+        }
+        else if (ei == 3)
             rect.left += size;
         _sprite.setTextureRect(rect);
         _clock.restart();
     }
-
 }
 
-void Entity::animateOnceSprite()
-{
-    float size = _texture->getSize().x / _nbRect;
-    sf::IntRect rect = _sprite.getTextureRect();
-    if (_clock.getElapsedTime().asMilliseconds() > 100)
-    {
-        if (rect.left < size * (_nbRect - 1))
-            rect.left += size;
-        _sprite.setTextureRect(rect);
-        _clock.restart();
-    }
-}
-
-void Entity::setRect(int nb)
+void Entity::setRect(int nb, int init_rect)
 {
     _nbRect = nb;
+    _init_rect = init_rect;
     float size = _texture->getSize().x / nb;
     sf::IntRect rect(0, 0, size, _texture->getSize().y);
+    rect.left = size * init_rect;
     _sprite.setTextureRect(rect);
 }
 

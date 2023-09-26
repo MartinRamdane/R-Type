@@ -14,8 +14,10 @@ Game::Game()
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _ressourceManager = RessourceManager();
     _parser = Parser();
-    _parser.parseMessage("ecreate 1 0 0 background.png 0 1 1 1", _ressourceManager);
-    _parser.parseMessage("ecreate 2 100 100 Spaceship1.png 0 1 1 5", _ressourceManager);
+    _parser.parseMessage("ecreate 1 0 0 background.png 0 1 1 ./config.json background", _ressourceManager);
+    _parser.parseMessage("ecreate 2 100 100 Spaceship1.png 0 1 1 ./config.json SpaceShip", _ressourceManager);
+    _parser.parseMessage("ecreate 3 200 200 shoot_type_right3.png 0 1 1 ./config.json shoot", _ressourceManager);
+    _event_indicator = 0;
 }
 
 
@@ -41,16 +43,19 @@ void Game::handleEvent()
             {
             case sf::Keyboard::Left:
                 // send left;
+                _event_indicator = 0;
                 break;
             case sf::Keyboard::Right:
                 // send right
+                _event_indicator = 0;
                 break;
             case sf::Keyboard::Up:
                 // send up
-                animate();
+                _event_indicator = 1;
                 break;
             case sf::Keyboard::Down:
                 // send down
+                _event_indicator = 2;
                 break;
             case sf::Keyboard::Space:
                 // send space
@@ -61,7 +66,8 @@ void Game::handleEvent()
             default:
                 break;
             }
-        }
+        } else
+            _event_indicator = 0;
     }
 }
 
@@ -71,7 +77,10 @@ void Game::animate()
     while (it != _parser._entities.end())
     {
         // add condition for animation
-        it->second.animateSprite();
+        if (it->second._event_form == "loop")
+            it->second.animateSprite(0);
+        if (it->second._event_form == "event" && _event_indicator != 0)
+            it->second.animateSprite(_event_indicator);
         it++;
     }
 }
@@ -89,7 +98,7 @@ void Game::draw()
 void Game::update()
 {
     _window.clear();
-    // animate();
+    animate();
     draw();
     _window.setView(_view);
     _window.display();

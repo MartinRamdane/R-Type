@@ -11,6 +11,7 @@
 #include "Entity.hpp"
 #include "RessourceManager.hpp"
 #include "Parser.hpp"
+#include "JsonParser.hpp"
 
 class Game
 {
@@ -31,4 +32,5 @@ public:
     sf::Clock _clock;
     RessourceManager _ressourceManager;
     Parser _parser;
+    int _event_indicator;
 };
