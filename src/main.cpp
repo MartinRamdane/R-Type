@@ -1,12 +1,15 @@
 #include <iostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include "GameEngine/JsonParser.hpp"
 #include "GameEngine/Core.hpp"
-#include "GameEngine/r-type/Player.hpp"
-#include "GameEngine/r-type/Enemy.hpp"
-#include "GameEngine/r-type/Projectile.hpp"
 
 int main()
 {
     Core core;
-    core.mainLoop();
+    core.mainLoop("test");
     return 0;
 }
