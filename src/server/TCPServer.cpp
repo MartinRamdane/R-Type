@@ -35,6 +35,6 @@ void TCPServer::handleAccept(TCPServerConnection::pointer new_connection, const 
     new_connection->start(server);
     startAccept();
   } else {
-    std::cout << "Error: " << error.message() << std::endl;
+    std::cout << "[ERROR TCP Server]: " << error.message() << std::endl;
   }
 }

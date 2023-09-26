@@ -13,7 +13,7 @@ ServerClass::ServerClass() : _threadPool(1), _tcpServer(_io_service, 4244)
   //TODO : CRASH QUAND ON DECOMMENTE
 //   _threadPool.enqueue([this]() {
     _io_service.run();
-//   });
+//  });
 }
 
 ServerClass::~ServerClass()
@@ -22,12 +22,14 @@ ServerClass::~ServerClass()
 
 InstanceInfos ServerClass::createInstance()
 {
-    // _instances.emplace_back(_instances.size());
-    // _instances.back().setServer(this);
-    //TODO RENVOYER INFOS INSTANCE 
+    std::cout << "instances size: " << _instances.size() << std::endl;
+    Instance *instance = new Instance(_instances.size());
+    instance->setServer(this);
+    _instances.push_back(instance);
+    //TODO RENVOYER INFOS INSTANCE
     InstanceInfos instanceinfos;
-    instanceinfos.id = 12;
-    instanceinfos.port = 12;
+    instanceinfos.id = instance->getId();
+    instanceinfos.port = instance->getPort();
     std::cout << "creating instance !" << std::endl;
     return instanceinfos;
 }

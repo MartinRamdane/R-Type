@@ -11,6 +11,7 @@
 #include "ThreadPool.hpp"
 #include "EventHandler.hpp"
 #include "Instance.hpp"
+#include <thread>
 
 struct InstanceInfos {
   int id;
@@ -28,5 +29,5 @@ class ServerClass {
     boost::asio::io_service _io_service;
     ThreadPool _threadPool;
     TCPServer _tcpServer;
-    std::vector<Instance> _instances;
+    std::vector<Instance *> _instances;
 };
