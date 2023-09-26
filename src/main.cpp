@@ -7,6 +7,6 @@
 int main()
 {
     Core core;
-    core.mainLoop();
+    core.mainLoop("test");
     return 0;
 }
