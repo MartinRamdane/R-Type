@@ -1,8 +1,8 @@
 {
     "Game": {
-        "Title": "Space Shooter",
-        "Width": 800,
-        "Height": 600,
+        "Title": "r-type",
+        "Width": 1920,
+        "Height": 1080,
         "Assets": {
             "Images": {
                 "Background": "assets/images/background.png",
@@ -13,7 +13,8 @@
                     "assets/images/player4.png"
                 ],
                 "Enemy": "assets/images/enemy.png",
-                "Bullet": "assets/images/bullet.png"
+                "Bullet": "assets/images/bullet.png",
+                "Explosion": "assets/images/explosion.png"
             },
             "Sounds": {
                 "Background": "assets/sounds/background.mp3",
