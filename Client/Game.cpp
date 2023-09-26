@@ -80,7 +80,7 @@ void Game::animate()
         if (it->second._event_form == "event" && _event_indicator != 0)
             it->second.animateSprite(_event_indicator);
         if (it->second._event_form == "once")
-            it->second.animateSprite(4);
+            it->second.animateSprite(3);
         if (it->second._event_form == "event" && _event_indicator == 0)
             it->second.setInitPos();
         it++;
