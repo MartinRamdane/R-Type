@@ -6,10 +6,12 @@
 */
 
 #include "UDPServer.hpp"
-#include "ServerClass.hpp"
+#include "Server.hpp"
 
 UDPServer::UDPServer(boost::asio::io_service& io_service, int port) : socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
 {
+    _nbPlayers = 0;
+    _clients = std::vector<Client>();
     try
     {
         std::cout << "Server listening on port " << port << std::endl;
@@ -51,7 +53,9 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
         {
             clients_.push_back(client);
             std::cout << "New client connected: " << client.client.address().to_string() << ":" << client.client.port() << std::endl;
-            // create an instance thread
+            // add the new client connected to this instance of the game in the instance client list
+            Client newClient = {client.client, std::chrono::system_clock::now()};
+            addClient(newClient);
             std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
             std::cout << "vector size : " << clients_.size() << std::endl;
         }
@@ -120,4 +124,18 @@ void UDPServer::send_ping_to_clients()
         mutex_.unlock();
         std::this_thread::sleep_for(std::chrono::seconds(2));
     }
+}
+
+void UDPServer::addClient(Client client)
+{
+    _clients.push_back(client);
+    _nbPlayers++;
+}
+
+void UDPServer::removeClient(Client client)
+{
+    _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c) {
+        return c.client.address() == client.client.address() && c.client.port() == client.client.port();
+    }));
+    _nbPlayers--;
 }

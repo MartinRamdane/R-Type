@@ -10,10 +10,10 @@
 #include "TCPServer.hpp"
 #include "ThreadPool.hpp"
 
-class ServerClass {
+class Server {
   public:
-    ServerClass();
-    ~ServerClass();
+    Server();
+    ~Server();
     void createInstance();
 
   protected:
