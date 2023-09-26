@@ -9,6 +9,7 @@
 
 #include "../Character.hpp"
 #include <chrono>
+#include <memory>
 
 class Shield : public Character
 {

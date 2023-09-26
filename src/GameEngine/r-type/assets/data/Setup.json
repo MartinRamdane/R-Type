@@ -5,16 +5,16 @@
         "Height": 1080,
         "Assets": {
             "Images": {
-                "Background": "./src/GameEngine/r-type/assets/images/cenario/background.png",
-                "Classic": "./src/GameEngine/r-type/assets/images/players/Spaceship1.png",
-                "Speed": "./src/GameEngine/r-type/assets/images/players/Spaceship2.png",
-                "Shooter": "./src/GameEngine/r-type/assets/images/players/Spaceship3.png",
-                "Tank": "./src/GameEngine/r-type/assets/images/players/Spaceship4.png",
-                "ShieldSpaceship": "./src/GameEngine/r-type/assets/images/players/Spaceship5.png",
-                "Enemy1": "./src/GameEngine/r-type/assets/images/enemies/robot_type_6.png",
-                "Bullet": "./src/GameEngine/r-type/assets/images/shoots/shoot_type_right6.png",
-                "ExplosionSpaceShip": "./src/GameEngine/r-type/assets/images/explosion/explosion_type_left1.png",
-                "Shield" : "./src/GameEngine/r-type/assets/images/shield/shield.png"
+                "Background": "background.png",
+                "Classic": "Spaceship1.png",
+                "Speed": "Spaceship2.png",
+                "Shooter": "Spaceship3.png",
+                "Tank": "Spaceship4.png",
+                "ShieldSpaceship": "Spaceship5.png",
+                "Enemy1": "robot_type_6.png",
+                "Bullet": "shoot_type_right6.png",
+                "ExplosionSpaceShip": "explosion_type_left1.png",
+                "Shield" : "shield.png"
             },
             "Sounds": {
                 "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",

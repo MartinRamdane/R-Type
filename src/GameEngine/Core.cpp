@@ -24,8 +24,8 @@ Core::~Core()
 
 std::vector<std::string> Core::mainLoop(std::string event)
 {
-    while (_engine->isRunning())
-    {
+    // while (_engine->isRunning())
+    // {
         if (_engine->frameRateControl())
         {
             // get events
@@ -37,8 +37,8 @@ std::vector<std::string> Core::mainLoop(std::string event)
             // for (auto line : protocol)
             //     std::cout << line << std::endl;
             // send protocol to client
-            // return protocol;
+            return protocol;
         }
-    }
+    // }
     return {};
 }
