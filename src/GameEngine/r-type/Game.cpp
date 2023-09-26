@@ -19,13 +19,13 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     instance = this;
     // Create all entities
     _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _staticObjectsGroups->insert(std::make_shared<StaticObject>("background.png", 0, 239, _lastId++));
+    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"], 0, 239, _lastId++));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _players.push_back(std::make_shared<Tank>(_assets["Tank"], 50, 100, _lastId++, 5));
     _playersGroups->insert(_players[0]);
     _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
-    _enemiesGroups->insert(std::make_shared<Enemy>("robot_type_6.png", 500, 100, _lastId++, 0, 1, 1, 100, 1, 1, 3, 2));
+    _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"], 500, 100, _lastId++, 0, 1, 1, 100, 1, 1, 3, 2));
     // Add collision
     engine->setRelation(_playersGroups, _projectilesGroups, Character::hurtProjectile);
     engine->setRelation(_projectilesGroups, _enemiesGroups, Projectile::hurtEntity);
@@ -63,7 +63,7 @@ void Game::update(Event event)
 
 void Game::createExplosion(int x, int y)
 {
-    _staticObjectsGroups->insert(std::make_shared<StaticObject>("explosion_type_left1.png", x, y, _lastId++, 0, 1, 1, 6));
+    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["ExplosionSpaceship"], x, y, _lastId++, 0, 1, 1, 6));
 }
 
 void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage)
@@ -72,9 +72,12 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
 }
 
 std::map<std::string, std::string> Game::_assets = {
+    {"Background", "background.png"},
     {"Classic", "Spaceship1.png"},
     {"Speed", "Spaceship2.png"},
     {"Shooter", "Spaceship3.png"},
     {"Tank", "Spaceship4.png"},
     {"Shield", "Spaceship5.png"},
+    {"Enemy1", "robot_type_6.png"},
+    {"ExplosionSpaceship", "explosion_type_left1.png"},
 };
