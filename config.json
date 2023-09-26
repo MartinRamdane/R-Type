@@ -3,32 +3,24 @@
     {
         "nb_rect": "5",
         "rect_init": "2",
-        "event_indicator": "none",
-        "dir": {
-            "up": "R",
-            "down": "L"
-        },
         "form": "event"
     },
     "shoot":
     {
         "nb_rect": "2",
         "rect_init": "0",
-        "dir": "R",
         "form": "loop"
     },
     "explosion":
     {
         "nb_rect": "5",
         "rect_init": "0",
-        "dir": "R",
         "form": "once"
     },
     "background":
     {
         "nb_rect": "1",
         "rect_init": "0",
-        "dir": "R",
         "form": "loop"
     }
 }

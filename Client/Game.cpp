@@ -16,7 +16,6 @@ Game::Game()
     _parser = Parser();
     _parser.parseMessage("ecreate 1 0 0 background.png 0 1 1 ./config.json background", _ressourceManager);
     _parser.parseMessage("ecreate 2 100 100 Spaceship1.png 0 1 1 ./config.json SpaceShip", _ressourceManager);
-    _parser.parseMessage("ecreate 3 200 200 shoot_type_right3.png 0 1 1 ./config.json shoot", _ressourceManager);
     _event_indicator = 0;
 }
 
@@ -76,11 +75,14 @@ void Game::animate()
     std::map<int, Entity>::iterator it = _parser._entities.begin();
     while (it != _parser._entities.end())
     {
-        // add condition for animation
         if (it->second._event_form == "loop")
             it->second.animateSprite(0);
         if (it->second._event_form == "event" && _event_indicator != 0)
             it->second.animateSprite(_event_indicator);
+        if (it->second._event_form == "once")
+            it->second.animateSprite(4);
+        if (it->second._event_form == "event" && _event_indicator == 0)
+            it->second.setInitPos();
         it++;
     }
 }

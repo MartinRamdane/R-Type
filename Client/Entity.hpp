@@ -28,6 +28,7 @@ public:
     void setSpriteRotation(const float &rotation);
     void setRect(int nb, int init_rect = 0);
     void animateSprite(const int ei);
+    void setInitPos();
     sf::Sprite getSprite() const;
     sf::Texture getTexture() const;
     sf::Vector2f getSpritePosition() const;
