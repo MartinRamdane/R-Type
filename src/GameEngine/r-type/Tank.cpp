@@ -11,6 +11,10 @@ Tank::Tank(std::string path, float x, float y, int id, int nbSprite, float angle
     : Character(path, x, y, id, angle, scaleX, scaleY, nbSprite)
 {
     // set special attributes
+    setLife(200);
+    setSpeed(1.5);
+    setFireRate(1.5);
+    setDamage(20);
 }
 
 Tank::~Tank()

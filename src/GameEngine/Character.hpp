@@ -43,8 +43,8 @@ public:
     int getLife() const;
     void setDamage(int damage);
     int getDamage() const;
-    void setFireRate(int fireRate);
-    int getFireRate() const;
+    void setFireRate(float fireRate);
+    float getFireRate() const;
     void takeDamage(int damage);
     virtual void shoot();
     static void hurtProjectile(IEntity &self, IEntity &you);

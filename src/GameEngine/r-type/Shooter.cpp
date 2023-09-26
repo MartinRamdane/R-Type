@@ -11,6 +11,10 @@ Shooter::Shooter(std::string path, float x, float y, int id, int nbSprite, float
     : Character(path, x, y, id, angle, scaleX, scaleY, nbSprite)
 {
     // set special attributes
+    setDamage(15);
+    setLife(90);
+    setSpeed(2.5);
+    setFireRate(4.5);
 }
 
 Shooter::~Shooter()
