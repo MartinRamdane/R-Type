@@ -5,9 +5,9 @@
 ** Server
 */
 
-#include "ServerClass.hpp"
+#include "Server.hpp"
 
-ServerClass::ServerClass() : _threadPool(1), _tcpServer(_io_service, 4242)
+Server::Server() : _threadPool(1), _tcpServer(_io_service, 4242)
 {
   _tcpServer.setServer(this);
   _threadPool.enqueue([this]() {
@@ -15,10 +15,10 @@ ServerClass::ServerClass() : _threadPool(1), _tcpServer(_io_service, 4242)
   });
 }
 
-ServerClass::~ServerClass()
+Server::~Server()
 {
 }
 
-void ServerClass::createInstance()
+void Server::createInstance()
 {
 }
