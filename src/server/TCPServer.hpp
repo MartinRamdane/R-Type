@@ -7,7 +7,7 @@
 
 #ifndef HEADER_TCPServer
 #define HEADER_TCPServer
-#include "TCPConnection.hpp"
+#include "TCPServerConnection.hpp"
 
 class ServerClass;
 
@@ -20,7 +20,7 @@ class TCPServer {
   protected:
   private:
     void startAccept();
-    void handleAccept(TCPConnection::pointer new_connection, const boost::system::error_code &error);
+    void handleAccept(TCPServerConnection::pointer new_connection, const boost::system::error_code &error);
     tcp::acceptor _acceptor;
     boost::asio::io_context &io_context_;
     ServerClass *_server;

@@ -44,7 +44,7 @@ int main(int ac, char **av)
     else
     {
         boost::asio::io_service io_service;
-        tcp::endpoint endpoint = boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 4242);
+        tcp::endpoint endpoint = boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 4243);
         TCPClient client(io_service, endpoint);
         io_service.run();
         return 0;

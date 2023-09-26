@@ -38,8 +38,8 @@ class EventHandler
     EventHandler() = default;
     EventHandler(ACTION ACTION_NAME, int body_size, std::string event);
     ~EventHandler();
-    std::vector<char> encodeMessage();
-    Event decodeMessage(std::vector<char> data);
+    std::vector<uint8_t> encodeMessage();
+    Event decodeMessage(std::vector<uint8_t> data);
     void addEvent(ACTION ACTION_NAME, int body_size, std::string event);
     const int getRequestId() const { return _body_size; };
     const std::string getEvent() const { return _event; };

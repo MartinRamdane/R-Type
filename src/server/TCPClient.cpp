@@ -14,12 +14,12 @@ TCPClient::TCPClient(boost::asio::io_service &io_service, tcp::endpoint &endpoin
 
 void TCPClient::connect(tcp::endpoint &endpoint)
 {
-  TCPConnection::pointer new_connection = TCPConnection::create(_io_service);
+  TCPClientConnection::pointer new_connection = TCPClientConnection::create(_io_service);
   tcp::socket &socket = new_connection->socket();
   socket.async_connect(endpoint, boost::bind(&TCPClient::handleConnect, this, new_connection, boost::asio::placeholders::error));
 }
 
-void TCPClient::handleConnect(TCPConnection::pointer new_connection, const boost::system::error_code &error)
+void TCPClient::handleConnect(TCPClientConnection::pointer new_connection, const boost::system::error_code &error)
 {
   std::cout << "handle connect" << std::endl;
   if (!error)
