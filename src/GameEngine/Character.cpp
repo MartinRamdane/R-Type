@@ -7,7 +7,7 @@
 
 #include "Character.hpp"
 
-Character::Character(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed, int nbSprite)
+Character::Character(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, float speed, int nbSprite, float fireRate, int life, int damage)
 {
     _path = path;
     _x = x;
@@ -22,6 +22,12 @@ Character::Character(std::string path, float x, float y, int id, float angle, fl
     _nbSprite = nbSprite;
     _created = false;
     _isDead = false;
+    _fireRate = fireRate;
+    _life = life;
+    _damage = damage;
+    _targetFrameDuration = std::chrono::duration<double>(1.0 / _fireRate);
+    _lastShootTime = std::chrono::high_resolution_clock::now();
+    _currentTime = _lastShootTime;
 }
 
 Character::~Character()
@@ -131,4 +137,50 @@ void Character::setCreated(bool created)
 bool Character::isDead() const
 {
     return _isDead;
+}
+
+void Character::setLife(int life)
+{
+    _life = life;
+}
+
+int Character::getLife() const
+{
+    return _life;
+}
+
+void Character::setDamage(int damage)
+{
+    _damage = damage;
+}
+
+int Character::getDamage() const
+{
+    return _damage;
+}
+
+void Character::setFireRate(int fireRate)
+{
+    _fireRate = fireRate;
+}
+
+int Character::getFireRate() const
+{
+    return _fireRate;
+}
+
+bool Character::canShoot()
+{
+    _currentTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsedTime = _currentTime - _lastShootTime;
+
+    if (elapsedTime >= _targetFrameDuration)
+    {
+        _lastShootTime = _currentTime;
+
+        return true;
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    return false;
 }

@@ -18,11 +18,11 @@ public:
 
 protected:
 private:
-    bool _shieldIsUp = false;
-    bool _canActivateShield = true;
+    // bool _shieldIsUp = false;
+    // bool _canActivateShield = true;
 
     // Shield time management
-    std::chrono::duration<double> _targetShieldDuration;
-    std::chrono::time_point<std::chrono::system_clock> _shieldStart;
-    std::chrono::time_point<std::chrono::system_clock> _shieldEnd;
+    // std::chrono::duration<double> _targetShieldDuration;
+    // std::chrono::time_point<std::chrono::system_clock> _shieldStart;
+    // std::chrono::time_point<std::chrono::system_clock> _shieldEnd;
 };

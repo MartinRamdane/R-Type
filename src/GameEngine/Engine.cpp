@@ -15,7 +15,7 @@ Engine::Engine()
     _isRunning = true;
 
     // Create clock
-    _targetFrameDuration = std::chrono::duration<double>(1.0 / 1.0);
+    _targetFrameDuration = std::chrono::duration<double>(1.0 / 60.0);
     _lastFrameTime = std::chrono::high_resolution_clock::now();
     _currentTime = _lastFrameTime;
 }

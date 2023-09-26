@@ -18,7 +18,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _staticObjectsGroups->insert(std::make_shared<StaticObject>("background.png", 0, 0, _lastId++));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Player>("Spaceship1.png", 0, 50, _lastId++, 0, 1, 1, 100, 1, 1, 1, 5));
+    _players.push_back(std::make_shared<Player>("Spaceship1.png", 0, 50, _lastId++, 0, 1, 1, 100, 1, 1, 3, 5));
     _playersGroups->insert(_players[0]);
     // Add collision
     engine->setRelation(_playersGroups, _projectilesGroups, Player::hurtProjectile);
