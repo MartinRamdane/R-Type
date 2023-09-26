@@ -11,9 +11,10 @@
 #include "Projectile.hpp"
 #include <iostream>
 #include <vector>
+#include <map>
 #include "../StaticObject.hpp"
 
-class Player;
+class Character;
 
 class Game
 {
@@ -42,6 +43,7 @@ private:
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
     std::shared_ptr<EntityType<IEntity>> _enemiesGroups;
-    std::vector<std::shared_ptr<Player>> _players;
+    std::vector<std::shared_ptr<Character>> _players;
     int _lastId = 0;
+    static std::map<std::string, std::string> _assets;
 };

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "IEntity.hpp"
+#include "r-type/Game.hpp"
 #include <chrono>
 #include <thread>
 #include <iostream>
@@ -15,7 +16,7 @@
 class Character : public IEntity
 {
 public:
-    Character(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1, int nbSprite = 1, float fireRate = 1, int life = 100, int damage = 10);
+    Character(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, int nbSprite = 1);
     ~Character();
     void setPosition(float x, float y);
     void setRotation(float angle);
@@ -45,6 +46,8 @@ public:
     void setFireRate(int fireRate);
     int getFireRate() const;
     void takeDamage(int damage);
+    virtual void shoot();
+    static void hurtProjectile(IEntity &self, IEntity &you);
 
 private:
     std::string _path;
