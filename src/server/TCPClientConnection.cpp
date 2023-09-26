@@ -15,13 +15,10 @@ TCPClientConnection::TCPClientConnection(boost::asio::io_service &io_service) : 
 void TCPClientConnection::start()
 {
     while (1) {
-        std::cout << "Enter message: ";
         EventHandler event(ACTION::OK, 3, "cvo" );
-        std::getline(std::cin, _message);
         std::vector<uint8_t> eventData = event.encodeMessage();
         boost::asio::async_write(_socket, boost::asio::buffer(eventData), boost::bind(&TCPClientConnection::handleWrite, shared_from_this(), boost::asio::placeholders::error));
         boost::asio::async_read(_socket, boost::asio::buffer(_message), boost::bind(&TCPClientConnection::handleRead, shared_from_this(), boost::asio::placeholders::error));
-        _message = "";
     }
 }
 

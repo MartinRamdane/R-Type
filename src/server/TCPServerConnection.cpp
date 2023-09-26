@@ -40,17 +40,15 @@ void TCPServerConnection::handleRead(const boost::system::error_code &error)
 void TCPServerConnection::read()
 {
   auto self = shared_from_this();
-
+  buffer.clear();
   _socket.async_read_some(boost::asio::buffer(buffer, 1024), [this, self](const boost::system::error_code& error, std::size_t length) {
         if (!error) {
-            // Handle data received from the client (data contains the received bytes)
             std::cout << "Received: " << length << std::endl;
-            if (length == 0)
-                read();
             EventHandler evt;
             evt.decodeMessage(buffer);
+            std::string response = "Got message";
+            boost::asio::async_write(_socket, boost::asio::buffer(response), boost::bind(&TCPServerConnection::handleWrite, shared_from_this(), boost::asio::placeholders::error));
             read();
-            // Echo the data back to the client
         }
     }
     );
