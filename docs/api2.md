@@ -1,10 +1,10 @@
 # R-Type API
 
-We have 2 different types of API based on TCP and UCP server.
+We have 2 different types of API based on TCP and UDP server.
 
 ## TCP API
 
-The TCP API is used for the TCP Connection between a Client and an Server Instance.
+The TCP API is used for the TCP Connection between a Client and a Server Instance.
 
 The Server Instances represent the lobbies.
 
