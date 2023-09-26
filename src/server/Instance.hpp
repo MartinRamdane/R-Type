@@ -25,8 +25,6 @@ public:
   int getId() const { return _id; }
   UDPServer &getUDPServer() { return _udpServer; }
   void setServer(Server *server) { _serverRef = server; }
-  void addClient(Client client);
-  void removeClient(Client client);
   int getNbPlayers() const { return _udpServer.getNbPlayers(); }
 
 protected:
