@@ -17,21 +17,23 @@ EventHandler::~EventHandler()
 {
 }
 
-std::vector<char> EventHandler::encodeMessage()
+std::vector<uint8_t> EventHandler::encodeMessage()
 {
-  std::vector<char> data(sizeof(ACTION) + sizeof(int) + _event.size());
+  std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + _event.size());
   memcpy(data.data(), &_ACTION_NAME, sizeof(ACTION));
   memcpy(data.data() + sizeof(ACTION), &_body_size, sizeof(int));
   memcpy(data.data() + sizeof(ACTION) + sizeof(int), _event.data(), _event.size());
   return data;
 }
 
-Event EventHandler::decodeMessage(std::vector<char> data)
+Event EventHandler::decodeMessage(std::vector<uint8_t> data)
 {
   Event event;
-  memcpy(&event.ACTION_NAME, data.data(), sizeof(ACTION));
-  memcpy(&event.body_size, data.data() + sizeof(ACTION), sizeof(int));
-  event.event = std::string(data.data() + sizeof(ACTION) + sizeof(int), data.size() - sizeof(ACTION) - sizeof(int));
+  std::memcpy(&event.ACTION_NAME, data.data(), sizeof(ACTION));
+  std::memcpy(&event.body_size, data.data() + sizeof(ACTION), sizeof(int));
+  event.event = std::string(reinterpret_cast<const char*>(data.data() + sizeof(ACTION) + sizeof(int)),
+  data.size() - sizeof(ACTION) - sizeof(int));
+  std::cout << "[DEBUG] Event decoded: " << event.body_size << " " << event.event << std::endl;
   return event;
 }
 

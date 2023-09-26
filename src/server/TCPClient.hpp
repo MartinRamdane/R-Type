@@ -7,7 +7,7 @@
 
 #ifndef HEADER_TCPCLIENT
 #define HEADER_TCPCLIENT
-#include "TCPConnection.hpp"
+#include "TCPClientConnection.hpp"
 
 class TCPClient
 {
@@ -16,7 +16,7 @@ public:
 
 private:
   void connect(tcp::endpoint &endpoint);
-  void handleConnect(TCPConnection::pointer new_connection, const boost::system::error_code &error);
+  void handleConnect(TCPClientConnection::pointer new_connection, const boost::system::error_code &error);
   boost::asio::io_service &_io_service;
 };
 
