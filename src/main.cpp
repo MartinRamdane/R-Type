@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include "GameEngine/JsonParser.hpp"
+#include "GameEngine/Core.hpp"
 
 int main()
 {
