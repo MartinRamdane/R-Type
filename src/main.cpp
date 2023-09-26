@@ -15,6 +15,10 @@ int main(int ac, char **av)
     if (ac == 1)
     {
         ServerClass server;
+        while (true)
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(1)); // Keeps the main thread alive
+        }
     }
     else
     {

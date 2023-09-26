@@ -10,14 +10,15 @@
 ServerClass::ServerClass() : _threadPool(1), _tcpServer(_io_service, 4244)
 {
   _tcpServer.setServer(this);
-  //TODO : CRASH QUAND ON DECOMMENTE
-//   _threadPool.enqueue([this]() {
+  _threadPool.enqueue([this]() {
     _io_service.run();
-//  });
+ });
 }
 
 ServerClass::~ServerClass()
 {
+    std::cout << "[Server is destroyed" << std::endl;
+    _io_service.stop();
 }
 
 InstanceInfos ServerClass::createInstance()
