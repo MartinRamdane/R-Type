@@ -101,7 +101,7 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
     {"Enemy1", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Enemy");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Enemy1");
      }},
     {"Background", []()
      {
@@ -111,6 +111,6 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
     {"ExplosionSpaceship", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Explosion");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.ExplosionSpaceShip");
      }},
 };

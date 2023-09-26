@@ -5,26 +5,26 @@
         "Height": 1080,
         "Assets": {
             "Images": {
-                "Background": "assets/images/background.png",
-                "Classic": "assets/images/Spaceship1.png",
-                "Speed": "assets/images/Spaceship2.png",
-                "Shooter": "assets/images/Spaceship3.png",
-                "Tank": "assets/images/Spaceship4.png",
-                "Shield": "assets/images/Spaceship5.png",
-                "Enemy": "assets/images/enemy.png",
-                "Bullet": "assets/images/bullet.png",
-                "Explosion": "assets/images/explosion.png"
+                "Background": "./src/GameEngine/r-type/assets/images/cenario/background.png",
+                "Classic": "./src/GameEngine/r-type/assets/images/players/Spaceship1.png",
+                "Speed": "./src/GameEngine/r-type/assets/images/players/Spaceship2.png",
+                "Shooter": "./src/GameEngine/r-type/assets/images/players/Spaceship3.png",
+                "Tank": "./src/GameEngine/r-type/assets/images/players/Spaceship4.png",
+                "Shield": "./src/GameEngine/r-type/assets/images/players/Spaceship5.png",
+                "Enemy1": "./src/GameEngine/r-type/assets/images/enemies/robot_type_6.png",
+                "Bullet": "./src/GameEngine/r-type/assets/images/shoots/shoot_type_right6.png",
+                "ExplosionSpaceShip": "./src/GameEngine/r-type/assets/images/explosion/explosion_type_left1.png"
             },
             "Sounds": {
-                "Background": "assets/sounds/background.mp3",
-                "Shoot": "assets/sounds/shoot.mp3",
-                "Explosion": "assets/sounds/explosion.mp3"
+                "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",
+                "Shoot": "./src/GameEngine/r-type/assets/sounds/shoot.mp3",
+                "Explosion": "./src/GameEngine/r-type/assets/sounds/explosion.mp3"
             },
             "Fonts": {
-                "Arial": "assets/fonts/arial.ttf"
+                "Arial": "./src/GameEngine/r-type/assets/fonts/arial.ttf"
             },
             "Data": {
-                "Levels": "assets/data/levels.json"
+                "Levels": "./src/GameEngine/r-type/assets/data/levels.json"
             }
         }
     }
