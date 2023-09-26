@@ -14,7 +14,7 @@ file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp src/GameEngin
 # Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-find_package(jsoncpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 if (UNIX)
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
@@ -39,4 +39,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 if (WIN32)
     target_link_options(${PROJECT_NAME} PRIVATE)
 endif()
-target_link_libraries(${PROJECT_NAME} JsonCpp::JsonCpp)
+target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
