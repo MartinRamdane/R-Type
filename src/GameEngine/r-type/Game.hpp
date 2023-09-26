@@ -13,6 +13,7 @@
 #include <vector>
 #include <map>
 #include "../StaticObject.hpp"
+#include "../JsonParser.hpp"
 
 class Character;
 
@@ -36,6 +37,7 @@ public:
     void update(Event event);
     void createExplosion(int x, int y);
     void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage);
+    JsonParser _jsonParser;
 
 private:
     std::shared_ptr<Engine> _engine;
@@ -45,5 +47,5 @@ private:
     std::shared_ptr<EntityType<IEntity>> _enemiesGroups;
     std::vector<std::shared_ptr<Character>> _players;
     int _lastId = 0;
-    static std::map<std::string, std::string> _assets;
+    static std::map<std::string, std::function<std::string()>> _assets;
 };

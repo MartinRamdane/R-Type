@@ -6,12 +6,11 @@
         "Assets": {
             "Images": {
                 "Background": "assets/images/background.png",
-                "Player": [
-                    "assets/images/player.png",
-                    "assets/images/player2.png",
-                    "assets/images/player3.png",
-                    "assets/images/player4.png"
-                ],
+                "Classic": "assets/images/Spaceship1.png",
+                "Speed": "assets/images/Spaceship2.png",
+                "Shooter": "assets/images/Spaceship3.png",
+                "Tank": "assets/images/Spaceship4.png",
+                "Shield": "assets/images/Spaceship5.png",
                 "Enemy": "assets/images/enemy.png",
                 "Bullet": "assets/images/bullet.png",
                 "Explosion": "assets/images/explosion.png"
