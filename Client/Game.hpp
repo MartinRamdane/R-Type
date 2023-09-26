@@ -16,8 +16,10 @@ class Game
 {
 public:
     Game();
-    ~Game();
+    ~Game(){};
     void run();
+    void animate();
+    void draw();
     void handleEvent();
     void update();
     void getinfos(){};
@@ -27,7 +29,6 @@ public:
     sf::View _view;
     sf::Event _event;
     sf::Clock _clock;
-    
     RessourceManager _ressourceManager;
     Parser _parser;
 };

@@ -18,7 +18,7 @@
 class Entity
 {
 public:
-    Entity(){};
+    Entity();
     ~Entity(){};
     void setTexture(const std::string &path);
     void setSprite();
@@ -27,13 +27,16 @@ public:
     void setSpriteOrigin();
     void setSpriteRotation(const float &rotation);
     void setRect(int nb);
-    void animateSprite(sf::Clock clock);
+    void animateSprite();
+    void animateOnceSprite();
     sf::Sprite getSprite() const;
     sf::Texture getTexture() const;
     sf::Vector2f getSpritePosition() const;
+    int getRect() const;
 
 public:
     sf::Sprite _sprite;
     std::shared_ptr<sf::Texture> _texture;
     int _nbRect;
+    sf::Clock _clock;
 };
