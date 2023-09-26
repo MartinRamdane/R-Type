@@ -7,13 +7,13 @@
 
 #pragma once
 
-#include "Player.hpp"
+#include "../Character.hpp"
 #include <chrono>
 
-class Shooter : public Player
+class Shooter : public Character
 {
 public:
-    Shooter(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, int life = 100, float speed = 1, int damage = 10, float fireRate = 2.5, int nbSprite = 1);
+    Shooter(std::string path, float x, float y, int id, int nbSprite = 1, float angle = 0, float scaleX = 1, float scaleY = 1);
     ~Shooter();
 
 protected:
