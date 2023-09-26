@@ -1,0 +1,31 @@
+{
+    "Game": {
+        "Title": "Space Shooter",
+        "Width": 800,
+        "Height": 600,
+        "Assets": {
+            "Images": {
+                "Background": "assets/images/background.png",
+                "Player": [
+                    "assets/images/player.png",
+                    "assets/images/player2.png",
+                    "assets/images/player3.png",
+                    "assets/images/player4.png"
+                ],
+                "Enemy": "assets/images/enemy.png",
+                "Bullet": "assets/images/bullet.png"
+            },
+            "Sounds": {
+                "Background": "assets/sounds/background.mp3",
+                "Shoot": "assets/sounds/shoot.mp3",
+                "Explosion": "assets/sounds/explosion.mp3"
+            },
+            "Fonts": {
+                "Arial": "assets/fonts/arial.ttf"
+            },
+            "Data": {
+                "Levels": "assets/data/levels.json"
+            }
+        }
+    }
+}
