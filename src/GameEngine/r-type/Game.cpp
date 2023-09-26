@@ -66,9 +66,9 @@ void Game::createExplosion(int x, int y)
     _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, 0, 1, 1, 6));
 }
 
-void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage)
+void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName)
 {
-    _projectilesGroups->insert(std::make_shared<Projectile>(path, x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2));
+    _projectilesGroups->insert(std::make_shared<Projectile>(path, x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName));
 }
 
 std::map<std::string, std::function<std::string()>> Game::_assets = {
@@ -76,41 +76,41 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
     {"Classic", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Classic");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Classic");
      }},
     {"Speed", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Speed");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Speed");
      }},
     {"Shooter", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Shooter");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Shooter");
      }},
     {"Tank", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Shooter");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Shooter");
      }},
     {"Shield", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Shooter");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Shooter");
      }},
     {"Enemy1", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Enemy1");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Enemy1");
      }},
     {"Background", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Background");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Background");
      }},
     {"ExplosionSpaceship", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.ExplosionSpaceShip");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.ExplosionSpaceShip");
      }},
 };

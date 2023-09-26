@@ -145,3 +145,13 @@ int StaticObject::getDamage() const
 void StaticObject::takeDamage(int damage)
 {
 }
+
+std::string StaticObject::getSpriteConfigJsonPath() const
+{
+    return "none";
+}
+
+std::string StaticObject::getSpriteConfigJsonObjectName() const
+{
+    return "none";
+}

@@ -13,7 +13,7 @@
 class Projectile : public IEntity
 {
 public:
-    Projectile(std::string path, float x, float y, int id, int damage, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1, int nbSprite = 1);
+    Projectile(std::string path, float x, float y, int id, int damage, float angle, float scaleX, float scaleY, float speed, int nbSprite, std::string spriteConfigJsonObjectName);
     ~Projectile();
     void setPosition(float x, float y);
     void setRotation(float angle);
@@ -39,6 +39,8 @@ public:
     void setDamage(int damage);
     int getDamage() const;
     void takeDamage(int damage);
+    std::string getSpriteConfigJsonPath() const;
+    std::string getSpriteConfigJsonObjectName() const;
 
 protected:
 private:

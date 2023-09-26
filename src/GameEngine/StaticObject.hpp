@@ -37,6 +37,8 @@ public:
     void setDamage(int damage);
     int getDamage() const;
     void takeDamage(int damage);
+    std::string getSpriteConfigJsonPath() const;
+    std::string getSpriteConfigJsonObjectName() const;
 
 private:
     std::string _path;

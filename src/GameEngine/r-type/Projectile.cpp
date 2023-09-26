@@ -7,7 +7,7 @@
 
 #include "Projectile.hpp"
 
-Projectile::Projectile(std::string path, float x, float y, int id, int damage, float angle, float scaleX, float scaleY, float speed, int nbSprite)
+Projectile::Projectile(std::string path, float x, float y, int id, int damage, float angle, float scaleX, float scaleY, float speed, int nbSprite, std::string spriteConfigJsonObjectName)
 {
     _path = path;
     _x = x;
@@ -165,4 +165,14 @@ void Projectile::hurtEntity(IEntity &self, IEntity &you)
         auto pos = you.getPosition();
         Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
     }
+}
+
+std::string Projectile::getSpriteConfigJsonPath() const
+{
+    return _spriteConfigJsonPath;
+}
+
+std::string Projectile::getSpriteConfigJsonObjectName() const
+{
+    return _spriteConfigJsonObjectName;
 }

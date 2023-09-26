@@ -1,5 +1,34 @@
 {
-    "ship": {
-        
+    "Spaceship":
+    {
+        "rect_init": "3",
+        "event_indicator": "none",
+        "dir": {
+            "up": "R",
+            "down": "L"
+        },
+        "form": "event"
+    },
+    "Enemy1":
+    {
+        "rect_init": "0",
+        "event_indicator": "none",
+        "dir": {
+            "up": "R",
+            "down": "L"
+        },
+        "form": "event"
+    },
+    "PlayerShoot":
+    {
+        "rect_init": "0",
+        "dir": "R",
+        "form": "loop"
+    },
+    "Explosion":
+    {
+        "rect_init": "0",
+        "dir": "R",
+        "form": "once"
     }
 }

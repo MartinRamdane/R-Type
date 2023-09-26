@@ -36,7 +36,7 @@ public:
 
     void update(Event event);
     void createExplosion(int x, int y);
-    void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage);
+    void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName);
     JsonParser _jsonParser;
 
 private:

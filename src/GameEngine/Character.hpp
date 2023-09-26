@@ -16,7 +16,7 @@
 class Character : public IEntity
 {
 public:
-    Character(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, int nbSprite = 1);
+    Character(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int nbSprite, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName);
     ~Character();
     void setPosition(float x, float y);
     void setRotation(float angle);
@@ -48,6 +48,8 @@ public:
     void takeDamage(int damage);
     virtual void shoot();
     static void hurtProjectile(IEntity &self, IEntity &you);
+    std::string getSpriteConfigJsonPath() const;
+    std::string getSpriteConfigJsonObjectName() const;
 
 private:
     std::string _path;
