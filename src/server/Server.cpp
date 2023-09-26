@@ -27,7 +27,6 @@ InstanceInfos ServerClass::createInstance()
     Instance *instance = new Instance(_instances.size());
     instance->setServer(this);
     _instances.push_back(instance);
-    //TODO RENVOYER INFOS INSTANCE
     InstanceInfos instanceinfos;
     instanceinfos.id = instance->getId();
     instanceinfos.port = instance->getPort();
