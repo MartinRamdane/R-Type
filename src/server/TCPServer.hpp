@@ -9,21 +9,21 @@
 #define HEADER_TCPServer
 #include "TCPServerConnection.hpp"
 
-class Server;
+class ServerClass;
 
 class TCPServer {
   public:
     TCPServer(boost::asio::io_context &io_context, int port);
     ~TCPServer();
-    void setServer(Server *server) { _server = server; }
+    void setServer(ServerClass *server) { _server = server; }
 
   protected:
   private:
     void startAccept();
-    void handleAccept(TCPServerConnection::pointer new_connection, const boost::system::error_code &error);
+    void handleAccept(TCPServerConnection::pointer new_connection, const boost::system::error_code &error, ServerClass *server);
     tcp::acceptor _acceptor;
     boost::asio::io_context &io_context_;
-    Server *_server;
+    ServerClass *_server;
     EventHandler _eventHandler;
 };
 

@@ -14,8 +14,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include "EventHandler.hpp"
+#include "Server.hpp"
 
 using boost::asio::ip::tcp;
+using namespace boost::asio;
 
 class TCPClientConnection : public boost::enable_shared_from_this<TCPClientConnection> {
     public:
@@ -29,13 +31,16 @@ class TCPClientConnection : public boost::enable_shared_from_this<TCPClientConne
       return _socket;
     }
     void start();
+    void read();
+    void write();
     protected:
     private:
         TCPClientConnection(boost::asio::io_service &io_service);
         tcp::socket _socket;
-        void handleWrite(const boost::system::error_code &error);
         std::string _message;
-        void handleRead(const boost::system::error_code &error);
+        enum { max_length = 1024 };
+        std::vector<uint8_t> buffer = std::vector<uint8_t>(max_length);
+        std::vector<uint8_t> to_send = std::vector<uint8_t>(max_length);
 };
 
 #endif /* !TCPCLIENTCONNECTION_HPP_ */

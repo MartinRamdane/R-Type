@@ -7,18 +7,34 @@
 
 #include "Server.hpp"
 
-Server::Server() : _threadPool(1), _tcpServer(_io_service, 4242)
+ServerClass::ServerClass() : _threadPool(1), _tcpServer(_io_service, 4244)
 {
   _tcpServer.setServer(this);
-  _threadPool.enqueue([this]() {
+  //TODO : CRASH QUAND ON DECOMMENTE
+//   _threadPool.enqueue([this]() {
     _io_service.run();
-  });
+//   });
 }
 
-Server::~Server()
+ServerClass::~ServerClass()
 {
 }
 
-void Server::createInstance()
+InstanceInfos ServerClass::createInstance()
 {
+    // _instances.emplace_back(_instances.size());
+    // _instances.back().setServer(this);
+    //TODO RENVOYER INFOS INSTANCE 
+    InstanceInfos instanceinfos;
+    instanceinfos.id = 12;
+    instanceinfos.port = 12;
+    std::cout << "creating instance !" << std::endl;
+    return instanceinfos;
+}
+
+void ServerClass::interpretEvent(Event &event)
+{
+    if (event.ACTION_NAME == ACTION::CREATE) {
+        std::cout << "CREATE" << std::endl;
+    }
 }

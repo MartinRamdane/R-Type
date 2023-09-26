@@ -20,15 +20,19 @@ void TCPServer::startAccept()
 {
   TCPServerConnection::pointer new_connection = TCPServerConnection::create(io_context_);
 
-  _acceptor.async_accept(new_connection->socket(), boost::bind(&TCPServer::handleAccept, this, new_connection, boost::asio::placeholders::error));
+  _acceptor.async_accept(
+    new_connection->socket(),
+    [this, new_connection](const boost::system::error_code &error) {
+      handleAccept(new_connection, error, _server);
+    });
 }
 
-void TCPServer::handleAccept(TCPServerConnection::pointer new_connection, const boost::system::error_code &error)
+void TCPServer::handleAccept(TCPServerConnection::pointer new_connection, const boost::system::error_code &error, ServerClass *server)
 {
   if (!error)
   {
     std::cout << "Client is connected" << std::endl;
-    new_connection->start();
+    new_connection->start(server);
     startAccept();
   } else {
     std::cout << "Error: " << error.message() << std::endl;

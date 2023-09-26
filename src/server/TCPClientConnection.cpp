@@ -14,30 +14,45 @@ TCPClientConnection::TCPClientConnection(boost::asio::io_service &io_service) : 
 
 void TCPClientConnection::start()
 {
-    while (1) {
-        EventHandler event(ACTION::OK, 3, "cvo" );
-        std::vector<uint8_t> eventData = event.encodeMessage();
-        boost::asio::async_write(_socket, boost::asio::buffer(eventData), boost::bind(&TCPClientConnection::handleWrite, shared_from_this(), boost::asio::placeholders::error));
-        boost::asio::async_read(_socket, boost::asio::buffer(_message), boost::bind(&TCPClientConnection::handleRead, shared_from_this(), boost::asio::placeholders::error));
-    }
+    write();
 }
 
-void TCPClientConnection::handleWrite(const boost::system::error_code &error)
+
+void TCPClientConnection::read()
 {
-    if (error)
-    {
-        std::cout << "Error: " << error.message() << std::endl;
-        // write here
-    }
+    auto self = shared_from_this();
+    std::cout << "read" << std::endl;
+    _socket.async_read_some(boost::asio::buffer(buffer, 1024), [this, self](const boost::system::error_code& error, std::size_t length) {
+          if (!error) {
+              std::cout << "Received: " << length << std::endl;
+              EventHandler evt;
+              Event event = evt.decodeMessage(buffer);
+              std::cout << "Action: " << event.ACTION_NAME << std::endl;
+              write();
+          } else {
+                std::cout << "Error: " << error.message() << std::endl;
+          }
+      }
+      );
 }
 
-void TCPClientConnection::handleRead(const boost::system::error_code &error)
+void TCPClientConnection::write()
 {
-    if (!error)
-    {
-        std::cout << "Message: " << _message << std::endl;
-        boost::asio::async_write(_socket, boost::asio::buffer(_message), boost::bind(&TCPClientConnection::handleWrite, shared_from_this(), boost::asio::placeholders::error));
+    auto self = shared_from_this();
+    std::cout << "Enter message: ";
+    std::getline(std::cin, _message);
+    EventHandler event(ACTION::OK, 3, "cvo" );
+    if (_message == "create") {
+        event = EventHandler(ACTION::CREATE, 4, "4343" );
     } else {
-        std::cout << "Error: " << error.message() << std::endl;
+        event = EventHandler(ACTION::CREATE, 4, "4343" );
     }
+    std::vector<uint8_t> eventData = event.encodeMessage();
+    to_send = eventData;
+    if (to_send.size() == 0)
+        read();
+    boost::asio::async_write(_socket, boost::asio::buffer(to_send), [this, self](const boost::system::error_code& error, std::size_t length) {
+        std::cout << "write" << std::endl;
+    });
+    read();
 }

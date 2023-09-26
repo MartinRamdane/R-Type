@@ -9,16 +9,24 @@
 #include <iostream>
 #include "TCPServer.hpp"
 #include "ThreadPool.hpp"
+#include "EventHandler.hpp"
+#include "Instance.hpp"
 
-class Server {
+struct InstanceInfos {
+  int id;
+  int port;
+};
+
+class ServerClass {
   public:
-    Server();
-    ~Server();
-    void createInstance();
-
+    ServerClass();
+    ~ServerClass();
+    InstanceInfos createInstance();
+    void interpretEvent(Event &event);
   protected:
   private:
     boost::asio::io_service _io_service;
     ThreadPool _threadPool;
     TCPServer _tcpServer;
+    std::vector<Instance> _instances;
 };
