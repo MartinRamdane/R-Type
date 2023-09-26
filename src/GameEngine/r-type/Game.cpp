@@ -9,6 +9,8 @@
 #include "Classic.hpp"
 #include "Enemy.hpp"
 #include "Speed.hpp"
+#include "Shooter.hpp"
+#include "Tank.hpp"
 
 Game *Game::instance = nullptr;
 
@@ -20,7 +22,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _staticObjectsGroups->insert(std::make_shared<StaticObject>("background.png", 0, 239, _lastId++));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Speed>(_assets["Speed"], 50, 100, _lastId++, 5));
+    _players.push_back(std::make_shared<Tank>(_assets["Tank"], 50, 100, _lastId++, 5));
     _playersGroups->insert(_players[0]);
     _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
     _enemiesGroups->insert(std::make_shared<Enemy>("robot_type_6.png", 500, 100, _lastId++, 0, 1, 1, 100, 1, 1, 3, 2));
@@ -40,16 +42,16 @@ void Game::update(Event event)
     switch (event)
     {
     case LEFT:
-        _players[0]->move(-3, 0);
+        _players[0]->move(-1, 0);
         break;
     case RIGHT:
-        _players[0]->move(3, 0);
+        _players[0]->move(1, 0);
         break;
     case UP:
-        _players[0]->move(0, -3);
+        _players[0]->move(0, -1);
         break;
     case DOWN:
-        _players[0]->move(0, 3);
+        _players[0]->move(0, 1);
         break;
     case SHOOT:
         _players[0]->shoot();

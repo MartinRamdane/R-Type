@@ -11,6 +11,8 @@ Speed::Speed(std::string path, float x, float y, int id, int nbSprite, float ang
     : Character(path, x, y, id, angle, scaleX, scaleY, nbSprite)
 {
     // set special attributes
+    setLife(70);
+    setSpeed(6);
 }
 
 Speed::~Speed()

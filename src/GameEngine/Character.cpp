@@ -49,8 +49,8 @@ void Character::setRotation(float angle)
 void Character::move(float x, float y)
 {
     setOldPosition(_x, _y);
-    _x += x;
-    _y += y;
+    _x += x * _speed;
+    _y += y * _speed;
 }
 
 void Character::rotate(float angle)
@@ -159,12 +159,13 @@ int Character::getDamage() const
     return _damage;
 }
 
-void Character::setFireRate(int fireRate)
+void Character::setFireRate(float fireRate)
 {
     _fireRate = fireRate;
+    _targetFrameDuration = std::chrono::duration<double>(1.0 / _fireRate);
 }
 
-int Character::getFireRate() const
+float Character::getFireRate() const
 {
     return _fireRate;
 }
