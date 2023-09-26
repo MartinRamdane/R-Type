@@ -34,13 +34,14 @@ public:
 
     void update(Event event);
     void createExplosion(int x, int y);
-    void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed);
+    void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage);
 
 private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
+    std::shared_ptr<EntityType<IEntity>> _enemiesGroups;
     std::vector<std::shared_ptr<Player>> _players;
     int _lastId = 0;
 };

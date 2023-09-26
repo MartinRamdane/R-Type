@@ -34,6 +34,9 @@ public:
     virtual bool isCreated() const = 0;
     virtual void setCreated(bool created) = 0;
     virtual bool isDead() const = 0;
+    virtual void setDamage(int damage) = 0;
+    virtual int getDamage() const = 0;
+    virtual void takeDamage(int damage) = 0;
 
 protected:
     float _oldX;

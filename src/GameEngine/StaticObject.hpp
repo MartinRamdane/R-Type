@@ -34,6 +34,9 @@ public:
     bool isCreated() const;
     void setCreated(bool created);
     bool isDead() const;
+    void setDamage(int damage);
+    int getDamage() const;
+    void takeDamage(int damage);
 
 private:
     std::string _path;

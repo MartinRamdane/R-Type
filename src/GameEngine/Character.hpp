@@ -8,11 +8,14 @@
 #pragma once
 
 #include "IEntity.hpp"
+#include <chrono>
+#include <thread>
+#include <iostream>
 
 class Character : public IEntity
 {
 public:
-    Character(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1, int nbSprite = 1);
+    Character(std::string path, float x, float y, int id, float angle = 0, float scaleX = 1, float scaleY = 1, float speed = 1, int nbSprite = 1, float fireRate = 1, int life = 100, int damage = 10);
     ~Character();
     void setPosition(float x, float y);
     void setRotation(float angle);
@@ -34,6 +37,14 @@ public:
     bool isCreated() const;
     void setCreated(bool created);
     bool isDead() const;
+    bool canShoot();
+    void setLife(int life);
+    int getLife() const;
+    void setDamage(int damage);
+    int getDamage() const;
+    void setFireRate(int fireRate);
+    int getFireRate() const;
+    void takeDamage(int damage);
 
 private:
     std::string _path;
@@ -46,4 +57,10 @@ private:
     int _nbSprite;
     bool _created;
     bool _isDead;
+    float _fireRate;
+    int _life;
+    int _damage;
+    std::chrono::duration<double> _targetFrameDuration;
+    std::chrono::high_resolution_clock::time_point _lastShootTime;
+    std::chrono::high_resolution_clock::time_point _currentTime;
 };
