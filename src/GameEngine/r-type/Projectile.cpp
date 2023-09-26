@@ -176,3 +176,7 @@ std::string Projectile::getSpriteConfigJsonObjectName() const
 {
     return _spriteConfigJsonObjectName;
 }
+void Projectile::kill()
+{
+    _isDead = true;
+}

@@ -73,5 +73,7 @@ Game::Event Protocol::transformProtocolToEvent(std::string event)
         return Game::Event::SHOOT;
     if (event == "QUIT")
         return Game::Event::QUIT;
+    if (event == "SHIELD")
+        return Game::Event::SHIELD;
     return Game::Event::UNKNOWN;
 }

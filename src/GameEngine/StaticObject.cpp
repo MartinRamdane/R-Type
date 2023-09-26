@@ -7,7 +7,7 @@
 
 #include "StaticObject.hpp"
 
-StaticObject::StaticObject(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int nbSprite)
+StaticObject::StaticObject(std::string path, float x, float y, int id, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName, float angle, float scaleX, float scaleY, int nbSprite)
 {
     _path = path;
     _x = x;
@@ -22,6 +22,8 @@ StaticObject::StaticObject(std::string path, float x, float y, int id, float ang
     _nbSprite = nbSprite;
     _created = false;
     _isDead = false;
+    _spriteConfigJsonPath = spriteConfigJsonPath;
+    _spriteConfigJsonObjectName = spriteConfigJsonObjectName;
 }
 
 StaticObject::~StaticObject()
@@ -148,10 +150,14 @@ void StaticObject::takeDamage(int damage)
 
 std::string StaticObject::getSpriteConfigJsonPath() const
 {
-    return "none";
+    return _spriteConfigJsonPath;
 }
 
 std::string StaticObject::getSpriteConfigJsonObjectName() const
 {
-    return "none";
+    return _spriteConfigJsonObjectName;
+}
+void StaticObject::kill()
+{
+    _isDead = true;
 }

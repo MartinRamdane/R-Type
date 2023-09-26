@@ -11,6 +11,7 @@
 #include "Speed.hpp"
 #include "Shooter.hpp"
 #include "Tank.hpp"
+#include "Shield.hpp"
 
 Game *Game::instance = nullptr;
 
@@ -19,10 +20,10 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     instance = this;
     // Create all entities
     _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"](), 0, 239, _lastId++));
+    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"](), 0, 239, _lastId++, "src/GameEngine/r-type/assets/data/Sprites.json", "Background"));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++, 5));
+    _players.push_back(std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
     _playersGroups->insert(_players[0]);
     _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
     _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++, 0, 1, 1, 100, 1, 1, 3, 2));
@@ -56,6 +57,9 @@ void Game::update(Event event)
     case SHOOT:
         _players[0]->shoot();
         break;
+    case SHIELD:
+        _players[0]->action();
+        break;
     default:
         break;
     }
@@ -63,12 +67,19 @@ void Game::update(Event event)
 
 void Game::createExplosion(int x, int y)
 {
-    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, 0, 1, 1, 6));
+    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "src/GameEngine/r-type/assets/data/Sprites.json", "ExplosionSpaceship", 0, 1, 1, 6));
 }
 
 void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName)
 {
     _projectilesGroups->insert(std::make_shared<Projectile>(path, x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName));
+}
+
+std::shared_ptr<StaticObject> Game::createShield(int x, int y)
+{
+    std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"](), x, y, _lastId++, "src/GameEngine/r-type/assets/data/Sprites.json", "Shield", 0, 1, 1, 1);
+    _staticObjectsGroups->insert(_shield);
+    return (_shield);
 }
 
 std::map<std::string, std::function<std::string()>> Game::_assets = {
@@ -91,12 +102,12 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
     {"Tank", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Shooter");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Tank");
      }},
-    {"Shield", []()
+    {"ShieldSpaceship", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.Shooter");
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.ShieldSpaceship");
      }},
     {"Enemy1", []()
      {
@@ -112,5 +123,10 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
      {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/data/Setup.json"), "Game.Assets.Images.ExplosionSpaceShip");
+     }},
+    {"Shield", []()
+     {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("src/GameEngine/r-type/assets/Setup.json"), "Game.Assets.Images.Shield");
      }},
 };

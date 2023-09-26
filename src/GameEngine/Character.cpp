@@ -218,3 +218,8 @@ std::string Character::getSpriteConfigJsonObjectName() const
 {
     return _spriteConfigJsonObjectName;
 }
+
+void Character::kill()
+{
+    _isDead = true;
+}

@@ -41,6 +41,7 @@ public:
     void takeDamage(int damage);
     std::string getSpriteConfigJsonPath() const;
     std::string getSpriteConfigJsonObjectName() const;
+    void kill();
 
 protected:
 private:
