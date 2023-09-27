@@ -52,6 +52,7 @@ public:
     std::string getSpriteConfigJsonObjectName() const;
     virtual void action() {};
     void kill();
+    void setShootAsset(std::string shootAsset);
 
 private:
     std::string _path;
@@ -70,4 +71,5 @@ private:
     std::chrono::duration<double> _targetFrameDuration;
     std::chrono::high_resolution_clock::time_point _lastShootTime;
     std::chrono::high_resolution_clock::time_point _currentTime;
+    std::string _shootAsset = "BulletSpaceship";
 };
