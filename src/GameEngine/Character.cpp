@@ -195,12 +195,6 @@ bool Character::canShoot()
     return false;
 }
 
-void Character::hurtProjectile(IEntity &self, IEntity &you)
-{
-    auto pos = self.getPosition();
-    Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
-}
-
 void Character::shoot()
 {
     if (!canShoot())

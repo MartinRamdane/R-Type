@@ -46,6 +46,7 @@ nlohmann::json JsonParser::readFile(std::string const &fileName)
     // Handle the case where the JSON file was not found
     std::cerr << "Here Impossible de trouver le JSON : " << fileName << std::endl;
     // You might want to throw an exception or return a default JSON object.
+    return {};
 }
 
 std::vector<std::string> JsonParser::split(std::string const &str, char const delim) noexcept

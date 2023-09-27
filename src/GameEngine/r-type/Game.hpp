@@ -14,23 +14,13 @@
 #include <map>
 #include "../StaticObject.hpp"
 #include "../JsonParser.hpp"
+#include "../IGame.hpp"
 
 class Character;
 
-class Game
+class Game: public IGame
 {
 public:
-    enum Event
-    {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN,
-        SHOOT,
-        QUIT,
-        SHIELD,
-        UNKNOWN
-    };
     Game(std::shared_ptr<Engine> &engine);
     ~Game();
     static Game *instance;

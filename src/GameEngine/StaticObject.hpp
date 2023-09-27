@@ -52,4 +52,6 @@ private:
     int _nbSprite;
     bool _created;
     bool _isDead;
+    int _damage;
+    int _life = 100000;
 };

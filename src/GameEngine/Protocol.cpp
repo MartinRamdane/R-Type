@@ -59,23 +59,23 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityT
     return protocol;
 }
 
-Game::Event Protocol::transformProtocolToEvent(std::string event)
+IGame::Event Protocol::transformProtocolToEvent(std::string event)
 {
     if (event == "LEFT")
-        return Game::Event::LEFT;
+        return IGame::Event::LEFT;
     if (event == "RIGHT")
-        return Game::Event::RIGHT;
+        return IGame::Event::RIGHT;
     if (event == "UP")
-        return Game::Event::UP;
+        return IGame::Event::UP;
     if (event == "DOWN")
-        return Game::Event::DOWN;
+        return IGame::Event::DOWN;
     if (event == "SHOOT")
-        return Game::Event::SHOOT;
+        return IGame::Event::SHOOT;
     if (event == "QUIT")
-        return Game::Event::QUIT;
+        return IGame::Event::QUIT;
     if (event == "SHIELD")
-        return Game::Event::SHIELD;
-    return Game::Event::UNKNOWN;
+        return IGame::Event::SHIELD;
+    return IGame::Event::UNKNOWN;
 }
 
 std::string Protocol::transformWindowCreateToProtocol(std::string title, int width, int height)

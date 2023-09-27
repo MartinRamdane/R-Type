@@ -28,7 +28,6 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
     _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++));
     // Add collision
-    engine->setRelation(_playersGroups, _projectilesGroups, Character::hurtProjectile);
     engine->setRelation(_projectilesGroups, _enemiesGroups, Projectile::hurtEntity);
 }
 

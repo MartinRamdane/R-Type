@@ -47,7 +47,6 @@ public:
     float getFireRate() const;
     virtual void takeDamage(int damage);
     virtual void shoot();
-    static void hurtProjectile(IEntity &self, IEntity &you);
     std::string getSpriteConfigJsonPath() const;
     std::string getSpriteConfigJsonObjectName() const;
     virtual void action() {};

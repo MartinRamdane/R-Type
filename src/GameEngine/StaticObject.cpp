@@ -137,6 +137,7 @@ bool StaticObject::isDead() const
 
 void StaticObject::setDamage(int damage)
 {
+    _damage = damage;
 }
 
 int StaticObject::getDamage() const
@@ -146,6 +147,7 @@ int StaticObject::getDamage() const
 
 void StaticObject::takeDamage(int damage)
 {
+    _life -= damage;
 }
 
 std::string StaticObject::getSpriteConfigJsonPath() const
