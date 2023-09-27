@@ -60,11 +60,11 @@ void Entity::setSpriteRotation(const float &rotation)
     _sprite.setRotation(rotation);
 }
 
-void Entity::animateSprite(const int ei)
+void Entity::animateSprite(const int ei, const int framerate)
 {
     float size = _texture->getSize().x / _nbRect;
     sf::IntRect rect = _sprite.getTextureRect();
-    if (_clock.getElapsedTime().asMilliseconds() > 100)
+    if (_clock.getElapsedTime().asMilliseconds() > framerate)
     {
         if (ei == 0)
         {
@@ -89,6 +89,13 @@ void Entity::animateSprite(const int ei)
                 rect.left = size * _init_rect - size;
             else
                 rect.left += size;
+        }
+        else if (ei == 4)
+        {
+            if (rect.left >= size * (_nbRect - 1))
+                rect.left = size * _init_rect;
+            else
+                rect.left += 1;
         }
         _sprite.setTextureRect(rect);
         _clock.restart();

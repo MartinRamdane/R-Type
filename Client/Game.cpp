@@ -14,8 +14,9 @@ Game::Game()
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _ressourceManager = RessourceManager();
     _parser = Parser();
-    _parser.parseMessage("ecreate 1 0 0 background.png 0 1 1 ./config.json background", _ressourceManager);
-    _parser.parseMessage("ecreate 2 100 100 Spaceship1.png 0 1 1 ./config.json SpaceShip", _ressourceManager);
+    _parser.parseMessage("ecreate 1 0 0 background.png 0 1 1 ./config.json Background", _ressourceManager);
+    _parser.parseMessage("ecreate 2 100 100 Spaceship3.png 0 1 1 ./config.json Spaceship", _ressourceManager);
+    _parser.parseMessage("ecreate 3 300 300 Spaceship2.png 0 1 1 ./config.json Spaceship", _ressourceManager);
     _event_indicator = 0;
 }
 
@@ -76,13 +77,15 @@ void Game::animate()
     while (it != _parser._entities.end())
     {
         if (it->second._event_form == "loop")
-            it->second.animateSprite(0);
+            it->second.animateSprite(0, 100);
         if (it->second._event_form == "event" && _event_indicator != 0)
-            it->second.animateSprite(_event_indicator);
+            it->second.animateSprite(_event_indicator, 100);
         if (it->second._event_form == "once")
-            it->second.animateSprite(3);
+            it->second.animateSprite(3, 100);
         if (it->second._event_form == "event" && _event_indicator == 0)
             it->second.setInitPos();
+        if (it->second._event_form == "paralaxe")
+            it->second.animateSprite(4, 5);
         it++;
     }
 }

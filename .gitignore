@@ -5,3 +5,4 @@ r-type_client
 .vs/
 .vscode/
 Debug/
+.DS_Store
