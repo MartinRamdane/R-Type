@@ -77,3 +77,8 @@ Game::Event Protocol::transformProtocolToEvent(std::string event)
         return Game::Event::SHIELD;
     return Game::Event::UNKNOWN;
 }
+
+std::string Protocol::transformWindowCreateToProtocol(std::string title, int width, int height)
+{
+    return "wcreate " + title + " " + std::to_string(width) + " " + std::to_string(height);
+}

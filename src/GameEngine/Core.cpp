@@ -10,12 +10,8 @@
 Core::Core()
 {
     _engine = std::make_shared<Engine>();
+    Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
     _game = std::make_shared<Game>(_engine);
-    // auto entities = _engine->getEntities();
-    // std::vector<std::string> protocol = Protocol::transformEntityInitToProtocol(entities);
-    // for (auto line : protocol)
-    //     std::cout << line << std::endl;
-    // send protocol to client
 }
 
 Core::~Core()

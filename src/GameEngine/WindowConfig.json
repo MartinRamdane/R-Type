@@ -2,6 +2,6 @@
     "Window": {
         "Width": 1920,
         "Height": 1080,
-        "Name": "r-type"
+        "Title": "R-Type"
     }
 }
