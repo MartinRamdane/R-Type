@@ -12,6 +12,7 @@ Engine *Engine::instance = nullptr;
 Engine::Engine()
 {
     instance = this;
+    openWindow();
     _isRunning = true;
 
     // Create clock
@@ -66,4 +67,13 @@ bool Engine::frameRateControl()
     // Sleep to control the frame rate
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
     return false;
+}
+
+void Engine::openWindow()
+{
+    JsonParser parser;
+    nlohmann::json windowConfig = JsonParser::readFile("WindowConfig.json");
+    int width = parser.get<int>(windowConfig, "Window.Width");
+    int height = parser.get<int>(windowConfig, "Window.Height");
+    std::string name = parser.get<std::string>(windowConfig, "Window.Name");
 }

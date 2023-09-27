@@ -13,6 +13,7 @@
 #include <thread>
 #include "IEntity.hpp"
 #include "EntityType.hpp"
+#include "./JsonParser.hpp"
 
 class Engine
 {
@@ -33,6 +34,7 @@ public:
     bool isRunning() const;
     std::list<EntityType<IEntity> *> &getEntities() { return entities; }
     bool frameRateControl();
+    void openWindow();
 
 private:
     std::list<EntityType<IEntity> *> entities;
