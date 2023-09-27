@@ -12,9 +12,9 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 file(GLOB SRC_LIST Client/*.cpp)
 
 # Create an executable from the source files
-add_executable(${PROJECT_NAME} ${SRC_LIST})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set (CMAKE_CXX_FLAGS "-lstdc++fs -std=c++17")
 if (UNIX)
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
 endif (UNIX)
@@ -23,6 +23,7 @@ find_package(asio REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 # Set the C++ standard to C++17
+add_executable(${PROJECT_NAME} ${SRC_LIST})
 
 # Specify the output directory for the binary
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -35,6 +36,8 @@ add_custom_target(run
     DEPENDS ${PROJECT_NAME}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+include(CheckCXXSymbolExists)
+check_cxx_symbol_exists(std::filesystem::path::preferred_separator filesystem cxx17fs)
 
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system  ${asio_LIBRARIES} nlohmann_json::nlohmann_json)
 target_include_directories(${PROJECT_NAME} PRIVATE ${asio_INCLUDE_DIRS})
