@@ -12,8 +12,8 @@ Engine *Engine::instance = nullptr;
 Engine::Engine()
 {
     instance = this;
-    openWindow();
     _isRunning = true;
+    openWindow();
 
     // Create clock
     _targetFrameDuration = std::chrono::duration<double>(1.0 / 60.0);
@@ -73,7 +73,22 @@ void Engine::openWindow()
 {
     JsonParser parser;
     nlohmann::json windowConfig = JsonParser::readFile("WindowConfig.json");
-    int width = parser.get<int>(windowConfig, "Window.Width");
-    int height = parser.get<int>(windowConfig, "Window.Height");
-    std::string name = parser.get<std::string>(windowConfig, "Window.Name");
+    _width = parser.get<int>(windowConfig, "Window.Width");
+    _height = parser.get<int>(windowConfig, "Window.Height");
+    _title = parser.get<std::string>(windowConfig, "Window.Title");
+}
+
+std::string Engine::getWindowTitle() const
+{
+    return _title;
+}
+
+int Engine::getWindowWidth() const
+{
+    return _width;
+}
+
+int Engine::getWindowHeight() const
+{
+    return _height;
 }

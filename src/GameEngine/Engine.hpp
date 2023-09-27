@@ -35,6 +35,9 @@ public:
     std::list<EntityType<IEntity> *> &getEntities() { return entities; }
     bool frameRateControl();
     void openWindow();
+    std::string getWindowTitle() const;
+    int getWindowWidth() const;
+    int getWindowHeight() const;
 
 private:
     std::list<EntityType<IEntity> *> entities;
@@ -51,4 +54,8 @@ private:
     std::chrono::duration<double> _targetFrameDuration;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     std::chrono::high_resolution_clock::time_point _currentTime;
+
+    int _width;
+    int _height;
+    std::string _title;
 };
