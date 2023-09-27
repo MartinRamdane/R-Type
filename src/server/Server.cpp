@@ -40,3 +40,8 @@ void ServerClass::interpretEvent(Event &event)
         std::cout << "CREATE" << std::endl;
     }
 }
+
+int ServerClass::getPortInstance(int instanceId)
+{
+    return _instances[instanceId]->getPort();
+}

@@ -8,6 +8,7 @@
 #ifndef TCPCLIENTCONNECTION_HPP_
 #define TCPCLIENTCONNECTION_HPP_
 #include <iostream>
+#include <sstream>
 #include <boost/system/error_code.hpp>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
@@ -33,6 +34,7 @@ class TCPClientConnection : public boost::enable_shared_from_this<TCPClientConne
     void start();
     void read();
     void write();
+    ACTION stringToAction(std::string action);
     protected:
     private:
         TCPClientConnection(boost::asio::io_service &io_service);

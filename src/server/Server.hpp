@@ -23,6 +23,8 @@ class ServerClass {
     ServerClass();
     ~ServerClass();
     InstanceInfos createInstance();
+    int getPortInstance(int instanceId);
+    int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers();}
     void interpretEvent(Event &event);
   protected:
   private:

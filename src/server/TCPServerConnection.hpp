@@ -35,6 +35,8 @@ public:
     }
 
     void start(ServerClass *server);
+    void createInstance();
+    void joinInstance(Event event);
 
 private:
     TCPServerConnection(boost::asio::io_service &io_service);
