@@ -88,8 +88,8 @@ void TCPServerConnection::write()
         read();
     auto self = shared_from_this();
     boost::asio::async_write(_socket, boost::asio::buffer(to_send), [this, self](const boost::system::error_code& error, std::size_t length) {
-        to_send.clear();
         std::cout << "write" << std::endl;
+        to_send.clear();
+        read();
     });
-    read();
 }
