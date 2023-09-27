@@ -34,6 +34,10 @@ class TCPClientConnection : public boost::enable_shared_from_this<TCPClientConne
     void read();
     void write();
     ACTION stringToAction(std::string action);
+    void addToSend(std::vector<uint8_t> to_send)
+    {
+        this->to_send = to_send;
+    }
     protected:
     private:
         TCPClientConnection(boost::asio::io_service &io_service);
@@ -42,6 +46,7 @@ class TCPClientConnection : public boost::enable_shared_from_this<TCPClientConne
         enum { max_length = 1024 };
         std::vector<uint8_t> buffer = std::vector<uint8_t>(max_length);
         std::vector<uint8_t> to_send = std::vector<uint8_t>(max_length);
+        bool sending = false;
 };
 
 #endif /* !TCPCLIENTCONNECTION_HPP_ */

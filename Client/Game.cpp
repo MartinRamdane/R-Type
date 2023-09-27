@@ -33,6 +33,7 @@ void Game::run()
 
 void Game::handleEvent()
 {
+    EventHandler evt;
     while (_window.pollEvent(_event))
     {
         if (_event.type == sf::Event::Closed)
@@ -62,7 +63,7 @@ void Game::handleEvent()
                 break;
             case sf::Keyboard::Escape:
                 _window.close();
-                break;
+                break;  
             default:
                 break;
             }
@@ -109,7 +110,11 @@ void Game::update()
     _window.display();
 }
 
-void Game::connectToServer(std::string host, int port)
+void Game::connectToServer(std::string host, int port, boost::asio::io_service &io_service)
 {
-    _client = new TCPClient(host, port, this);
+    _client = new TCPClient(host, port, this, io_service);
+    _client->connect();
+    EventHandler evt;
+    evt.addEvent(ACTION::CREATE, 7, "ecreate");
+    _client->send(evt.encodeMessage());
 }

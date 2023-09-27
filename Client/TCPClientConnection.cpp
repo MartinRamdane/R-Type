@@ -31,6 +31,7 @@ void TCPClientConnection::read()
           } else {
                 std::cout << "Error: " << error.message() << std::endl;
           } });
+    std::cout << "fin de read" << std::endl;
 }
 
 ACTION TCPClientConnection::stringToAction(std::string action)
@@ -52,53 +53,9 @@ ACTION TCPClientConnection::stringToAction(std::string action)
 void TCPClientConnection::write()
 {
     auto self = shared_from_this();
-    std::cout << "Enter message: "; // remove this for prod, we should get the _message from arguments
-    std::getline(std::cin, _message);
-    std::string command;
-    int bodySize = 0;
-    std::string bodyMessage;
-    // PUT THIS IN A METHOD
-    std::stringstream ss(_message);
-    std::string token;
-    std::vector<std::string> tokens;
-    while (getline(ss, token, ','))
-    {
-        tokens.push_back(token);
-    }
-
-    for (auto &t : tokens)
-    {
-        t.erase(0, t.find_first_not_of(" \t"));
-        t.erase(t.find_last_not_of(" \t") + 1);
-    }
-
-    if (tokens.size() == 3)
-    {
-        command = tokens[0];
-        bodySize = std::stoi(tokens[1]);
-        bodyMessage = tokens[2];
-    }
-    else
-    {
-        std::cout << "[ERROR]: Bad request" << std::endl; // TODO: exception
+    if (to_send.size() == 0 || sending)
         read();
-    }
-    ACTION action = stringToAction(command);
-    EventHandler event(ACTION::KO, 11, "Bad request");
-    if (action != ACTION::UNKNOWN)
-    {
-        event = EventHandler(action, bodySize, bodyMessage);
-    }
-    else
-    {
-        std::cout << "[ERROR]: Bad request" << std::endl; // TODO: exception
-        read();
-    }
-    std::vector<uint8_t> eventData = event.encodeMessage();
-    to_send = eventData;
-    if (to_send.size() == 0)
-        read();
+    sending = true;
     boost::asio::async_write(_socket, boost::asio::buffer(to_send), [this, self](const boost::system::error_code &error, std::size_t length)
-                             { std::cout << "write" << std::endl; });
-    read();
+                             { std::cout << "write" << std::endl; to_send.clear(); read();});
 }

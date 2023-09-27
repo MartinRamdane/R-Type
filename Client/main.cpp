@@ -8,6 +8,7 @@
 #include "Game.hpp"
 #include "Login.hpp"
 #include "Parser.hpp"
+#include <thread>
 
 int main()
 {
@@ -17,14 +18,18 @@ int main()
     std::cout << "port: " << login.port << std::endl;
     std::cout << "ip: " << login.ip << std::endl;
 
-
+    io_service ioService;
     // // add connexion to server
 
     // // open window si la connexion est valide
-
-    Game game;
-    game.connectToServer(login.ip, std::atoi(login.port.c_str()));
-    game.run();
+    try {
+        Game game;
+        game.connectToServer(login.ip, std::atoi(login.port.c_str()), ioService);
+        std::thread t([&ioService](){ ioService.run(); });
+        game.run();
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
 
     return 0;
 }

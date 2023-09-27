@@ -13,7 +13,9 @@
 #include "Parser.hpp"
 #include "JsonParser.hpp"
 #include "TCPClient.hpp"
+#include "EventHandler.hpp"
 #include <thread>
+#include <queue>
 
 class Game
 {
@@ -26,7 +28,7 @@ public:
     void handleEvent();
     void update();
     void getinfos(){};
-    void connectToServer(std::string host, int port);
+    void connectToServer(std::string host, int port, boost::asio::io_service &io_service);
 
 public:
     sf::RenderWindow _window;
@@ -37,4 +39,5 @@ public:
     Parser _parser;
     TCPClient *_client;
     int _event_indicator;
+    std::queue<std::vector<uint8_t>> _queue;
 };
