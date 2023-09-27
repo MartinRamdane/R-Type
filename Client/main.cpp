@@ -11,7 +11,12 @@
 
 int main()
 {
-    // struct Login login = startgame();
+    struct Login login = startgame();
+
+    std::cout << "name: " << login.name << std::endl;
+    std::cout << "port: " << login.port << std::endl;
+    std::cout << "ip: " << login.ip << std::endl;
+
 
     // // add connexion to server
 

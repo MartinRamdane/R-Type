@@ -85,7 +85,7 @@ void Game::animate()
         if (it->second._event_form == "event" && _event_indicator == 0)
             it->second.setInitPos();
         if (it->second._event_form == "paralaxe")
-            it->second.animateSprite(4, 5);
+            it->second.animateSprite(4, 1);
         it++;
     }
 }
