@@ -108,3 +108,8 @@ void Game::update()
     _window.setView(_view);
     _window.display();
 }
+
+void Game::connectToServer(std::string host, int port)
+{
+    _client = new TCPClient(host, port, this);
+}

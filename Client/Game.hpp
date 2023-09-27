@@ -13,6 +13,7 @@
 #include "Parser.hpp"
 #include "JsonParser.hpp"
 #include "TCPClient.hpp"
+#include <thread>
 
 class Game
 {
@@ -25,6 +26,7 @@ public:
     void handleEvent();
     void update();
     void getinfos(){};
+    void connectToServer(std::string host, int port);
 
 public:
     sf::RenderWindow _window;

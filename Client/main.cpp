@@ -6,7 +6,7 @@
 */
 
 #include "Game.hpp"
-#include "include.hpp"
+#include "Login.hpp"
 #include "Parser.hpp"
 
 int main()
@@ -23,6 +23,7 @@ int main()
     // // open window si la connexion est valide
 
     Game game;
+    game.connectToServer(login.ip, std::atoi(login.port.c_str()));
     game.run();
 
     return 0;
