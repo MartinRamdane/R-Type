@@ -26,7 +26,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _players.push_back(std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++, 5));
     _playersGroups->insert(_players[0]);
     _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
-    _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++, 0, 1, 1, 100, 1, 1, 3, 2));
+    _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++));
     // Add collision
     engine->setRelation(_playersGroups, _projectilesGroups, Character::hurtProjectile);
     engine->setRelation(_projectilesGroups, _enemiesGroups, Projectile::hurtEntity);
@@ -72,7 +72,7 @@ void Game::createExplosion(int x, int y)
 
 void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName)
 {
-    _projectilesGroups->insert(std::make_shared<Projectile>(path, x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName));
+    _projectilesGroups->insert(std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName));
 }
 
 std::shared_ptr<StaticObject> Game::createShield(int x, int y)
@@ -128,5 +128,20 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
      {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Shield");
+     }},
+    {"BulletSpaceship", []()
+     {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletSpaceship");
+     }},
+    {"BulletEnemy1", []()
+     {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletEnemy1");
+     }},
+    {"BulletEnemy2", []()
+     {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletEnemy2");
      }},
 };

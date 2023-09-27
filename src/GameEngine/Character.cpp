@@ -206,7 +206,7 @@ void Character::shoot()
     if (!canShoot())
         return;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) + 33, std::get<1>(pos) + 2, "shoot_type_right6.png", 0.25, 0.25, 5, getDamage(), "PlayerShoot");
+    Game::instance->createProjectile(std::get<0>(pos) + 33, std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, 5, getDamage(), _shootAsset);
 }
 
 std::string Character::getSpriteConfigJsonPath() const
@@ -222,4 +222,9 @@ std::string Character::getSpriteConfigJsonObjectName() const
 void Character::kill()
 {
     _isDead = true;
+}
+
+void Character::setShootAsset(std::string shootAsset)
+{
+    _shootAsset = shootAsset;
 }
