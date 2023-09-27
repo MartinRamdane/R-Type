@@ -19,7 +19,6 @@ std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> e
 {
     auto pos = entity->getPosition();
     auto scale = entity->getScale();
-    std::cout << "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getSpriteConfigJsonPath() + " " + entity->getSpriteConfigJsonObjectName() << std::endl;
     return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getSpriteConfigJsonPath() + " " + entity->getSpriteConfigJsonObjectName();
 }
 
