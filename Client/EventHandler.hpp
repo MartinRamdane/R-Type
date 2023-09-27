@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-CPP-500-MAR-5-1-rtype-martin.ramdane
-** File description:
 ** EventHandler.hpp
+** File description:
+** EventHandler
 */
 
 #ifndef HEADER_EVENTHANDLER
@@ -12,28 +12,50 @@
 #include <vector>
 #include <cstring>
 
+enum ACTION
+{
+  OK,
+  KO,
+  CONNECT,
+  CREATE,
+  LIST,
+  JOIN,
+  JOINED,
+  READY,
+  START,
+  LEFT,
+  RIGHT,
+  UP,
+  DOWN,
+  SHOOT,
+  QUIT,
+  UNKNOWN,
+};
+
 struct Event
 {
-  int requestId;
-  std::string event;
+  ACTION ACTION_NAME;
+  int body_size;
+  std::string body;
 };
 
 class EventHandler
 {
   public:
     EventHandler() = default;
-    EventHandler(int requestId, std::string event);
+    EventHandler(ACTION ACTION_NAME, int body_size, std::string body);
     ~EventHandler();
-    std::vector<char> encodeMessage();
-    Event decodeMessage(std::vector<char> data);
-    void addEvent(int requestId, std::string event);
-    int getRequestId() const { return _requestId; };
-    std::string getEvent() const { return _event; };
+    std::vector<uint8_t> encodeMessage();
+    Event decodeMessage(std::vector<uint8_t> data);
+    void addEvent(ACTION ACTION_NAME, int body_size, std::string body);
+    const int getRequestId() const { return _body_size; };
+    const std::string getEvent() const { return _body; };
 
   protected:
   private:
-    int _requestId;
-    std::string _event;
+    ACTION _ACTION_NAME;
+    int _body_size;
+    std::string _body;
 };
 
 #endif /* !HEADER_EVENTHANDLER */

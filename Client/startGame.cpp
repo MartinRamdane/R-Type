@@ -131,9 +131,10 @@ Login startgame()
             }
             else if (event.type == sf::Event::TextEntered && isNameEditing)
             {
+                std::cout << event.text.unicode << std::endl;
                 if (event.text.unicode == 8 && nameInputText.getSize() > 0) // Touche de retour arrière (backspace)
                     nameInputText.erase(nameInputText.getSize() - 1);
-                else if (event.text.unicode == 10) { // Touche entrée
+                else if (event.text.unicode == 10 || event.text.unicode == 13) { // Touche entrée
                     isNameEditing = false;
                     login.name = nameInputText;
                 } else if (event.text.unicode >= 32 && event.text.unicode <= 126) // Caractères imprimables
@@ -144,8 +145,8 @@ Login startgame()
             {
                 if (event.text.unicode == 8 && portInputText.getSize() > 0) // Touche de retour arrière (backspace)
                     portInputText.erase(portInputText.getSize() - 1);
-                else if (event.text.unicode == 10) { // Touche entrée
-                    isPortEditing = false;
+                else if (event.text.unicode == 10 || event.text.unicode == 13) { // Touche entrée
+                        isPortEditing = false;
                     login.port = portInputText;
                 } else if (event.text.unicode >= 32 && event.text.unicode <= 126) // Caractères imprimables
                     portInputText += event.text.unicode;
@@ -155,8 +156,8 @@ Login startgame()
             {
                 if (event.text.unicode == 8 && ipInputText.getSize() > 0) // Touche de retour arrière (backspace)
                     ipInputText.erase(ipInputText.getSize() - 1);
-                else if (event.text.unicode == 10) { // Touche entrée
-                    isIpEditing = false;
+                else if (event.text.unicode == 10 || event.text.unicode == 13) { // Touche entrée
+                        isIpEditing = false;
                     login.ip = ipInputText;
                 } else if (event.text.unicode >= 32 && event.text.unicode <= 126) // Caractères imprimables
                     ipInputText += event.text.unicode;

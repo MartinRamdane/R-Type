@@ -12,6 +12,7 @@
 #include "RessourceManager.hpp"
 #include "Parser.hpp"
 #include "JsonParser.hpp"
+#include "TCPClient.hpp"
 
 class Game
 {
@@ -32,5 +33,6 @@ public:
     sf::Clock _clock;
     RessourceManager _ressourceManager;
     Parser _parser;
+    TCPClient *_client;
     int _event_indicator;
 };
