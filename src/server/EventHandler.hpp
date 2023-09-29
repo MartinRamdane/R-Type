@@ -12,7 +12,7 @@
 #include <vector>
 #include <cstring>
 
-enum ACTION
+enum class ACTION : uint8_t
 {
   OK,
   KO,

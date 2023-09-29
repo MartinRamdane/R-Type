@@ -28,6 +28,7 @@ public:
             std::cerr << "[ERROR TCP CLI]: " << e.what() << std::endl;
             return false;
         }
+        return true;
     };
     void Disconnect() {
         if (isConnected()) {

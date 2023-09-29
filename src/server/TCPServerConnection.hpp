@@ -141,6 +141,7 @@ private:
         boost::asio::async_read(m_socket, boost::asio::buffer(m_msgTemporaryIn.body.data(), m_msgTemporaryIn.body.size()),
             [this](const boost::system::error_code& error, std::size_t length) {
                 if (!error) {
+                    std::cout << "[DEBUG] Received: " << length << std::endl;
                     AddToIncomingMessageQueue();
                 } else {
                     std::cout << "[ERROR] while reading data: " << error.message() << std::endl;

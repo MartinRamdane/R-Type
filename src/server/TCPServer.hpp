@@ -76,7 +76,8 @@ class TCPServer {
       }
     }
     void setServer(ServerClass *server) { _server = server; }
-    void HandleMessages(size_t maxMessages = -1) {
+    void HandleMessages(size_t maxMessages = -1, bool bWait = false) {
+      if (bWait) _messagesIn.wait();
       size_t nMessageCount = 0;
       while (nMessageCount < maxMessages && !_messagesIn.empty()) {
         auto msg = _messagesIn.pop_front();

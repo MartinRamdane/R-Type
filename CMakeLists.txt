@@ -27,9 +27,7 @@ if (WIN32)
     add_definitions(-D_WIN32_WINNT=0x0601)
     target_link_options(${PROJECT_NAME} PRIVATE)
 endif()
-find_package(boost REQUIRED)
-target_include_directories(${PROJECT_NAME} PRIVATE ${asio_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${asio_LIBRARIES})
+find_package(Boost REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE boost::boost)
 
 
