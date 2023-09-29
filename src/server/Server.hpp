@@ -30,6 +30,6 @@ class ServerClass {
   private:
     boost::asio::io_service _io_service;
     ThreadPool _threadPool;
-    TCPServer _tcpServer;
+    //TCPServer _tcpServer;
     std::vector<Instance *> _instances;
 };

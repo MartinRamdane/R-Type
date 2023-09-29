@@ -7,12 +7,12 @@
 
 #include "Server.hpp"
 
-ServerClass::ServerClass() : _threadPool(1), _tcpServer(_io_service, 4244)
+ServerClass::ServerClass() : _threadPool(1)
 {
-  _tcpServer.setServer(this);
-  _threadPool.enqueue([this]() {
-    _io_service.run();
- });
+//   _tcpServer.setServer(this);
+//   _threadPool.enqueue([this]() {
+//     _io_service.run();
+//  });
 }
 
 ServerClass::~ServerClass()

@@ -12,11 +12,12 @@
 #include "Messages.hpp"
 
 class ServerClass;
-
+template<typename T>
 class TCPServer {
   public:
-    TCPServer(int port);
-    virtual ~TCPServer() {Stop();};
+    TCPServer(int port) : _acceptor(io_context_, tcp::endpoint(tcp::v4(), port)) {
+    }
+    virtual ~TCPServer() {StopServer();};
     bool StartServer() {
       try {
         WaitForClientAsync();
@@ -41,7 +42,7 @@ class TCPServer {
             std::shared_ptr<TCPConnection<T>> new_connection = std::make_shared<TCPConnection<T>>(TCPConnection<T>::owner::server, io_context_, std::move(socket), _messagesIn);
             if (OnClientconnect(new_connection)) {
               m_deqConnections.push_back(std::move(new_connection));
-              m_deqConnections.back()->ConnectToClient(_idCounter++);
+              m_deqConnections.back()->ConnectToClient(IDCounter++);
               std::cout << "Client connected" << std::endl;
             } else {
               std::cout << "Connection Denied" << std::endl;
@@ -62,7 +63,7 @@ class TCPServer {
         m_deqConnections.erase(std::remove(m_deqConnections.begin(), m_deqConnections.end(), client), m_deqConnections.end());
       }
     }
-    void SendMessageToAllAsync(message<T>& msg &msg) {
+    void SendMessageToAllAsync(message<T> &msg) {
       for (auto &client : m_deqConnections) {
         if (client && client->IsConnected()) {
           client->SendAsync(msg);
@@ -91,17 +92,17 @@ class TCPServer {
       std::cout << "Client disconnected" << std::endl;
     }
     virtual void OnMessage(std::shared_ptr<TCPConnection<T>> client, message<T>& msg) {
-      std::cout << "Client read: " << msg.data.size() << std::endl;
+      std::cout << "Client read: " << msg.body.size() << std::endl;
     }
   private:
     boost::asio::io_context io_context_;
     std::thread context_thread_;
-    ThreadSafeQueue<owned_message<T>> &_messagesIn;
+    ThreadSafeQueue<owned_message<T>> _messagesIn;
     tcp::acceptor _acceptor;
     ServerClass *_server;
     EventHandler _eventHandler;
     std::deque<std::shared_ptr<TCPConnection<T>>> m_deqConnections;
-    uint32_t nIDCounter = 10000;
+    uint32_t IDCounter = 10000;
 };
 
 #endif /* !HEADER_TCPServer */
