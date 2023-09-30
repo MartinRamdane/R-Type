@@ -19,7 +19,7 @@ if (UNIX)
 endif (UNIX)
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
-find_package(boost REQUIRED)
+find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
