@@ -67,24 +67,21 @@ jobs:
         elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install conan
         else
-            echo "$RUNNER_OS not supported"
-            exit 1
+            pip install conan && sudo pip install conan
         fi
         if [ "$RUNNER_OS" == "Linux" ]; then
           conan profile detect --force && sudo conan profile detect --force
         elif [ "$RUNNER_OS" == "Windows" ]; then
             conan profile detect --force
         else
-            echo "$RUNNER_OS not supported"
-            exit 1
+          conan profile detect --force && sudo conan profile detect --force
         fi
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
         elif [ "$RUNNER_OS" == "Windows" ]; then
             conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
         else
-            echo "$RUNNER_OS not supported"
-            exit 1
+          sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
         fi
       shell: bash
     - name:  Install conan packages
