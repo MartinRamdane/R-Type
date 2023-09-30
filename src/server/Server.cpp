@@ -9,16 +9,15 @@
 
 ServerClass::ServerClass() : _threadPool(1)
 {
-//   _tcpServer.setServer(this);
-//   _threadPool.enqueue([this]() {
-//     _io_service.run();
-//  });
+    MyServer *server = new MyServer(4244, this);
+    _server = server;
+    _server->StartServer();
 }
 
 ServerClass::~ServerClass()
 {
-    std::cout << "[Server is destroyed" << std::endl;
-    _io_service.stop();
+    _server->StopServer();
+    std::cout << "[Server] is destroyed" << std::endl;
 }
 
 InstanceInfos ServerClass::createInstance()
@@ -44,4 +43,11 @@ void ServerClass::interpretEvent(Event &event)
 int ServerClass::getPortInstance(int instanceId)
 {
     return _instances[instanceId]->getPort();
+}
+
+void ServerClass::loop()
+{
+    while (1) {
+        _server->HandleMessages(-1, true);
+    }
 }
