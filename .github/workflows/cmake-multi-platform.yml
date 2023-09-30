@@ -53,6 +53,10 @@ jobs:
           export CXX="${{ matrix.cpp_compiler }}"
         fi
       shell: bash
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
     - name: Install pkg on ubuntu
       run: |
         if [[ "$RUNNER_OS" == "Linux" ]]; then
@@ -67,14 +71,14 @@ jobs:
         elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install conan
         else
-            pip install conan && sudo pip install conan
+            pip install conan
         fi
         if [ "$RUNNER_OS" == "Linux" ]; then
           conan profile detect --force && sudo conan profile detect --force
         elif [ "$RUNNER_OS" == "Windows" ]; then
             conan profile detect --force
         else
-          conan profile detect --force && sudo conan profile detect --force
+          conan profile detect --force
         fi
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
