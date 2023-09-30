@@ -12,6 +12,7 @@
 #include "EventHandler.hpp"
 #include "Instance.hpp"
 #include <thread>
+#include "ServerImpl.hpp"
 
 struct InstanceInfos {
   int id;
@@ -26,10 +27,11 @@ class ServerClass {
     int getPortInstance(int instanceId);
     int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers();}
     void interpretEvent(Event &event);
+    void loop();
   protected:
   private:
     boost::asio::io_service _io_service;
     ThreadPool _threadPool;
-    TCPServer _tcpServer;
+    MyServer *_server;
     std::vector<Instance *> _instances;
 };
