@@ -10,10 +10,10 @@
 #include "TCPServer.hpp"
 #include "ThreadPool.hpp"
 #include "EventHandler.hpp"
-#include "Instance.hpp"
 #include <thread>
-#include "ServerImpl.hpp"
+#include "Instance.hpp"
 
+class MyServer;  // Forward declaration
 struct InstanceInfos {
   int id;
   int port;

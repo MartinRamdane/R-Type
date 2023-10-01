@@ -6,6 +6,7 @@
 */
 
 #include "Server.hpp"
+#include "ServerImpl.hpp"
 
 ServerClass::ServerClass() : _threadPool(1)
 {
