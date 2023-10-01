@@ -12,10 +12,11 @@
 #include "RessourceManager.hpp"
 #include "Parser.hpp"
 #include "JsonParser.hpp"
-#include "TCPClient.hpp"
+#include "TCPClientImpl.hpp"
 #include "EventHandler.hpp"
 #include <thread>
 #include <queue>
+#include "TCPClient.hpp"
 
 class Game
 {
@@ -28,16 +29,19 @@ public:
     void handleEvent();
     void update();
     void getinfos(){};
-    void connectToServer(std::string host, int port, boost::asio::io_service &io_service);
+    bool connectToServer(std::string host, int port);
+    void setConnected(bool) { isTCPClientConnected = true; }
 
-public:
+private:
     sf::RenderWindow _window;
     sf::View _view;
     sf::Event _event;
     sf::Clock _clock;
     RessourceManager _ressourceManager;
     Parser _parser;
-    TCPClient *_client;
+    TCPClientImpl *_client;
     int _event_indicator;
     std::queue<std::vector<uint8_t>> _queue;
+    bool isInstanceConnected = false;
+    bool isTCPClientConnected = false;
 };

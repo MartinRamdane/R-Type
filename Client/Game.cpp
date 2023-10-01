@@ -25,6 +25,11 @@ void Game::run()
 {
     while (_window.isOpen())
     {
+        if (_client->Incoming().empty() == false)
+        {
+            auto msg = _client->Incoming().pop_front().msg;
+            _client->HandleMessage(msg);
+        }
         // getinfos -> appel de parseMessage
         handleEvent();
         update();
@@ -33,18 +38,17 @@ void Game::run()
 
 void Game::handleEvent()
 {
-    EventHandler evt;
     while (_window.pollEvent(_event))
     {
         if (_event.type == sf::Event::Closed)
             _window.close();
         if (_event.type == sf::Event::KeyPressed)
         {
+            Event evt;
             switch (_event.key.code)
             {
             case sf::Keyboard::Left:
                 // send left;
-                _event_indicator = 0;
                 break;
             case sf::Keyboard::Right:
                 // send right
@@ -110,11 +114,18 @@ void Game::update()
     _window.display();
 }
 
-void Game::connectToServer(std::string host, int port, boost::asio::io_service &io_service)
+bool Game::connectToServer(std::string host, int port)
 {
-    _client = new TCPClient(host, port, this, io_service);
-    _client->connect();
-    EventHandler evt;
-    evt.addEvent(ACTION::CREATE, 7, "ecreate");
-    _client->send(evt.encodeMessage());
+    _client = new TCPClientImpl();
+    _client->setGame(this);
+    bool connected = _client->Connect(host, port, this);
+    std::cout << "connected: " << connected << std::endl;
+    if (connected == false)
+        exit(84);
+    Event evt;
+    evt.ACTION_NAME = ACTION::CREATE;
+    evt.body_size = 0;
+    evt.body = "";
+    _client->SendEvent(evt);
+    return connected;
 }

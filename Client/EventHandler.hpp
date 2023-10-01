@@ -12,7 +12,7 @@
 #include <vector>
 #include <cstring>
 
-enum ACTION
+enum class ACTION : uint8_t
 {
   OK,
   KO,
@@ -49,8 +49,8 @@ class EventHandler
     Event decodeMessage(std::vector<uint8_t> data);
     void addEvent(ACTION ACTION_NAME, int body_size, std::string body);
     const int getRequestId() const { return _body_size; };
-    const std::string getEvent() const { return _body; };
-
+    const std::string getBody() const { return _body; };
+    const Event getEvent() const { return Event{_ACTION_NAME, _body_size, _body}; };
   protected:
   private:
     ACTION _ACTION_NAME;

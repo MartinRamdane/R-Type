@@ -32,6 +32,7 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
   std::memcpy(&event.body_size, data.data() + sizeof(ACTION), sizeof(int));
   event.body = std::string(reinterpret_cast<const char*>(data.data() + sizeof(ACTION) + sizeof(int)),
   data.size() - sizeof(ACTION) - sizeof(int));
+  event.body.resize(event.body_size);
   std::cout << "[DEBUG] Event decoded: " << event.body_size << " " << event.body << std::endl;
   return event;
 }

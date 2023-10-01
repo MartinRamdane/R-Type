@@ -17,15 +17,9 @@ int main()
     std::cout << "name: " << login.name << std::endl;
     std::cout << "port: " << login.port << std::endl;
     std::cout << "ip: " << login.ip << std::endl;
-
-    io_service ioService;
-    // // add connexion to server
-
-    // // open window si la connexion est valide
     try {
         Game game;
-        game.connectToServer(login.ip, std::atoi(login.port.c_str()), ioService);
-        std::thread t([&ioService](){ ioService.run(); });
+        game.connectToServer(login.ip, std::atoi(login.port.c_str()));
         game.run();
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
