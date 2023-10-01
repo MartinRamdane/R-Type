@@ -19,12 +19,13 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
-find_package(boost REQUIRED)
+find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
 )
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 # Build the project
 add_custom_target(run
@@ -33,8 +34,7 @@ add_custom_target(run
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 include(CheckCXXSymbolExists)
-check_cxx_symbol_exists(std::filesystem::path::preferred_separator filesystem cxx17fs)
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${boost_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} boost::boost)
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system  ${asio_LIBRARIES} nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost)
