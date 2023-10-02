@@ -49,7 +49,7 @@ class EventHandler
     Event decodeMessage(std::vector<uint8_t> data);
     void addEvent(ACTION ACTION_NAME, int body_size, std::string body);
     const int getRequestId() const { return _body_size; };
-    const std::string getEvent() const { return _body; };
+    const std::string getBody() const { return _body; };
 
   protected:
   private:

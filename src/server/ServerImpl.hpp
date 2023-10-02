@@ -41,7 +41,7 @@ class MyServer : public TCPServer<ACTION>
                 std::cout << "[" << client->GetID() << "]: CONNECT" << std::endl;
                 EventHandler evt;
                 evt.decodeMessage(msg.body);
-                std::cout << "[BODY DATA : ]" << evt.getEvent() << std::endl;
+                std::cout << "[CONNECT BODY DATA : ] " << evt.getBody() << std::endl;
             }
             break;
             case ACTION::CREATE:

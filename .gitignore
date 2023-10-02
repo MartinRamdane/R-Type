@@ -3,3 +3,6 @@ CMakeUserPresets.json
 *.
 .vscode/
 /.vs
+.DS_Store
+*/.DS_Store
+r-type_client
