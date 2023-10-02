@@ -129,3 +129,10 @@ bool Game::connectToServer(std::string host, int port)
     _client->SendEvent(evt);
     return connected;
 }
+
+bool Game::connectToUdpServer(std::string host, int port)
+{
+    _udpClient = new UDPClient();
+    _udpClient->connect_to(host, port);
+    return true;
+}
