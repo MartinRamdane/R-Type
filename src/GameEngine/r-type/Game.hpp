@@ -29,6 +29,7 @@ public:
     void createExplosion(int x, int y);
     void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName);
     std::shared_ptr<StaticObject> createShield(int x, int y);
+    void initializeLevel();
 
 private:
     std::shared_ptr<Engine> _engine;
@@ -39,4 +40,5 @@ private:
     std::vector<std::shared_ptr<Character>> _players;
     int _lastId = 0;
     static std::map<std::string, std::function<std::string()>> _assets;
+    int currentLevel = 1;
 };
