@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <cstring>
+#include <memory>
 
 enum class ACTION : uint8_t
 {
