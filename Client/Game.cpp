@@ -7,7 +7,7 @@
 
 #include "Game.hpp"
 
-Game::Game()
+Game::Game() : _threadPool(1)
 {
     _window.create(sf::VideoMode(1920, 1080), "R-TYPE");
     _window.setFramerateLimit(60);
@@ -19,7 +19,6 @@ Game::Game()
     _parser.parseMessage("ecreate 3 300 300 Spaceship2.png 0 1 1 ./config.json Spaceship", _ressourceManager);
     _event_indicator = 0;
 }
-
 
 void Game::run()
 {
@@ -67,11 +66,12 @@ void Game::handleEvent()
                 break;
             case sf::Keyboard::Escape:
                 _window.close();
-                break;  
+                break;
             default:
                 break;
             }
-        } else
+        }
+        else
             _event_indicator = 0;
     }
 }
@@ -134,5 +134,13 @@ bool Game::connectToUdpServer(std::string host, int port)
 {
     _udpClient = new UDPClient();
     _udpClient->connect_to(host, port);
+    isUDPClientConnected = true;
+    _threadPool.enqueue([this] {
+        while (true)
+        {
+            std::string data = _udpClient->receive_data();
+            std::cout << "data: " << data << std::endl;
+        }
+    });
     return true;
 }

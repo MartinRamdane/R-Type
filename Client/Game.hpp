@@ -17,6 +17,7 @@
 #include <thread>
 #include <queue>
 #include "UDPClient.hpp"
+#include "ThreadPool.hpp"
 class TCPClientImpl;
 class Game
 {
@@ -44,6 +45,8 @@ private:
     UDPClient *_udpClient;
     int _event_indicator;
     std::queue<std::vector<uint8_t>> _queue;
+    ThreadPool _threadPool;
     bool isInstanceConnected = false;
     bool isTCPClientConnected = false;
+    bool isUDPClientConnected = false;
 };
