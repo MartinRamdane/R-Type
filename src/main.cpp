@@ -13,23 +13,25 @@
 
 class MyClient : public TCPClient<ACTION>
 {
-    public:
-        void SendEvent(Event evt) {
-            message<ACTION> msg;
-            std::vector<uint8_t> data = encodeEvent(evt);
-            msg.header.id = evt.ACTION_NAME;
-            msg.header.size = sizeof(data);
-            msg.body.resize(sizeof(data));
-            std::memcpy(msg.body.data(), data.data(), sizeof(data));
-            Send(msg);
-        }
-        std::vector<uint8_t> encodeEvent(Event event) {
-            EventHandler evt;
-            evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
-            return evt.encodeMessage();
-        }
-    protected:
+public:
+    void SendEvent(Event evt)
+    {
+        message<ACTION> msg;
+        std::vector<uint8_t> data = encodeEvent(evt);
+        msg.header.id = evt.ACTION_NAME;
+        msg.header.size = sizeof(data);
+        msg.body.resize(sizeof(data));
+        std::memcpy(msg.body.data(), data.data(), sizeof(data));
+        Send(msg);
+    }
+    std::vector<uint8_t> encodeEvent(Event event)
+    {
+        EventHandler evt;
+        evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+        return evt.encodeMessage();
+    }
 
+protected:
 };
 
 int main(int ac, char **av)
@@ -38,7 +40,6 @@ int main(int ac, char **av)
     {
         ServerClass server;
         server.loop();
-
     }
     else if (ac == 2)
     {
@@ -46,16 +47,21 @@ int main(int ac, char **av)
         c.Connect("127.0.0.1", 4244);
         Event evt;
         evt.ACTION_NAME = ACTION::CONNECT;
-        evt.body_size = 3;
-        evt.body = "slt";
-        while (1) {
-            if (c.isConnected()) {
-                c.SendEvent(evt);
-                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            }
+        evt.body_size = 0;
+        evt.body = "";
+        c.SendEvent(evt);
+        evt.ACTION_NAME = ACTION::CREATE;
+        evt.body_size = 0;
+        evt.body = "";
+        c.SendEvent(evt);
+        while (1)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
         return 0;
-    } else {
+    }
+    else
+    {
         std::cout << "av2: " << atoi(av[2]) << std::endl;
         UDPClient client;
         client.connect_to("127.0.0.1", atoi(av[2]));
