@@ -33,6 +33,7 @@ public:
     int getNbPlayers() const { return _nbPlayers; }
     void sendEvent(Event evt, const std::string &host, int port);
     std::vector<uint8_t> encodeEvent(Event event);
+    void handleEvents(Event evt);
 
 private:
     void start_receive();
@@ -41,7 +42,7 @@ private:
     boost::asio::ip::udp::socket socket_;
     boost::asio::ip::udp::endpoint remote_endpoint_;
     std::vector<Client> clients_;
-    std::vector<uint8_t> recv_buffer_;
+    std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);
     std::thread ping_thread_;
     std::vector<Client> _clients;
     int _nbPlayers;

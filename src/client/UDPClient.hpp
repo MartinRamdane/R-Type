@@ -34,7 +34,8 @@ public:
   }
   void connect_to(const std::string &host, int port)
   {
-    send_data("Hello", host, port);
+    // send_data("Hello", host, port);
+    sendEvent({ACTION::JOIN, 2, "ok"}, host, port);
     _port = port;
     _host = host;
     std::cout << "new server infos: " << _host << " " << _port << std::endl;
@@ -48,9 +49,10 @@ public:
     std::size_t bytes_received = socket_.receive_from(boost::asio::buffer(recv_buffer), sender_endpoint);
     if (check_ping(std::string(recv_buffer.data(), bytes_received)))
     {
-      send_data("Pong", sender_endpoint.address().to_string(), sender_endpoint.port());
+      // send_data("Pong", sender_endpoint.address().to_string(), sender_endpoint.port());
       Event evt = {ACTION::JOIN, 2, "ok"};
       sendEvent(evt, sender_endpoint.address().to_string(), sender_endpoint.port());
+      sendEvent({ACTION::PONG, 0, ""}, sender_endpoint.address().to_string(), sender_endpoint.port());
     }
     return std::string(recv_buffer.data(), bytes_received);
   }

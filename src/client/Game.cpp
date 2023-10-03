@@ -47,25 +47,36 @@ void Game::handleEvent()
             switch (_event.key.code)
             {
             case sf::Keyboard::Left:
-                evt.ACTION_NAME = ACTION::DOWN;
-                evt.body_size = 1;
+                evt.ACTION_NAME = ACTION::LEFT;
+                evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
                 break;
             case sf::Keyboard::Right:
-                // send right
-                _event_indicator = 0;
+                evt.ACTION_NAME = ACTION::RIGHT;
+                evt.body_size = 0;
+                evt.body = "";
+                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
                 break;
             case sf::Keyboard::Up:
-                // send up
+                evt.ACTION_NAME = ACTION::UP;
+                evt.body_size = 0;
+                evt.body = "";
+                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
                 _event_indicator = 1;
                 break;
             case sf::Keyboard::Down:
-                // send down
+                evt.ACTION_NAME = ACTION::DOWN;
+                evt.body_size = 0;
+                evt.body = "";
+                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
                 _event_indicator = 2;
                 break;
             case sf::Keyboard::Space:
-                // send space
+                evt.ACTION_NAME = ACTION::SHOOT;
+                evt.body_size = 0;
+                evt.body = "";
+                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
                 break;
             case sf::Keyboard::Escape:
                 _window.close();
