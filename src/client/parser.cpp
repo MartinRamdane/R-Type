@@ -161,5 +161,9 @@ void Parser::parseMessage(std::string message, RessourceManager &ressourceManage
             }
             removeEntity(valueMap);
         }
+        else if (commande == "wcreate")
+        {
+            
+        }
     }
 }

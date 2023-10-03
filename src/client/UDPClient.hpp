@@ -31,6 +31,7 @@ public:
   }
   void connect_to(const std::string &host, int port)
   {
+    std::cout << "connect to UDP" << std::endl;
     send_data("Hello", host, port);
   }
 

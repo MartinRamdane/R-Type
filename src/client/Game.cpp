@@ -9,63 +9,103 @@
 
 Game::Game() : _threadPool(1)
 {
-    _window.create(sf::VideoMode(1920, 1080), "R-TYPE");
-    _window.setFramerateLimit(60);
-    _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _ressourceManager = RessourceManager();
     _parser = Parser();
-    _parser.parseMessage("ecreate 1 0 250 background.png 0 1 1 ./config.json Background", _ressourceManager);
-    _parser.parseMessage("ecreate 2 100 100 Spaceship3.png 0 1 1 ./config.json Spaceship", _ressourceManager);
-    _parser.parseMessage("ecreate 3 300 300 Spaceship2.png 0 1 1 ./config.json Spaceship", _ressourceManager);
     _event_indicator = 0;
+    closed = false;
+}
+
+void Game::createWindow(std::string name, int x, int y)
+{
+     _window.create(sf::VideoMode(x, y), name);
+    _window.setFramerateLimit(60);
+    _view = sf::View(sf::FloatRect(0, 0, 850, 478));
 }
 
 void Game::run()
 {
-    while (_window.isOpen())
+    while (closed == false)
     {
         if (_client->Incoming().empty() == false)
         {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
-        // getinfos -> appel de parseMessage
-        handleEvent();
-        update();
+        if (isUDPClientConnected == true)
+        {
+            createWindow("R-Type", 1920, 1080);
+            while (_window.isOpen())
+            {
+                if (_client->Incoming().empty() == false)
+                {
+                    auto msg = _client->Incoming().pop_front().msg;
+                    _client->HandleMessage(msg);
+                }
+                // getinfos -> appel de parseMessage
+                handleEvent();
+                update();
+            }
+        }
     }
+    exit(0);
 }
 
 void Game::handleEvent()
 {
     while (_window.pollEvent(_event))
     {
-        if (_event.type == sf::Event::Closed)
+        if (_event.type == sf::Event::Closed) {
             _window.close();
-        if (_event.type == sf::Event::KeyPressed)
+            _client->Disconnect();
+            closed = true;
+        } if (_event.type == sf::Event::KeyPressed)
         {
             Event evt;
             switch (_event.key.code)
             {
             case sf::Keyboard::Left:
                 // send left;
+                evt.ACTION_NAME = ACTION::LEFT;
+                evt.body_size = 0;
+                evt.body = "";
+                _client->SendEvent(evt);
+                _event_indicator = 0;
                 break;
             case sf::Keyboard::Right:
                 // send right
+                evt.ACTION_NAME = ACTION::RIGHT;
+                evt.body_size = 0;
+                evt.body = "";
+                _client->SendEvent(evt);
                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Up:
                 // send up
+                evt.ACTION_NAME = ACTION::UP;
+                evt.body_size = 0;
+                evt.body = "";
+                _client->SendEvent(evt);
                 _event_indicator = 1;
                 break;
             case sf::Keyboard::Down:
                 // send down
+                evt.ACTION_NAME = ACTION::DOWN;
+                evt.body_size = 0;
+                evt.body = "";
+                _client->SendEvent(evt);
                 _event_indicator = 2;
                 break;
             case sf::Keyboard::Space:
                 // send space
+                evt.ACTION_NAME = ACTION::SHOOT;
+                evt.body_size = 0;
+                evt.body = "";
+                _client->SendEvent(evt);
                 break;
             case sf::Keyboard::Escape:
                 _window.close();
+                _client->Disconnect();
+                closed = true;
                 break;
             default:
                 break;

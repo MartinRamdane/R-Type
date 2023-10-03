@@ -26,6 +26,7 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
     std::string getPort;
     ss >> getPort;
     ss >> getPort;
+    // add get windows infos
     int port = std::stoi(getPort);
     std::cout << "target port " << port << std::endl;
     _game->connectToUdpServer("127.0.0.1", port);
