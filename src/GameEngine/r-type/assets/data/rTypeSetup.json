@@ -1,0 +1,38 @@
+{
+    "Game": {
+        "Title": "r-type",
+        "Width": 1920,
+        "Height": 1080,
+        "Assets": {
+            "Images": {
+                "Background": "background.png",
+                "Classic": "Spaceship1.png",
+                "Speed": "Spaceship2.png",
+                "Shooter": "Spaceship3.png",
+                "Tank": "Spaceship4.png",
+                "ShieldSpaceship": "Spaceship5.png",
+                "Enemy1": "robot_type_6.png",
+                "Enemy2": "robot_type_5.png",
+                "BulletSpaceship": "shoot_type_right6.png",
+                "BulletEnemy1": "shoot_type10.png",
+                "BulletEnemy2": "shoot_type_left8.png",
+                "ExplosionSpaceShip": "explosion_type_left1.png",
+                "Shield" : "shield.png",
+                "PowerUP": "power_up.png",
+                "Flyer": "flyer.png",
+                "ExplosionEnemy": "explosion_type3.png"
+            },
+            "Sounds": {
+                "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",
+                "Shoot": "./src/GameEngine/r-type/assets/sounds/shoot.mp3",
+                "Explosion": "./src/GameEngine/r-type/assets/sounds/explosion.mp3"
+            },
+            "Fonts": {
+                "Arial": "./src/GameEngine/r-type/assets/fonts/arial.ttf"
+            },
+            "Data": {
+                "Levels": "./src/GameEngine/r-type/assets/data/levels.json"
+            }
+        }
+    }
+}

@@ -1,5 +1,4 @@
 #include <iostream>
-#include "Player.hpp"
 #include "server/UDPServer.hpp"
 #include "server/UDPClient.hpp"
 #include <thread>
@@ -10,6 +9,20 @@
 #include "server/Instance.hpp"
 #include "server/EventHandler.hpp"
 #include "server/UDPServer.hpp"
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include "GameEngine/JsonParser.hpp"
+#include "GameEngine/Core.hpp"
+
+// int main()
+// {
+//     Core core;
+//     core.mainLoop("test");
+//     return 0;
+// }
 
 class MyClient : public TCPClient<ACTION>
 {
