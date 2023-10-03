@@ -1,5 +1,4 @@
 #include <iostream>
-#include "Player.hpp"
 #include "server/UDPServer.hpp"
 #include "server/UDPClient.hpp"
 #include <thread>
