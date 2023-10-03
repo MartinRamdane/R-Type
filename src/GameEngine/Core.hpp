@@ -8,6 +8,7 @@
 #pragma once
 #include "Engine.hpp"
 #include "IGame.hpp"
+#include "../server/Server.hpp"
 #include "Protocol.hpp"
 
 class Core
@@ -21,4 +22,5 @@ public:
 private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<IGame> _game;
+    std::shared_ptr<ServerClass> _server;
 };

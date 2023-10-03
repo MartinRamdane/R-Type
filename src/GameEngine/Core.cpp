@@ -12,6 +12,8 @@ Core::Core()
     _engine = std::make_shared<Engine>();
     Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
     _game = std::make_shared<Game>(_engine);
+    _server = std::make_shared<ServerClass>();
+    _server.get()->loop();
 }
 
 Core::~Core()

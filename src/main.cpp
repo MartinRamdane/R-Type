@@ -51,8 +51,11 @@ int main(int ac, char **av)
 {
     if (ac == 1)
     {
-        ServerClass server;
-        server.loop();
+        // ServerClass server;
+        // server.loop();
+        Core core;
+        core.mainLoop("test");
+        return 0;
     }
     else if (ac == 2)
     {
