@@ -50,9 +50,8 @@ void Entity::setSpriteScale(const sf::Vector2f &scale)
 
 void Entity::setSpriteOrigin()
 {
-    // sf::Vector2f size = sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
-    // _sprite.setOrigin(size.x / 2, size.y / 2);
-    ;
+    sf::Vector2f size = sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
+    _sprite.setOrigin(size.x / 2, size.y / 2);
 }
 
 void Entity::setSpriteRotation(const float &rotation)

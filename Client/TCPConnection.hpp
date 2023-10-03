@@ -61,7 +61,7 @@ public:
                     if (!ec)
                     {
                         std::cout << "[DEBUG] Connected to server: " << endpoint << std::endl;
-                        _game->setConnected(true);
+                        // _game->setConnected(true);
                         ReadHeader();
                     } else {
                         std::cout << "[DEBUG] Failed to connect to server: " << ec.message() << std::endl;

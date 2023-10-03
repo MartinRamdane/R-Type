@@ -8,57 +8,67 @@
 #include "Login.hpp"
 #include "Entity.hpp"
 
+#include "imgui.h"
+
 Login startgame()
 {
     struct Login login;
-    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "My window");
+    sf::View _view = sf::View(sf::FloatRect(0, 0, 850, 478));
 
     sf::Font font;
     if (!font.loadFromFile("font/pixel.ttf"))
         std::cerr << "Error: could not load font" << std::endl;
 
     Entity background;
+    background._nbRect = 1;
     background._texture = std::make_shared<sf::Texture>();
-    background.setTexture("assets/background.png");
+    background.setTexture("assets/cenario/background.png");
     background.setSprite();
     background.setSpritePosition(sf::Vector2f(0, 0));
 
-    Entity logo;
+   Entity logo;
+    logo._nbRect = 1;
     logo._texture = std::make_shared<sf::Texture>();
-    logo.setTexture("../sprites/Logo.png");
+    logo.setTexture("sprites/Logo.png");
     logo.setSprite();
-    logo.setSpritePosition(sf::Vector2f(400, 100));
+    logo.setSpritePosition(sf::Vector2f(425, 100));
     logo.setSpriteOrigin();
 
     Entity nameInput;
+    nameInput._nbRect = 1;
     nameInput._texture = std::make_shared<sf::Texture>();
-    nameInput.setTexture("../sprites/TextInput.png");
+    nameInput.setTexture("sprites/TextInput.png");
     nameInput.setSprite();
-    nameInput.setSpritePosition(sf::Vector2f(400, 220));
+    nameInput.setSpritePosition(sf::Vector2f(425, 200));
     nameInput.setSpriteScale(sf::Vector2f(2.5, 2.5));
     nameInput.setSpriteOrigin();
 
     Entity portInput;
+    portInput._nbRect = 1;
     portInput._texture = std::make_shared<sf::Texture>();
-    portInput.setTexture("../sprites/TextInput.png");
+    portInput.setTexture("sprites/TextInput.png");
     portInput.setSprite();
-    portInput.setSpritePosition(sf::Vector2f(400, 300));
+    portInput.setSpritePosition(sf::Vector2f(425, 260));
     portInput.setSpriteScale(sf::Vector2f(2.5, 2.5));
     portInput.setSpriteOrigin();
 
     Entity ipInput;
+    ipInput._nbRect = 1;
     ipInput._texture = std::make_shared<sf::Texture>();
-    ipInput.setTexture("../sprites/TextInput.png");
+    ipInput.setTexture("sprites/TextInput.png");
     ipInput.setSprite();
-    ipInput.setSpritePosition(sf::Vector2f(400, 380));
+    ipInput.setSpritePosition(sf::Vector2f(425, 320));
     ipInput.setSpriteScale(sf::Vector2f(2.5, 2.5));
     ipInput.setSpriteOrigin();
 
     Entity connectButton;
+    connectButton._nbRect = 1;
     connectButton._texture = std::make_shared<sf::Texture>();
-    connectButton.setTexture("../sprites/button.png");
+    connectButton.setTexture("sprites/button.png");
     connectButton.setSprite();
-    connectButton.setSpritePosition(sf::Vector2f(400, 460));
+    connectButton.setSpritePosition(sf::Vector2f(425, 380));
     connectButton.setSpriteScale(sf::Vector2f(2.5, 2.5));
     connectButton.setSpriteOrigin();
 
@@ -67,7 +77,7 @@ Login startgame()
     connect.setString("connect");
     connect.setCharacterSize(20);
     connect.setFillColor(sf::Color::White);
-    connect.setPosition(sf::Vector2f(400, 460));
+    connect.setPosition(sf::Vector2f(425, 380));
     connect.setOrigin(sf::Vector2f(connect.getLocalBounds().width / 2, connect.getLocalBounds().height / 2));
 
     sf::Text name;
@@ -75,7 +85,7 @@ Login startgame()
     name.setString("enter your name");
     name.setCharacterSize(20);
     name.setFillColor(sf::Color::White);
-    name.setPosition(sf::Vector2f(400, 220));
+    name.setPosition(sf::Vector2f(425, 200));
     name.setOrigin(sf::Vector2f(name.getLocalBounds().width / 2, name.getLocalBounds().height / 2));
 
     sf::String nameInputText;
@@ -86,7 +96,7 @@ Login startgame()
     port.setString("enter the port");
     port.setCharacterSize(20);
     port.setFillColor(sf::Color::White);
-    port.setPosition(sf::Vector2f(400, 300));
+    port.setPosition(sf::Vector2f(425, 260));
     port.setOrigin(sf::Vector2f(port.getLocalBounds().width / 2, port.getLocalBounds().height / 2));
 
     sf::String portInputText;
@@ -97,7 +107,7 @@ Login startgame()
     ip.setString("enter ip address");
     ip.setCharacterSize(20);
     ip.setFillColor(sf::Color::White);
-    ip.setPosition(sf::Vector2f(400, 380));
+    ip.setPosition(sf::Vector2f(425, 320));
     ip.setOrigin(sf::Vector2f(ip.getLocalBounds().width / 2, ip.getLocalBounds().height / 2));
 
     sf::String ipInputText;
@@ -108,20 +118,29 @@ Login startgame()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+            sf::Vector2f worldMousePosition = window.mapPixelToCoords(mousePosition);
+
+            if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
                 window.close();
             }
 
-            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
             {
-                if (name.getGlobalBounds().contains(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)))
+                if (name.getGlobalBounds().contains(worldMousePosition)) {
                     isNameEditing = true;
-                if (port.getGlobalBounds().contains(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)))
+                    isIpEditing = false;
+                    isPortEditing = false;
+                } if (port.getGlobalBounds().contains(worldMousePosition)) {
                     isPortEditing = true;
-                if (ip.getGlobalBounds().contains(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)))
+                    isNameEditing = false;
+                    isIpEditing = false;
+                } if (ip.getGlobalBounds().contains(worldMousePosition)) {
                     isIpEditing = true;
-                if (connect.getGlobalBounds().contains(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y))) {
+                    isNameEditing = false;
+                    isPortEditing = false;
+                } if (connect.getGlobalBounds().contains(worldMousePosition)) {
                     login.name = nameInputText;
                     login.port = portInputText;
                     login.ip = ipInputText;
@@ -166,6 +185,7 @@ Login startgame()
         }
 
         window.clear();
+        window.setView(_view);
         window.draw(background.getSprite());
         window.draw(logo.getSprite());
         window.draw(nameInput.getSprite());

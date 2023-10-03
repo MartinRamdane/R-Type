@@ -14,7 +14,7 @@ Game::Game()
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _ressourceManager = RessourceManager();
     _parser = Parser();
-    _parser.parseMessage("ecreate 1 0 0 background.png 0 1 1 ./config.json Background", _ressourceManager);
+    _parser.parseMessage("ecreate 1 0 250 background.png 0 1 1 ./config.json Background", _ressourceManager);
     _parser.parseMessage("ecreate 2 100 100 Spaceship3.png 0 1 1 ./config.json Spaceship", _ressourceManager);
     _parser.parseMessage("ecreate 3 300 300 Spaceship2.png 0 1 1 ./config.json Spaceship", _ressourceManager);
     _event_indicator = 0;
