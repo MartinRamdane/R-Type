@@ -18,15 +18,18 @@ Game *Game::instance = nullptr;
 Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
 {
     instance = this;
+    initializeLevel();
+    std::cout << "end" << std::endl;
+
     // Create all entities
-    _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"](), 0, 239, _lastId++, "config.json", "Background"));
+    // _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
+    // _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"](), 0, 239, _lastId++, "config.json", "Background"));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _players.push_back(std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++, 5));
     _playersGroups->insert(_players[0]);
-    _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
-    _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++));
+    // _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
+    // _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++));
     // Add collision
     engine->setRelation(_projectilesGroups, _enemiesGroups, Projectile::hurtEntity);
 }
@@ -35,6 +38,52 @@ Game::~Game()
 {
     // Destroy all entities
     _players.clear();
+}
+
+void Game::initializeLevel()
+{
+    JsonParser parser;
+    nlohmann::json levelsFile = JsonParser::readFile("rTypeLevels.json");
+
+    int count = 0;
+    _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
+    _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
+
+    nlohmann::json level = levelsFile["Level-" + std::to_string(currentLevel)];
+
+    for (auto it2 = level.begin(); it2 != level.end(); it2++)
+    {
+        std::string key = it2.key();
+        auto value = it2.value();
+
+        for (auto it3 = value.begin(); it3 != value.end(); it3++)
+        {
+            if (it3.key() == "Count")
+            {
+                count = *it3;
+            }
+            else if (it3.key() == "Type")
+            {
+                if (count == 0)
+                {
+                    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets[key](), 0, 239, _lastId++, "config.json", "Background"));
+                    std::cout << "Background" << std::endl;
+                }
+                else
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (it3.value() == "Enemy")
+                        {
+                            _enemiesGroups->insert(std::make_shared<Enemy>(_assets[key](), 500 + i * 100, 100, _lastId++));
+                            std::cout << key << std::endl;
+                        }
+                    }
+                    count = 0;
+                }
+            }
+        }
+    }
 }
 
 void Game::update(Event event)
