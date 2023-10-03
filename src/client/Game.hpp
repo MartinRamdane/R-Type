@@ -25,6 +25,7 @@ public:
     Game();
     ~Game(){};
     void run();
+    void createWindow(std::string name, int x, int y);
     void animate();
     void draw();
     void handleEvent();
@@ -49,4 +50,5 @@ private:
     bool isInstanceConnected = false;
     bool isTCPClientConnected = false;
     bool isUDPClientConnected = false;
+    bool closed;
 };

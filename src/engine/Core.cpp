@@ -10,7 +10,8 @@
 Core::Core()
 {
     _engine = std::make_shared<Engine>();
-    Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
+    std::string protocol = Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
+    // send protocol to client
     _game = std::make_shared<Game>(_engine);
 }
 
@@ -18,7 +19,7 @@ Core::~Core()
 {
 }
 
-std::vector<std::string> Core::mainLoop(std::string event)
+void Core::mainLoop(std::string event)
 {
     while (_engine->isRunning())
     {
@@ -30,11 +31,7 @@ std::vector<std::string> Core::mainLoop(std::string event)
             _game->update(gameEvent);
             auto entities = _engine->getEntities();
             std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
-            // for (auto line : protocol)
-            //     std::cout << line << std::endl;
             // send protocol to client
-            // return protocol;
         }
     }
-    return {};
 }

@@ -16,7 +16,7 @@ public:
     Core();
     ~Core();
 
-    std::vector<std::string> mainLoop(std::string event);
+    void mainLoop(std::string event);
 
 private:
     std::shared_ptr<Engine> _engine;
