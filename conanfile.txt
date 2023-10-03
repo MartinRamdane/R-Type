@@ -3,8 +3,6 @@ sfml/2.6.0
 boost/1.83.0
 nlohmann_json/3.11.2
 zlib/1.2.13
-imgui/cci.20230105+1.89.2.docking
-
 [generators]
 CMakeDeps
 CMakeToolchain
