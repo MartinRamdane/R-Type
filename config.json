@@ -1,0 +1,74 @@
+{
+    "Spaceship":
+    {
+        "nb_rect": "5",
+        "rect_init": "2",
+        "form": "event"
+    },
+    "BulletSpaceship":
+    {
+        "nb_rect": "2",
+        "rect_init": "0",
+        "form": "loop"
+    },
+    "ExplosionSpaceship":
+    {
+        "nb_rect": "6",
+        "rect_init": "0",
+        "form": "once"
+    },
+    "Background":
+    {
+        "nb_rect": "3",
+        "rect_init": "0",
+        "form": "paralaxe"
+    },
+    "Enemy1":
+    {
+        "nb_rect": "2",
+        "rect_init": "0",
+        "form": "loop"
+    },
+    "Shield":
+    {
+        "nb_rect": "1",
+        "rect_init": "0",
+        "form": "loop"
+    },
+    "PowerUp":
+    {
+        "nb_rect": "12",
+        "rect_init": "0",
+        "form": "loop"
+    },
+    "Enemy2":
+    {
+        "nb_rect": "5",
+        "rect_init": "0",
+        "form": "event"
+    },
+    "Flyer":
+    {
+        "nb_rect": "8",
+        "rect_init": "0",
+        "form": "loop"
+    },
+    "ExplosionEnemy":
+    {
+        "nb_rect": "5",
+        "rect_init": "0",
+        "form": "once"
+    },
+    "BulletEnemy1":
+    {
+        "nb_rect": "3",
+        "rect_init": "0",
+        "form": "loop"
+    },
+    "BulletEnemy2":
+    {
+        "nb_rect": "4",
+        "rect_init": "0",
+        "form": "loop"
+    }
+}

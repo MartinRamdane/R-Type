@@ -9,24 +9,24 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
 
 # Gather all source files recursively
-file(GLOB SRC_LIST src/*.cpp)
+file(GLOB SRC_LIST Client/*.cpp)
 
 # Create an executable from the source files
-add_executable(${PROJECT_NAME} ${SRC_LIST})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-if (UNIX)
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
-endif (UNIX)
+if (UNIX AND NOT APPLE)
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3 -lstdc++fs -std=c++17")
+endif (UNIX AND NOT APPLE)
+add_executable(${PROJECT_NAME} ${SRC_LIST})
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
-find_package(asio REQUIRED)
+find_package(Boost REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(imgui REQUIRED)
 
-# Set the C++ standard to C++17
-
-# Specify the output directory for the binary
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
 )
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 # Build the project
 add_custom_target(run
@@ -34,6 +34,8 @@ add_custom_target(run
     DEPENDS ${PROJECT_NAME}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+include(CheckCXXSymbolExists)
 
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system  ${asio_LIBRARIES})
-target_include_directories(${PROJECT_NAME} PRIVATE ${asio_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE ${boost_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost imgui::imgui)
