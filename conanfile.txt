@@ -2,7 +2,7 @@
 zlib/1.2.13
 sfml/2.6.0
 nlohmann_json/3.11.2
-
+boost/1.83.0
 [generators]
 CMakeDeps
 CMakeToolchain

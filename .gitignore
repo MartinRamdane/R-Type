@@ -9,3 +9,5 @@ vg*
 Assets/
 Client/
 config.json
+.DS_Store
+*/.DS_Store
