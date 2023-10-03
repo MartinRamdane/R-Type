@@ -19,7 +19,7 @@
 
 // int main()
 // {
-//     Core core;
+//     Core corentin;
 //     core.mainLoop("test");
 //     return 0;
 // }
