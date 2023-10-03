@@ -34,6 +34,8 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
   data.size() - sizeof(ACTION) - sizeof(int));
   event.body.resize(event.body_size);
   std::cout << "[DEBUG] Event decoded: " << event.body_size << " " << event.body << std::endl;
+  _body_size = event.body_size;
+  _body = event.body;
   return event;
 }
 

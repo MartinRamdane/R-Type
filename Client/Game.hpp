@@ -16,8 +16,9 @@
 #include "EventHandler.hpp"
 #include <thread>
 #include <queue>
-#include "TCPClient.hpp"
-
+#include "UDPClient.hpp"
+#include "ThreadPool.hpp"
+class TCPClientImpl;
 class Game
 {
 public:
@@ -30,6 +31,7 @@ public:
     void update();
     void getinfos(){};
     bool connectToServer(std::string host, int port);
+    bool connectToUdpServer(std::string host, int port);
     void setConnected(bool) { isTCPClientConnected = true; }
 
 private:
@@ -40,8 +42,11 @@ private:
     RessourceManager _ressourceManager;
     Parser _parser;
     TCPClientImpl *_client;
+    UDPClient *_udpClient;
     int _event_indicator;
     std::queue<std::vector<uint8_t>> _queue;
+    ThreadPool _threadPool;
     bool isInstanceConnected = false;
     bool isTCPClientConnected = false;
+    bool isUDPClientConnected = false;
 };

@@ -7,12 +7,14 @@
 
 #ifndef TCPCLIENTIMPL_HPP_
 #define TCPCLIENTIMPL_HPP_
+#include <sstream>
 #include "TCPClient.hpp"
-#include "Game.hpp"
 class Game;
-class TCPClientImpl : public TCPClient<ACTION> {
+class TCPClientImpl : public TCPClient<ACTION>
+{
 public:
-    void SendEvent(Event evt) {
+    void SendEvent(Event evt)
+    {
         message<ACTION> msg;
         std::vector<uint8_t> data = encodeEvent(evt);
         msg.header.id = evt.ACTION_NAME;
@@ -21,78 +23,18 @@ public:
         std::memcpy(msg.body.data(), data.data(), sizeof(data));
         Send(msg);
     }
-    void setGame(Game *game) {
+    void setGame(Game *game)
+    {
         _game = game;
     }
-    std::vector<uint8_t> encodeEvent(Event event) {
+    std::vector<uint8_t> encodeEvent(Event event)
+    {
         EventHandler evt;
         evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
         return evt.encodeMessage();
     }
-    void HandleMessage(message<ACTION>& msg) {
-        switch (msg.header.id)
-        {
-        case ACTION::CONNECT:
-        {
-            EventHandler evt;
-            evt.decodeMessage(msg.body);
-            std::cout << "[BODY DATA : ]" << evt.getBody() << std::endl;
-        }
-        break;
-        case ACTION::CREATE:
-        {
-            EventHandler evt;
-            evt.decodeMessage(msg.body);
-            std::cout << "[BODY DATA : ]" << evt.getBody() << std::endl;
-            //TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
-        }
-        break;
-        case ACTION::LIST:
-        {
-        }
-        break;
-        case ACTION::JOIN:
-        {
-        }
-        break;
-        case ACTION::JOINED:
-        {
-        }
-        break;
-        case ACTION::READY:
-        {
-        }
-        break;
-        case ACTION::START:
-        {
-        }
-        break;
-        case ACTION::LEFT:
-        {
-        }
-        break;
-        case ACTION::RIGHT:
-        {
-        }
-        break;
-        case ACTION::UP:
-        {
-        }
-        break;
-        case ACTION::DOWN:
-        {
-        }
-        break;
-        case ACTION::SHOOT:
-        {
-        }
-        break;
-        case ACTION::QUIT:
-        {
-        }
-        break;
-    }
-    }
+    void HandleMessage(message<ACTION> &msg);
+
 private:
     Game *_game;
 };
