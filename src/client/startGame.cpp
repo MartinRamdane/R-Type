@@ -29,7 +29,7 @@ Login startgame()
    Entity logo;
     logo._nbRect = 1;
     logo._texture = std::make_shared<sf::Texture>();
-    logo.setTexture("sprites/Logo.png");
+    logo.setTexture("assets/cenario/Logo.png");
     logo.setSprite();
     logo.setSpritePosition(sf::Vector2f(425, 100));
     logo.setSpriteOrigin();
@@ -37,7 +37,7 @@ Login startgame()
     Entity nameInput;
     nameInput._nbRect = 1;
     nameInput._texture = std::make_shared<sf::Texture>();
-    nameInput.setTexture("sprites/TextInput.png");
+    nameInput.setTexture("assets/cenario/TextInput.png");
     nameInput.setSprite();
     nameInput.setSpritePosition(sf::Vector2f(425, 200));
     nameInput.setSpriteScale(sf::Vector2f(2.5, 2.5));
@@ -46,7 +46,7 @@ Login startgame()
     Entity portInput;
     portInput._nbRect = 1;
     portInput._texture = std::make_shared<sf::Texture>();
-    portInput.setTexture("sprites/TextInput.png");
+    portInput.setTexture("assets/cenario/TextInput.png");
     portInput.setSprite();
     portInput.setSpritePosition(sf::Vector2f(425, 260));
     portInput.setSpriteScale(sf::Vector2f(2.5, 2.5));
@@ -55,7 +55,7 @@ Login startgame()
     Entity ipInput;
     ipInput._nbRect = 1;
     ipInput._texture = std::make_shared<sf::Texture>();
-    ipInput.setTexture("sprites/TextInput.png");
+    ipInput.setTexture("assets/cenario/TextInput.png");
     ipInput.setSprite();
     ipInput.setSpritePosition(sf::Vector2f(425, 320));
     ipInput.setSpriteScale(sf::Vector2f(2.5, 2.5));
@@ -64,7 +64,7 @@ Login startgame()
     Entity connectButton;
     connectButton._nbRect = 1;
     connectButton._texture = std::make_shared<sf::Texture>();
-    connectButton.setTexture("sprites/button.png");
+    connectButton.setTexture("assets/cenario/button.png");
     connectButton.setSprite();
     connectButton.setSpritePosition(sf::Vector2f(425, 380));
     connectButton.setSpriteScale(sf::Vector2f(2.5, 2.5));
@@ -148,7 +148,6 @@ Login startgame()
             }
             else if (event.type == sf::Event::TextEntered && isNameEditing)
             {
-                std::cout << event.text.unicode << std::endl;
                 if (event.text.unicode == 8 && nameInputText.getSize() > 0) // Touche de retour arrière (backspace)
                     nameInputText.erase(nameInputText.getSize() - 1);
                 else if (event.text.unicode == 10 || event.text.unicode == 13) { // Touche entrée
