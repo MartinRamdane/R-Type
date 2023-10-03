@@ -14,8 +14,8 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "GameEngine/JsonParser.hpp"
-#include "GameEngine/Core.hpp"
+#include "engine/JsonParser.hpp"
+#include "engine/Core.hpp"
 
 // int main()
 // {

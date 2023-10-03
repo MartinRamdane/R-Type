@@ -7,7 +7,6 @@ r-type_client
 .vs/
 vg*
 Assets/
-Client/
 config.json
 .DS_Store
 */.DS_Store
