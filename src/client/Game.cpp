@@ -47,7 +47,10 @@ void Game::handleEvent()
             switch (_event.key.code)
             {
             case sf::Keyboard::Left:
-                // send left;
+                evt.ACTION_NAME = ACTION::DOWN;
+                evt.body_size = 1;
+                evt.body = "";
+                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
                 break;
             case sf::Keyboard::Right:
                 // send right

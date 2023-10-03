@@ -12,6 +12,7 @@
 #include <chrono>
 #include <thread>
 #include "Mutex.hpp"
+#include "../global/EventHandler.hpp"
 
 class Instance;
 
@@ -30,6 +31,8 @@ public:
     void addClient(Client client);
     void removeClient(Client client);
     int getNbPlayers() const { return _nbPlayers; }
+    void sendEvent(Event evt, const std::string &host, int port);
+    std::vector<uint8_t> encodeEvent(Event event);
 
 private:
     void start_receive();
@@ -38,7 +41,7 @@ private:
     boost::asio::ip::udp::socket socket_;
     boost::asio::ip::udp::endpoint remote_endpoint_;
     std::vector<Client> clients_;
-    std::array<char, 1024> recv_buffer_;
+    std::vector<uint8_t> recv_buffer_;
     std::thread ping_thread_;
     std::vector<Client> _clients;
     int _nbPlayers;

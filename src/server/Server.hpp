@@ -9,7 +9,7 @@
 #include <iostream>
 #include "TCPServer.hpp"
 #include "ThreadPool.hpp"
-#include "EventHandler.hpp"
+#include "../global/EventHandler.hpp"
 #include <thread>
 #include "Instance.hpp"
 

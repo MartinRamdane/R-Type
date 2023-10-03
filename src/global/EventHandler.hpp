@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <cstring>
+#include <memory>
 
 enum class ACTION : uint8_t
 {
@@ -29,6 +30,8 @@ enum class ACTION : uint8_t
   DOWN,
   SHOOT,
   QUIT,
+  PING,
+  PONG,
   UNKNOWN,
 };
 
@@ -50,7 +53,7 @@ class EventHandler
     void addEvent(ACTION ACTION_NAME, int body_size, std::string body);
     const int getRequestId() const { return _body_size; };
     const std::string getBody() const { return _body; };
-
+    const Event getEvent() const { return Event{_ACTION_NAME, _body_size, _body}; };
   protected:
   private:
     ACTION _ACTION_NAME;
