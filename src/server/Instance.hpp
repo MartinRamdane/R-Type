@@ -12,6 +12,7 @@
 #include <boost/asio.hpp>
 #include "UDPServer.hpp"
 #include "ThreadPool.hpp"
+#include "../engine/Core.hpp"
 
 class ServerClass;
 
@@ -29,12 +30,13 @@ class Instance
 
     protected:
     private:
-        boost::asio::io_service _io_service;
-        UDPServer _udpServer;
         int _id;
         int _port;
+        boost::asio::io_service _io_service;
+        UDPServer _udpServer;
         ServerClass *_serverRef;
         ThreadPool _threadPool;
+        Core _core;
 };
 
 #endif /* !HEADER_INSTANCE */
