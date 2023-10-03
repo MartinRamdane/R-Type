@@ -1,0 +1,20 @@
+{
+    "Level-1": {
+        "Background": {
+            "Type": "StaticObject"
+        },
+        "Enemy1": {
+            "Type": "Enemy",
+            "Count": 4
+        }
+    },
+    "Level-2": {
+        "Background": {
+            "Type": "StaticObject"
+        },
+        "Enemy1": {
+            "Type": "Enemy",
+            "Count": 4
+        }
+    }
+}

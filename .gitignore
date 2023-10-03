@@ -6,7 +6,6 @@ r-type_client
 .vscode/*
 .vs/
 vg*
-Assets/
 config.json
 .DS_Store
 */.DS_Store
