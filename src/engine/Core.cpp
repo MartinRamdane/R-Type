@@ -13,7 +13,6 @@ Core::Core()
     Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
     _game = std::make_shared<Game>(_engine);
     _server = std::make_shared<ServerClass>();
-    _server.get()->loop();
 }
 
 Core::~Core()
@@ -37,6 +36,7 @@ std::vector<std::string> Core::mainLoop(std::string event)
             // send protocol to client
             // return protocol;
         }
+        _server->loop();
     }
     return {};
 }

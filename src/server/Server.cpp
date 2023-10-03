@@ -48,7 +48,5 @@ int ServerClass::getPortInstance(int instanceId)
 
 void ServerClass::loop()
 {
-    while (1) {
-        _server->HandleMessages(-1, true);
-    }
+    _server->HandleMessages(-1, true);
 }
