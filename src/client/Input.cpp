@@ -102,13 +102,14 @@ void Input::eventHandler(sf::Event event, sf::RenderWindow &window)
     }
     if (this->_isActive)
     {
-        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Backspace && !this->_value.empty())
+        if (event.type == sf::Event::TextEntered && event.text.unicode == 8 && this->_value.size() > 0)
             this->_value = this->_value.substr(0, this->_value.size() - 1);
         if (event.type == sf::Event::TextEntered && event.text.unicode == '.')
             this->_value += ".";
-        else if (event.type == sf::Event::KeyPressed && event.key.code != sf::Keyboard::Backspace)
+        else if (event.type == sf::Event::TextEntered && event.text.unicode >= 32 && event.text.unicode <= 126)
         {
-            event.type == sf::Event::KeyPressed ? this->_value += keys[event.key.code] : this->_value;
+            std::cout << "key pressed: " << event.key.code << std::endl;
+            this->_value += event.text.unicode;
         }
     }
     if (_isActive)
