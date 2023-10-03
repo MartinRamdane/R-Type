@@ -1,32 +1,30 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16)
 
-project(r-type_client)
+project(r-type_server)
+
 if(POLICY CMP0091)
     cmake_policy(SET CMP0091 NEW)
 endif()
-# Include the Conan-generated toolchain file
+
 include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
-
-# Gather all source files recursively
-file(GLOB SRC_LIST Client/*.cpp)
-
-# Create an executable from the source files
+# Set the C++ standard to C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-if (UNIX AND NOT APPLE)
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3 -lstdc++fs -std=c++17")
-endif (UNIX AND NOT APPLE)
-add_executable(${PROJECT_NAME} ${SRC_LIST})
-find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
-find_package(Boost REQUIRED)
-find_package(nlohmann_json REQUIRED)
-find_package(imgui REQUIRED)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
-)
+find_package(nlohmann_json REQUIRED)
+
+if (UNIX)
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
+endif (UNIX)
+
+file(GLOB SRC_LIST src/*.cpp src/server/*.cpp src/GameEngine/*.cpp src/GameEngine/r-type/*.cpp)
+
+add_executable(${PROJECT_NAME} ${SRC_LIST})
+
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Build the project
 add_custom_target(run
@@ -34,8 +32,18 @@ add_custom_target(run
     DEPENDS ${PROJECT_NAME}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
-include(CheckCXXSymbolExists)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${boost_INCLUDE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost imgui::imgui)
+# Specify the output directory for the binary
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../
+)
+
+# For Windows, apply /FORCE:MULTIPLE linker option
+if (WIN32)
+    add_definitions(-D_WIN32_WINNT=0x0601)
+    target_link_options(${PROJECT_NAME} PRIVATE)
+endif()
+
+# Link to libraries
+find_package(Boost REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json boost::boost)

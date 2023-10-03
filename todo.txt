@@ -6,11 +6,14 @@ conan profile detect --force # if your profile is not already created
 
 conan install . --output-folder=build --build=missing
 
+if you have installed a new package :
+conan install conanfile.txt --build=missing
+
 For windows:
 
 cd build
-cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake # depending of your vs version
-cmake --build . --config Release
+cmake .. -G "Visual Studio 17 2022" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake # depending of your vs version
+cmake --build . --config Debug
 Release\${PROJECT_NAME}.exe
 
 For others:
@@ -18,3 +21,7 @@ cd build
 cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 cmake --build .
 ./${PROJECT_NAME}
+
+https://docs.conan.io/2.0/tutorial/consuming_packages/build_simple_cmake_project.html
+//
+ 
