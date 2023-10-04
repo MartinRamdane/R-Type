@@ -35,7 +35,7 @@ public:
     std::vector<uint8_t> encodeEvent(Event event);
     void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint);
     void sendEventToAllClients(Event evt);
-    void UDPServer::handleEngineEvents(std::string request);
+    void handleEngineEvents(std::string request);
 
 private:
     void start_receive();
