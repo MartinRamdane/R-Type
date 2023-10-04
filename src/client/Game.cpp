@@ -17,7 +17,7 @@ Game::Game() : _threadPool(1)
 
 void Game::createWindow(std::string name, int x, int y)
 {
-     _window.create(sf::VideoMode(1920, 1808), name);
+    _window.create(sf::VideoMode(1920, 1808), name);
     _window.setFramerateLimit(60);
     _view = sf::View(sf::FloatRect(0, 0, x, y));
 }
@@ -54,11 +54,13 @@ void Game::handleEvent()
 {
     while (_window.pollEvent(_event))
     {
-        if (_event.type == sf::Event::Closed) {
+        if (_event.type == sf::Event::Closed)
+        {
             _window.close();
             _client->Disconnect();
             closed = true;
-        } if (_event.type == sf::Event::KeyPressed)
+        }
+        if (_event.type == sf::Event::KeyPressed)
         {
             Event evt;
             switch (_event.key.code)
@@ -164,12 +166,12 @@ bool Game::connectToUdpServer(std::string host, int port)
     _udpClient = new UDPClient();
     _udpClient->connect_to(host, port);
     isUDPClientConnected = true;
-    _threadPool.enqueue([this] {
+    _threadPool.enqueue([this]
+                        {
         while (true)
         {
             std::string data = _udpClient->receive_data();
             std::cout << "data: " << data << std::endl;
-        }
-    });
+        } });
     return true;
 }

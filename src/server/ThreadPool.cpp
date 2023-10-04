@@ -9,8 +9,10 @@
 
 ThreadPool::ThreadPool(size_t numThreads) : stop(false)
 {
-  for (size_t i = 0; i < numThreads; ++i) {
-    workers.emplace_back([this] {
+  for (size_t i = 0; i < numThreads; ++i)
+  {
+    workers.emplace_back([this]
+                         {
       while (true) {
         std::function<void()> task;
         {
@@ -23,8 +25,7 @@ ThreadPool::ThreadPool(size_t numThreads) : stop(false)
           tasks.pop();
         }
         task();
-      }
-    });
+      } });
   }
 }
 
@@ -43,8 +44,10 @@ ThreadPool::~ThreadPool()
   }
 }
 
-void ThreadPool::addThread() {
-    workers.emplace_back([this] {
+void ThreadPool::addThread()
+{
+  workers.emplace_back([this]
+                       {
       while (true) {
         std::function<void()> task;
         {
@@ -57,6 +60,5 @@ void ThreadPool::addThread() {
           tasks.pop();
         }
         task();
-      }
-    });
+      } });
 }

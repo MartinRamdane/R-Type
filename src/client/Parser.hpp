@@ -17,18 +17,19 @@
 
 class Parser
 {
-    public:
-        Parser();
-        ~Parser();
-        bool findEntity(int id);
-        Entity loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager);
-        void addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager);
-        void removeEntity(std::map<std::string, std::string> value);
-        void updateEntity(std::map<std::string, std::string> value);
-        void modifyPosEntity(std::map<std::string, std::string> value);
-        void getConfig(std::string path, std::string type, Entity *entity);
-        std::string setKey(std::string key, int i);
-        void parseMessage(std::string message, RessourceManager &ressourceManager);
-    public:
-        std::map<int, Entity> _entities;
+public:
+    Parser();
+    ~Parser();
+    bool findEntity(int id);
+    Entity loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager);
+    void addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager);
+    void removeEntity(std::map<std::string, std::string> value);
+    void updateEntity(std::map<std::string, std::string> value);
+    void modifyPosEntity(std::map<std::string, std::string> value);
+    void getConfig(std::string path, std::string type, Entity *entity);
+    std::string setKey(std::string key, int i);
+    void parseMessage(std::string message, RessourceManager &ressourceManager);
+
+public:
+    std::map<int, Entity> _entities;
 };

@@ -11,35 +11,42 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
-class UDPClient {
+class UDPClient
+{
 public:
-    UDPClient() : io_context_(), socket_(io_context_) {
+    UDPClient() : io_context_(), socket_(io_context_)
+    {
         socket_.open(boost::asio::ip::udp::v4());
     }
 
-
-    ~UDPClient() {
+    ~UDPClient()
+    {
         socket_.close();
     }
 
-    void send_data(const std::string& data, const std::string& host, int port) {
+    void send_data(const std::string &data, const std::string &host, int port)
+    {
         boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
         socket_.send_to(boost::asio::buffer(data), remote_endpoint);
     }
-    void connect_to(const std::string& host, int port) {
+    void connect_to(const std::string &host, int port)
+    {
         send_data("Hello", host, port);
     }
 
-    std::string receive_data() {
+    std::string receive_data()
+    {
         std::array<char, 1024> recv_buffer;
         boost::asio::ip::udp::endpoint sender_endpoint;
         std::size_t bytes_received = socket_.receive_from(boost::asio::buffer(recv_buffer), sender_endpoint);
-        if (check_ping(std::string(recv_buffer.data(), bytes_received))) {
+        if (check_ping(std::string(recv_buffer.data(), bytes_received)))
+        {
             send_data("Pong", sender_endpoint.address().to_string(), sender_endpoint.port());
         }
         return std::string(recv_buffer.data(), bytes_received);
     }
-    bool check_ping(const std::string& data) {
+    bool check_ping(const std::string &data)
+    {
         std::cout << "Received:3 " << data << std::endl;
         return data == "Ping";
     }

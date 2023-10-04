@@ -18,7 +18,7 @@
 
 class Character;
 
-class Game: public IGame
+class Game : public IGame
 {
 public:
     Game(std::shared_ptr<Engine> &engine);

@@ -144,8 +144,7 @@ protected:
     }
 
 private:
-ServerClass *_server;
-}
-;
+    ServerClass *_server;
+};
 
 #endif /* !SERVERIMPL_HPP_ */

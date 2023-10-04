@@ -17,11 +17,14 @@ int main()
     std::cout << "name: " << login.name << std::endl;
     std::cout << "port: " << login.port << std::endl;
     std::cout << "ip: " << login.ip << std::endl;
-    try {
+    try
+    {
         Game game;
         game.connectToServer(login.ip, std::atoi(login.port.c_str()));
         game.run();
-    } catch (std::exception &e) {
+    }
+    catch (std::exception &e)
+    {
         std::cerr << e.what() << std::endl;
     }
 
