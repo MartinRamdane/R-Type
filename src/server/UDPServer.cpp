@@ -68,6 +68,12 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
             evt.body_size = buffer.size();
             evt.body = buffer;
             sendEvent(evt, client.client.address().to_string(), client.client.port());
+            evt.ACTION_NAME = ACTION::SPRITE;
+            buffer.clear();
+            buffer = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
+            evt.body_size = buffer.size();
+            evt.body = buffer;
+            sendEvent(evt, client.client.address().to_string(), client.client.port());
         }
         evt = eventHandler.decodeMessage(recv_buffer_);
         std::cout << "Received data: " << evt.body << std::endl;
@@ -173,6 +179,15 @@ void UDPServer::sendEventToAllClients(Event evt)
     {
         sendEvent(evt, it->client.address().to_string(), it->client.port());
     }
+}
+
+void UDPServer::handleEngineEvents(std::string request)
+{
+    std::stringstream ss(request);
+    std::string eventType;
+    std::string body;
+    ss >> eventType;
+    ss >> body;
 }
 
 std::vector<uint8_t> UDPServer::encodeEvent(Event event)

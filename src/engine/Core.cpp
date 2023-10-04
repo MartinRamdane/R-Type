@@ -19,19 +19,17 @@ Core::~Core()
 {
 }
 
-void Core::mainLoop(std::string event)
+std::vector<std::string> Core::mainLoop(std::string event)
 {
-    while (_engine->isRunning())
+    if (_engine->frameRateControl())
     {
-        if (_engine->frameRateControl())
-        {
-            // get events
-            _engine->update();
-            auto gameEvent = Protocol::transformProtocolToEvent(event);
-            _game->update(gameEvent);
-            auto entities = _engine->getEntities();
-            std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
-            // send protocol to client
-        }
+        // get events
+        _engine->update();
+        auto gameEvent = Protocol::transformProtocolToEvent(event);
+        _game->update(gameEvent);
+        auto entities = _engine->getEntities();
+        std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
+        return protocol;
     }
+    return {};
 }

@@ -38,6 +38,8 @@ public:
     void setGameTitle(std::string gameTitle) { _gameTitle = gameTitle; }
     void setWidth(int width) { _width = width; }
     void setHeight(int height) { _height = height; }
+    Parser *getParser() const { return _parser; }
+    RessourceManager getRessourceManager() const { return _ressourceManager; }
 
 private:
     sf::RenderWindow _window;
@@ -45,7 +47,7 @@ private:
     sf::Event _event;
     sf::Clock _clock;
     RessourceManager _ressourceManager;
-    Parser _parser;
+    Parser *_parser;
     TCPClientImpl *_client;
     UDPClient *_udpClient;
     int _event_indicator;

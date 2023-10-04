@@ -12,8 +12,13 @@ Instance::Instance(int id) : _threadPool(1), _port((int)(4210 + id)), _udpServer
   _core = new Core();
   _udpServer.setInstance(this);
   _threadPool.enqueue([this]()
-                      { _io_service.run(); });
-  // use _serverRef to send the UDP server port to the client
+  { _io_service.run(); });
+  while (1) {
+    std::vector<std::string> protocol = _core->mainLoop("rien");
+    for (auto &p : protocol) {
+      _udpServer.handleEngineEvents(p);
+    }
+  }
 }
 
 Instance::~Instance()
