@@ -46,7 +46,7 @@ class Input {
         sf::RectangleShape cursor;
         sf::Clock clock;
         bool cursorVisible = false;
-        std::string _textValue; 
+        std::string _textValue;
 };
 
 #endif /* !INPUT_HEADER_GUARD */
