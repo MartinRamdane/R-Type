@@ -152,7 +152,7 @@ bool Game::connectToServer(std::string host, int port)
     bool connected = _client->Connect(host, port, this);
     std::cout << "connected: " << connected << std::endl;
     if (connected == false)
-        exit(84);
+        return false;
     Event evt;
     evt.ACTION_NAME = ACTION::CREATE;
     evt.body_size = 0;

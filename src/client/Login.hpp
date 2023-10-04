@@ -26,5 +26,3 @@ struct Login
 };
 
 #endif
-
-struct Login startgame();
