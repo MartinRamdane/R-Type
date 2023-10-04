@@ -48,6 +48,8 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
     {
         mutex_.lock();
         Client client{remote_endpoint_, std::chrono::system_clock::now()};
+        Event evt;
+        EventHandler eventHandler;
         if (std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
                          { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }) == clients_.end())
         {
@@ -58,9 +60,15 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
             addClient(newClient);
             std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
             std::cout << "vector size : " << clients_.size() << std::endl;
+            std::shared_ptr<Engine> engineRef = _instanceRef->getCore()->getEngine();
+            engineRef->openWindow();
+            std::cout << "window info: " << engineRef->getWindowHeight() << engineRef->getWindowWidth() << engineRef->getWindowTitle() << std::endl;
+            std::string buffer = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
+            evt.ACTION_NAME = ACTION::JOINED;
+            evt.body_size = buffer.size();
+            evt.body = buffer;
+            sendEvent(evt, client.client.address().to_string(), client.client.port());
         }
-        Event evt;
-        EventHandler eventHandler;
         evt = eventHandler.decodeMessage(recv_buffer_);
         std::cout << "Received data: " << evt.body << std::endl;
 
@@ -124,7 +132,7 @@ void UDPServer::send_ping_to_clients()
             }
             else
             {
-                socket_.send_to(boost::asio::buffer("Ping", 4), it->client);
+                sendEvent({ACTION::PING, 0, ""}, it->client.address().to_string(), it->client.port());
                 ++it;
             }
         }

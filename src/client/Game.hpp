@@ -34,6 +34,10 @@ public:
     bool connectToServer(std::string host, int port);
     bool connectToUdpServer(std::string host, int port);
     void setConnected(bool) { isTCPClientConnected = true; }
+    void setUDPConnected(bool state) { isUDPClientConnected = state; }
+    void setGameTitle(std::string gameTitle) { _gameTitle = gameTitle; }
+    void setWidth(int width) { _width = width; }
+    void setHeight(int height) { _height = height; }
 
 private:
     sf::RenderWindow _window;
@@ -51,4 +55,7 @@ private:
     bool isTCPClientConnected = false;
     bool isUDPClientConnected = false;
     bool closed;
+    std::string _gameTitle;
+    int _width;
+    int _height;
 };

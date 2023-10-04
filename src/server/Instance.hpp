@@ -27,6 +27,7 @@ class Instance
         void setServer(ServerClass *server) { _serverRef = server; }
         int getNbPlayers() const { return _udpServer.getNbPlayers(); }
         int getPort() const { return _port; }
+        Core *getCore() { return _core; }
 
     protected:
     private:
@@ -36,7 +37,7 @@ class Instance
         UDPServer _udpServer;
         ServerClass *_serverRef;
         ThreadPool _threadPool;
-        Core _core;
+        Core *_core;
 };
 
 #endif /* !HEADER_INSTANCE */

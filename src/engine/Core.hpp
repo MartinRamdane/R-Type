@@ -17,6 +17,8 @@ public:
     ~Core();
 
     void mainLoop(std::string event);
+    std::shared_ptr<Engine> getEngine() { return _engine; }
+    std::shared_ptr<IGame> getGame() { return _game; }
 
 private:
     std::shared_ptr<Engine> _engine;

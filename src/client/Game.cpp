@@ -12,6 +12,9 @@ Game::Game() : _threadPool(1)
     _ressourceManager = RessourceManager();
     _parser = Parser();
     _event_indicator = 0;
+    _gameTitle = "game";
+    _width = 850;
+    _height = 478;
     closed = false;
 }
 
@@ -33,7 +36,7 @@ void Game::run()
         }
         if (isUDPClientConnected == true)
         {
-            createWindow("R-Type", 1920, 1080);
+            createWindow(_gameTitle, _width, _height);
             while (_window.isOpen())
             {
                 if (_client->Incoming().empty() == false)
@@ -166,13 +169,12 @@ bool Game::connectToServer(std::string host, int port)
 bool Game::connectToUdpServer(std::string host, int port)
 {
     _udpClient = new UDPClient();
+    _udpClient->setGameRef(this);
     _udpClient->connect_to(host, port);
-    isUDPClientConnected = true;
     _threadPool.enqueue([this] {
         while (true)
         {
-            std::string data = _udpClient->receive_data();
-            std::cout << "data: " << data << std::endl;
+            _udpClient->receive_data();
         }
     });
     return true;
