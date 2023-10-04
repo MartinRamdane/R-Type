@@ -90,7 +90,7 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
         }
         else
         {
-            handleEvents(evt);
+            handleEvents(evt, remote_endpoint_);
         }
         mutex_.unlock();
         start_receive();
@@ -168,7 +168,17 @@ void UDPServer::sendEvent(Event evt, const std::string &host, int port)
     std::cout << "send event" << std::endl;
     std::vector<uint8_t> data = encodeEvent(evt);
     boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
-    socket_.send_to(boost::asio::buffer(data), remote_endpoint);
+    socket_.async_send_to(boost::asio::buffer(data), remote_endpoint, [this](boost::system::error_code /*ec*/, std::size_t /*bytes_sent*/) {
+        std::cout << "sent" << std::endl;
+    });
+}
+
+void UDPServer::sendEventToAllClients(Event evt)
+{
+    for (auto it = _clients.begin(); it != _clients.end(); ++it)
+    {
+        sendEvent(evt, it->client.address().to_string(), it->client.port());
+    }
 }
 
 void UDPServer::handleEngineEvents(std::string request)
@@ -187,7 +197,7 @@ std::vector<uint8_t> UDPServer::encodeEvent(Event event)
     return evt.encodeMessage();
 }
 
-void UDPServer::handleEvents(Event evt)
+void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
 {
     switch (evt.ACTION_NAME)
     {
@@ -199,6 +209,7 @@ void UDPServer::handleEvents(Event evt)
         break;
     case ACTION::UP:
         std::cout << "Player go to up" << std::endl;
+        sendEvent({ACTION::UP, 2, "ok"}, endpoint.address().to_string(), endpoint.port());
         break;
     case ACTION::DOWN:
         std::cout << "Player go to down" << std::endl;
