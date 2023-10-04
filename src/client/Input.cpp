@@ -104,11 +104,10 @@ void Input::eventHandler(sf::Event event, sf::RenderWindow &window)
     {
         if (event.type == sf::Event::TextEntered && event.text.unicode == 8 && this->_value.size() > 0)
             this->_value = this->_value.substr(0, this->_value.size() - 1);
-        if (event.type == sf::Event::TextEntered && event.text.unicode == '.')
+        if (event.type == sf::Event::TextEntered && event.text.unicode == '.' && _text.getGlobalBounds().width < _sprite.getGlobalBounds().width - 30)
             this->_value += ".";
-        else if (event.type == sf::Event::TextEntered && event.text.unicode >= 32 && event.text.unicode <= 126)
+        else if (event.type == sf::Event::TextEntered && event.text.unicode >= 32 && event.text.unicode <= 126 && _text.getGlobalBounds().width < _sprite.getGlobalBounds().width - 30)
         {
-            std::cout << "key pressed: " << event.key.code << std::endl;
             this->_value += event.text.unicode;
         }
     }
