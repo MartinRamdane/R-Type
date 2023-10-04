@@ -36,9 +36,11 @@ void Game::run()
         }
         if (isUDPClientConnected == true)
         {
+            _udpClient->handler(); // pas sur des deux handler
             createWindow(_gameTitle, _width, _height);
             while (_window.isOpen())
             {
+                _udpClient->handler(); // pas sur des deux handler
                 if (_client->Incoming().empty() == false)
                 {
                     auto msg = _client->Incoming().pop_front().msg;
@@ -72,35 +74,35 @@ void Game::handleEvent()
                 evt.ACTION_NAME = ACTION::LEFT;
                 evt.body_size = 0;
                 evt.body = "";
-                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                _udpClient->sendEvent(evt);
                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Right:
                 evt.ACTION_NAME = ACTION::RIGHT;
                 evt.body_size = 0;
                 evt.body = "";
-                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                _udpClient->sendEvent(evt);
                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Up:
                 evt.ACTION_NAME = ACTION::UP;
                 evt.body_size = 0;
                 evt.body = "";
-                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                _udpClient->sendEvent(evt);
                 _event_indicator = 1;
                 break;
             case sf::Keyboard::Down:
                 evt.ACTION_NAME = ACTION::DOWN;
                 evt.body_size = 0;
                 evt.body = "";
-                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                _udpClient->sendEvent(evt);
                 _event_indicator = 1;
                 break;
             case sf::Keyboard::Space:
                 evt.ACTION_NAME = ACTION::SHOOT;
                 evt.body_size = 0;
                 evt.body = "";
-                _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                _udpClient->sendEvent(evt);
                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Escape:
@@ -174,11 +176,6 @@ bool Game::connectToUdpServer(std::string host, int port)
     _udpClient = new UDPClient();
     _udpClient->setGameRef(this);
     _udpClient->connect_to(host, port);
-    _threadPool.enqueue([this] {
-        while (true)
-        {
-            _udpClient->receive_data();
-        }
-    });
+    //isUDPClientConnected = true;
     return true;
 }

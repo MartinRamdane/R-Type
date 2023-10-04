@@ -33,7 +33,8 @@ public:
     int getNbPlayers() const { return _nbPlayers; }
     void sendEvent(Event evt, const std::string &host, int port);
     std::vector<uint8_t> encodeEvent(Event event);
-    void handleEvents(Event evt);
+    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint);
+    void sendEventToAllClients(Event evt);
 
 private:
     void start_receive();
