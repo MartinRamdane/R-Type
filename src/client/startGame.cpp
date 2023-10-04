@@ -90,6 +90,27 @@ Login startgame()
                     return login;
                 }
             }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return && ipInput.getActive()) {
+                if (nameInput.getText() != "" && portInput.getText() != "" && ipInput.getText() != "") {
+                    login.name = nameInput.getText();
+                    login.port = portInput.getText();
+                    login.ip = ipInput.getText();
+                    window.close();
+                    return login;
+                }
+            }
+            if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Tab || event.key.code == sf::Keyboard::Return)) {
+                if (nameInput.getActive()) {
+                    nameInput.setActive(false);
+                    portInput.setActive(true);
+                } else if (portInput.getActive()) {
+                    portInput.setActive(false);
+                    ipInput.setActive(true);
+                } else if (ipInput.getActive()) {
+                    ipInput.setActive(false);
+                    nameInput.setActive(true);
+                }
+            }
         }
         nameInput.update();
         portInput.update();

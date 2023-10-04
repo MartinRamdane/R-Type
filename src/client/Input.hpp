@@ -27,6 +27,8 @@ class Input {
         void update();
         std::string getText() { return _value;};
         sf::Vector2f getSpritePosition();
+        bool getActive() const { return _isActive; };
+        void setActive(bool active) { _isActive = active; };
 
     protected:
     private:

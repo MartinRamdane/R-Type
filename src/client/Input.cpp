@@ -108,7 +108,6 @@ void Input::eventHandler(sf::Event event, sf::RenderWindow &window)
             this->_value += ".";
         else if (event.type == sf::Event::TextEntered && event.text.unicode >= 32 && event.text.unicode <= 126)
         {
-            std::cout << "key pressed: " << event.key.code << std::endl;
             this->_value += event.text.unicode;
         }
     }
