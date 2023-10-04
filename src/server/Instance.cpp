@@ -12,15 +12,18 @@ Instance::Instance(int id) : _threadPool(1), _port((int)(4210 + id)), _udpServer
   _core = new Core();
   _udpServer.setInstance(this);
   _threadPool.enqueue([this]()
-  { _io_service.run(); });
-  // while (1) {
-  //   std::vector<std::string> protocol = _core->mainLoop("rien");
-  //   for (auto &p : protocol) {
-  //     _udpServer.handleEngineEvents(p);
-  //   }
-  // }
+                      { _io_service.run(); });
+  //implement the main loop in thread
 }
 
 Instance::~Instance()
 {
+}
+
+void Instance::mainLoop()
+{
+  while (1)
+  {
+    std::cout << "ta grand mere" << std::endl;
+  }
 }

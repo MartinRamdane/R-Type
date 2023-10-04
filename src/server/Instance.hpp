@@ -18,26 +18,27 @@ class ServerClass;
 
 class Instance
 {
-    public:
-        Instance(int _id);
-        Instance(const Instance &) = delete;
-        ~Instance(); // destroy the instance if nbPlayers === 0
-        int getId() const { return _id; }
-        UDPServer &getUDPServer() { return _udpServer; }
-        void setServer(ServerClass *server) { _serverRef = server; }
-        int getNbPlayers() const { return _udpServer.getNbPlayers(); }
-        int getPort() const { return _port; }
-        Core *getCore() { return _core; }
+public:
+    Instance(int _id);
+    Instance(const Instance &) = delete;
+    ~Instance(); // destroy the instance if nbPlayers === 0
+    int getId() const { return _id; }
+    UDPServer &getUDPServer() { return _udpServer; }
+    void setServer(ServerClass *server) { _serverRef = server; }
+    int getNbPlayers() const { return _udpServer.getNbPlayers(); }
+    int getPort() const { return _port; }
+    Core *getCore() { return _core; }
+    void mainLoop();
 
-    protected:
-    private:
-        int _id;
-        int _port;
-        boost::asio::io_service _io_service;
-        UDPServer _udpServer;
-        ServerClass *_serverRef;
-        ThreadPool _threadPool;
-        Core *_core;
+protected:
+private:
+    int _id;
+    int _port;
+    boost::asio::io_service _io_service;
+    UDPServer _udpServer;
+    ServerClass *_serverRef;
+    ThreadPool _threadPool;
+    Core *_core;
 };
 
 #endif /* !HEADER_INSTANCE */
