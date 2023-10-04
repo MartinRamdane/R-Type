@@ -35,6 +35,7 @@ sf::Texture Entity::getTexture() const
 
 void Entity::setSpritePosition(const sf::Vector2f &pos)
 {
+    _oldPosY = _sprite.getPosition().y;
     _sprite.setPosition(pos);
 }
 

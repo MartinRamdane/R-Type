@@ -13,6 +13,9 @@ Game::Game() : _threadPool(1)
     _parser = Parser();
     _event_indicator = 0;
     closed = false;
+   _parser.parseMessage("ecreate 0 0 250 background.png 0 1 1 ./config.json Background", _ressourceManager);
+    _parser.parseMessage("ecreate 1 100 100 Spaceship3.png 0 1 1 ./config.json Spaceship", _ressourceManager);
+    _parser.parseMessage("ecreate 3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship", _ressourceManager);
 }
 
 void Game::createWindow(std::string name, int x, int y)
@@ -68,30 +71,35 @@ void Game::handleEvent()
                 evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Right:
                 evt.ACTION_NAME = ACTION::RIGHT;
                 evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Up:
                 evt.ACTION_NAME = ACTION::UP;
                 evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                _event_indicator = 1;
                 break;
             case sf::Keyboard::Down:
                 evt.ACTION_NAME = ACTION::DOWN;
                 evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                 _event_indicator = 1;
                 break;
             case sf::Keyboard::Space:
                 evt.ACTION_NAME = ACTION::SHOOT;
                 evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
+                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Escape:
                 _window.close();
@@ -102,6 +110,8 @@ void Game::handleEvent()
                 break;
             }
         }
+        else
+            _event_indicator = 0;
     }
 }
 
@@ -116,8 +126,8 @@ void Game::animate()
         //     it->second.animateSprite(_event_indicator, 100);
         if (it->second._event_form == "once")
             it->second.animateSprite(3, 100);
-        // if (it->second._event_form == "event" && _event_indicator == 0)
-        //     it->second.setInitPos();
+        if (it->second._event_form == "event" && _event_indicator == 0)
+            it->second.setInitPos();
         if (it->second._event_form == "paralaxe")
             it->second.animateSprite(4, 1);
         it++;
