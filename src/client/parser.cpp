@@ -66,6 +66,7 @@ void Parser::addEntity(std::map<std::string, std::string> value, RessourceManage
         entity.setSpriteOrigin();
         entity.setSpriteRotation(std::stof(value["rotation"]));
         entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+        entity._oldPosY = std::stof(value["y"]);
         getConfig(value["config_path"], value["object_type"], &entity);
         _entities[id] = entity;
     }
@@ -85,7 +86,14 @@ void Parser::modifyPosEntity(std::map<std::string, std::string> value)
     int id = std::stoi(value["id"]);
     if (findEntity(id) == true)
     {
+
         _entities[id].setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+        if (_entities[id]._oldPosY > std::stof(value["y"]))
+            _entities[id].animateSprite(1, 100);
+        else if (_entities[id]._oldPosY < std::stof(value["y"]))
+            _entities[id].animateSprite(2, 100);
+        else if (_entities[id]._oldPosY == std::stof(value["y"]))
+            _entities[id].setInitPos();
     }
 }
 
@@ -160,9 +168,6 @@ void Parser::parseMessage(std::string message, RessourceManager &ressourceManage
                 key.clear();
             }
             removeEntity(valueMap);
-        }
-        else if (commande == "wcreate")
-        {
         }
     }
 }
