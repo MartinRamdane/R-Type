@@ -1,7 +1,7 @@
 #include "engine/Core.hpp"
 #include "server/Server.hpp"
 
-int main(int ac, char **av)
+int main()
 {
     ServerClass server;
     server.loop();

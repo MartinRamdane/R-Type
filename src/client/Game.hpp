@@ -47,7 +47,7 @@ private:
     int _event_indicator;
     std::queue<std::vector<uint8_t>> _queue;
     ThreadPool _threadPool;
-    bool isInstanceConnected = false;
+    // bool isInstanceConnected = false;
     bool isTCPClientConnected = false;
     bool isUDPClientConnected = false;
     bool closed;

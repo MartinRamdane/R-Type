@@ -31,7 +31,7 @@ public:
         client
     };
     TCPConnection(owner parent, boost::asio::io_context &asioContext, boost::asio::ip::tcp::socket socket, ThreadSafeQueue<owned_message<T>> &qMessagesIn, Game *game = nullptr)
-        : m_asioContext(asioContext), m_socket(std::move(socket)), m_qMessagesIn(qMessagesIn)
+        : m_socket(std::move(socket)), m_asioContext(asioContext),  m_qMessagesIn(qMessagesIn)
     {
         m_ownerType = parent;
         _game = game;
