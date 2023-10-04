@@ -8,7 +8,7 @@
 #include "UDPServer.hpp"
 #include "Server.hpp"
 
-UDPServer::UDPServer(boost::asio::io_service& io_service, int port) : socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
+UDPServer::UDPServer(boost::asio::io_service &io_service, int port) : socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
 {
     _nbPlayers = 0;
     _clients = std::vector<Client>();
@@ -59,7 +59,12 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
             std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
             std::cout << "vector size : " << clients_.size() << std::endl;
         }
-        if (std::string(recv_buffer_.data(), bytes_recvd) == "Pong")
+        Event evt;
+        EventHandler eventHandler;
+        evt = eventHandler.decodeMessage(recv_buffer_);
+        std::cout << "Received data: " << evt.body << std::endl;
+
+        if (evt.ACTION_NAME == ACTION::PONG)
         {
             auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
                                    { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
@@ -68,6 +73,8 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
                 it->timestamp = std::chrono::system_clock::now();
                 std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
             }
+        } else {
+            handleEvents(evt);
         }
         mutex_.unlock();
         start_receive();
@@ -134,8 +141,47 @@ void UDPServer::addClient(Client client)
 
 void UDPServer::removeClient(Client client)
 {
-    _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c) {
-        return c.client.address() == client.client.address() && c.client.port() == client.client.port();
-    }));
+    _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c)
+                                  { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }));
     _nbPlayers--;
+}
+
+void UDPServer::sendEvent(Event evt, const std::string &host, int port)
+{
+    message<ACTION> msg;
+    std::cout << "send event" << std::endl;
+    std::vector<uint8_t> data = encodeEvent(evt);
+    boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
+    socket_.send_to(boost::asio::buffer(data), remote_endpoint);
+}
+
+std::vector<uint8_t> UDPServer::encodeEvent(Event event)
+{
+    EventHandler evt;
+    evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+    return evt.encodeMessage();
+}
+
+void UDPServer::handleEvents(Event evt)
+{
+    switch (evt.ACTION_NAME)
+    {
+        case ACTION::LEFT:
+            std::cout << "Player go to left" << std::endl;
+            break;
+        case ACTION::RIGHT:
+            std::cout << "Player go to right" << std::endl;
+            break;
+        case ACTION::UP:
+            std::cout << "Player go to up" << std::endl;
+            break;
+        case ACTION::DOWN:
+            std::cout << "Player go to down" << std::endl;
+            break;
+        case ACTION::SHOOT:
+            std::cout << "Player shoot" << std::endl;
+            break;
+        default:
+            break;
+    }
 }

@@ -36,7 +36,8 @@ InstanceInfos ServerClass::createInstance()
 
 void ServerClass::interpretEvent(Event &event)
 {
-    if (event.ACTION_NAME == ACTION::CREATE) {
+    if (event.ACTION_NAME == ACTION::CREATE)
+    {
         std::cout << "CREATE" << std::endl;
     }
 }
@@ -48,5 +49,9 @@ int ServerClass::getPortInstance(int instanceId)
 
 void ServerClass::loop()
 {
-    _server->HandleMessages(-1, true);
+    while (1)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        _server->HandleMessages(-1, true);
+    }
 }

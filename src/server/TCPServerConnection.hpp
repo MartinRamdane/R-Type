@@ -13,7 +13,7 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include "EventHandler.hpp"
+#include "../global/EventHandler.hpp"
 #include "ThreadSafeQueue.hpp"
 #include "Messages.hpp"
 
@@ -30,7 +30,7 @@ public:
         client
     };
     TCPConnection(owner parent, boost::asio::io_context& asioContext, boost::asio::ip::tcp::socket socket, ThreadSafeQueue<owned_message<T>>& qMessagesIn)
-        : m_asioContext(asioContext), m_socket(std::move(socket)), m_qMessagesIn(qMessagesIn)
+        : m_socket(std::move(socket)), m_asioContext(asioContext), m_qMessagesIn(qMessagesIn)
     {
         m_ownerType = parent;
     }
