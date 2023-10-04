@@ -47,5 +47,6 @@ protected:
     int _id;
     std::string _spriteConfigJsonPath;
     std::string _spriteConfigJsonObjectName;
+
 private:
 };

@@ -8,8 +8,10 @@
 #include "TCPClientImpl.hpp"
 #include "Game.hpp"
 
-void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
-  switch (msg.header.id) {
+void TCPClientImpl::HandleMessage(message<ACTION> &msg)
+{
+  switch (msg.header.id)
+  {
   case ACTION::CONNECT:
   {
     EventHandler evt;

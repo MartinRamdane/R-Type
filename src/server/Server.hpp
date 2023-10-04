@@ -13,25 +13,28 @@
 #include <thread>
 #include "Instance.hpp"
 
-class MyServer;  // Forward declaration
-struct InstanceInfos {
+class MyServer; // Forward declaration
+struct InstanceInfos
+{
   int id;
   int port;
 };
 
-class ServerClass {
-  public:
-    ServerClass();
-    ~ServerClass();
-    InstanceInfos createInstance();
-    int getPortInstance(int instanceId);
-    int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers();}
-    void interpretEvent(Event &event);
-    void loop();
-  protected:
-  private:
-    boost::asio::io_service _io_service;
-    ThreadPool _threadPool;
-    MyServer *_server;
-    std::vector<Instance *> _instances;
+class ServerClass
+{
+public:
+  ServerClass();
+  ~ServerClass();
+  InstanceInfos createInstance();
+  int getPortInstance(int instanceId);
+  int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers(); }
+  void interpretEvent(Event &event);
+  void loop();
+
+protected:
+private:
+  boost::asio::io_service _io_service;
+  ThreadPool _threadPool;
+  MyServer *_server;
+  std::vector<Instance *> _instances;
 };

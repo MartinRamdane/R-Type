@@ -49,7 +49,7 @@ public:
     virtual void shoot();
     std::string getSpriteConfigJsonPath() const;
     std::string getSpriteConfigJsonObjectName() const;
-    virtual void action() {};
+    virtual void action(){};
     void kill();
     void setShootAsset(std::string shootAsset);
 

@@ -15,30 +15,31 @@
 #include <condition_variable>
 #include <functional>
 
-class ThreadPool {
-  public:
-    ThreadPool(size_t numThreads);
-     ~ThreadPool();
-     template <class F>
-     void enqueue(F &&f)
-     {
-       {
-         std::unique_lock<std::mutex> lock(queueMutex);
-         tasks.emplace(std::forward<F>(f));
-       }
+class ThreadPool
+{
+public:
+  ThreadPool(size_t numThreads);
+  ~ThreadPool();
+  template <class F>
+  void enqueue(F &&f)
+  {
+    {
+      std::unique_lock<std::mutex> lock(queueMutex);
+      tasks.emplace(std::forward<F>(f));
+    }
 
-       condition.notify_one();
-     }
-     void addThread();
+    condition.notify_one();
+  }
+  void addThread();
 
-   protected:
-   private:
-     std::vector<std::thread> workers;
-     std::queue<std::function<void()>> tasks;
+protected:
+private:
+  std::vector<std::thread> workers;
+  std::queue<std::function<void()>> tasks;
 
-     std::mutex queueMutex;
-     std::condition_variable condition;
-     bool stop;
+  std::mutex queueMutex;
+  std::condition_variable condition;
+  bool stop;
 };
 
 #endif /* !HEADER_THREADPOOL */

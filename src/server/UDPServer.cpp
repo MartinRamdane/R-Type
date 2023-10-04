@@ -81,7 +81,9 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
                 it->timestamp = std::chrono::system_clock::now();
                 std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
             }
-        } else {
+        }
+        else
+        {
             handleEvents(evt);
         }
         mutex_.unlock();
@@ -174,22 +176,22 @@ void UDPServer::handleEvents(Event evt)
 {
     switch (evt.ACTION_NAME)
     {
-        case ACTION::LEFT:
-            std::cout << "Player go to left" << std::endl;
-            break;
-        case ACTION::RIGHT:
-            std::cout << "Player go to right" << std::endl;
-            break;
-        case ACTION::UP:
-            std::cout << "Player go to up" << std::endl;
-            break;
-        case ACTION::DOWN:
-            std::cout << "Player go to down" << std::endl;
-            break;
-        case ACTION::SHOOT:
-            std::cout << "Player shoot" << std::endl;
-            break;
-        default:
-            break;
+    case ACTION::LEFT:
+        std::cout << "Player go to left" << std::endl;
+        break;
+    case ACTION::RIGHT:
+        std::cout << "Player go to right" << std::endl;
+        break;
+    case ACTION::UP:
+        std::cout << "Player go to up" << std::endl;
+        break;
+    case ACTION::DOWN:
+        std::cout << "Player go to down" << std::endl;
+        break;
+    case ACTION::SHOOT:
+        std::cout << "Player shoot" << std::endl;
+        break;
+    default:
+        break;
     }
 }

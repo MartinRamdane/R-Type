@@ -20,9 +20,9 @@ Game::Game() : _threadPool(1)
 
 void Game::createWindow(std::string name, int x, int y)
 {
-     _window.create(sf::VideoMode(x, y), name);
+    _window.create(sf::VideoMode(1920, 1808), name);
     _window.setFramerateLimit(60);
-    _view = sf::View(sf::FloatRect(0, 0, 850, 478));
+    _view = sf::View(sf::FloatRect(0, 0, x, y));
 }
 
 void Game::run()
@@ -57,11 +57,13 @@ void Game::handleEvent()
 {
     while (_window.pollEvent(_event))
     {
-        if (_event.type == sf::Event::Closed) {
+        if (_event.type == sf::Event::Closed)
+        {
             _window.close();
             _client->Disconnect();
             closed = true;
-        } if (_event.type == sf::Event::KeyPressed)
+        }
+        if (_event.type == sf::Event::KeyPressed)
         {
             Event evt;
             switch (_event.key.code)
@@ -83,14 +85,12 @@ void Game::handleEvent()
                 evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
-                _event_indicator = 1;
                 break;
             case sf::Keyboard::Down:
                 evt.ACTION_NAME = ACTION::DOWN;
                 evt.body_size = 0;
                 evt.body = "";
                 _udpClient->sendEvent(evt, _udpClient->getHost(), _udpClient->getPort());
-                _event_indicator = 2;
                 break;
             case sf::Keyboard::Space:
                 evt.ACTION_NAME = ACTION::SHOOT;
@@ -107,8 +107,6 @@ void Game::handleEvent()
                 break;
             }
         }
-        else
-            _event_indicator = 0;
     }
 }
 
@@ -119,12 +117,12 @@ void Game::animate()
     {
         if (it->second._event_form == "loop")
             it->second.animateSprite(0, 100);
-        if (it->second._event_form == "event" && _event_indicator != 0)
-            it->second.animateSprite(_event_indicator, 100);
+        // if (it->second._event_form == "event" && _event_indicator != 0)
+        //     it->second.animateSprite(_event_indicator, 100);
         if (it->second._event_form == "once")
             it->second.animateSprite(3, 100);
-        if (it->second._event_form == "event" && _event_indicator == 0)
-            it->second.setInitPos();
+        // if (it->second._event_form == "event" && _event_indicator == 0)
+        //     it->second.setInitPos();
         if (it->second._event_form == "paralaxe")
             it->second.animateSprite(4, 1);
         it++;
