@@ -30,6 +30,7 @@ public:
   int getPort() const { return _port; }
   void handleEvents(Event evt);
   void joinGame(Event evt);
+  void updateSprite(Event evt);
 
 private:
   boost::asio::io_context io_context_;

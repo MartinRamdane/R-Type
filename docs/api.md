@@ -53,3 +53,5 @@ Requests beginning with 'e' correspond to entity informations or actions (like e
 |edead i\n|...|the entity I is dead or destroyed|
 
 Table ronde ©
+
+id x y sprite rotation scaleX scaleY "./config.json" objetType

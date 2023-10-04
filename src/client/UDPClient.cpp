@@ -86,16 +86,40 @@ void UDPClient::joinGame(Event evt)
   _gameRef->setHeight(std::stoi(height));
 }
 
+void UDPClient::updateSprite(Event evt)
+{
+  std::stringstream ss(evt.body);
+  std::string id;
+  std::string x;
+  std::string y;
+  std::string sprite;
+  std::string jsonPath;
+  std::string objectType;
+  ss >> id;
+  ss >> x;
+  ss >> y;
+  ss >> sprite;
+  ss >> jsonPath;
+  ss >> objectType;
+  std::cout << "update sprite message: " << evt.body << std::endl;
+  Parser *parseRef = _gameRef->getParser();
+  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
+  parseRef->parseMessage(evt, evt.body, ressourceManagerRef);
+}
+
 void UDPClient::handleEvents(Event evt)
 {
   switch (evt.ACTION_NAME)
   {
-    case ACTION::PING:
-      sendEvent({ACTION::PONG, 0, ""}, _host, _port);
-      break;
-    case ACTION::JOINED:
-      joinGame(evt);
-      break;
+  case ACTION::PING:
+    sendEvent({ACTION::PONG, 0, ""}, _host, _port);
+    break;
+  case ACTION::JOINED:
+    joinGame(evt);
+    break;
+  case ACTION::SPRITE:
+    updateSprite(evt);
+    break;
   default:
     break;
   }

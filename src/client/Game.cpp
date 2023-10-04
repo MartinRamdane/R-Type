@@ -10,7 +10,7 @@
 Game::Game() : _threadPool(1)
 {
     _ressourceManager = RessourceManager();
-    _parser = Parser();
+    _parser = new Parser();
     _event_indicator = 0;
     _gameTitle = "game";
     _width = 850;
@@ -20,7 +20,7 @@ Game::Game() : _threadPool(1)
 
 void Game::createWindow(std::string name, int x, int y)
 {
-    _window.create(sf::VideoMode(1920, 1808), name);
+    _window.create(sf::VideoMode(1920, 1080), name);
     _window.setFramerateLimit(60);
     _view = sf::View(sf::FloatRect(0, 0, x, y));
 }
@@ -119,8 +119,9 @@ void Game::handleEvent()
 
 void Game::animate()
 {
-    std::map<int, Entity>::iterator it = _parser._entities.begin();
-    while (it != _parser._entities.end())
+    std::map<int, Entity> entities = _parser->getEntities();
+    std::map<int, Entity>::iterator it = entities.begin();
+    while (it != entities.end())
     {
         if (it->second._event_form == "loop")
             it->second.animateSprite(0, 100);
@@ -136,9 +137,11 @@ void Game::animate()
 
 void Game::draw()
 {
-    std::map<int, Entity>::iterator it = _parser._entities.begin();
-    while (it != _parser._entities.end())
+    std::map<int, Entity> entities = _parser->getEntities();
+    std::map<int, Entity>::iterator it = entities.begin();
+    while (it != entities.end())
     {
+        std::cout << "draw" << std::endl;
         _window.draw(it->second.getSprite());
         it++;
     }

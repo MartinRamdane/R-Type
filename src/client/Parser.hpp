@@ -14,6 +14,7 @@
 #include "Entity.hpp"
 #include "RessourceManager.hpp"
 #include "JsonParser.hpp"
+#include "../global/EventHandler.hpp"
 
 class Parser
 {
@@ -28,7 +29,8 @@ public:
     void modifyPosEntity(std::map<std::string, std::string> value);
     void getConfig(std::string path, std::string type, Entity *entity);
     std::string setKey(std::string key, int i);
-    void parseMessage(std::string message, RessourceManager &ressourceManager);
+    void parseMessage(Event evt, std::string message, RessourceManager &ressourceManager);
+    std::map<int, Entity> getEntities() const { return _entities; }
 
 public:
     std::map<int, Entity> _entities;

@@ -32,6 +32,7 @@ enum class ACTION : uint8_t
   QUIT,
   PING,
   PONG,
+  SPRITE,
   UNKNOWN,
 };
 

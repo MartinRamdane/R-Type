@@ -34,6 +34,7 @@ public:
     void sendEvent(Event evt, const std::string &host, int port);
     std::vector<uint8_t> encodeEvent(Event event);
     void handleEvents(Event evt);
+    void UDPServer::handleEngineEvents(std::string request);
 
 private:
     void start_receive();

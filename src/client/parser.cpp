@@ -35,6 +35,7 @@ Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &re
     {
         if (it->first == path)
         {
+            std::cout << "texture found: " << it->first << std::endl;
             entity._texture = it->second;
             entity._sprite.setTexture(*entity._texture);
             return entity;
@@ -57,19 +58,26 @@ void Parser::getConfig(std::string path, std::string type, Entity *entity)
 
 void Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
 {
+    std::cout << "id: " << value["id"] << std::endl;
+    std::cout << "path: " << value["path"] << std::endl;
+    std::cout << "scale.x: " << value["scale.x"] << std::endl;
+    std::cout << "scale.y: " << value["scale.y"] << std::endl;
+    std::cout << "rotation: " << value["rotation"] << std::endl;
+    std::cout << "x: " << value["x"] << std::endl;
+    std::cout << "y: " << value["y"] << std::endl;
+    std::cout << "config_path: " << value["config_path"] << std::endl;
+    std::cout << "object_type: " << value["object_type"] << std::endl;
     int id = std::stoi(value["id"]);
-    if (findEntity(id) == false)
-    {
-        Entity entity;
-        entity = loadTexture(entity, value["path"], ressourceManager);
-        entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
-        entity.setSpriteOrigin();
-        entity.setSpriteRotation(std::stof(value["rotation"]));
-        entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-        entity._oldPosY = std::stof(value["y"]);
-        getConfig(value["config_path"], value["object_type"], &entity);
-        _entities[id] = entity;
-    }
+    Entity entity;
+    entity = loadTexture(entity, value["path"], ressourceManager);
+    getConfig(value["config_path"], value["object_type"], &entity);
+    entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
+    entity.setSpriteOrigin();
+    entity.setSpriteRotation(std::stof(value["rotation"]));
+    entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+    entity._oldPosY = std::stoi(value["y"]);
+    _entities[id] = entity;
+    std::cout << "entity added, id: " << id << std::endl;
 }
 
 void Parser::removeEntity(std::map<std::string, std::string> value)
@@ -120,16 +128,16 @@ std::string Parser::setKey(std::string key, int i)
     return key;
 }
 
-void Parser::parseMessage(std::string message, RessourceManager &ressourceManager)
+void Parser::parseMessage(Event evt, std::string message, RessourceManager &ressourceManager)
 {
     std::size_t com = message.find(' ');
     if (com != std::string::npos)
     {
         std::string commande = message.substr(0, com);
         std::string tmp = message.substr(com);
-        if (commande == "ecreate")
+        if (evt.ACTION_NAME == ACTION::SPRITE)
         {
-            std::istringstream iss(tmp);
+            std::istringstream iss(message);
             std::map<std::string, std::string> valueMap;
             std::string key;
             std::string token;
@@ -141,20 +149,20 @@ void Parser::parseMessage(std::string message, RessourceManager &ressourceManage
             }
             addEntity(valueMap, ressourceManager);
         }
-        else if (commande == "pmove" || commande == "emove")
-        {
-            std::istringstream iss(tmp);
-            std::map<std::string, std::string> valueMap;
-            std::string key;
-            std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
-                key = setKey(key, i);
-                valueMap[key] = token;
-                key.clear();
-            }
-            modifyPosEntity(valueMap);
-        }
+        // else if (commande == "pmove" || commande == "emove")
+        // {
+        //     std::istringstream iss(tmp);
+        //     std::map<std::string, std::string> valueMap;
+        //     std::string key;
+        //     std::string token;
+        //     for (int i = 0; iss >> token; i++)
+        //     {
+        //         key = setKey(key, i);
+        //         valueMap[key] = token;
+        //         key.clear();
+        //     }
+        //     modifyPosEntity(valueMap);
+        // }
         else if (commande == "dead" || commande == "edead")
         {
             std::istringstream iss(tmp);
