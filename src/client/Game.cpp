@@ -179,6 +179,6 @@ bool Game::connectToUdpServer(std::string host, int port)
     _udpClient = new UDPClient();
     _udpClient->setGameRef(this);
     _udpClient->connect_to(host, port);
-    //isUDPClientConnected = true;
+    isUDPClientConnected = true;
     return true;
 }

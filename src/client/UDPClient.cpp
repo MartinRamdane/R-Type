@@ -134,7 +134,7 @@ void UDPClient::handleEvents(Event evt)
   switch (evt.ACTION_NAME)
   {
   case ACTION::PING:
-    sendEvent({ACTION::PONG, 0, ""}, _host, _port);
+    sendEvent({ACTION::PONG, 0, ""});
     break;
   case ACTION::JOINED:
     joinGame(evt);
