@@ -48,25 +48,7 @@ void UDPClient::receive_data()
   EventHandler eventHandler;
   evt = eventHandler.decodeMessage(recv_buffer_);
   std::cout << "Received: " << evt.body << std::endl;
-  if (evt.ACTION_NAME == ACTION::PING)
-  {
-    sendEvent({ACTION::PONG, 0, ""}, sender_endpoint.address().to_string(), sender_endpoint.port());
-  }
-  if (evt.ACTION_NAME == ACTION::JOINED)
-  {
-    std::stringstream ss(evt.body);
-    std::string gameTitle;
-    std::string width;
-    std::string height;
-    ss >> gameTitle;
-    ss >> width;
-    ss >> height;
-    std::cout << "window should be created: " << gameTitle << " " << std::stoi(width) << " " << std::stoi(height) << std::endl;
-    _gameRef->setUDPConnected(true);
-    _gameRef->setGameTitle(gameTitle);
-    _gameRef->setWidth(std::stoi(width));
-    _gameRef->setHeight(std::stoi(height));
-  }
+  handleEvents(evt);
 }
 bool UDPClient::check_ping(const std::string &data)
 {
@@ -86,4 +68,35 @@ std::vector<uint8_t> UDPClient::encodeEvent(Event event)
   EventHandler evt;
   evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
   return evt.encodeMessage();
+}
+
+void UDPClient::joinGame(Event evt)
+{
+  std::stringstream ss(evt.body);
+  std::string gameTitle;
+  std::string width;
+  std::string height;
+  ss >> gameTitle;
+  ss >> width;
+  ss >> height;
+  std::cout << "window should be created: " << gameTitle << " " << std::stoi(width) << " " << std::stoi(height) << std::endl;
+  _gameRef->setUDPConnected(true);
+  _gameRef->setGameTitle(gameTitle);
+  _gameRef->setWidth(std::stoi(width));
+  _gameRef->setHeight(std::stoi(height));
+}
+
+void UDPClient::handleEvents(Event evt)
+{
+  switch (evt.ACTION_NAME)
+  {
+    case ACTION::PING:
+      sendEvent({ACTION::PONG, 0, ""}, _host, _port);
+      break;
+    case ACTION::JOINED:
+      joinGame(evt);
+      break;
+  default:
+    break;
+  }
 }

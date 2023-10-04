@@ -28,6 +28,8 @@ public:
   std::vector<uint8_t> encodeEvent(Event event);
   std::string getHost() const { return _host; }
   int getPort() const { return _port; }
+  void handleEvents(Event evt);
+  void joinGame(Event evt);
 
 private:
   boost::asio::io_context io_context_;
