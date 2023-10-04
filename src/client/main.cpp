@@ -9,24 +9,16 @@
 #include "Login.hpp"
 #include "Parser.hpp"
 #include <thread>
+#include <memory>
+#include "Menu.hpp"
 
 int main()
 {
-    struct Login login = startgame();
-
-    std::cout << "name: " << login.name << std::endl;
-    std::cout << "port: " << login.port << std::endl;
-    std::cout << "ip: " << login.ip << std::endl;
-    try
-    {
-        Game game;
-        game.connectToServer(login.ip, std::atoi(login.port.c_str()));
-        game.run();
-    }
-    catch (std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-
+    struct Login login;
+    std::shared_ptr<Game> game = std::make_shared<Game>();
+    Menu *menu = new Menu(game);
+    menu->mainloop();
+    delete menu;
+    game->run();
     return 0;
 }
