@@ -17,10 +17,11 @@
 
 class RessourceManager
 {
-    public:
+public:
     RessourceManager();
     ~RessourceManager(){};
     std::map<std::string, std::shared_ptr<sf::Texture>> getTextures() const;
-    public:
+
+public:
     std::map<std::string, std::shared_ptr<sf::Texture>> _textures;
 };

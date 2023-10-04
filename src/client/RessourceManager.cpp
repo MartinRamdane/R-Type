@@ -10,7 +10,7 @@
 RessourceManager::RessourceManager()
 {
     std::string directory = "assets";
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(directory))
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(directory))
     {
         if (entry.is_regular_file())
         {

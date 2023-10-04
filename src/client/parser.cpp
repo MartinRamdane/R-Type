@@ -47,7 +47,7 @@ Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &re
 void Parser::getConfig(std::string path, std::string type, Entity *entity)
 {
     JsonParser jsonParser;
-    nlohmann::json jsonfile =  jsonParser.readFile(path);
+    nlohmann::json jsonfile = jsonParser.readFile(path);
     std::string nbRect = jsonParser.get<std::string>(jsonfile, type + ".nb_rect");
     std::string initRect = jsonParser.get<std::string>(jsonfile, type + ".rect_init");
     entity->setRect(std::stoi(nbRect), std::stoi(initRect));
