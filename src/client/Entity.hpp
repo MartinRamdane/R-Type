@@ -42,4 +42,5 @@ public:
     sf::Clock _clock;
     std::string _event_form;
     std::string _object_type;
+    int _oldPosY;
 };
