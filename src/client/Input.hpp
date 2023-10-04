@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <iostream>
+#include <memory>
 
 class Input {
     public:
