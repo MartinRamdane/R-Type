@@ -13,6 +13,7 @@
 #include <thread>
 #include "Mutex.hpp"
 #include "../global/EventHandler.hpp"
+#include "ThreadSafeQueue.hpp"
 
 class Instance;
 
@@ -20,6 +21,12 @@ struct Client
 {
     boost::asio::ip::udp::endpoint client;
     std::chrono::system_clock::time_point timestamp;
+};
+
+struct UDPMessage
+{
+    std::vector<uint8_t> data;
+    boost::asio::ip::udp::endpoint endpoint;
 };
 
 class UDPServer
@@ -36,6 +43,7 @@ public:
     void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint);
     void sendEventToAllClients(Event evt);
     void handleEngineEvents(std::string request);
+    void processSendQueue();
 
 private:
     void start_receive();
@@ -44,10 +52,13 @@ private:
     boost::asio::ip::udp::socket socket_;
     boost::asio::ip::udp::endpoint remote_endpoint_;
     std::vector<Client> clients_;
-    std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);
     std::thread ping_thread_;
     std::vector<Client> _clients;
     int _nbPlayers;
     Mutex mutex_;
     Instance *_instanceRef;
+    ThreadSafeQueue<std::vector<uint8_t>> _queue;
+    ThreadSafeQueue<UDPMessage> _toSendQueue;
+    std::vector<uint8_t> recv_buffer_;
+    std::vector<uint8_t> _tempMsg = {};
 };

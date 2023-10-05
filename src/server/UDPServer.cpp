@@ -34,7 +34,10 @@ void UDPServer::start_receive()
     {
         socket_.async_receive_from(
             boost::asio::buffer(recv_buffer_), remote_endpoint_, [this](const std::error_code &error, std::size_t bytes_recvd)
-            { handler(error, bytes_recvd); });
+            {
+                handler(error, bytes_recvd);
+                std::cout << "received data" << std::endl;
+            });
     }
     catch (const std::exception &e)
     {
@@ -58,41 +61,42 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
             // add the new client connected to this instance of the game in the instance client list
             Client newClient = {client.client, std::chrono::system_clock::now()};
             addClient(newClient);
+            sendEvent({ACTION::JOINED, 0, ""}, client.client.address().to_string(), client.client.port());
             std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
             std::cout << "vector size : " << clients_.size() << std::endl;
             std::shared_ptr<Engine> engineRef = _instanceRef->getCore()->getEngine();
             engineRef->openWindow();
             std::cout << "window info: " << engineRef->getWindowHeight() << engineRef->getWindowWidth() << engineRef->getWindowTitle() << std::endl;
-            std::string buffer = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
             evt.ACTION_NAME = ACTION::JOINED;
-            evt.body_size = buffer.size();
-            evt.body = buffer;
+            evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
+            evt.body_size = evt.body.size();
             sendEvent(evt, client.client.address().to_string(), client.client.port());
             evt.ACTION_NAME = ACTION::SPRITE;
-            buffer.clear();
-            buffer = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
-            evt.body_size = buffer.size();
-            evt.body = buffer;
+            evt.body = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
+            evt.body_size = evt.body.size();
             sendEvent(evt, client.client.address().to_string(), client.client.port());
+            processSendQueue();
         }
-        evt = eventHandler.decodeMessage(recv_buffer_);
-        std::cout << "Received data: " << evt.body << std::endl;
+        // evt = eventHandler.decodeMessage(recv_buffer_);
+        // std::cout << "Received data: " << evt.body << std::endl;
 
-        if (evt.ACTION_NAME == ACTION::PONG)
-        {
-            auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
-                                   { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
-            if (it != clients_.end())
-            {
-                it->timestamp = std::chrono::system_clock::now();
-                std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
-            }
-        }
-        else
-        {
-            handleEvents(evt, remote_endpoint_);
-        }
+        // if (evt.ACTION_NAME == ACTION::PONG)
+        // {
+        //     auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
+        //                            { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
+        //     if (it != clients_.end())
+        //     {
+        //         it->timestamp = std::chrono::system_clock::now();
+        //         std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
+        //     }
+        // }
+        // else
+        // {
+        //     handleEvents(evt, remote_endpoint_);
+        // }
+        //TODO : FIXER LERREUR (n'appeller le process queue que une fois en fait pas à chaque sendevent)
         mutex_.unlock();
+        std::cout << "unlocked mutex" << std::endl;
         start_receive();
     }
     else if (error.value() == boost::asio::error::eof)
@@ -162,15 +166,34 @@ void UDPServer::removeClient(Client client)
     _nbPlayers--;
 }
 
+void UDPServer::processSendQueue() {
+    std::cout << "process send queue" << std::endl;
+    socket_.async_send_to(boost::asio::buffer(_toSendQueue.front().data), _toSendQueue.front().endpoint, [this](const std::error_code &error, std::size_t bytes_recvd)
+    {
+        if (!error)
+        {
+            std::cout << "sent data" << std::endl;
+            _toSendQueue.pop_front();
+            if (!_toSendQueue.empty())
+                processSendQueue();
+        }
+        else
+        {
+            std::cout << "error sending data" << std::endl;
+        }
+    });
+
+}
+
 void UDPServer::sendEvent(Event evt, const std::string &host, int port)
 {
+    std::cout << "event msg : " << evt.body << std::endl;
     message<ACTION> msg;
     std::cout << "send event" << std::endl;
     std::vector<uint8_t> data = encodeEvent(evt);
     boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
-    socket_.async_send_to(boost::asio::buffer(data), remote_endpoint, [this](boost::system::error_code /*ec*/, std::size_t /*bytes_sent*/) {
-        std::cout << "sent" << std::endl;
-    });
+    _toSendQueue.push_back({data, remote_endpoint});
+    std::cout << "pushed to queue" << std::endl;
 }
 
 void UDPServer::sendEventToAllClients(Event evt)
