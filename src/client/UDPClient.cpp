@@ -8,6 +8,31 @@
 #include "UDPClient.hpp"
 #include "Game.hpp"
 
+std::string actionToString(ACTION action) {
+    switch (action) {
+      case ACTION::OK: return "OK";
+      case ACTION::KO: return "KO";
+      case ACTION::CONNECT: return "CONNECT";
+      case ACTION::CREATE: return "CREATE";
+      case ACTION::LIST: return "LIST";
+      case ACTION::JOIN: return "JOIN";
+      case ACTION::JOINED: return "JOINED";
+      case ACTION::READY: return "READY";
+      case ACTION::START: return "START";
+      case ACTION::LEFT: return "LEFT";
+      case ACTION::RIGHT: return "RIGHT";
+      case ACTION::UP: return "UP";
+      case ACTION::DOWN: return "DOWN";
+      case ACTION::SHOOT: return "SHOOT";
+      case ACTION::QUIT: return "QUIT";
+      case ACTION::PING: return "PING";
+      case ACTION::PONG: return "PONG";
+      case ACTION::SPRITE: return "SPRITE";
+      case ACTION::UNKNOWN: return "UNKNOWN";
+    }
+    return "";
+  }
+
 UDPClient::UDPClient() : io_context_(), socket_(io_context_)
 {
   socket_.open(boost::asio::ip::udp::v4());
@@ -20,23 +45,14 @@ UDPClient::~UDPClient()
   socket_.close();
 }
 
-void UDPClient::send_data(const std::string &data)
-{
-  socket_.async_send_to(boost::asio::buffer(data), remote_endpoint_,
-  [this](boost::system::error_code /*ec*/, std::size_t /*bytes_sent*/) {
-        //std::cout << "data sent" << std::endl;
-    });
-}
 void UDPClient::connect_to(const std::string &host, int port)
 {
     remote_endpoint_ = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(host), port);
     sendEvent({ACTION::JOIN, 2, "ok"});
     _port = port;
     _host = host;
-    //std::cout << "new server infos: " << _host << " " << _port << std::endl;
     start_receive();
     _thread = std::thread([this]() { io_context_.run(); });
-    //std::cout << "did connect" << std::endl;
 }
 
 void UDPClient::setGameRef(Game *gameRef)
@@ -51,7 +67,6 @@ void UDPClient::start_receive()
       socket_.async_receive_from(
           boost::asio::buffer(temp_buffer), sender_endpoint,
           [this](const std::error_code &error, std::size_t bytes_recvd) {
-            // handler(error, bytes_recvd);
             _queue.push_back(temp_buffer);
             start_receive();
           });
@@ -62,27 +77,18 @@ void UDPClient::start_receive()
     }
 }
 
-void UDPClient::handler()
+void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
 {
-    if (_queue.empty())
-        return;
-    while (!_queue.empty())
-    {
-        temp_buffer = _queue.front();
-        Event evt;
-        EventHandler eventHandler;
-        evt = eventHandler.decodeMessage(temp_buffer);
-        handleEvents(evt);
-        _queue.pop_front();
-    }
+    EventHandler evt;
+    Event event = evt.decodeMessage(msg);
+    handleEvents(event);
 }
 
 void UDPClient::sendEvent(Event evt)
 {
     std::vector<uint8_t> data = encodeEvent(evt);
-    socket_.async_send_to(boost::asio::buffer(data), remote_endpoint_, [this](boost::system::error_code /*ec*/, std::size_t /*bytes_sent*/) {
-        std::cout << "data sent" << std::endl;
-    });
+    SendAsync(data, remote_endpoint_);
+    std::cout << "added event : " << actionToString(evt.ACTION_NAME) << std::endl;
 }
 
 std::vector<uint8_t> UDPClient::encodeEvent(Event event)
@@ -145,4 +151,35 @@ void UDPClient::handleEvents(Event evt)
   default:
     break;
   }
+}
+
+void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
+{
+    boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
+                      {
+                          bool bWritingMessage = !_outQueue.empty();
+                          _outQueue.push_back({data, endpoint});
+                          if (!bWritingMessage)
+                          {
+                              processSendQueue();
+                          }
+                      });
+}
+
+void UDPClient::processSendQueue() {
+  socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint, [this](const std::error_code &error, std::size_t bytes_recvd)
+  {
+      if (!error)
+      {
+          std::cout << "sent data" << std::endl;
+          _outQueue.pop_front();
+          if (!_outQueue.empty())
+              processSendQueue();
+      }
+      else
+      {
+          std::cout << "error sending data" << std::endl;
+      }
+  });
+
 }

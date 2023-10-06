@@ -3,7 +3,12 @@
 
 int main()
 {
-    ServerClass server;
-    server.loop();
+    try {
+        ServerClass server;
+        server.loop();
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
     return 0;
+
 }

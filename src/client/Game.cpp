@@ -36,11 +36,17 @@ void Game::run()
         }
         if (isUDPClientConnected == true)
         {
-            _udpClient->handler(); // pas sur des deux handler
+            if (_udpClient->Incoming().empty() == false) {
+                auto msg = _udpClient->Incoming().pop_front();
+                _udpClient->HandleMessage(msg);
+            }
             createWindow(_gameTitle, _width, _height);
             while (_window.isOpen())
             {
-                _udpClient->handler(); // pas sur des deux handler
+                if (_udpClient->Incoming().empty() == false) {
+                    auto msg = _udpClient->Incoming().pop_front();
+                    _udpClient->HandleMessage(msg);
+                }
                 if (_client->Incoming().empty() == false)
                 {
                     auto msg = _client->Incoming().pop_front().msg;
