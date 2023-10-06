@@ -60,7 +60,7 @@ private:
     Instance *_instanceRef;
     ThreadSafeQueue<std::vector<uint8_t>> _queue;
     ThreadSafeQueue<UDPMessage> _toSendQueue;
-    std::vector<uint8_t> recv_buffer_;
+    std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);
     std::vector<uint8_t> _tempMsg = {};
     bool bWritingMessage;
 };
