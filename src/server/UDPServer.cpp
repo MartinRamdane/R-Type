@@ -45,68 +45,73 @@ void UDPServer::start_receive()
     }
 }
 
+void UDPServer::ProcessMessage(UDPMessage &msg)
+{
+    mutex_.lock();
+    Client client{msg.endpoint, std::chrono::system_clock::now()};
+    Event evt;
+    EventHandler eventHandler;
+    if (std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
+                     { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }) == clients_.end())
+    {
+        clients_.push_back(client);
+        std::cout << "New client connected: " << client.client.address().to_string() << ":" << client.client.port() << std::endl;
+        // add the new client connected to this instance of the game in the instance client list
+        Client newClient = {client.client, std::chrono::system_clock::now()};
+        addClient(newClient);
+        std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
+        std::cout << "vector size : " << clients_.size() << std::endl;
+        std::shared_ptr<Engine> engineRef = _instanceRef->getCore()->getEngine();
+        engineRef->openWindow();
+        std::cout << "window info: " << engineRef->getWindowHeight() << engineRef->getWindowWidth() << engineRef->getWindowTitle() << std::endl;
+        evt.ACTION_NAME = ACTION::JOINED;
+        evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
+        evt.body_size = evt.body.size();
+        sendEvent(evt, client.client.address().to_string(), client.client.port());
+        evt.ACTION_NAME = ACTION::SPRITE;
+        evt.body = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
+        evt.body_size = evt.body.size();
+        sendEvent(evt, client.client.address().to_string(), client.client.port());
+    }
+    evt = eventHandler.decodeMessage(msg.data);
+    std::cout << "Received data: " << evt.body << std::endl;
+
+    if (evt.ACTION_NAME == ACTION::PONG)
+    {
+        auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
+                               { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
+        if (it != clients_.end())
+        {
+            it->timestamp = std::chrono::system_clock::now();
+            std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
+        }
+    }
+    else
+    {
+        handleEvents(evt, remote_endpoint_);
+    }
+    mutex_.unlock();
+    std::cout << "unlocked mutex" << std::endl;
+}
+
 void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
 {
     if (!error)
     {
-        mutex_.lock();
-        Client client{remote_endpoint_, std::chrono::system_clock::now()};
-        Event evt;
-        EventHandler eventHandler;
-        if (std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
-                         { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }) == clients_.end())
-        {
-            clients_.push_back(client);
-            std::cout << "New client connected: " << client.client.address().to_string() << ":" << client.client.port() << std::endl;
-            // add the new client connected to this instance of the game in the instance client list
-            Client newClient = {client.client, std::chrono::system_clock::now()};
-            addClient(newClient);
-            std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
-            std::cout << "vector size : " << clients_.size() << std::endl;
-            std::shared_ptr<Engine> engineRef = _instanceRef->getCore()->getEngine();
-            engineRef->openWindow();
-            std::cout << "window info: " << engineRef->getWindowHeight() << engineRef->getWindowWidth() << engineRef->getWindowTitle() << std::endl;
-            evt.ACTION_NAME = ACTION::JOINED;
-            evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
-            evt.body_size = evt.body.size();
-            sendEvent(evt, client.client.address().to_string(), client.client.port());
-            evt.ACTION_NAME = ACTION::SPRITE;
-            evt.body = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
-            evt.body_size = evt.body.size();
-            sendEvent(evt, client.client.address().to_string(), client.client.port());
-        }
-        evt = eventHandler.decodeMessage(recv_buffer_);
-        std::cout << "Received data: " << evt.body << std::endl;
-
-        if (evt.ACTION_NAME == ACTION::PONG)
-        {
-            auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
-                                   { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
-            if (it != clients_.end())
-            {
-                it->timestamp = std::chrono::system_clock::now();
-                std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
-            }
-        }
-        else
-        {
-            handleEvents(evt, remote_endpoint_);
-        }
-        mutex_.unlock();
-        std::cout << "unlocked mutex" << std::endl;
+        _queue.push_back({recv_buffer_, remote_endpoint_});
+        recv_buffer_.clear();
+        recv_buffer_.resize(1024);
         start_receive();
     }
     else if (error.value() == boost::asio::error::eof)
     {
-        // Connection was closed by the remote host (client left)
-        // std::cout << "Client disconnected." << std::endl;
         mutex_.lock();
         auto it = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
-                               { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
+        { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
         if (it != clients_.end())
         {
             std::cout << "Client " << it->client.address().to_string() << ":" << it->client.port() << " disconnected." << std::endl;
-            clients_.erase(it); // Erase the found element
+            clients_.erase(it);
         }
         mutex_.unlock();
         start_receive();

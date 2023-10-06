@@ -14,8 +14,8 @@ Instance::Instance(int id) : _threadPool(2), _port((int)(4210 + id)), _udpServer
    _threadPool.enqueue([this]()
                        { _io_service.run(); });
   //implement the main loop in thread
-  // _threadPool.enqueue([this]()
-  //                     { mainLoop(); });
+  _threadPool.enqueue([this]()
+                      { mainLoop(); });
 }
 
 Instance::~Instance()
@@ -26,6 +26,7 @@ void Instance::mainLoop()
 {
   while (1)
   {
-    std::cout << "ta grand mere" << std::endl;
+    _udpServer.HandleMessages(-1, true);
+    std::cout << "main loop" << std::endl;
   }
 }

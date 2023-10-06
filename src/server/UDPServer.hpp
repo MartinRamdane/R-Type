@@ -45,7 +45,19 @@ public:
     void handleEngineEvents(std::string request);
     void processSendQueue();
     void SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
-
+    ThreadSafeQueue<UDPMessage> &Incoming() { return _queue; }
+    void HandleMessages(size_t maxMessages = -1, bool bWait = false) {
+        std::cout << "Handling messages" << std::endl;
+        if (bWait)
+            _queue.wait();
+        size_t nMessageCount = 0;
+        while (nMessageCount < maxMessages && !_queue.empty()) {
+            auto msg = _queue.pop_front();
+            ProcessMessage(msg);
+            nMessageCount++;
+        }
+    }
+    void ProcessMessage(UDPMessage &msg);
 private:
     void start_receive();
     void handler(const std::error_code &error, std::size_t bytes_recvd);
@@ -58,7 +70,7 @@ private:
     int _nbPlayers;
     Mutex mutex_;
     Instance *_instanceRef;
-    ThreadSafeQueue<std::vector<uint8_t>> _queue;
+    ThreadSafeQueue<UDPMessage> _queue;
     ThreadSafeQueue<UDPMessage> _toSendQueue;
     std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);
     std::vector<uint8_t> _tempMsg = {};
