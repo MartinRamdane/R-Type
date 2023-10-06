@@ -61,7 +61,6 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
             // add the new client connected to this instance of the game in the instance client list
             Client newClient = {client.client, std::chrono::system_clock::now()};
             addClient(newClient);
-            sendEvent({ACTION::JOINED, 0, ""}, client.client.address().to_string(), client.client.port());
             std::cout << "Connected at : " << std::chrono::system_clock::to_time_t(client.timestamp) << std::endl;
             std::cout << "vector size : " << clients_.size() << std::endl;
             std::shared_ptr<Engine> engineRef = _instanceRef->getCore()->getEngine();

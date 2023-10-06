@@ -14,17 +14,20 @@
 #include "ThreadSafeQueue.hpp"
 
 class Game;
-
+struct UDPMessage
+{
+    std::vector<uint8_t> data;
+    boost::asio::ip::udp::endpoint endpoint;
+};
 class UDPClient
 {
 public:
   UDPClient();
   ~UDPClient();
-  void send_data(const std::string &data);
   void connect_to(const std::string &host, int port);
   void setGameRef(Game *gameRef);
   void start_receive();
-  void handler();
+  void HandleMessage(std::vector<uint8_t> &msg);
   void sendEvent(Event evt);
   std::vector<uint8_t> encodeEvent(Event event);
   std::string getHost() const { return _host; }
@@ -32,12 +35,16 @@ public:
   void handleEvents(Event evt);
   void joinGame(Event evt);
   void updateSprite(Event evt);
+  void SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
+  ThreadSafeQueue<std::vector<uint8_t>> &Incoming() { return _queue; }
+  void processSendQueue();
 
 private:
   boost::asio::io_context io_context_;
   boost::asio::ip::udp::socket socket_;
   std::string _host;
   ThreadSafeQueue<std::vector<uint8_t>> _queue;
+  ThreadSafeQueue<UDPMessage> _outQueue;
   std::vector <uint8_t> temp_buffer = std::vector<uint8_t>(1024);
   boost::asio::ip::udp::endpoint remote_endpoint_;
   boost::asio::ip::udp::endpoint sender_endpoint;
