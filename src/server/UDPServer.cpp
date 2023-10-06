@@ -75,26 +75,24 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
             evt.body = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
             evt.body_size = evt.body.size();
             sendEvent(evt, client.client.address().to_string(), client.client.port());
-            processSendQueue();
         }
-        // evt = eventHandler.decodeMessage(recv_buffer_);
-        // std::cout << "Received data: " << evt.body << std::endl;
+        evt = eventHandler.decodeMessage(recv_buffer_);
+        std::cout << "Received data: " << evt.body << std::endl;
 
-        // if (evt.ACTION_NAME == ACTION::PONG)
-        // {
-        //     auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
-        //                            { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
-        //     if (it != clients_.end())
-        //     {
-        //         it->timestamp = std::chrono::system_clock::now();
-        //         std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
-        //     }
-        // }
-        // else
-        // {
-        //     handleEvents(evt, remote_endpoint_);
-        // }
-        //TODO : FIXER LERREUR (n'appeller le process queue que une fois en fait pas à chaque sendevent)
+        if (evt.ACTION_NAME == ACTION::PONG)
+        {
+            auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
+                                   { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
+            if (it != clients_.end())
+            {
+                it->timestamp = std::chrono::system_clock::now();
+                std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
+            }
+        }
+        else
+        {
+            handleEvents(evt, remote_endpoint_);
+        }
         mutex_.unlock();
         std::cout << "unlocked mutex" << std::endl;
         start_receive();
@@ -167,7 +165,6 @@ void UDPServer::removeClient(Client client)
 }
 
 void UDPServer::processSendQueue() {
-    std::cout << "process send queue" << std::endl;
     socket_.async_send_to(boost::asio::buffer(_toSendQueue.front().data), _toSendQueue.front().endpoint, [this](const std::error_code &error, std::size_t bytes_recvd)
     {
         if (!error)
@@ -192,7 +189,7 @@ void UDPServer::sendEvent(Event evt, const std::string &host, int port)
     std::cout << "send event" << std::endl;
     std::vector<uint8_t> data = encodeEvent(evt);
     boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
-    _toSendQueue.push_back({data, remote_endpoint});
+    SendAsync(data, remote_endpoint);
     std::cout << "pushed to queue" << std::endl;
 }
 
@@ -243,4 +240,17 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
     default:
         break;
     }
+}
+
+void UDPServer::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
+{
+    boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
+                      {
+                          bool bWritingMessage = !_toSendQueue.empty();
+                          _toSendQueue.push_back({data, endpoint});
+                          if (!bWritingMessage)
+                          {
+                              processSendQueue();
+                          }
+                      });
 }

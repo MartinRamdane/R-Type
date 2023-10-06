@@ -44,6 +44,7 @@ public:
     void sendEventToAllClients(Event evt);
     void handleEngineEvents(std::string request);
     void processSendQueue();
+    void SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
 
 private:
     void start_receive();
@@ -61,4 +62,5 @@ private:
     ThreadSafeQueue<UDPMessage> _toSendQueue;
     std::vector<uint8_t> recv_buffer_;
     std::vector<uint8_t> _tempMsg = {};
+    bool bWritingMessage;
 };
