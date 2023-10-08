@@ -36,6 +36,7 @@ public:
     ~UDPServer();
     void setInstance(Instance *instance) { _instanceRef = instance; }
     void addClient(Client client);
+    void checkConnection(UDPMessage &msg);
     void removeClient(Client client);
     int getNbPlayers() const { return _nbPlayers; }
     void sendEvent(Event evt, const std::string &host, int port);

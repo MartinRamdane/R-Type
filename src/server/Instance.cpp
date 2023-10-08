@@ -27,6 +27,5 @@ void Instance::mainLoop()
   while (1)
   {
     _udpServer.HandleMessages(-1, true);
-    std::cout << "main loop" << std::endl;
   }
 }
