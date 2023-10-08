@@ -201,7 +201,7 @@ void UDPServer::addClient(Client client)
 void UDPServer::removeClient(Client client)
 {
     _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c)
-                                  { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }));
+    { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }));
     _nbPlayers--;
 }
 
@@ -212,15 +212,13 @@ void UDPServer::removeClient(Client client)
 void UDPServer::processSendQueue() {
     socket_.async_send_to(boost::asio::buffer(_toSendQueue.front().data), _toSendQueue.front().endpoint, [this](const std::error_code &error, std::size_t bytes_recvd)
     {
-        if (!error)
-        {
+        if (!error) {
             std::cout << "sent data" << std::endl;
             _toSendQueue.pop_front();
             if (!_toSendQueue.empty())
                 processSendQueue();
         }
-        else
-        {
+        else {
             std::cout << "error sending data" << std::endl;
         }
     });
@@ -313,13 +311,12 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
  */
 void UDPServer::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
 {
-    boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
-                      {
-                          bool bWritingMessage = !_toSendQueue.empty();
-                          _toSendQueue.push_back({data, endpoint});
-                          if (!bWritingMessage)
-                          {
-                              processSendQueue();
-                          }
-                      });
+    boost::asio::post(socket_.get_executor(), [this, data, endpoint]() {
+        bool bWritingMessage = !_toSendQueue.empty();
+        _toSendQueue.push_back({data, endpoint});
+        if (!bWritingMessage)
+        {
+            processSendQueue();
+        }
+    });
 }

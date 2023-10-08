@@ -51,6 +51,15 @@ protected:
         case ACTION::CREATE:
         {
             std::cout << "[" << client->GetID() << "]: CREATE" << std::endl;
+            if (_server->getInstancesNb() >= 1) {
+                Instance *instance = _server->getInstance(0);
+                Event evt;
+                evt.ACTION_NAME = ACTION::CREATE;
+                evt.body = std::to_string(instance->getId()) + " " + std::to_string(instance->getPort());
+                evt.body_size = evt.body.size();
+                SendEvent(client, evt);
+                return;
+            }
             InstanceInfos infos = _server->createInstance();
             std::cout << "[DEBUG] Instance created: " << infos.id << " " << infos.port << std::endl;
             Event evt;

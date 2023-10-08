@@ -29,6 +29,8 @@ public:
   int getPortInstance(int instanceId);
   int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers(); }
   void interpretEvent(Event &event);
+  int getInstancesNb() { return _instances.size(); }
+  Instance *getInstance(int id) { return _instances[id]; }
   void loop();
 
 protected:
