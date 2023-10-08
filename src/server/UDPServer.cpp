@@ -8,6 +8,13 @@
 #include "UDPServer.hpp"
 #include "Server.hpp"
 
+/**
+ * @brief Construct a new UDPServer::UDPServer object
+ *
+ * @param io_service service used for async ops
+ * @param port port the server needs to listen on
+ */
+
 UDPServer::UDPServer(boost::asio::io_service &io_service, int port) : socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
 {
     _nbPlayers = 0;
@@ -28,6 +35,11 @@ UDPServer::~UDPServer()
 {
 }
 
+/**
+ * @brief Start receiving data from the client
+ *
+ */
+
 void UDPServer::start_receive()
 {
     try
@@ -45,12 +57,42 @@ void UDPServer::start_receive()
     }
 }
 
+/**
+ * @brief Process the message received from the client
+ *
+ * @param msg message received
+ */
+
 void UDPServer::ProcessMessage(UDPMessage &msg)
 {
     mutex_.lock();
-    Client client{msg.endpoint, std::chrono::system_clock::now()};
     Event evt;
     EventHandler eventHandler;
+    checkConnection(msg);
+    evt = eventHandler.decodeMessage(msg.data);
+    std::cout << "Received data: " << evt.body << std::endl;
+    auto client = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
+    { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
+    if (evt.ACTION_NAME == ACTION::PONG) {
+        client->timestamp = std::chrono::system_clock::now();
+        std::cout << "updated timestamp for client " << client->client.address().to_string() << ":" << client->client.port() << std::endl;
+    }
+    else {
+        handleEvents(evt, remote_endpoint_);
+    }
+    mutex_.unlock();
+    std::cout << "unlocked mutex" << std::endl;
+}
+
+/**
+ * @brief Check if the client is still connected if so update the client list
+ *
+ * @param msg messages data
+ */
+void UDPServer::checkConnection(UDPMessage &msg)
+{
+    Client client{msg.endpoint, std::chrono::system_clock::now()};
+    Event evt;
     if (std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
                      { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }) == clients_.end())
     {
@@ -73,38 +115,23 @@ void UDPServer::ProcessMessage(UDPMessage &msg)
         evt.body_size = evt.body.size();
         sendEvent(evt, client.client.address().to_string(), client.client.port());
     }
-    evt = eventHandler.decodeMessage(msg.data);
-    std::cout << "Received data: " << evt.body << std::endl;
-
-    if (evt.ACTION_NAME == ACTION::PONG)
-    {
-        auto it = std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
-                               { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); });
-        if (it != clients_.end())
-        {
-            it->timestamp = std::chrono::system_clock::now();
-            std::cout << "updated timestamp for client " << it->client.address().to_string() << ":" << it->client.port() << std::endl;
-        }
-    }
-    else
-    {
-        handleEvents(evt, remote_endpoint_);
-    }
-    mutex_.unlock();
-    std::cout << "unlocked mutex" << std::endl;
 }
 
+/**
+ * @brief Handle received messages, it adds the message to the queue and restarts the receive
+ *
+ * @param error
+ * @param bytes_recvd
+ */
 void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
 {
-    if (!error)
-    {
+    if (!error) {
         _queue.push_back({recv_buffer_, remote_endpoint_});
         recv_buffer_.clear();
         recv_buffer_.resize(1024);
         start_receive();
     }
-    else if (error.value() == boost::asio::error::eof)
-    {
+    else if (error.value() == boost::asio::error::eof) {
         mutex_.lock();
         auto it = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
         { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
@@ -115,9 +142,7 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
         }
         mutex_.unlock();
         start_receive();
-    }
-    else
-    {
+    } else {
         mutex_.lock();
         auto it = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
                                { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
@@ -131,6 +156,10 @@ void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
     }
 }
 
+/**
+ * @brief Send a ping to all the clients every 2 seconds
+ *
+ */
 void UDPServer::send_ping_to_clients()
 {
     while (true)
@@ -155,12 +184,20 @@ void UDPServer::send_ping_to_clients()
     }
 }
 
+/**
+ * @brief Adds client to the vector
+ *
+ */
 void UDPServer::addClient(Client client)
 {
     _clients.push_back(client);
     _nbPlayers++;
 }
 
+/**
+ * @brief Removes client from the vector
+ *
+ */
 void UDPServer::removeClient(Client client)
 {
     _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c)
@@ -168,6 +205,10 @@ void UDPServer::removeClient(Client client)
     _nbPlayers--;
 }
 
+/**
+ * @brief Process send queue and send data to the clients
+ *
+ */
 void UDPServer::processSendQueue() {
     socket_.async_send_to(boost::asio::buffer(_toSendQueue.front().data), _toSendQueue.front().endpoint, [this](const std::error_code &error, std::size_t bytes_recvd)
     {
@@ -186,6 +227,13 @@ void UDPServer::processSendQueue() {
 
 }
 
+/**
+ * @brief Adds event to the send queue
+ *
+ * @param evt event to send
+ * @param host client's ip
+ * @param port client's port
+ */
 void UDPServer::sendEvent(Event evt, const std::string &host, int port)
 {
     std::cout << "event msg : " << evt.body << std::endl;
@@ -197,6 +245,11 @@ void UDPServer::sendEvent(Event evt, const std::string &host, int port)
     std::cout << "pushed to queue" << std::endl;
 }
 
+/**
+ * @brief Sends event to all the clients (adds to the send queue)
+ *
+ * @param evt event to send
+ */
 void UDPServer::sendEventToAllClients(Event evt)
 {
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
@@ -221,6 +274,12 @@ std::vector<uint8_t> UDPServer::encodeEvent(Event event)
     return evt.encodeMessage();
 }
 
+/**
+ * @brief Handles the events received from the client
+ *
+ * @param evt  event received
+ * @param endpoint  client's endpoint
+ */
 void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
 {
     switch (evt.ACTION_NAME)
@@ -246,6 +305,12 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
     }
 }
 
+/**
+ * @brief Send data to the client asynchronously
+ *
+ * @param data data to send
+ * @param endpoint client's endpoint
+ */
 void UDPServer::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
 {
     boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
