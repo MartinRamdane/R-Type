@@ -72,9 +72,9 @@ The mention "\n" at the end of the UDP request guarantees that it has been recei
 
 Event requests only concern the client; the server does not have to reply to the client if the event has been received or if it has succeeded.
 
-### Events
+## Events
 
-#### TCP Requests
+### TCP Requests
 
 |Client|Server OK|Server KO|Info|
 |---|---|---|---|
@@ -82,9 +82,9 @@ Event requests only concern the client; the server does not have to reply to the
 |CREATE, 0, ""|OK, size,<br> "instancePort instanceId"|KO, 21,<br> "Can't create instance"|Client try to create a lobby|
 |---|LIST, size,<br> "{instanceName, instanceId, nbPlayers}[]"|---|Send to Client all created Instances|
 
-#### UDP Requests
+### UDP Requests
 
-##### Connection
+#### Connection
 To assure the connection between the UDP Server and the Client, we've implemented 2 special events for that: Ping and Pong.
 The Server should sent `PING` event and the Client answer with a `PONG` event.
 
