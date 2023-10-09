@@ -28,6 +28,7 @@ void Instance::mainLoop()
   {
     _udpServer.handleMessages(-1, true);
     std::vector<std::string> protocol = _core->mainLoop(_actions);
+    _actions.clear();
     for (auto message : protocol)
     {
       Event evt;
