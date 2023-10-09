@@ -64,11 +64,3 @@ private:
     std::map<int, Entity> _entities;
     int _id;
 };
-
-
-// if (entity._oldPosY > std::stof(value["y"]))
-//             entity.animateSprite(1, 100);
-//         else if (entity._oldPosY < std::stof(value["y"]))
-//             entity.animateSprite(2, 100);
-//         else if (entity._oldPosY == std::stof(value["y"]))
-//             entity.setInitPos();

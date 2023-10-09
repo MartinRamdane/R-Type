@@ -129,14 +129,21 @@ void Game::animate()
     std::map<int, Entity>::iterator it = _entities.begin();
     while (it != _entities.end())
     {
-        if (it->second._event_form == "loop")
+        if (it->second.getEventForm() == "loop")
             it->second.animateSprite(0, 100);
-        if (it->second._event_form == "once")
+        if (it->second.getEventForm() == "once")
             it->second.animateSprite(3, 100);
-        if (it->second._event_form == "event" && _event_indicator == 0)
+        if (it->second.getEventForm() == "event" && _event_indicator == 0)
             it->second.setInitPos();
-        if (it->second._event_form == "paralaxe")
+        if (it->second.getEventForm() == "paralaxe")
             it->second.animateSprite(4, 1);
+        if (it->second.getEventForm() == "event" && _event_indicator == 1)
+        {
+            if (it->second.getSpritePosition().y > it->second.getOldPosY())
+                it->second.animateSprite(2, 100);
+            else
+                it->second.animateSprite(1, 100);
+        }
         it++;
     }
 }

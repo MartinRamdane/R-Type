@@ -16,14 +16,14 @@ Menu::Menu(std::shared_ptr<Game> &game) : _game(game)
         std::cerr << "Error: could not load font" << std::endl;
 
     _entities["background"] = std::make_unique<Entity>();
-    _entities["background"]->_nbRect = 1;
+    _entities["background"]->setNbRect(1);
     _entities["background"]->_texture = std::make_shared<sf::Texture>();
     _entities["background"]->setTexture("assets/cenario/background.png");
     _entities["background"]->setSprite();
     _entities["background"]->setSpritePosition(sf::Vector2f(0, 0));
 
     _entities["logo"] = std::make_unique<Entity>();
-    _entities["logo"]->_nbRect = 1;
+    _entities["logo"]->setNbRect(1);
     _entities["logo"]->_texture = std::make_shared<sf::Texture>();
     _entities["logo"]->setTexture("assets/cenario/Logo.png");
     _entities["logo"]->setSprite();
@@ -31,7 +31,7 @@ Menu::Menu(std::shared_ptr<Game> &game) : _game(game)
     _entities["logo"]->setSpriteOrigin();
 
     _entities["connectButton"] = std::make_unique<Entity>();
-    _entities["connectButton"]->_nbRect = 1;
+    _entities["connectButton"]->setNbRect(1);
     _entities["connectButton"]->_texture = std::make_shared<sf::Texture>();
     _entities["connectButton"]->setTexture("assets/cenario/button.png");
     _entities["connectButton"]->setSprite();

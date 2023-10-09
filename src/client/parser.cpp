@@ -41,12 +41,8 @@ void Parser::getConfig(std::string path, std::string type, Entity *entity)
     std::string nbRect = jsonParser.get<std::string>(jsonfile, type + ".nb_rect");
     std::string initRect = jsonParser.get<std::string>(jsonfile, type + ".rect_init");
     entity->setRect(std::stoi(nbRect), std::stoi(initRect));
-    entity->_event_form = jsonParser.get<std::string>(jsonfile, type + ".form");
-    entity->_object_type = type;
-    std::cout << "nbRect: " << nbRect << std::endl;
-    std::cout << "initRect: " << initRect << std::endl;
-    std::cout << "event_form: " << entity->_event_form << std::endl;
-    std::cout << "object_type: " << entity->_object_type << std::endl;
+    entity->setEventForm(jsonParser.get<std::string>(jsonfile, type + ".form"));
+    entity->setObjectType(type);
 }
 
 std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
@@ -68,7 +64,7 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     entity.setSpriteOrigin();
     entity.setSpriteRotation(std::stof(value["rotation"]));
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-    entity._oldPosY = std::stoi(value["y"]);
+    entity.setOldPosY(std::stoi(value["y"]));
     std::cout << "entity added, id: " << id << std::endl;
     return std::make_tuple(id, entity);
 }

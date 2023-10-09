@@ -33,6 +33,15 @@ public:
     sf::Texture getTexture() const;
     sf::Vector2f getSpritePosition() const;
     int getRect() const;
+    int getOldPosY() const { return _oldPosY; };
+    void setOldPosY(int pos) { _oldPosY = pos; };
+    std::string getEventForm() const { return _event_form; };
+    void setEventForm(std::string form) { _event_form = form; };
+    int getNbRect() const { return _nbRect; };
+    void setNbRect(int nbRect) { _nbRect = nbRect; };
+    int getInitRect() const { return _init_rect; };
+    std::string getObjectType() const { return _object_type; };
+    void setObjectType(std::string type) { _object_type = type; };
 
 public:
     sf::Sprite _sprite;
