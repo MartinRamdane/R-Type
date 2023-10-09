@@ -118,6 +118,12 @@ void Game::handleEvent()
                 _client->Disconnect();
                 closed = true;
                 break;
+            case sf::Keyboard::S:
+                evt.ACTION_NAME = ACTION::SHIELD;
+                evt.body_size = 0;
+                evt.body = "";
+                _udpClient->sendEvent(evt);
+                break;
             default:
                 break;
             }

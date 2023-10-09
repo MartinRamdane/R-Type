@@ -29,6 +29,7 @@ std::string actionToString(ACTION action) {
       case ACTION::PONG: return "PONG";
       case ACTION::SPRITE: return "SPRITE";
       case ACTION::UNKNOWN: return "UNKNOWN";
+      case ACTION::SHIELD: return "SHIELD";
     }
     return "";
   }

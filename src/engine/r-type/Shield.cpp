@@ -31,7 +31,7 @@ void Shield::activateShield()
     _shieldIsUp = true;
     _shieldStart = std::chrono::high_resolution_clock::now();
     auto pos = getPosition();
-    _shield = Game::instance->createShield(std::get<0>(pos) - 8, std::get<1>(pos));
+    _shield = Game::instance->createShield(std::get<0>(pos), std::get<1>(pos));
 }
 
 void Shield::deactivateShield()
@@ -69,7 +69,7 @@ void Shield::update()
     if (_shieldIsUp)
     {
         auto pos = getPosition();
-        _shield->setPosition(std::get<0>(pos) - 8, std::get<1>(pos));
+        _shield->setPosition(std::get<0>(pos), std::get<1>(pos));
         auto _curentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsedTime = _curentTime - _shieldStart;
         if (elapsedTime >= _targetShieldDuration)

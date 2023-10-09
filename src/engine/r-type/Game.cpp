@@ -26,7 +26,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     // _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"](), 0, 239, _lastId++, "config.json", "Background"));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++, 5));
+    _players.push_back(std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
     _playersGroups->insert(_players[0]);
     // _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
     // _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++));
@@ -108,6 +108,7 @@ void Game::update(ThreadSafeQueue<ACTION> &actions)
                 _players[0]->shoot();
                 break;
             case ACTION::SHIELD:
+            std::cout << "SHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELD" << std::endl;
                 _players[0]->action();
                 break;
             default:
@@ -128,8 +129,10 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
 
 std::shared_ptr<StaticObject> Game::createShield(int x, int y)
 {
+    std::cout << "x la: " << x << std::endl;
     std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"](), x, y, _lastId++, "config.json", "Shield", 0, 1, 1, 1);
     _staticObjectsGroups->insert(_shield);
+    std::cout << "SHIELD CREATED" << std::endl;
     return (_shield);
 }
 
