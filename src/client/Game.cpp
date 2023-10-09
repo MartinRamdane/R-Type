@@ -110,8 +110,8 @@ void Game::handleEvent()
                 break;
             case sf::Keyboard::Space:
                 evt.ACTION_NAME = ACTION::SHOOT;
-                evt.body_size = 0;
-                evt.body = "";
+                evt.body_size = playerId.size();
+                evt.body = playerId;
                 _udpClient->sendEvent(evt);
                 _event_indicator = 0;
                 break;
@@ -122,8 +122,8 @@ void Game::handleEvent()
                 break;
             case sf::Keyboard::S:
                 evt.ACTION_NAME = ACTION::SHIELD;
-                evt.body_size = 0;
-                evt.body = "";
+                evt.body_size = playerId.size();
+                evt.body = playerId;
                 _udpClient->sendEvent(evt);
                 break;
             default:
