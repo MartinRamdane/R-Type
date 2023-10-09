@@ -29,7 +29,7 @@ public:
     std::tuple<int, Entity> modifyPosEntity(std::map<std::string, std::string> value);
     void getConfig(std::string path, std::string type, Entity *entity);
     std::string setKey(std::string key, int i);
-    std::tuple<int, Entity> parseMessage(Event evt, std::string message, RessourceManager &ressourceManager);
+    std::tuple<int, Entity> parseMessage(std::string message, RessourceManager &ressourceManager);
 
 public:
 };

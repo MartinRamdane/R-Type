@@ -9,7 +9,7 @@
 #define HEADER_TCPCONNECTION
 #include <iostream>
 #include <boost/system/error_code.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -99,7 +99,7 @@ public:
 private:
     void WriteHeader()
     {
-        boost::asio::async_write(m_socket, boost::asio::buffer(&m_qMessagesOut.front().header, sizeof(message_header<T>)), [this](std::error_code error, std::size_t lenght)
+        boost::asio::async_write(m_socket, boost::asio::buffer(&m_qMessagesOut.front().header, sizeof(message_header<T>)), [this](std::error_code error, std::size_t)
                                  {
             if (!error) {
                 if (m_qMessagesOut.front().body.size() > 0) {

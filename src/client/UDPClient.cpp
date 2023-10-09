@@ -29,6 +29,7 @@ std::string actionToString(ACTION action) {
       case ACTION::PONG: return "PONG";
       case ACTION::SPRITE: return "SPRITE";
       case ACTION::UNKNOWN: return "UNKNOWN";
+      case ACTION::SHIELD: return "SHIELD";
     }
     return "";
   }
@@ -66,7 +67,7 @@ void UDPClient::start_receive()
     {
       socket_.async_receive_from(
           boost::asio::buffer(temp_buffer), sender_endpoint,
-          [this](const std::error_code &error, std::size_t bytes_recvd) {
+          [this](const std::error_code, std::size_t ) {
             _queue.push_back(temp_buffer);
             start_receive();
           });
@@ -132,7 +133,7 @@ void UDPClient::updateSprite(Event evt)
   std::cout << "update sprite message: " << evt.body << std::endl;
   Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt, evt.body, ressourceManagerRef);
+  std::tuple<int, Entity> res = parseRef->parseMessage(evt.body, ressourceManagerRef);
   if (std::get<0>(res) < 0)
     _gameRef->removeEntity(-std::get<0>(res));
   else
@@ -172,7 +173,7 @@ void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpo
 }
 
 void UDPClient::processSendQueue() {
-  socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint, [this](const std::error_code &error, std::size_t bytes_recvd)
+  socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint, [this](const std::error_code &error, std::size_t)
   {
       if (!error)
       {

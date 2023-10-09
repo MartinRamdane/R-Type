@@ -106,7 +106,7 @@ std::string Parser::setKey(std::string key, int i)
     return key;
 }
 
-std::tuple<int, Entity> Parser::parseMessage(Event evt, std::string message, RessourceManager &ressourceManager)
+std::tuple<int, Entity> Parser::parseMessage(std::string message, RessourceManager &ressourceManager)
 {
     std::size_t com = message.find(' ');
     if (com != std::string::npos)
@@ -157,4 +157,5 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, std::string message, Res
             return removeEntity(valueMap);
         }
     }
+    return std::make_tuple(-1, Entity());
 }
