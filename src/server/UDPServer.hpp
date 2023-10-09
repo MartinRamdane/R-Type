@@ -32,37 +32,119 @@ struct UDPMessage
 class UDPServer
 {
 public:
+    /**
+     * @brief Construct a new UDPServer::UDPServer object
+     *
+     * @param io_service service used for async ops
+     * @param port port the server needs to listen on
+     */
     UDPServer(boost::asio::io_service &io_service, int port);
+
+    /**
+     * @brief Destroy the UDPServer::UDPServer object
+     *
+     */
     ~UDPServer();
-    void setInstance(Instance *instance) { _instanceRef = instance; }
+
+    /**
+     * @brief Adds client to the vector
+     *
+     */
     void addClient(Client client);
+
+    /**
+     * @brief Check if the client is still connected if so update the client list
+     *
+     * @param msg messages data
+     */
     void checkConnection(UDPMessage &msg);
+
+    /**
+     * @brief Removes client from the vector
+     *
+     */
     void removeClient(Client client);
-    int getNbPlayers() const { return _nbPlayers; }
+
+    /**
+     * @brief Adds event to the send queue
+     *
+     * @param evt event to send
+     * @param host client's ip
+     * @param port client's port
+     */
     void sendEvent(Event evt, const std::string &host, int port);
-    std::vector<uint8_t> encodeEvent(Event event);
-    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint);
+
+    /**
+     * @brief Sends event to all the clients (adds to the send queue)
+     *
+     * @param evt event to send
+     */
     void sendEventToAllClients(Event evt);
-    void handleEngineEvents(std::string request);
+
+    std::vector<uint8_t> encodeEvent(Event event);
+    /**
+     * @brief Handles the events received from the client
+     *
+     * @param evt  event received
+     * @param endpoint  client's endpoint
+     */
+    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint);
+
+    /**
+     * @brief Process send queue and send data to the clients
+     *
+     */
     void processSendQueue();
-    void SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
-    ThreadSafeQueue<UDPMessage> &Incoming() { return _queue; }
-    void HandleMessages(size_t maxMessages = -1, bool bWait = false) {
-        std::cout << "Handling messages" << std::endl;
-        if (bWait)
-            _queue.wait();
-        size_t nMessageCount = 0;
-        while (nMessageCount < maxMessages && !_queue.empty()) {
-            auto msg = _queue.pop_front();
-            ProcessMessage(msg);
-            nMessageCount++;
-        }
-    }
-    void ProcessMessage(UDPMessage &msg);
+
+    /**
+     * @brief Process the message received from the client
+     *
+     * @param msg message received
+     */
+    void processMessage(UDPMessage &msg);
+
+    /**
+     * @brief Send data to the client asynchronously
+     *
+     * @param data data to send
+     * @param endpoint client's endpoint
+     */
+    void sendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
+
+    /**
+     * @brief A client want to join the UDP Server
+     *
+     * @param client the class of client
+     */
+    void userJoined(Client client);
+
+    void setInstance(Instance *instance) { _instanceRef = instance; }
+    ThreadSafeQueue<UDPMessage> &incoming() { return _queue; }
+    void handleEngineEvents(std::string request);
+    void handleMessages(size_t maxMessages = -1, bool bWait = false);
+    int getNbPlayers() const { return _nbPlayers; }
+
 private:
-    void start_receive();
+    /**
+     * @brief Start receiving data from the client
+     *
+     */
+    void startReceive();
+
+    /**
+     * @brief Handle received messages, it adds the message to the queue and restarts the receive
+     *
+     * @param error
+     * @param bytes_recvd
+     */
     void handler(const std::error_code &error, std::size_t bytes_recvd);
-    void send_ping_to_clients();
+
+    /**
+     * @brief Send a ping to all the clients every 2 seconds
+     *
+     */
+    void sendPingToClient();
+
     boost::asio::ip::udp::socket socket_;
     boost::asio::ip::udp::endpoint remote_endpoint_;
     std::vector<Client> clients_;
