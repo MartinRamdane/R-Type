@@ -19,7 +19,7 @@ Core::~Core()
 {
 }
 
-std::vector<std::string> Core::mainLoop(std::vector<ACTION> actions)
+std::vector<std::string> Core::mainLoop(ThreadSafeQueue<ACTION> &actions)
 {
     if (_engine->frameRateControl())
     {

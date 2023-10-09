@@ -15,7 +15,6 @@
 #include "../engine/Core.hpp"
 
 class ServerClass;
-
 class Instance
 {
 public:
@@ -28,7 +27,8 @@ public:
     int getNbPlayers() const { return _udpServer.getNbPlayers(); }
     int getPort() const { return _port; }
     Core *getCore() { return _core; }
-    void mainLoop();
+    void MessagesLoop();
+    void EventLoop();
     void addAction(ACTION action) { _actions.push_back(action); }
 
 protected:
@@ -40,7 +40,7 @@ private:
     ServerClass *_serverRef;
     ThreadPool _threadPool;
     Core *_core;
-    std::vector<ACTION> _actions;
+    ThreadSafeQueue<ACTION> _actions;
 };
 
 #endif /* !HEADER_INSTANCE */

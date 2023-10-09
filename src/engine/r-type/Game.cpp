@@ -86,32 +86,32 @@ void Game::initializeLevel()
     }
 }
 
-void Game::update(std::vector<ACTION> actions)
+void Game::update(ThreadSafeQueue<ACTION> &actions)
 {
-    for (auto _action : actions)
-    {
-        switch (_action)
+    while (!actions.empty()) {
+        auto action = actions.pop_front();
+        switch (action)
         {
-        case ACTION::LEFT:
-            _players[0]->move(-1, 0);
-            break;
-        case ACTION::RIGHT:
-            _players[0]->move(1, 0);
-            break;
-        case ACTION::UP:
-            _players[0]->move(0, -1);
-            break;
-        case ACTION::DOWN:
-            _players[0]->move(0, 1);
-            break;
-        case ACTION::SHOOT:
-            _players[0]->shoot();
-            break;
-        case ACTION::SHIELD:
-            _players[0]->action();
-            break;
-        default:
-            break;
+            case ACTION::LEFT:
+                _players[0]->move(-1, 0);
+                break;
+            case ACTION::RIGHT:
+                _players[0]->move(1, 0);
+                break;
+            case ACTION::UP:
+                _players[0]->move(0, -1);
+                break;
+            case ACTION::DOWN:
+                _players[0]->move(0, 1);
+                break;
+            case ACTION::SHOOT:
+                _players[0]->shoot();
+                break;
+            case ACTION::SHIELD:
+                _players[0]->action();
+                break;
+            default:
+                break;
         }
     }
 }

@@ -7,7 +7,7 @@
 
 #include "Instance.hpp"
 
-Instance::Instance(int id) : _threadPool(2), _port((int)(4210 + id)), _udpServer(_io_service, (int)(4210 + id)), _id(id)
+Instance::Instance(int id) : _threadPool(3), _port((int)(4210 + id)), _udpServer(_io_service, (int)(4210 + id)), _id(id)
 {
   _core = new Core();
    _udpServer.setInstance(this);
@@ -15,20 +15,32 @@ Instance::Instance(int id) : _threadPool(2), _port((int)(4210 + id)), _udpServer
                        { _io_service.run(); });
   //implement the main loop in thread
   _threadPool.enqueue([this]()
-                      { mainLoop(); });
+  { MessagesLoop(); });
+  _threadPool.enqueue([this]()
+  { EventLoop(); });
 }
 
 Instance::~Instance()
 {
 }
 
-void Instance::mainLoop()
+void Instance::MessagesLoop()
 {
   while (1)
   {
     _udpServer.handleMessages(-1, true);
+  }
+}
+
+void Instance::EventLoop()
+{
+  while (1)
+  {
+    if (_udpServer.getNbPlayers() == 0)
+    {
+      continue;
+    }
     std::vector<std::string> protocol = _core->mainLoop(_actions);
-    _actions.clear();
     for (auto message : protocol)
     {
       Event evt;

@@ -9,12 +9,13 @@
 #define IGAME_HPP_
 
 #include "../global/EventHandler.hpp"
+#include "../server/ThreadSafeQueue.hpp"
 class IGame
 {
 public:
     virtual ~IGame() = default;
 
-    virtual void update(std::vector<ACTION> actions) = 0;
+    virtual void update(ThreadSafeQueue<ACTION> &actions) = 0;
 
 protected:
 private:
