@@ -19,14 +19,13 @@ Core::~Core()
 {
 }
 
-std::vector<std::string> Core::mainLoop(std::string event)
+std::vector<std::string> Core::mainLoop(std::vector<ACTION> actions)
 {
     if (_engine->frameRateControl())
     {
         // get events
         _engine->update();
-        auto gameEvent = Protocol::transformProtocolToEvent(event);
-        _game->update(gameEvent);
+        _game->update(actions);
         auto entities = _engine->getEntities();
         std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
         return protocol;

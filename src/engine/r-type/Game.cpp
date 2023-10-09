@@ -86,30 +86,33 @@ void Game::initializeLevel()
     }
 }
 
-void Game::update(Event event)
+void Game::update(std::vector<ACTION> actions)
 {
-    switch (event)
+    for (auto _action : actions)
     {
-    case LEFT:
-        _players[0]->move(-1, 0);
-        break;
-    case RIGHT:
-        _players[0]->move(1, 0);
-        break;
-    case UP:
-        _players[0]->move(0, -1);
-        break;
-    case DOWN:
-        _players[0]->move(0, 1);
-        break;
-    case SHOOT:
-        _players[0]->shoot();
-        break;
-    case SHIELD:
-        _players[0]->action();
-        break;
-    default:
-        break;
+        switch (_action)
+        {
+        case ACTION::LEFT:
+            _players[0]->move(-1, 0);
+            break;
+        case ACTION::RIGHT:
+            _players[0]->move(1, 0);
+            break;
+        case ACTION::UP:
+            _players[0]->move(0, -1);
+            break;
+        case ACTION::DOWN:
+            _players[0]->move(0, 1);
+            break;
+        case ACTION::SHOOT:
+            _players[0]->shoot();
+            break;
+        case ACTION::SHIELD:
+            _players[0]->action();
+            break;
+        default:
+            break;
+        }
     }
 }
 

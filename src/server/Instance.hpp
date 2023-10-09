@@ -29,6 +29,7 @@ public:
     int getPort() const { return _port; }
     Core *getCore() { return _core; }
     void mainLoop();
+    void addAction(ACTION action) { _actions.push_back(action); }
 
 protected:
 private:
@@ -39,6 +40,7 @@ private:
     ServerClass *_serverRef;
     ThreadPool _threadPool;
     Core *_core;
+    std::vector<ACTION> _actions;
 };
 
 #endif /* !HEADER_INSTANCE */

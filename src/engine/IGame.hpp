@@ -8,23 +8,13 @@
 #ifndef IGAME_HPP_
 #define IGAME_HPP_
 
+#include "../global/EventHandler.hpp"
 class IGame
 {
 public:
-    enum Event
-    {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN,
-        SHOOT,
-        QUIT,
-        SHIELD,
-        UNKNOWN
-    };
     virtual ~IGame() = default;
 
-    virtual void update(Event event) = 0;
+    virtual void update(std::vector<ACTION> actions) = 0;
 
 protected:
 private:

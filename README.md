@@ -13,7 +13,7 @@ The project is split in 3 parts:
 
 For the Server API Reference, we've created an API doc in docs folder.
 
-[api.md](/docs/api.md)
+[server.md](/docs/server.md)
 
 
 

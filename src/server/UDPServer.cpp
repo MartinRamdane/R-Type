@@ -242,6 +242,7 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
     default:
         break;
     }
+    _instanceRef->addAction(evt.ACTION_NAME);
 }
 
 void UDPServer::sendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
