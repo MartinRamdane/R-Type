@@ -25,7 +25,7 @@ public:
     ~Game();
     static Game *instance;
 
-    void update(Event event);
+    void update(std::vector<ACTION> actions);
     void createExplosion(int x, int y);
     void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName);
     std::shared_ptr<StaticObject> createShield(int x, int y);

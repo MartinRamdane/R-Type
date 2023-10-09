@@ -27,7 +27,7 @@ void Instance::mainLoop()
   while (1)
   {
     _udpServer.handleMessages(-1, true);
-    std::vector<std::string> protocol = _core->mainLoop("");
+    std::vector<std::string> protocol = _core->mainLoop(_actions);
     for (auto message : protocol)
     {
       Event evt;

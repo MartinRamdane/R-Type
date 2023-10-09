@@ -16,7 +16,7 @@ public:
     Core();
     ~Core();
 
-    std::vector<std::string> mainLoop(std::string event);
+    std::vector<std::string> mainLoop(std::vector<ACTION> actions);
     std::shared_ptr<Engine> getEngine() { return _engine; }
     std::shared_ptr<IGame> getGame() { return _game; }
 
