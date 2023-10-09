@@ -184,8 +184,10 @@ bool Game::connectToServer(std::string host, int port)
     _client->setGame(this);
     bool connected = _client->Connect(host, port, this);
     std::cout << "connected: " << connected << std::endl;
-    if (connected == false)
-        return false;
+    while (isTCPClientConnected == false)
+    {
+    }
+    _host = host;
     Event evt;
     evt.ACTION_NAME = ACTION::CREATE;
     evt.body_size = 0;

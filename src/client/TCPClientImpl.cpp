@@ -33,7 +33,8 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
     // add get windows infos
     int port = std::stoi(getPort);
     std::cout << "target port " << port << std::endl;
-    _game->connectToUdpServer("127.0.0.1", port);
+    std::cout << "target host " << _game->getHost() << std::endl;
+    _game->connectToUdpServer(_game->getHost(), port);
     _game->setPlayerId(std::stoi(playerId));
     // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
   }

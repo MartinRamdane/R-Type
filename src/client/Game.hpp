@@ -44,6 +44,7 @@ public:
     void removeEntity(int);
     void LoopUDPMessages();
     void setPlayerId(int id) { _playerId = id; }
+    std::string getHost() { return _host; }
 
 private:
     sf::RenderWindow _window;
@@ -65,4 +66,5 @@ private:
     int _height;
     std::map<int, Entity> _entities;
     int _playerId;
+    std::string _host;
 };

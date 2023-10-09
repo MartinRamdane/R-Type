@@ -62,12 +62,13 @@ public:
                                            if (!ec)
                                            {
                                                std::cout << "[DEBUG] Connected to server: " << endpoint << std::endl;
-                                               // _game->setConnected(true);
+                                               _game->setConnected(true);
                                                ReadHeader();
                                            }
                                            else
                                            {
                                                std::cout << "[DEBUG] Failed to connect to server: " << ec.message() << std::endl;
+                                               _game->setConnected(true);
                                            }
                                        });
         }
@@ -112,6 +113,7 @@ private:
                 }
             } else {
                 std::cout << "Write header failed" << std::endl;
+                std::cout << "[ERROR] while writing data: " << error.message() << std::endl;
             } });
     }
     void WriteBody()
