@@ -9,13 +9,22 @@ The project is split in 3 parts:
  - Client side
  - Server side (in UDP and TCP protocol)
  - Game Engine
-## API Reference
+
+<img width="949" alt="CleanShot 2023-10-09 at 11 05 40@2x" src="https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/assets/91624379/0e3d18fb-7132-4f78-a555-86ab2678dd3e">
+
+## Docs
 
 For the Server API Reference, we've created an API doc in docs folder.
 
-[api.md](/docs/api.md)
+[server.md](/docs/server.md)
 
+For the Client documentation:
 
+[client.md](/docs/client.md)
+
+For the Game Engine documentation:
+
+[gameEngine.md](/docs/gameEngine.md)
 
 ## Installation
 
@@ -40,18 +49,18 @@ For windows :
 For mac and linux :
 
     cd build
-    cmake ..
+    cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release // For the first compilation
+    cmake .. // If you've already compiled
     cmake --build .
 
 
 ## Authors
 
-- [@fgrimaepitech](https://github.com/fgrimaepitech)
-- [@adamlbs](https://github.com/AdamLBS)
-
-- [@gabrielmorais](https://github.com/gabrielmorais4)
-- [@martinramdane](https://github.com/MartinRamdane)
-- [@luluri](https://github.com/Luluri)
+- [@fgrimaepitech](https://github.com/fgrimaepitech) Server side
+- [@adamlbs](https://github.com/AdamLBS) Server side
+- [@gabrielmorais](https://github.com/gabrielmorais4) Game Engine side
+- [@martinramdane](https://github.com/MartinRamdane) Game Engine side
+- [@luluri](https://github.com/Luluri) Client side
 
 
 
