@@ -149,6 +149,16 @@ protected:
             std::cout << "[" << client->GetID() << "]: UNKNOWN" << std::endl;
         }
         break;
+        case ACTION::SPRITE:
+        {
+            std::cout << "[" << client->GetID() << "]: SPRITE" << std::endl;
+        }
+        break;
+        case ACTION::SHIELD:
+        {
+            std::cout << "[" << client->GetID() << "]: SHIELD" << std::endl;
+        }
+        break;
         }
     }
 

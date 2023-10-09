@@ -95,7 +95,7 @@ void UDPServer::userJoined(Client client) {
     sendEvent(evt, client.client.address().to_string(), client.client.port());
 }
 
-void UDPServer::handler(const std::error_code &error, std::size_t bytes_recvd)
+void UDPServer::handler(const std::error_code &error, std::size_t)
 {
     if (!error)
     {
@@ -171,7 +171,7 @@ void UDPServer::removeClient(Client client)
 
 void UDPServer::processSendQueue()
 {
-    socket_.async_send_to(boost::asio::buffer(_toSendQueue.front().data), _toSendQueue.front().endpoint, [this](const std::error_code &error, std::size_t bytes_recvd)
+    socket_.async_send_to(boost::asio::buffer(_toSendQueue.front().data), _toSendQueue.front().endpoint, [this](const std::error_code &error, std::size_t)
                           {
         if (!error) {
             std::cout << "sent data" << std::endl;

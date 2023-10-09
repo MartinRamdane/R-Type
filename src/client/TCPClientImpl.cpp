@@ -94,6 +94,15 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
   case ACTION::KO:
   {
   }
+  case ACTION::SPRITE:
+  {
+  }
+  case ACTION::UNKNOWN:
+  {
+  }
+  case ACTION::SHIELD:
+  {
+  }
   break;
   }
 }

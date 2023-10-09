@@ -117,15 +117,16 @@ public:
 protected:
   virtual bool OnClientconnect(std::shared_ptr<TCPConnection<T>> client)
   {
+    std::cout << "Client : " << client->GetID() << " connected" << std::endl;
     return true;
   }
   virtual void OnClientdisconnect(std::shared_ptr<TCPConnection<T>> client)
   {
-    std::cout << "Client disconnected" << std::endl;
+    std::cout << "Client : " << client->GetID() << " disconnected" << std::endl;
   }
   virtual void OnMessage(std::shared_ptr<TCPConnection<T>> client, message<T> &msg)
   {
-    std::cout << "Client read: " << msg.body.size() << std::endl;
+    std::cout << "Client :" << client->GetID() << " read: " << msg.body.size() << std::endl;
   }
 
 private:

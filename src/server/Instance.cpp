@@ -7,7 +7,7 @@
 
 #include "Instance.hpp"
 
-Instance::Instance(int id) : _threadPool(3), _port((int)(4210 + id)), _udpServer(_io_service, (int)(4210 + id)), _id(id)
+Instance::Instance(int id) : _id(id), _port((int)(4210 + id)), _udpServer(_io_service, (int)(4210 + id)), _threadPool(3)
 {
   _core = new Core();
    _udpServer.setInstance(this);
