@@ -60,6 +60,12 @@ void Shield::takeDamage(int damage)
 
 void Shield::update()
 {
+    std::tuple<float, float> pos = getPosition();
+    std::tuple<float, float> oldPos = getOldPosition();
+    if (std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos))
+    {
+        setOldPosition(std::get<0>(pos), std::get<1>(pos));
+    }
     if (_shieldIsUp)
     {
         auto pos = getPosition();
