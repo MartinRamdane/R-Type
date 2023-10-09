@@ -46,6 +46,10 @@ public:
         for (auto &entity : entities)
             entity->update();
     }
+    void removeDead()
+    {
+        entities.remove_if([](std::shared_ptr<T> entity) { return entity->isDead(); });
+    }
     std::list<std::shared_ptr<T>> &getEntities() { return entities; }
 
 protected:

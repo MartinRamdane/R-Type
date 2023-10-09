@@ -55,6 +55,7 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityT
                     protocol.push_back(move);
             }
         }
+        entityType->removeDead();
     }
     return protocol;
 }

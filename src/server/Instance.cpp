@@ -38,6 +38,7 @@ void Instance::EventLoop()
   {
     if (_udpServer.getNbPlayers() == 0)
     {
+      std::cout << "No players connected" << std::endl;
       continue;
     }
     std::vector<std::string> protocol = _core->mainLoop(_actions);
