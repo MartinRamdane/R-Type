@@ -55,7 +55,7 @@ public:
         if (m_ownerType == owner::client)
         {
             boost::asio::async_connect(m_socket, endpoints,
-                                       [this](const boost::system::error_code &ec, tcp::endpoint endpoint)
+                                       [this](const boost::system::error_code &ec, tcp::endpoint)
                                        {
                                            if (!ec)
                                            {

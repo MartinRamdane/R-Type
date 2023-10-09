@@ -63,5 +63,4 @@ private:
     int _width;
     int _height;
     std::map<int, Entity> _entities;
-    int _id;
 };
