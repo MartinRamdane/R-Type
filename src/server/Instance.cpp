@@ -7,10 +7,11 @@
 
 #include "Instance.hpp"
 
-Instance::Instance(int id) : _id(id), _port((int)(4210 + id)), _udpServer(_io_service, (int)(4210 + id)), _threadPool(3)
+Instance::Instance(int id) : _id(id), _port((int)(4210 + id)), _threadPool(3)
 {
+  _udpServer = new UDPServer(_io_service, (int)(4210 + id));
   _core = new Core();
-   _udpServer.setInstance(this);
+   _udpServer->setInstance(this);
    _threadPool.enqueue([this]()
                        { _io_service.run(); });
   //implement the main loop in thread
@@ -28,7 +29,7 @@ void Instance::MessagesLoop()
 {
   while (1)
   {
-    _udpServer.handleMessages(-1, true);
+    _udpServer->handleMessages(-1, true);
   }
 }
 
@@ -36,12 +37,12 @@ void Instance::EventLoop()
 {
   while (1)
   {
-    if (_udpServer.getNbPlayers() == 0)
+    if (_udpServer->getNbPlayers() == 0)
     {
       std::cout << "No players connected" << std::endl;
       continue;
     }
-    std::vector<std::string> protocol = _core->mainLoop(_actions);
+    std::vector<std::string> protocol = _core->mainLoop(_events);
     for (auto message : protocol)
     {
       Event evt;
@@ -49,7 +50,7 @@ void Instance::EventLoop()
       evt.body_size = message.size();
       evt.body = message;
       std::cout << "message: " << message << std::endl;
-      _udpServer.sendEventToAllClients(evt);
+      _udpServer->sendEventToAllClients(evt);
     }
   }
 }

@@ -10,6 +10,7 @@
 #include "../IEntity.hpp"
 #include "Projectile.hpp"
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <map>
 #include "../StaticObject.hpp"
@@ -17,6 +18,8 @@
 #include "../IGame.hpp"
 
 class Character;
+class Enemy;
+class Projectile;
 
 class Game : public IGame
 {
@@ -25,11 +28,12 @@ public:
     ~Game();
     static Game *instance;
 
-    void update(ThreadSafeQueue<ACTION> &actions);
+    void update(ThreadSafeQueue<Event> &events);
     void createExplosion(int x, int y);
     void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName);
     std::shared_ptr<StaticObject> createShield(int x, int y);
     void initializeLevel();
+    int getId(Event event);
 
 private:
     std::shared_ptr<Engine> _engine;
@@ -38,6 +42,9 @@ private:
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
     std::shared_ptr<EntityType<IEntity>> _enemiesGroups;
     std::vector<std::shared_ptr<Character>> _players;
+    std::vector<std::shared_ptr<Projectile>> _projectiles;
+    std::vector<std::shared_ptr<StaticObject>> _staticObjects;
+    std::vector<std::shared_ptr<Enemy>> _enemies;
     int _lastId = 0;
     static std::map<std::string, std::function<std::string()>> _assets;
     int currentLevel = 1;

@@ -26,8 +26,6 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     // _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"](), 0, 239, _lastId++, "config.json", "Background"));
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _players.push_back(std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
-    _playersGroups->insert(_players[0]);
     // _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
     // _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++));
     // Add collision
@@ -66,7 +64,10 @@ void Game::initializeLevel()
             {
                 if (count == 0)
                 {
-                    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "config.json", "Background"));
+
+                    std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "config.json", "Background");
+                    _staticObjects.push_back(background);
+                    _staticObjectsGroups->insert(background);
                     std::cout << "Background" << std::endl;
                 }
                 else
@@ -75,7 +76,9 @@ void Game::initializeLevel()
                     {
                         if (it3.value() == "Enemy")
                         {
-                            _enemiesGroups->insert(std::make_shared<Enemy>(_assets[key](), 500 + i * 100, 100, _lastId++));
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), 500 + i * 100, 100, _lastId++);
+                            _enemies.push_back(enemy);
+                            _enemiesGroups->insert(enemy);
                             std::cout << key << std::endl;
                         }
                     }
@@ -86,30 +89,51 @@ void Game::initializeLevel()
     }
 }
 
-void Game::update(ThreadSafeQueue<ACTION> &actions)
+int Game::getId(Event event)
 {
-    while (!actions.empty()) {
-        auto action = actions.pop_front();
-        switch (action)
+    std::stringstream ss(event.body);
+    std::string playerId;
+    ss >> playerId;
+    int id = std::stoi(playerId.substr(1));
+    return (id);
+}
+
+void Game::update(ThreadSafeQueue<Event> &events)
+{
+    while (!events.empty()) {
+        auto event = events.pop_front();
+        switch (event.ACTION_NAME)
         {
             case ACTION::LEFT:
-                _players[0]->move(-1, 0);
+                _players[getId(event) - 1]->move(-1, 0);
                 break;
             case ACTION::RIGHT:
-                _players[0]->move(1, 0);
+                _players[getId(event) - 1]->move(1, 0);
                 break;
             case ACTION::UP:
-                _players[0]->move(0, -1);
+                _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                _players[0]->move(0, 1);
+                _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::SHOOT:
-                _players[0]->shoot();
+                _players[getId(event) - 1]->shoot();
                 break;
             case ACTION::SHIELD:
-            std::cout << "SHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELDSHIELD" << std::endl;
-                _players[0]->action();
+                _players[getId(event) - 1]->action();
+                break;
+            case ACTION::JOINED:
+                _players.push_back(std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
+                _playersGroups->insert(_players[_players.size() - 1]);
+                for (auto staticObject: _staticObjects) {
+                    staticObject->setCreated(false);
+                }
+                for (auto enemy: _enemies) {
+                    enemy->setCreated(false);
+                }
+                for (auto player: _players) {
+                    player->setCreated(false);
+                }
                 break;
             default:
                 break;

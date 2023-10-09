@@ -17,7 +17,7 @@ public:
     Core();
     ~Core();
 
-    std::vector<std::string> mainLoop(ThreadSafeQueue<ACTION> &actions);
+    std::vector<std::string> mainLoop(ThreadSafeQueue<Event> &events);
     std::shared_ptr<Engine> getEngine() { return _engine; }
     std::shared_ptr<IGame> getGame() { return _game; }
 

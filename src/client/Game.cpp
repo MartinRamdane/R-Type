@@ -14,6 +14,7 @@ Game::Game() : _threadPool(2)
     _gameTitle = "game";
     _width = 850;
     _height = 478;
+    _playerId = 0;
     closed = false;
 }
 
@@ -76,33 +77,34 @@ void Game::handleEvent()
         if (_event.type == sf::Event::KeyPressed)
         {
             Event evt;
+            std::string playerId = "p" + std::to_string(_playerId);
             switch (_event.key.code)
             {
             case sf::Keyboard::Left:
                 evt.ACTION_NAME = ACTION::LEFT;
-                evt.body_size = 0;
-                evt.body = "";
+                evt.body_size = playerId.size();
+                evt.body = playerId;
                 _udpClient->sendEvent(evt);
                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Right:
                 evt.ACTION_NAME = ACTION::RIGHT;
-                evt.body_size = 0;
-                evt.body = "";
+                evt.body_size = playerId.size();
+                evt.body = playerId;
                 _udpClient->sendEvent(evt);
                 _event_indicator = 0;
                 break;
             case sf::Keyboard::Up:
                 evt.ACTION_NAME = ACTION::UP;
-                evt.body_size = 0;
-                evt.body = "";
+                evt.body_size = playerId.size();
+                evt.body = playerId;
                 _udpClient->sendEvent(evt);
                 _event_indicator = 1;
                 break;
             case sf::Keyboard::Down:
                 evt.ACTION_NAME = ACTION::DOWN;
-                evt.body_size = 0;
-                evt.body = "";
+                evt.body_size = playerId.size();
+                evt.body = playerId;
                 _udpClient->sendEvent(evt);
                 _event_indicator = 1;
                 break;

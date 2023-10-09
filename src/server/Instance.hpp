@@ -22,25 +22,25 @@ public:
     Instance(const Instance &) = delete;
     ~Instance(); // destroy the instance if nbPlayers === 0
     int getId() const { return _id; }
-    UDPServer &getUDPServer() { return _udpServer; }
+    UDPServer *getUDPServer() { return _udpServer; }
     void setServer(ServerClass *server) { _serverRef = server; }
-    int getNbPlayers() const { return _udpServer.getNbPlayers(); }
+    int getNbPlayers() const { return _udpServer->getNbPlayers(); }
     int getPort() const { return _port; }
     Core *getCore() { return _core; }
     void MessagesLoop();
     void EventLoop();
-    void addAction(ACTION action) { _actions.push_back(action); }
+    void addAction(Event event) { _events.push_back(event); }
 
 protected:
 private:
     int _id;
     int _port;
     boost::asio::io_service _io_service;
-    UDPServer _udpServer;
+    UDPServer *_udpServer;
     ServerClass *_serverRef;
     ThreadPool _threadPool;
     Core *_core;
-    ThreadSafeQueue<ACTION> _actions;
+    ThreadSafeQueue<Event> _events;
 };
 
 #endif /* !HEADER_INSTANCE */

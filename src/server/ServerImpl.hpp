@@ -55,16 +55,27 @@ protected:
                 Instance *instance = _server->getInstance(0);
                 Event evt;
                 evt.ACTION_NAME = ACTION::CREATE;
-                evt.body = std::to_string(instance->getId()) + " " + std::to_string(instance->getPort());
+                int playerId = _server->getPlayerIdToGive();
+                std::cout << "server id, player id " << playerId << std::endl;
+                evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(instance->getId()) + " " + std::to_string(instance->getPort());
+                std::string playerEntityId = "p" + std::to_string(playerId);
+                instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
+                _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
                 evt.body_size = evt.body.size();
                 SendEvent(client, evt);
                 return;
             }
             InstanceInfos infos = _server->createInstance();
+            Instance *instance = _server->getInstance(_server->getInstancesNb() - 1);
             std::cout << "[DEBUG] Instance created: " << infos.id << " " << infos.port << std::endl;
             Event evt;
             evt.ACTION_NAME = ACTION::CREATE;
-            evt.body = std::to_string(infos.id) + " " + std::to_string(infos.port);
+            int playerId = _server->getPlayerIdToGive();
+            std::cout << "server id, player id " << playerId << std::endl;
+            evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(infos.id) + " " + std::to_string(infos.port);
+            std::string playerEntityId = "p" + std::to_string(playerId);
+            instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
+            _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
             evt.body_size = evt.body.size();
             SendEvent(client, evt);
         }

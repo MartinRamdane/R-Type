@@ -25,13 +25,16 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
     evt.decodeMessage(msg.body);
     std::cout << "[BODY DATA]: " << evt.getBody() << std::endl;
     std::stringstream ss(evt.getBody());
+    std::string playerId;
     std::string getPort;
+    ss >> playerId;
     ss >> getPort;
     ss >> getPort;
     // add get windows infos
     int port = std::stoi(getPort);
     std::cout << "target port " << port << std::endl;
     _game->connectToUdpServer("127.0.0.1", port);
+    _game->setPlayerId(std::stoi(playerId));
     // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
   }
   break;

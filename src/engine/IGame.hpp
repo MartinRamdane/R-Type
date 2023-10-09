@@ -15,7 +15,7 @@ class IGame
 public:
     virtual ~IGame() = default;
 
-    virtual void update(ThreadSafeQueue<ACTION> &actions) = 0;
+    virtual void update(ThreadSafeQueue<Event> &events) = 0;
 
 protected:
 private:

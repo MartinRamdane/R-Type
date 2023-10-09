@@ -51,6 +51,7 @@ void UDPServer::processMessage(UDPMessage &msg)
     EventHandler eventHandler;
     checkConnection(msg);
     evt = eventHandler.decodeMessage(msg.data);
+    std::cout << "test player id: " << _playerEntities[1] << std::endl;
     std::cout << "Received data: " << evt.body << std::endl;
     auto client = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
                                { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
@@ -92,6 +93,7 @@ void UDPServer::userJoined(Client client) {
     evt.ACTION_NAME = ACTION::JOINED;
     evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
     evt.body_size = evt.body.size();
+    _instanceRef->addAction(evt);
     sendEvent(evt, client.client.address().to_string(), client.client.port());
 }
 
@@ -224,7 +226,7 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
     switch (evt.ACTION_NAME)
     {
     case ACTION::LEFT:
-        std::cout << "Player go to left" << std::endl;
+        std::cout << "Player go to left " << evt.body << std::endl;
         break;
     case ACTION::RIGHT:
         std::cout << "Player go to right" << std::endl;
@@ -242,7 +244,7 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
     default:
         break;
     }
-    _instanceRef->addAction(evt.ACTION_NAME);
+    _instanceRef->addAction(evt);
 }
 
 void UDPServer::sendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
@@ -268,4 +270,8 @@ void UDPServer::handleMessages(size_t maxMessages, bool bWait)
         processMessage(msg);
         nMessageCount++;
     }
+}
+
+void UDPServer::addPlayerEntity(int id, std::string entity) {
+    _playerEntities[id] = entity;
 }

@@ -13,6 +13,7 @@ ServerClass::ServerClass() : _threadPool(1)
     MyServer *server = new MyServer(4244, this);
     _server = server;
     _server->StartServer();
+    _playerIdToGive = 1;
 }
 
 ServerClass::~ServerClass()

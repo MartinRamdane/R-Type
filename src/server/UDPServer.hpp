@@ -10,6 +10,7 @@
 #include <iostream>
 #include <utility>
 #include <chrono>
+#include <map>
 #include <thread>
 #include "Mutex.hpp"
 #include "../global/EventHandler.hpp"
@@ -123,6 +124,8 @@ public:
     void handleEngineEvents(std::string request);
     void handleMessages(size_t maxMessages = -1, bool bWait = false);
     int getNbPlayers() const { return _nbPlayers; }
+    void addPlayerEntity(int id, std::string entity);
+    std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
 
 private:
     /**
@@ -157,4 +160,5 @@ private:
     ThreadSafeQueue<UDPMessage> _toSendQueue;
     std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);
     std::vector<uint8_t> _tempMsg = {};
+    std::map<int, std::string> _playerEntities;
 };

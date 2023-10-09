@@ -30,6 +30,8 @@ public:
   int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers(); }
   void interpretEvent(Event &event);
   int getInstancesNb() { return _instances.size(); }
+  int getPlayerIdToGive() { return _playerIdToGive; }
+  void setPlayerIdToGive(int id) { _playerIdToGive = id; }
   Instance *getInstance(int id) { return _instances[id]; }
   void loop();
 
@@ -39,4 +41,5 @@ private:
   ThreadPool _threadPool;
   MyServer *_server;
   std::vector<Instance *> _instances;
+  int _playerIdToGive;
 };
