@@ -15,17 +15,6 @@ Parser::~Parser()
 {
 }
 
-bool Parser::findEntity(int id)
-{
-    std::map<int, Entity>::iterator it = _entities.begin();
-    while (it != _entities.end())
-    {
-        if (it->first == id)
-            return true;
-        it++;
-    }
-    return false;
-}
 
 Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager)
 {
@@ -54,9 +43,13 @@ void Parser::getConfig(std::string path, std::string type, Entity *entity)
     entity->setRect(std::stoi(nbRect), std::stoi(initRect));
     entity->_event_form = jsonParser.get<std::string>(jsonfile, type + ".form");
     entity->_object_type = type;
+    std::cout << "nbRect: " << nbRect << std::endl;
+    std::cout << "initRect: " << initRect << std::endl;
+    std::cout << "event_form: " << entity->_event_form << std::endl;
+    std::cout << "object_type: " << entity->_object_type << std::endl;
 }
 
-void Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
+std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
 {
     std::cout << "id: " << value["id"] << std::endl;
     std::cout << "path: " << value["path"] << std::endl;
@@ -76,33 +69,22 @@ void Parser::addEntity(std::map<std::string, std::string> value, RessourceManage
     entity.setSpriteRotation(std::stof(value["rotation"]));
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity._oldPosY = std::stoi(value["y"]);
-    _entities[id] = entity;
     std::cout << "entity added, id: " << id << std::endl;
+    return std::make_tuple(id, entity);
 }
 
-void Parser::removeEntity(std::map<std::string, std::string> value)
+std::tuple<int, Entity> Parser::removeEntity(std::map<std::string, std::string> value)
 {
-    int id = std::stoi(value["id"]);
-    if (findEntity(id) == true)
-    {
-        _entities.erase(id);
-    }
+    int id = -std::stoi(value["id"]);
+    return std::make_tuple(id, Entity());
 }
 
-void Parser::modifyPosEntity(std::map<std::string, std::string> value)
+std::tuple<int, Entity> Parser::modifyPosEntity(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
-    if (findEntity(id) == true)
-    {
-
-        _entities[id].setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-        if (_entities[id]._oldPosY > std::stof(value["y"]))
-            _entities[id].animateSprite(1, 100);
-        else if (_entities[id]._oldPosY < std::stof(value["y"]))
-            _entities[id].animateSprite(2, 100);
-        else if (_entities[id]._oldPosY == std::stof(value["y"]))
-            _entities[id].setInitPos();
-    }
+    Entity entity;
+    entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+    return std::make_tuple(id, entity);
 }
 
 std::string Parser::setKey(std::string key, int i)
@@ -128,16 +110,17 @@ std::string Parser::setKey(std::string key, int i)
     return key;
 }
 
-void Parser::parseMessage(Event evt, std::string message, RessourceManager &ressourceManager)
+std::tuple<int, Entity> Parser::parseMessage(Event evt, std::string message, RessourceManager &ressourceManager)
 {
     std::size_t com = message.find(' ');
     if (com != std::string::npos)
     {
         std::string commande = message.substr(0, com);
         std::string tmp = message.substr(com);
-        if (evt.ACTION_NAME == ACTION::SPRITE)
+        std::cout << "commande: " << commande << std::endl;
+        if (commande == "ecreate")
         {
-            std::istringstream iss(message);
+            std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
             std::string token;
@@ -147,22 +130,22 @@ void Parser::parseMessage(Event evt, std::string message, RessourceManager &ress
                 valueMap[key] = token;
                 key.clear();
             }
-            addEntity(valueMap, ressourceManager);
+            return addEntity(valueMap, ressourceManager);
         }
-        // else if (commande == "pmove" || commande == "emove")
-        // {
-        //     std::istringstream iss(tmp);
-        //     std::map<std::string, std::string> valueMap;
-        //     std::string key;
-        //     std::string token;
-        //     for (int i = 0; iss >> token; i++)
-        //     {
-        //         key = setKey(key, i);
-        //         valueMap[key] = token;
-        //         key.clear();
-        //     }
-        //     modifyPosEntity(valueMap);
-        // }
+        else if (commande == "pmove" || commande == "emove")
+        {
+            std::istringstream iss(tmp);
+            std::map<std::string, std::string> valueMap;
+            std::string key;
+            std::string token;
+            for (int i = 0; iss >> token; i++)
+            {
+                key = setKey(key, i);
+                valueMap[key] = token;
+                key.clear();
+            }
+            return modifyPosEntity(valueMap);
+        }
         else if (commande == "dead" || commande == "edead")
         {
             std::istringstream iss(tmp);
@@ -175,7 +158,7 @@ void Parser::parseMessage(Event evt, std::string message, RessourceManager &ress
                 valueMap[key] = token;
                 key.clear();
             }
-            removeEntity(valueMap);
+            return removeEntity(valueMap);
         }
     }
 }

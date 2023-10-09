@@ -110,10 +110,10 @@ void UDPServer::checkConnection(UDPMessage &msg)
         evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
         evt.body_size = evt.body.size();
         sendEvent(evt, client.client.address().to_string(), client.client.port());
-        evt.ACTION_NAME = ACTION::SPRITE;
-        evt.body = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
-        evt.body_size = evt.body.size();
-        sendEvent(evt, client.client.address().to_string(), client.client.port());
+        // evt.ACTION_NAME = ACTION::SPRITE;
+        // evt.body = "3 300 0 Spaceship2.png 0 1 1 ./config.json Spaceship";
+        // evt.body_size = evt.body.size();
+        // sendEvent(evt, client.client.address().to_string(), client.client.port());
     }
 }
 

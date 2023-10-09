@@ -66,7 +66,7 @@ void Game::initializeLevel()
             {
                 if (count == 0)
                 {
-                    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets[key](), 0, 239, _lastId++, "config.json", "Background"));
+                    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "config.json", "Background"));
                     std::cout << "Background" << std::endl;
                 }
                 else

@@ -38,8 +38,10 @@ public:
     void setGameTitle(std::string gameTitle) { _gameTitle = gameTitle; }
     void setWidth(int width) { _width = width; }
     void setHeight(int height) { _height = height; }
-    Parser *getParser() const { return _parser; }
     RessourceManager getRessourceManager() const { return _ressourceManager; }
+    bool findEntity(int id);
+    void addEntity(int id, Entity entity);
+    void removeEntity(int);
 
 private:
     sf::RenderWindow _window;
@@ -47,7 +49,6 @@ private:
     sf::Event _event;
     sf::Clock _clock;
     RessourceManager _ressourceManager;
-    Parser *_parser;
     TCPClientImpl *_client;
     UDPClient *_udpClient;
     int _event_indicator;
@@ -60,4 +61,13 @@ private:
     std::string _gameTitle;
     int _width;
     int _height;
+    std::map<int, Entity> _entities;
 };
+
+
+// if (entity._oldPosY > std::stof(value["y"]))
+//             entity.animateSprite(1, 100);
+//         else if (entity._oldPosY < std::stof(value["y"]))
+//             entity.animateSprite(2, 100);
+//         else if (entity._oldPosY == std::stof(value["y"]))
+//             entity.setInitPos();

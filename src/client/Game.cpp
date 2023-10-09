@@ -10,7 +10,6 @@
 Game::Game() : _threadPool(1)
 {
     _ressourceManager = RessourceManager();
-    _parser = new Parser();
     _event_indicator = 0;
     _gameTitle = "game";
     _width = 850;
@@ -127,9 +126,8 @@ void Game::handleEvent()
 
 void Game::animate()
 {
-    std::map<int, Entity> entities = _parser->getEntities();
-    std::map<int, Entity>::iterator it = entities.begin();
-    while (it != entities.end())
+    std::map<int, Entity>::iterator it = _entities.begin();
+    while (it != _entities.end())
     {
         if (it->second._event_form == "loop")
             it->second.animateSprite(0, 100);
@@ -145,11 +143,9 @@ void Game::animate()
 
 void Game::draw()
 {
-    std::map<int, Entity> entities = _parser->getEntities();
-    std::map<int, Entity>::iterator it = entities.begin();
-    while (it != entities.end())
+    std::map<int, Entity>::iterator it = _entities.begin();
+    while (it != _entities.end())
     {
-        std::cout << "draw" << std::endl;
         _window.draw(it->second.getSprite());
         it++;
     }
@@ -187,4 +183,30 @@ bool Game::connectToUdpServer(std::string host, int port)
     _udpClient->connect_to(host, port);
     isUDPClientConnected = true;
     return true;
+}
+
+bool Game::findEntity(int id)
+{
+    std::map<int, Entity>::iterator it = _entities.begin();
+    while (it != _entities.end())
+    {
+        if (it->first == id)
+            return true;
+        it++;
+    }
+    return false;
+}
+
+void Game::removeEntity(int id)
+{
+    _entities.erase(id);
+}
+
+void Game::addEntity(int id, Entity entity)
+{
+    if (findEntity(id) == true) {
+        _entities[id].setSpritePosition(entity.getSpritePosition());
+    }
+    else
+        _entities[id] = entity;
 }

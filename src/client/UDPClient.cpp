@@ -130,9 +130,14 @@ void UDPClient::updateSprite(Event evt)
   ss >> jsonPath;
   ss >> objectType;
   std::cout << "update sprite message: " << evt.body << std::endl;
-  Parser *parseRef = _gameRef->getParser();
+  Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  parseRef->parseMessage(evt, evt.body, ressourceManagerRef);
+  std::tuple<int, Entity> res = parseRef->parseMessage(evt, evt.body, ressourceManagerRef);
+  if (std::get<0>(res) < 0)
+    _gameRef->removeEntity(-std::get<0>(res));
+  else
+    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
+
 }
 
 void UDPClient::handleEvents(Event evt)
