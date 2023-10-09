@@ -259,7 +259,6 @@ void UDPServer::sendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpo
 
 void UDPServer::handleMessages(size_t maxMessages, bool bWait)
 {
-    std::cout << "Handling messages" << std::endl;
     if (bWait)
         _queue.wait();
     size_t nMessageCount = 0;

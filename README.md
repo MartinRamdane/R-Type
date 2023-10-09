@@ -10,6 +10,8 @@ The project is split in 3 parts:
  - Server side (in UDP and TCP protocol)
  - Game Engine
 
+<img width="949" alt="CleanShot 2023-10-09 at 11 05 40@2x" src="https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/assets/91624379/0e3d18fb-7132-4f78-a555-86ab2678dd3e">
+
 ## Docs
 
 For the Server API Reference, we've created an API doc in docs folder.
