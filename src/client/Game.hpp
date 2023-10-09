@@ -42,6 +42,7 @@ public:
     bool findEntity(int id);
     void addEntity(int id, Entity entity);
     void removeEntity(int);
+    void LoopUDPMessages();
 
 private:
     sf::RenderWindow _window;

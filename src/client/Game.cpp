@@ -7,7 +7,7 @@
 
 #include "Game.hpp"
 
-Game::Game() : _threadPool(1)
+Game::Game() : _threadPool(2)
 {
     _ressourceManager = RessourceManager();
     _event_indicator = 0;
@@ -35,17 +35,10 @@ void Game::run()
         }
         if (isUDPClientConnected == true)
         {
-            if (_udpClient->Incoming().empty() == false) {
-                auto msg = _udpClient->Incoming().pop_front();
-                _udpClient->HandleMessage(msg);
-            }
             createWindow(_gameTitle, _width, _height);
+            _threadPool.enqueue([this] { this->LoopUDPMessages(); });
             while (_window.isOpen())
             {
-                if (_udpClient->Incoming().empty() == false) {
-                    auto msg = _udpClient->Incoming().pop_front();
-                    _udpClient->HandleMessage(msg);
-                }
                 if (_client->Incoming().empty() == false)
                 {
                     auto msg = _client->Incoming().pop_front().msg;
@@ -58,6 +51,16 @@ void Game::run()
         }
     }
     exit(0);
+}
+
+void Game::LoopUDPMessages()
+{
+    while (1) {
+        if (_udpClient->Incoming().empty() == false) {
+            auto msg = _udpClient->Incoming().pop_front();
+            _udpClient->HandleMessage(msg);
+        }
+    }
 }
 
 void Game::handleEvent()
