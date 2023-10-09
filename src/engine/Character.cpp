@@ -62,6 +62,8 @@ void Character::rotate(float angle)
 
 void Character::update()
 {
+    if (_x != _oldX || _y != _oldY)
+        setOldPosition(_x, _y);
 }
 
 std::tuple<float, float> Character::getPosition() const

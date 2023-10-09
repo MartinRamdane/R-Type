@@ -60,6 +60,8 @@ void Shield::takeDamage(int damage)
 
 void Shield::update()
 {
+    if (_x != _oldX || _y != _oldY)
+        setOldPosition(_x, _y);
     if (_shieldIsUp)
     {
         auto pos = getPosition();

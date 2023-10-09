@@ -56,6 +56,8 @@ void StaticObject::rotate(float angle)
 
 void StaticObject::update()
 {
+    if (_x != _oldX || _y != _oldY)
+        setOldPosition(_x, _y);
 }
 
 std::tuple<float, float> StaticObject::getPosition() const
