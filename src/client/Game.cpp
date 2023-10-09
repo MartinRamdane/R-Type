@@ -152,7 +152,7 @@ void Game::animate()
         {
             if (it->second.getSpritePosition().y > it->second.getOldPosY())
                 it->second.animateSprite(2, 100);
-            else
+            else if (it->second.getSpritePosition().y < it->second.getOldPosY())
                 it->second.animateSprite(1, 100);
         }
         it++;
