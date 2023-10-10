@@ -53,7 +53,7 @@ Your class must inherit the **IGame** interface, but here's what else you can im
 	> `Game::Game(std::shared_ptr<Engine>  &engine) : _engine(engine)`
 	
 	To set the relation juste use `setRelation`, the first parameter is the first group, the second is the second group and the last parameter is the function to call when there is a collision.
-	> `engine->setRelation(_projectilesGroups, _enemiesGroups, Projectile::hurtEntity);`
+	> `engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);`
 
 	It must be static and have this definition:
 	> `static  void  hurtEntity(IEntity  &self, IEntity  &you);`

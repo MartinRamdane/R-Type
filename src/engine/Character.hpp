@@ -55,8 +55,11 @@ public:
     void setShootAsset(std::string shootAsset);
     void setRadius(float radius);
     float getRadius() const;
+    bool getIsPositionSeted() const;
+    void setIsPositionSeted();
 
 private:
+    bool _positionSeted = false;
     std::string _path;
     float _x;
     float _y;
