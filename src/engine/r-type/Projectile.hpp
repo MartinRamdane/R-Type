@@ -43,6 +43,8 @@ public:
     std::string getSpriteConfigJsonPath() const;
     std::string getSpriteConfigJsonObjectName() const;
     void kill();
+    void setRadius(float radius);
+    float getRadius() const;
 
 protected:
 private:

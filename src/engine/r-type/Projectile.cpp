@@ -45,6 +45,8 @@ void Projectile::setRotation(float angle)
 
 void Projectile::move(float x, float y)
 {
+    if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius || (_x + x * _speed) < 0 + _radius || (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) || (_y + y * _speed) < 0 + (_radius / 2))
+        return;
     setOldPosition(_x, _y);
     _x += x;
     _y += y;
@@ -58,7 +60,7 @@ void Projectile::rotate(float angle)
 void Projectile::update()
 {
     setPosition(_x + _speed, _y);
-    if (_x > 850)
+    if (_x > Engine::instance->getWindowWidth())
         _isDead = true;
 }
 
@@ -186,4 +188,14 @@ void Projectile::kill()
 void Projectile::setDead(bool dead)
 {
     _isDead = dead;
+}
+
+void Projectile::setRadius(float radius)
+{
+    _radius = radius;
+}
+
+float Projectile::getRadius() const
+{
+    return _radius;
 }

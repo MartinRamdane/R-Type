@@ -23,6 +23,7 @@ public:
     void insert(std::shared_ptr<T> entity)
     {
         entities.push_back(entity);
+        entity->setRadius(_radius);
     }
     template <class T2>
     void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(IEntity &, IEntity &))

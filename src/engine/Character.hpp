@@ -53,6 +53,8 @@ public:
     virtual void action(){};
     void kill();
     void setShootAsset(std::string shootAsset);
+    void setRadius(float radius);
+    float getRadius() const;
 
 private:
     std::string _path;

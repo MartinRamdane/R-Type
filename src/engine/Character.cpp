@@ -50,6 +50,8 @@ void Character::setRotation(float angle)
 
 void Character::move(float x, float y)
 {
+    if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius || (_x + x * _speed) < 0 + _radius || (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) || (_y + y * _speed) < 0 + (_radius / 2))
+        return;
     setOldPosition(_x, _y);
     _x += x * _speed;
     _y += y * _speed;
@@ -228,4 +230,14 @@ void Character::setShootAsset(std::string shootAsset)
 void Character::setDead(bool dead)
 {
     _isDead = dead;
+}
+
+void Character::setRadius(float radius)
+{
+    _radius = radius;
+}
+
+float Character::getRadius() const
+{
+    return _radius;
 }

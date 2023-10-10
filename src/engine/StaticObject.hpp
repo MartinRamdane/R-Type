@@ -8,6 +8,7 @@
 #pragma once
 
 #include "IEntity.hpp"
+#include "Engine.hpp"
 
 class StaticObject : public IEntity
 {
@@ -41,6 +42,8 @@ public:
     std::string getSpriteConfigJsonPath() const;
     std::string getSpriteConfigJsonObjectName() const;
     void kill();
+    void setRadius(float radius);
+    float getRadius() const;
 
 private:
     std::string _path;

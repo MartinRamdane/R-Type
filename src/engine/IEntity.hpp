@@ -41,6 +41,8 @@ public:
     virtual std::string getSpriteConfigJsonPath() const = 0;
     virtual std::string getSpriteConfigJsonObjectName() const = 0;
     virtual void kill() = 0;
+    virtual void setRadius(float radius) = 0;
+    virtual float getRadius() const = 0;
 
 protected:
     float _oldX;
@@ -48,6 +50,7 @@ protected:
     int _id;
     std::string _spriteConfigJsonPath;
     std::string _spriteConfigJsonObjectName;
+    float _radius;
 
 private:
 };
