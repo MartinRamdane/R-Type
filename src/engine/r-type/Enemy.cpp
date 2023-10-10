@@ -36,7 +36,7 @@ void Enemy::update()
     {
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime).count();
-        const bool needsDirectionChange = timeElapsed > 600;
+        const bool needsDirectionChange = timeElapsed > 450;
 
         if (needsDirectionChange)
         {
