@@ -36,6 +36,7 @@ public:
     int getId() const;
     int getNbSprite() const;
     bool isCreated() const;
+    void setDead(bool dead);
     void setCreated(bool created);
     bool isDead() const;
     bool canShoot();

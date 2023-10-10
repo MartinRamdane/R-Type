@@ -102,79 +102,135 @@ std::shared_ptr<Character> Game::getRandomSpaceship()
 
     switch (random)
     {
-        case 0:
-            return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
-        case 1:
-            return (std::make_shared<Speed>(_assets["Speed"](), 50, 100, _lastId++, 5));
-        case 2:
-            return (std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++, 5));
-        case 3:
-            return (std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++, 5));
-        case 4:
-            return (std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
-        default:
-            return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
+    case 0:
+        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
+    case 1:
+        return (std::make_shared<Speed>(_assets["Speed"](), 50, 100, _lastId++, 5));
+    case 2:
+        return (std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++, 5));
+    case 3:
+        return (std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++, 5));
+    case 4:
+        return (std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
+    default:
+        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
     }
 }
 
 void Game::update(ThreadSafeQueue<Event> &events)
 {
-    while (!events.empty()) {
+    while (!events.empty())
+    {
         auto event = events.pop_front();
         switch (event.ACTION_NAME)
         {
-            case ACTION::LEFT:
-                _players[getId(event) - 1]->move(-1, 0);
-                break;
-            case ACTION::RIGHT:
-                _players[getId(event) - 1]->move(1, 0);
-                break;
-            case ACTION::UP:
-                _players[getId(event) - 1]->move(0, -1);
-                break;
-            case ACTION::DOWN:
-                _players[getId(event) - 1]->move(0, 1);
-                break;
-            case ACTION::SHOOT:
-                _players[getId(event) - 1]->shoot();
-                break;
-            case ACTION::SHIELD:
-                _players[getId(event) - 1]->action();
-                break;
-            case ACTION::READY:
-                _players.push_back(getRandomSpaceship());
-                _playersGroups->insert(_players[_players.size() - 1]);
-                for (auto staticObject: _staticObjects) {
-                    staticObject->setCreated(false);
-                }
-                for (auto enemy: _enemies) {
-                    enemy->setCreated(false);
-                }
-                for (auto player: _players) {
-                    player->setCreated(false);
-                }
-                break;
-            default:
-                break;
+        case ACTION::LEFT:
+            _players[getId(event) - 1]->move(-1, 0);
+            break;
+        case ACTION::RIGHT:
+            _players[getId(event) - 1]->move(1, 0);
+            break;
+        case ACTION::UP:
+            _players[getId(event) - 1]->move(0, -1);
+            break;
+        case ACTION::DOWN:
+            _players[getId(event) - 1]->move(0, 1);
+            break;
+        case ACTION::SHOOT:
+            _players[getId(event) - 1]->shoot();
+            break;
+        case ACTION::SHIELD:
+            _players[getId(event) - 1]->action();
+            break;
+        case ACTION::READY:
+            _players.push_back(getRandomSpaceship());
+            _playersGroups->insert(_players[_players.size() - 1]);
+            for (auto staticObject : _staticObjects)
+            {
+                staticObject->setCreated(false);
+            }
+            for (auto enemy : _enemies)
+            {
+                enemy->setCreated(false);
+            }
+            for (auto player : _players)
+            {
+                player->setCreated(false);
+            }
+            break;
+        case ACTION::DEAD:
+        {
+            int id = std::stoi(event.body);
+            eraseDeadEntity(id);
+            break;
+        }
+        default:
+            break;
         }
     }
 }
 
 void Game::createExplosion(int x, int y)
 {
-    _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "config.json", "ExplosionSpaceship", 0, 2, 2, 6));
+    std::shared_ptr<StaticObject> explosion = std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "config.json", "ExplosionSpaceship", 0, 2, 2, 6);
+    _staticObjectsGroups->insert(explosion);
+    _staticObjects.push_back(explosion);
 }
 
 void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName)
 {
-    _projectilesGroups->insert(std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName));
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName);
+    _projectilesGroups->insert(projectile);
+    _projectiles.push_back(projectile);
 }
 
 std::shared_ptr<StaticObject> Game::createShield(int x, int y)
 {
     std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"](), x, y, _lastId++, "config.json", "Shield", 0, 1, 1, 1);
     _staticObjectsGroups->insert(_shield);
+    _staticObjects.push_back(_shield);
     return (_shield);
+}
+
+void Game::eraseDeadEntity(int id)
+{
+    std::cout << "Entity " << id << " is dead" << std::endl;
+    for (auto it = _players.begin(); it != _players.end(); it++)
+    {
+        if ((*it)->getId() == id)
+        {
+            (*it)->setDead(true);
+            _players.erase(it);
+            break;
+        }
+    }
+    for (auto it = _projectiles.begin(); it != _projectiles.end(); it++)
+    {
+        if ((*it)->getId() == id)
+        {
+            (*it)->setDead(true);
+            _projectiles.erase(it);
+            break;
+        }
+    }
+    for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++)
+    {
+        if ((*it)->getId() == id)
+        {
+            (*it)->setDead(true);
+            _staticObjects.erase(it);
+            break;
+        }
+    }
+    for (auto it = _enemies.begin(); it != _enemies.end(); it++)
+    {
+        if ((*it)->getId() == id)
+        {
+            (*it)->setDead(true);
+            _enemies.erase(it);
+            break;
+        }
+    }
 }
 
 std::map<std::string, std::function<std::string()>> Game::_assets = {

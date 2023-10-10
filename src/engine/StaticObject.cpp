@@ -165,3 +165,8 @@ void StaticObject::kill()
 {
     _isDead = true;
 }
+
+void StaticObject::setDead(bool dead)
+{
+    _isDead = dead;
+}

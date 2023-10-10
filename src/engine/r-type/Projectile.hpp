@@ -35,6 +35,7 @@ public:
     bool isCreated() const;
     void setCreated(bool created);
     bool isDead() const;
+    void setDead(bool dead);
     static void hurtEntity(IEntity &self, IEntity &you);
     void setDamage(int damage);
     int getDamage() const;

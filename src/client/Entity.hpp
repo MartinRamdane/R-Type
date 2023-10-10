@@ -42,6 +42,7 @@ public:
     int getInitRect() const { return _init_rect; };
     std::string getObjectType() const { return _object_type; };
     void setObjectType(std::string type) { _object_type = type; };
+    bool isDead() const;
 
 public:
     sf::Sprite _sprite;

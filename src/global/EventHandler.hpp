@@ -34,6 +34,7 @@ enum class ACTION : uint8_t
   PONG,
   SPRITE,
   SHIELD,
+  DEAD,
   UNKNOWN,
 };
 

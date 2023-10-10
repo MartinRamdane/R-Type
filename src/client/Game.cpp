@@ -182,6 +182,20 @@ void Game::update()
     draw();
     _window.setView(_view);
     _window.display();
+    for (auto it = _entities.begin(); it != _entities.end();)
+    {
+        if ((*it).second.isDead())
+        {
+            Event evt;
+            evt.ACTION_NAME = ACTION::DEAD;
+            evt.body_size = std::to_string((*it).first).size();
+            evt.body = std::to_string((*it).first);
+            _udpClient->sendEvent(evt);
+            it = _entities.erase(it);
+        }
+        else
+            it++;
+    }
 }
 
 bool Game::connectToServer(std::string host, int port)

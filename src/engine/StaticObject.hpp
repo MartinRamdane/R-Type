@@ -34,6 +34,7 @@ public:
     bool isCreated() const;
     void setCreated(bool created);
     bool isDead() const;
+    void setDead(bool dead);
     void setDamage(int damage);
     int getDamage() const;
     void takeDamage(int damage);

@@ -224,3 +224,8 @@ void Character::setShootAsset(std::string shootAsset)
 {
     _shootAsset = shootAsset;
 }
+
+void Character::setDead(bool dead)
+{
+    _isDead = dead;
+}

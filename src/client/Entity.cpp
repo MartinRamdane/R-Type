@@ -132,3 +132,15 @@ int Entity::getRect() const
 {
     return _nbRect;
 }
+
+bool Entity::isDead() const
+{
+    if (_event_form == "once")
+    {
+        float size = _texture->getSize().x / _nbRect;
+        sf::IntRect rect = _sprite.getTextureRect();
+        if (rect.left == size * (_nbRect - 1) || rect.left < size * _init_rect)
+            return true;
+    }
+    return false;
+}

@@ -36,6 +36,7 @@ public:
     void initializeLevel();
     int getId(Event event);
     std::shared_ptr<Character> getRandomSpaceship();
+    void eraseDeadEntity(int id);
 
 private:
     std::shared_ptr<Engine> _engine;

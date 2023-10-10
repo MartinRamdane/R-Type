@@ -182,3 +182,8 @@ void Projectile::kill()
 {
     _isDead = true;
 }
+
+void Projectile::setDead(bool dead)
+{
+    _isDead = dead;
+}

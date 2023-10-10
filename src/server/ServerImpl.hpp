@@ -164,6 +164,11 @@ protected:
             std::cout << "[" << client->GetID() << "]: SHIELD" << std::endl;
         }
         break;
+        case ACTION::DEAD:
+        {
+            std::cout << "[" << client->GetID() << "]: DEAD" << std::endl;
+        }
+        break;
         }
     }
 
