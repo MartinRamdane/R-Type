@@ -251,7 +251,6 @@ void Game::addEntity(int id, Entity entity)
 {
     if (findEntity(id) == true)
     {
-        auto pos = _entities[id].getSpritePosition();
         _entities[id].setSpritePosition(entity.getSpritePosition());
     }
     else

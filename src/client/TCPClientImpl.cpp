@@ -104,5 +104,13 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
   {
   }
   break;
+  case ACTION::TEXT:
+  {
+  }
+  break;
+  case ACTION::DEAD:
+  {
+  }
+  break;
   }
 }

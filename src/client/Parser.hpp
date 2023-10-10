@@ -24,7 +24,7 @@ public:
     bool findEntity(int id);
     Entity loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager);
     std::tuple<int, Entity> addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager);
-    std::tuple<int, Entity> addEntityText(std::map<std::string, std::string> value, RessourceManager &ressourceManager);
+    std::tuple<int, Entity> addEntityText(std::map<std::string, std::string> value);
     std::tuple<int, Entity> removeEntity(std::map<std::string, std::string> value);
     void updateEntity(std::map<std::string, std::string> value);
     std::tuple<int, Entity> modifyPosEntity(std::map<std::string, std::string> value);

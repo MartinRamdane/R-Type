@@ -58,7 +58,7 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     return std::make_tuple(id, entity);
 }
 
-std::tuple<int, Entity> Parser::addEntityText(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
+std::tuple<int, Entity> Parser::addEntityText(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
     Entity entity;
@@ -157,7 +157,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
                 valueMap[key] = token;
                 key.clear();
             }
-            return addEntityText(valueMap, ressourceManager);
+            return addEntityText(valueMap);
         }
         else if (commande == "pmove" || commande == "emove")
         {
