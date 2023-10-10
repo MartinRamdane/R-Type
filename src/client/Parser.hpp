@@ -24,12 +24,14 @@ public:
     bool findEntity(int id);
     Entity loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager);
     std::tuple<int, Entity> addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager);
+    std::tuple<int, Entity> addEntityText(std::map<std::string, std::string> value, RessourceManager &ressourceManager);
     std::tuple<int, Entity> removeEntity(std::map<std::string, std::string> value);
     void updateEntity(std::map<std::string, std::string> value);
     std::tuple<int, Entity> modifyPosEntity(std::map<std::string, std::string> value);
     void getConfig(std::string path, std::string type, Entity *entity);
     std::string setKey(std::string key, int i);
-    std::tuple<int, Entity> parseMessage(std::string message, RessourceManager &ressourceManager);
+    std::string setKeyText(std::string key, int i);
+    std::tuple<int, Entity> parseMessage(Event evt, RessourceManager &ressourceManager);
 
 public:
 };
