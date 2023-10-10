@@ -37,7 +37,9 @@ void Instance::EventLoop()
 {
   while (1)
   {
-    if (_udpServer->getNbPlayers() == 0)
+    std::cout << "nb players: " << _udpServer->getNbPlayers() << std::endl;
+    int nbPlayers = _udpServer->getNbPlayers();
+    if (nbPlayers == 0)
     {
       continue;
     }

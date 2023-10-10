@@ -122,7 +122,7 @@ void Game::update(ThreadSafeQueue<Event> &events)
             case ACTION::SHIELD:
                 _players[getId(event) - 1]->action();
                 break;
-            case ACTION::JOINED:
+            case ACTION::READY:
                 _players.push_back(std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
                 _playersGroups->insert(_players[_players.size() - 1]);
                 for (auto staticObject: _staticObjects) {
