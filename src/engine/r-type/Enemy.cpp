@@ -21,14 +21,10 @@ void Enemy::update()
 {
     if (_x != _oldX || _y != _oldY)
         setOldPosition(_x, _y);
-    if (_lastMoveTime.time_since_epoch().count() == 0)
-        _lastMoveTime = std::chrono::high_resolution_clock::now();
 
-    if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastMoveTime).count() > 100)
-    {
-        _lastMoveTime = std::chrono::high_resolution_clock::now();
-        move(-1, 0);
-    }
+    move(-1, 0);
+
+
     // std::string movementType = getMovementType();
     // std::cout << movementType << std::endl;
     // if (movementType == "Horizontal") {

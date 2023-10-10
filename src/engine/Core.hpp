@@ -25,4 +25,5 @@ public:
 private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<IGame> _game;
+    std::chrono::high_resolution_clock::time_point _lastFrameTime;
 };

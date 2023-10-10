@@ -26,9 +26,15 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
         // get events
         _engine->update();
         _game->update(events);
-        auto entities = _engine->getEntities();
-        std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
-        return protocol;
+        if (_lastFrameTime.time_since_epoch().count() == 0)
+            _lastFrameTime = std::chrono::high_resolution_clock::now();
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 100)
+        {
+            _lastFrameTime = std::chrono::high_resolution_clock::now();
+            auto entities = _engine->getEntities();
+            std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
+            return protocol;
+        }
     }
     return {};
 }
