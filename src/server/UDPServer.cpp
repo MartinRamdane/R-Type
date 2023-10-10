@@ -54,8 +54,8 @@ void UDPServer::processMessage(UDPMessage &msg)
     std::cout << "test player id: " << _playerEntities[1] << std::endl;
     std::cout << "Received data: " << evt.body << std::endl;
     auto client = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
-                               { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
-    if (evt.ACTION_NAME == ACTION::PONG)
+    { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
+    if (evt.ACTION_NAME == ACTION::PONG && client != clients_.end())
     {
         client->timestamp = std::chrono::system_clock::now();
         std::cout << "updated timestamp for client " << client->client.address().to_string() << ":" << client->client.port() << std::endl;
