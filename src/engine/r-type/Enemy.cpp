@@ -17,25 +17,40 @@ Enemy::~Enemy()
 {
 }
 
+// TODO: add chrono to move up and down for a period of time
 void Enemy::update()
 {
+    // Check if the position has changed and update the old position if needed
     if (_x != _oldX || _y != _oldY)
+    {
         setOldPosition(_x, _y);
+    }
 
-    move(-1, 0);
+    std::string movementType = getMovementType();
 
+    if (movementType == "Horizontal")
+    {
+        move(-1, 0); // Horizontal movement
+    }
+    else if (movementType == "UpAndDown")
+    {
+        const auto currentTime = std::chrono::high_resolution_clock::now();
+        const auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime).count();
+        const bool needsDirectionChange = timeElapsed > 600;
 
-    // std::string movementType = getMovementType();
-    // std::cout << movementType << std::endl;
-    // if (movementType == "Horizontal") {
-    //     move(-1, 0);
-    // } else if (movementType == "UpAndDown") {
-    //     if (_lastMove == NONE || _lastMove == DOWN) {
-    //         move(-1, -1);
-    //         _lastMove = UP;
-    //     } else if (_lastMove == UP) {
-    //         move(-1, 1);
-    //         _lastMove = DOWN;
-    //     }
-    // }
+        if (needsDirectionChange)
+        {
+            _lastMove = (_lastMove == NONE || _lastMove == UP) ? DOWN : UP;
+            _lastMoveTime = currentTime;
+        }
+
+        if (_lastMove == NONE || _lastMove == UP)
+        {
+            move(-1, 1);
+        }
+        else
+        {
+            move(-1, -1);
+        }
+    }
 }

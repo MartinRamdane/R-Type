@@ -3,6 +3,28 @@
         "Background": {
             "Type": "StaticObject"
         },
+        "Flyer": {
+            "Type": "Flyer",
+            "MovementType": "UpAndDown",
+            "Count": 4,
+            "Positions": [
+                {
+                    "X": 500,
+                    "Y": 100
+                },
+                {
+                    "X": 500,
+                    "Y": 200
+                },
+                {
+                    "X": 500,
+                    "Y": 300
+                },
+                {
+                    "X": 500,
+                    "Y": 400
+                }]
+        },
         "Enemy1": {
             "Type": "Enemy1",
             "MovementType": "Horizontal",
