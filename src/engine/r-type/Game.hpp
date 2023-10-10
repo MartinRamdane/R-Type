@@ -16,6 +16,7 @@
 #include "../StaticObject.hpp"
 #include "../JsonParser.hpp"
 #include "../IGame.hpp"
+#include <random>
 
 class Character;
 class Enemy;

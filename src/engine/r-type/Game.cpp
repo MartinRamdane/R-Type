@@ -95,7 +95,10 @@ int Game::getId(Event event)
 
 std::shared_ptr<Character> Game::getRandomSpaceship()
 {
-    int random = rand() % 5;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, 4);
+    int random = distrib(gen);
 
     switch (random)
     {
