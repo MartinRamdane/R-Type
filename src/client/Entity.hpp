@@ -55,6 +55,7 @@ public:
     sf::Text getText() const { return _text; };
     void setType(Type type) { _type = type; };
     void setTextInfo(int size, std::string color);
+    sf::Font getFont() const { return _font; };
     sf::Color getColor(std::string color);
 
 public:

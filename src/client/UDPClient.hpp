@@ -35,6 +35,7 @@ public:
   void handleEvents(Event evt);
   void joinGame(Event evt);
   void updateSprite(Event evt);
+  void updateText(Event evt);
   void SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
   ThreadSafeQueue<std::vector<uint8_t>> &Incoming() { return _queue; }
   void processSendQueue();

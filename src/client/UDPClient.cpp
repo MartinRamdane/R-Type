@@ -138,6 +138,30 @@ void UDPClient::updateSprite(Event evt)
 
 }
 
+void UDPClient::updateText(Event evt)
+{
+  std::stringstream ss(evt.body);
+  std::string id;
+  std::string x;
+  std::string y;
+  std::string text;
+  std::string color;
+  std::string objectType;
+  ss >> id;
+  ss >> x;
+  ss >> y;
+  ss >> text;
+  ss >> color;
+  ss >> objectType;
+  Parser *parseRef = new Parser();
+  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
+  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
+  if (std::get<0>(res) < 0)
+    _gameRef->removeEntity(-std::get<0>(res));
+  else
+    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
+}
+
 void UDPClient::handleEvents(Event evt)
 {
   switch (evt.ACTION_NAME)
@@ -150,6 +174,10 @@ void UDPClient::handleEvents(Event evt)
     break;
   case ACTION::SPRITE:
     updateSprite(evt);
+    break;
+  case ACTION::TEXT:
+    std::cout << "gere" << std::endl;
+    updateText(evt);
     break;
   default:
     break;

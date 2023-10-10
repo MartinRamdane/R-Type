@@ -148,6 +148,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         }
         else if (commande == "ecreate" && evt.ACTION_NAME == ACTION::TEXT)
         {
+            std::cout << "SDFGHJHGFDFGHJKJHGFDFGHJKJHGFDFGHJKJHGF" << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
