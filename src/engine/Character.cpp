@@ -241,3 +241,13 @@ float Character::getRadius() const
 {
     return _radius;
 }
+
+void Character::setIsPositionSeted()
+{
+    _positionSeted = true;
+}
+
+bool Character::getIsPositionSeted() const
+{
+    return _positionSeted;
+}

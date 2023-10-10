@@ -17,6 +17,7 @@
 #include "../JsonParser.hpp"
 #include "../IGame.hpp"
 #include <random>
+#include <tuple>
 
 class Character;
 class Enemy;
@@ -43,7 +44,8 @@ private:
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
-    std::shared_ptr<EntityType<IEntity>> _enemiesGroups;
+    std::shared_ptr<EntityType<IEntity>> _enemie1Groups;
+    std::shared_ptr<EntityType<IEntity>> _flyerGroups;
     std::vector<std::shared_ptr<Character>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     std::vector<std::shared_ptr<StaticObject>> _staticObjects;

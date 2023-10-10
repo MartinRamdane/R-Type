@@ -25,7 +25,8 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
 
     // Add collision between entities groups
-    engine->setRelation(_projectilesGroups, _enemiesGroups, Projectile::hurtEntity);
+    engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
+    engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
@@ -42,9 +43,11 @@ void Game::initializeLevel()
 
     int count = 0;
     _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
+    _enemie1Groups = std::make_shared<EntityType<IEntity>>(20);
+    _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
 
     nlohmann::json level = levelsFile["Level-" + std::to_string(currentLevel)];
+    std::vector<std::tuple<int, int>> positions;
 
     for (auto it2 = level.begin(); it2 != level.end(); it2++)
     {
@@ -61,7 +64,6 @@ void Game::initializeLevel()
             {
                 if (count == 0)
                 {
-
                     std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "config.json", "Background");
                     _staticObjects.push_back(background);
                     _staticObjectsGroups->insert(background);
@@ -70,14 +72,32 @@ void Game::initializeLevel()
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        if (it3.value() == "Enemy")
+                        if (it3.value() == "Enemy1")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), 500 + i * 100, 100, _lastId++);
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++);
                             _enemies.push_back(enemy);
-                            _enemiesGroups->insert(enemy);
+                            _enemie1Groups->insert(enemy);
+                        }
+                        else if (it3.value() == "Flyer")
+                        {
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++);
+                            _enemies.push_back(enemy);
+                            _flyerGroups->insert(enemy);
                         }
                     }
                     count = 0;
+                }
+            }
+            else if (it3.key() == "Positions")
+            {
+                auto position = it3.value();
+                for (int i = 0; i < count; i++)
+                {
+                    if (it2.key() == "Enemy1")
+                    {
+                        nlohmann::json pos = position[i];
+                        positions.push_back(std::make_tuple(pos.at("X"), pos.at("Y")));
+                    }
                 }
             }
         }
@@ -295,4 +315,8 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletEnemy2");
      }},
-};
+    {"Flyer", []()
+     {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Flyer");
+     }}};
