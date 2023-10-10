@@ -170,7 +170,10 @@ void Game::draw()
     std::map<int, Entity>::iterator it = _entities.begin();
     while (it != _entities.end())
     {
-        _window.draw(it->second.getSprite());
+        if (it->second.getType() == Entity::Type::TEXT)
+            _window.draw(it->second.getText());
+        else if (it->second.getType() == Entity::Type::SPRITE)
+            _window.draw(it->second.getSprite());
         it++;
     }
 }
@@ -189,7 +192,6 @@ bool Game::connectToServer(std::string host, int port)
     _client = new TCPClientImpl();
     _client->setGame(this);
     bool connected = _client->Connect(host, port, this);
-    // std::cout << "connected: " << connected << std::endl;
     _host = host;
     return connected;
 }

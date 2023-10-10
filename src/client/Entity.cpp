@@ -132,3 +132,44 @@ int Entity::getRect() const
 {
     return _nbRect;
 }
+
+void Entity::setFont()
+{
+    if (_font.loadFromFile("../font/pixel.ttf"))
+        std::cout << "Font loaded" << std::endl;
+    else
+        std::cout << "Font not loaded" << std::endl;
+    _text.setFont(_font);
+}
+
+void Entity::setTextString(std::string str)
+{
+    _text.setString(str);
+}
+
+void Entity::setTextInfo(int size, std::string color)
+{
+    _text.setCharacterSize(size);
+    _text.setFillColor(getColor(color));
+}
+
+sf::Color Entity::getColor(std::string color)
+{
+    if (color == "red")
+        return sf::Color::Red;
+    if (color == "blue")
+        return sf::Color::Blue;
+    if (color == "green")
+        return sf::Color::Green;
+    if (color == "white")
+        return sf::Color::White;
+    if (color == "black")
+        return sf::Color::Black;
+    if (color == "yellow")
+        return sf::Color::Yellow;
+    if (color == "magenta")
+        return sf::Color::Magenta;
+    if (color == "cyan")
+        return sf::Color::Cyan;
+    return sf::Color::White;
+}

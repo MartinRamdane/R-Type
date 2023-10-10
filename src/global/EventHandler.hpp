@@ -33,6 +33,7 @@ enum class ACTION : uint8_t
   PING,
   PONG,
   SPRITE,
+  TEXT,
   SHIELD,
   UNKNOWN,
 };

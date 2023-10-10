@@ -18,6 +18,11 @@
 class Entity
 {
 public:
+    enum Type
+    {
+        SPRITE,
+        TEXT,
+    };
     Entity();
     ~Entity(){};
     void setTexture(const std::string &path);
@@ -42,6 +47,14 @@ public:
     int getInitRect() const { return _init_rect; };
     std::string getObjectType() const { return _object_type; };
     void setObjectType(std::string type) { _object_type = type; };
+    Type getType() const { return _type; };
+    void setTextString(std::string str);
+    void setFont();
+    void setTextPosition(sf::Vector2f pos) { _text.setPosition(pos); };
+    sf::Text getText() const { return _text; };
+    void setType(Type type) { _type = type; };
+    void setTextInfo(int size, std::string color);
+    sf::Color getColor(std::string color);
 
 public:
     sf::Sprite _sprite;
@@ -52,4 +65,9 @@ public:
     std::string _event_form;
     std::string _object_type;
     int _oldPosY;
+    Type _type;
+    sf::Text _text;
+    sf::Font _font;
 };
+
+// ecreate id x y text size color

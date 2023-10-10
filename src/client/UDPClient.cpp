@@ -130,7 +130,7 @@ void UDPClient::updateSprite(Event evt)
   ss >> objectType;
   Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt.body, ressourceManagerRef);
+  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
   if (std::get<0>(res) < 0)
     _gameRef->removeEntity(-std::get<0>(res));
   else
