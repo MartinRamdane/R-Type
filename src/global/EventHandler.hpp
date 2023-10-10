@@ -35,6 +35,7 @@ enum class ACTION : uint8_t
   SPRITE,
   TEXT,
   SHIELD,
+  DEAD,
   UNKNOWN,
 };
 

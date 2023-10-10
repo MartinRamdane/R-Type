@@ -35,6 +35,7 @@ public:
     bool isCreated() const;
     void setCreated(bool created);
     bool isDead() const;
+    void setDead(bool dead);
     static void hurtEntity(IEntity &self, IEntity &you);
     void setDamage(int damage);
     int getDamage() const;
@@ -42,6 +43,8 @@ public:
     std::string getSpriteConfigJsonPath() const;
     std::string getSpriteConfigJsonObjectName() const;
     void kill();
+    void setRadius(float radius);
+    float getRadius() const;
 
 protected:
 private:

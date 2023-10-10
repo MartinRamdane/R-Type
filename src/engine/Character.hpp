@@ -36,6 +36,7 @@ public:
     int getId() const;
     int getNbSprite() const;
     bool isCreated() const;
+    void setDead(bool dead);
     void setCreated(bool created);
     bool isDead() const;
     bool canShoot();
@@ -52,6 +53,8 @@ public:
     virtual void action(){};
     void kill();
     void setShootAsset(std::string shootAsset);
+    void setRadius(float radius);
+    float getRadius() const;
 
 private:
     std::string _path;

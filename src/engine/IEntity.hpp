@@ -34,12 +34,15 @@ public:
     virtual bool isCreated() const = 0;
     virtual void setCreated(bool created) = 0;
     virtual bool isDead() const = 0;
+    virtual void setDead(bool dead) = 0;
     virtual void setDamage(int damage) = 0;
     virtual int getDamage() const = 0;
     virtual void takeDamage(int damage) = 0;
     virtual std::string getSpriteConfigJsonPath() const = 0;
     virtual std::string getSpriteConfigJsonObjectName() const = 0;
     virtual void kill() = 0;
+    virtual void setRadius(float radius) = 0;
+    virtual float getRadius() const = 0;
 
 protected:
     float _oldX;
@@ -47,6 +50,7 @@ protected:
     int _id;
     std::string _spriteConfigJsonPath;
     std::string _spriteConfigJsonObjectName;
+    float _radius;
 
 private:
 };
