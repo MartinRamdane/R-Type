@@ -10,6 +10,7 @@
 Instance::Instance(int id) : _id(id), _port((int)(4210 + id)), _threadPool(3)
 {
   _udpServer = new UDPServer(_io_service, (int)(4210 + id));
+  _udpServer->setNbPlayers(1);
   _core = new Core();
    _udpServer->setInstance(this);
    _threadPool.enqueue([this]()
@@ -37,11 +38,10 @@ void Instance::EventLoop()
 {
   while (1)
   {
-    std::cout << "nb players: " << _udpServer->getNbPlayers() << std::endl;
     int nbPlayers = _udpServer->getNbPlayers();
     if (nbPlayers == 0)
     {
-      continue;
+      continue; // TODO: destroy the instance
     }
     std::vector<std::string> protocol = _core->mainLoop(_events);
     for (auto message : protocol)

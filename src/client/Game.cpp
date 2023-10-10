@@ -38,14 +38,13 @@ void Game::run()
         if (isUDPClientConnected == true)
         {
             createWindow(_gameTitle, _width, _height);
-            if (isUDPClientConnected) {
-                Event evt;
-                evt.ACTION_NAME = ACTION::READY;
-                evt.body_size = 0;
-                evt.body = "";
-                _udpClient->sendEvent(evt);
-            }
-            _threadPool.enqueue([this] { this->LoopUDPMessages(); });
+            Event evt;
+            evt.ACTION_NAME = ACTION::READY;
+            evt.body_size = 0;
+            evt.body = "";
+            _udpClient->sendEvent(evt);
+            _threadPool.enqueue([this]
+                                { this->LoopUDPMessages(); });
             while (_window.isOpen())
             {
                 if (_client->Incoming().empty() == false)
@@ -64,8 +63,10 @@ void Game::run()
 
 void Game::LoopUDPMessages()
 {
-    while (1) {
-        if (_udpClient->Incoming().empty() == false) {
+    while (1)
+    {
+        if (_udpClient->Incoming().empty() == false)
+        {
             auto msg = _udpClient->Incoming().pop_front();
             _udpClient->HandleMessage(msg);
         }
@@ -229,7 +230,8 @@ void Game::removeEntity(int id)
 
 void Game::addEntity(int id, Entity entity)
 {
-    if (findEntity(id) == true) {
+    if (findEntity(id) == true)
+    {
         _entities[id].setSpritePosition(entity.getSpritePosition());
     }
     else

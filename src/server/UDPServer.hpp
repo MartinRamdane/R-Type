@@ -125,6 +125,7 @@ public:
     void handleEngineEvents(std::string request);
     void handleMessages(size_t maxMessages = -1, bool bWait = false);
     int getNbPlayers() const { return _nbPlayers; }
+    void setNbPlayers(int nbPlayers) { _nbPlayers = nbPlayers; }
     void addPlayerEntity(int id, std::string entity);
     std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
     void sendSpriteToReadyClient(Event evt, std::__1::vector<Client>::iterator client);
