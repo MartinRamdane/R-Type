@@ -174,8 +174,11 @@ void Game::draw()
         {
             it->second.setFont();
             _window.draw(it->second.getText());
-        } else if (it->second.getType() == Entity::Type::SPRITE)
+        }
+        else if (it->second.getType() == Entity::Type::SPRITE)
+        {
             _window.draw(it->second.getSprite());
+        }
         it++;
     }
 }
@@ -242,6 +245,7 @@ void Game::addEntity(int id, Entity entity)
 {
     if (findEntity(id) == true)
     {
+        auto pos = _entities[id].getSpritePosition();
         _entities[id].setSpritePosition(entity.getSpritePosition());
     }
     else

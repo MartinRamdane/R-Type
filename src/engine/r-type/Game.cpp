@@ -48,6 +48,7 @@ void Game::initializeLevel()
 
     nlohmann::json level = levelsFile["Level-" + std::to_string(currentLevel)];
     std::vector<std::tuple<int, int>> positions;
+    std::string movementType;
 
     for (auto it2 = level.begin(); it2 != level.end(); it2++)
     {
@@ -74,13 +75,15 @@ void Game::initializeLevel()
                     {
                         if (it3.value() == "Enemy1")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++);
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value());
+                            enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _enemie1Groups->insert(enemy);
                         }
                         else if (it3.value() == "Flyer")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++);
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value());
+                            enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _flyerGroups->insert(enemy);
                         }
@@ -99,6 +102,10 @@ void Game::initializeLevel()
                         positions.push_back(std::make_tuple(pos.at("X"), pos.at("Y")));
                     }
                 }
+            }
+            else if (it3.key() == "MovementType")
+            {
+                movementType = it3.value();
             }
         }
     }

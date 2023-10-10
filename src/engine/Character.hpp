@@ -57,12 +57,16 @@ public:
     float getRadius() const;
     bool getIsPositionSeted() const;
     void setIsPositionSeted();
+    void setMovementType(std::string movementType);
+    std::string getMovementType() const;
+
+protected:
+    float _x;
+    float _y;
 
 private:
     bool _positionSeted = false;
     std::string _path;
-    float _x;
-    float _y;
     float _angle;
     float _scaleX;
     float _scaleY;
@@ -77,4 +81,5 @@ private:
     std::chrono::high_resolution_clock::time_point _lastShootTime;
     std::chrono::high_resolution_clock::time_point _currentTime;
     std::string _shootAsset = "BulletSpaceship";
+    std::string _movementType;
 };

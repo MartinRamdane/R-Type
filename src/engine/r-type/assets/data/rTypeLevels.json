@@ -5,6 +5,7 @@
         },
         "Enemy1": {
             "Type": "Enemy1",
+            "MovementType": "Horizontal",
             "Count": 4,
             "Positions": [
                 {
@@ -21,27 +22,6 @@
                 },
                 {
                     "X": 500,
-                    "Y": 400
-                }]
-        },
-        "Flyer": {
-            "Type": "Flyer",
-            "Count": 4,
-            "Positions": [
-                {
-                    "X": 700,
-                    "Y": 100
-                },
-                {
-                    "X": 700,
-                    "Y": 200
-                },
-                {
-                    "X": 700,
-                    "Y": 300
-                },
-                {
-                    "X": 700,
                     "Y": 400
                 }]
         }

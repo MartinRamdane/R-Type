@@ -15,7 +15,6 @@ Parser::~Parser()
 {
 }
 
-
 Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager)
 {
     std::map<std::string, std::shared_ptr<sf::Texture>> textures = ressourceManager.getTextures();
@@ -148,7 +147,6 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         }
         else if (commande == "ecreate" && evt.ACTION_NAME == ACTION::TEXT)
         {
-            std::cout << "SDFGHJHGFDFGHJKJHGFDFGHJKJHGFDFGHJKJHGF" << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;

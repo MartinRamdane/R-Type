@@ -251,3 +251,13 @@ bool Character::getIsPositionSeted() const
 {
     return _positionSeted;
 }
+
+void Character::setMovementType(std::string movementType)
+{
+    _movementType = movementType;
+}
+
+std::string Character::getMovementType() const
+{
+    return _movementType;
+}
