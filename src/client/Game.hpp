@@ -33,7 +33,7 @@ public:
     void getinfos(){};
     bool connectToServer(std::string host, int port);
     bool connectToUdpServer(std::string host, int port);
-    void setConnected(bool) { isTCPClientConnected = true; }
+    void setConnected(bool state) { isTCPClientConnected = state; }
     void setUDPConnected(bool state) { isUDPClientConnected = state; }
     void setGameTitle(std::string gameTitle) { _gameTitle = gameTitle; }
     void setWidth(int width) { _width = width; }

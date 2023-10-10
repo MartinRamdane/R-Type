@@ -38,6 +38,13 @@ void Game::run()
         if (isUDPClientConnected == true)
         {
             createWindow(_gameTitle, _width, _height);
+            if (isUDPClientConnected) {
+                Event evt;
+                evt.ACTION_NAME = ACTION::READY;
+                evt.body_size = 0;
+                evt.body = "";
+                _udpClient->sendEvent(evt);
+            }
             _threadPool.enqueue([this] { this->LoopUDPMessages(); });
             while (_window.isOpen())
             {
@@ -185,9 +192,6 @@ bool Game::connectToServer(std::string host, int port)
     _client->setGame(this);
     bool connected = _client->Connect(host, port, this);
     std::cout << "connected: " << connected << std::endl;
-    while (isTCPClientConnected == false)
-    {
-    }
     _host = host;
     Event evt;
     evt.ACTION_NAME = ACTION::CREATE;

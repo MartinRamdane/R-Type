@@ -88,14 +88,15 @@ public:
      *
      * @param evt  event received
      * @param endpoint  client's endpoint
+     * @param client  client's class
      */
-    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint);
+    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::__1::vector<Client>::iterator client);
 
-    /**
-     * @brief Process send queue and send data to the clients
-     *
-     */
-    void processSendQueue();
+        /**
+         * @brief Process send queue and send data to the clients
+         *
+         */
+        void processSendQueue();
 
     /**
      * @brief Process the message received from the client
@@ -126,6 +127,7 @@ public:
     int getNbPlayers() const { return _nbPlayers; }
     void addPlayerEntity(int id, std::string entity);
     std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
+    void sendSpriteToReadyClient(Event evt, std::__1::vector<Client>::iterator client);
 
 private:
     /**

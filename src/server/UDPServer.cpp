@@ -62,7 +62,7 @@ void UDPServer::processMessage(UDPMessage &msg)
     }
     else
     {
-        handleEvents(evt, remote_endpoint_);
+        handleEvents(evt, remote_endpoint_, client);
     }
     mutex_.unlock();
     std::cout << "unlocked mutex" << std::endl;
@@ -79,7 +79,8 @@ void UDPServer::checkConnection(UDPMessage &msg)
     }
 }
 
-void UDPServer::userJoined(Client client) {
+void UDPServer::userJoined(Client client)
+{
     Event evt;
     clients_.push_back(client);
     std::cout << "New client connected: " << client.client.address().to_string() << ":" << client.client.port() << std::endl;
@@ -221,7 +222,21 @@ std::vector<uint8_t> UDPServer::encodeEvent(Event event)
     return evt.encodeMessage();
 }
 
-void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
+void UDPServer::sendSpriteToReadyClient(Event evt, std::__1::vector<Client>::iterator client)
+{
+    std::vector<std::string> protocol = _instanceRef->getCore()->getAllEntitiesToCreate();
+    for (auto message : protocol)
+    {
+        Event evt;
+        evt.ACTION_NAME = ACTION::SPRITE;
+        evt.body_size = message.size();
+        evt.body = message;
+        std::cout << "message: " << message << std::endl;
+        sendEvent(evt, client->client.address().to_string(), client->client.port());
+    }
+}
+
+void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::__1::vector<Client>::iterator client)
 {
     switch (evt.ACTION_NAME)
     {
@@ -240,6 +255,10 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint)
         break;
     case ACTION::SHOOT:
         std::cout << "Player shoot" << std::endl;
+        break;
+    case ACTION::READY:
+        std::cout << "The user is ready to receive sprites" << std::endl;
+        sendSpriteToReadyClient(evt, client);
         break;
     default:
         break;
@@ -272,6 +291,7 @@ void UDPServer::handleMessages(size_t maxMessages, bool bWait)
     }
 }
 
-void UDPServer::addPlayerEntity(int id, std::string entity) {
+void UDPServer::addPlayerEntity(int id, std::string entity)
+{
     _playerEntities[id] = entity;
 }
