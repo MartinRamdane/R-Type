@@ -222,7 +222,7 @@ std::vector<uint8_t> UDPServer::encodeEvent(Event event)
     return evt.encodeMessage();
 }
 
-void UDPServer::sendSpriteToReadyClient(Event evt, std::__1::vector<Client>::iterator client)
+void UDPServer::sendSpriteToReadyClient(Event evt, std::vector<Client>::iterator client)
 {
     std::vector<std::string> protocol = _instanceRef->getCore()->getAllEntitiesToCreate();
     for (auto message : protocol)
@@ -236,7 +236,7 @@ void UDPServer::sendSpriteToReadyClient(Event evt, std::__1::vector<Client>::ite
     }
 }
 
-void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::__1::vector<Client>::iterator client)
+void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::vector<Client>::iterator client)
 {
     switch (evt.ACTION_NAME)
     {

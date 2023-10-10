@@ -90,7 +90,7 @@ public:
      * @param endpoint  client's endpoint
      * @param client  client's class
      */
-    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::__1::vector<Client>::iterator client);
+    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::vector<Client>::iterator client);
 
         /**
          * @brief Process send queue and send data to the clients
@@ -128,7 +128,7 @@ public:
     void setNbPlayers(int nbPlayers) { _nbPlayers = nbPlayers; }
     void addPlayerEntity(int id, std::string entity);
     std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
-    void sendSpriteToReadyClient(Event evt, std::__1::vector<Client>::iterator client);
+    void sendSpriteToReadyClient(Event evt, std::vector<Client>::iterator client);
 
 private:
     /**

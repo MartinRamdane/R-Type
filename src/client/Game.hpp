@@ -45,6 +45,7 @@ public:
     void LoopUDPMessages();
     void setPlayerId(int id) { _playerId = id; }
     std::string getHost() { return _host; }
+    TCPClientImpl *getClient() { return _client; }
 
 private:
     sf::RenderWindow _window;

@@ -62,6 +62,11 @@ public:
                                            {
                                                std::cout << "[DEBUG] Connected to server: " << endpoint << std::endl;
                                                _game->setConnected(true);
+                                               Event evt;
+                                               evt.ACTION_NAME = ACTION::CREATE;
+                                               evt.body_size = 0;
+                                               evt.body = "";
+                                               _game->getClient()->SendEvent(evt);
                                                ReadHeader();
                                            }
                                            else
