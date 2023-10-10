@@ -8,7 +8,6 @@
 #pragma once
 
 #include "../Character.hpp"
-#include <unistd.h>
 class Enemy : public Character
 {
 public:

@@ -86,19 +86,24 @@ void Game::handleEvent()
     }
     Event evt;
     std::string playerId = "p" + std::to_string(_playerId);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (_lastFrameTime.time_since_epoch().count() == 0)
+        _lastFrameTime = std::chrono::high_resolution_clock::now();
+    if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 20)
     {
-        evt.ACTION_NAME = ACTION::LEFT;
-        evt.body_size = playerId.size();
-        evt.body = playerId;
-        _udpClient->sendEvent(evt);
-        _event_indicator = 0;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        evt.ACTION_NAME = ACTION::RIGHT;
-        evt.body_size = playerId.size();
-        evt.body = playerId;
+        _lastFrameTime = std::chrono::high_resolution_clock::now();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            evt.ACTION_NAME = ACTION::LEFT;
+            evt.body_size = playerId.size();
+            evt.body = playerId;
+            _udpClient->sendEvent(evt);
+            _event_indicator = 0;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            evt.ACTION_NAME = ACTION::RIGHT;
+            evt.body_size = playerId.size();
+            evt.body = playerId;
         _udpClient->sendEvent(evt);
         _event_indicator = 0;
     }
@@ -139,6 +144,7 @@ void Game::handleEvent()
         evt.body = playerId;
         _udpClient->sendEvent(evt);
     }
+}
 }
 
 void Game::animate()

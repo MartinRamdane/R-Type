@@ -68,4 +68,5 @@ private:
     std::map<int, Entity> _entities;
     int _playerId;
     std::string _host;
+    std::chrono::high_resolution_clock::time_point _lastFrameTime;
 };
