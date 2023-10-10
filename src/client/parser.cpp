@@ -154,7 +154,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
             std::string token;
             for (int i = 0; iss >> token; i++)
             {
-                key = setKey(key, i);
+                key = setKeyText(key, i);
                 valueMap[key] = token;
                 key.clear();
             }
