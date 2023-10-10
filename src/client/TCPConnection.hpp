@@ -66,7 +66,13 @@ public:
                                                evt.ACTION_NAME = ACTION::CREATE;
                                                evt.body_size = 0;
                                                evt.body = "";
-                                               _game->getClient()->SendEvent(evt);
+                                                message<ACTION> msg;
+                                                std::vector<uint8_t> data = encodeEvent(evt);
+                                                msg.header.id = evt.ACTION_NAME;
+                                                msg.header.size = sizeof(data);
+                                                msg.body.resize(sizeof(data));
+                                                std::memcpy(msg.body.data(), data.data(), sizeof(data));
+                                                SendAsync(msg);
                                                ReadHeader();
                                            }
                                            else
@@ -86,6 +92,12 @@ public:
     bool IsConnected() const
     {
         return m_socket.is_open();
+    }
+    std::vector<uint8_t> encodeEvent(Event event)
+    {
+        EventHandler evt;
+        evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+        return evt.encodeMessage();
     }
     void SendAsync(const message<T> &msg)
     {
