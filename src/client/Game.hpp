@@ -12,12 +12,12 @@
 #include "RessourceManager.hpp"
 #include "Parser.hpp"
 #include "JsonParser.hpp"
-#include "TCPClientImpl.hpp"
 #include "../global/EventHandler.hpp"
 #include <thread>
 #include <queue>
 #include "UDPClient.hpp"
 #include "ThreadPool.hpp"
+
 class TCPClientImpl;
 class Game
 {

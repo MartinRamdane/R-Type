@@ -6,6 +6,7 @@
 */
 
 #include "Game.hpp"
+#include "TCPClientImpl.hpp"
 
 Game::Game() : _threadPool(2)
 {

@@ -9,6 +9,7 @@
 #define HEADER_TCPCLIENT
 #include "TCPConnection.hpp"
 
+class Game;
 template <typename T>
 class TCPClient
 {

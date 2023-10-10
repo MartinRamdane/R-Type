@@ -20,7 +20,6 @@
 
 using boost::asio::ip::tcp;
 using namespace boost::asio;
-class Game;
 template <typename T>
 class TCPConnection : public std::enable_shared_from_this<TCPConnection<T>>
 {
