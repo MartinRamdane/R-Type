@@ -83,64 +83,61 @@ void Game::handleEvent()
             _client->Disconnect();
             closed = true;
         }
-        if (_event.type == sf::Event::KeyPressed)
-        {
-            Event evt;
-            std::string playerId = "p" + std::to_string(_playerId);
-            switch (_event.key.code)
-            {
-            case sf::Keyboard::Left:
-                evt.ACTION_NAME = ACTION::LEFT;
-                evt.body_size = playerId.size();
-                evt.body = playerId;
-                _udpClient->sendEvent(evt);
-                _event_indicator = 0;
-                break;
-            case sf::Keyboard::Right:
-                evt.ACTION_NAME = ACTION::RIGHT;
-                evt.body_size = playerId.size();
-                evt.body = playerId;
-                _udpClient->sendEvent(evt);
-                _event_indicator = 0;
-                break;
-            case sf::Keyboard::Up:
-                evt.ACTION_NAME = ACTION::UP;
-                evt.body_size = playerId.size();
-                evt.body = playerId;
-                _udpClient->sendEvent(evt);
-                _event_indicator = 1;
-                break;
-            case sf::Keyboard::Down:
-                evt.ACTION_NAME = ACTION::DOWN;
-                evt.body_size = playerId.size();
-                evt.body = playerId;
-                _udpClient->sendEvent(evt);
-                _event_indicator = 1;
-                break;
-            case sf::Keyboard::Space:
-                evt.ACTION_NAME = ACTION::SHOOT;
-                evt.body_size = playerId.size();
-                evt.body = playerId;
-                _udpClient->sendEvent(evt);
-                _event_indicator = 0;
-                break;
-            case sf::Keyboard::Escape:
-                _window.close();
-                _client->Disconnect();
-                closed = true;
-                break;
-            case sf::Keyboard::S:
-                evt.ACTION_NAME = ACTION::SHIELD;
-                evt.body_size = playerId.size();
-                evt.body = playerId;
-                _udpClient->sendEvent(evt);
-                break;
-            default:
-                break;
-            }
-        }
-        else
-            _event_indicator = 0;
+    }
+    Event evt;
+    std::string playerId = "p" + std::to_string(_playerId);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        evt.ACTION_NAME = ACTION::LEFT;
+        evt.body_size = playerId.size();
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
+        _event_indicator = 0;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        evt.ACTION_NAME = ACTION::RIGHT;
+        evt.body_size = playerId.size();
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
+        _event_indicator = 0;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        evt.ACTION_NAME = ACTION::UP;
+        evt.body_size = playerId.size();
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
+        _event_indicator = 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        evt.ACTION_NAME = ACTION::DOWN;
+        evt.body_size = playerId.size();
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
+        _event_indicator = 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        evt.ACTION_NAME = ACTION::SHOOT;
+        evt.body_size = playerId.size();
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
+        _event_indicator = 0;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+        _window.close();
+        _client->Disconnect();
+        closed = true;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        evt.ACTION_NAME = ACTION::SHIELD;
+        evt.body_size = playerId.size();
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
     }
 }
 
@@ -192,6 +189,7 @@ bool Game::connectToServer(std::string host, int port)
     _client = new TCPClientImpl();
     _client->setGame(this);
     bool connected = _client->Connect(host, port, this);
+    // std::cout << "connected: " << connected << std::endl;
     _host = host;
     return connected;
 }
