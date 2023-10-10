@@ -34,6 +34,7 @@ public:
     std::shared_ptr<StaticObject> createShield(int x, int y);
     void initializeLevel();
     int getId(Event event);
+    std::shared_ptr<Character> getRandomSpaceship();
 
 private:
     std::shared_ptr<Engine> _engine;

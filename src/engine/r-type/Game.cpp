@@ -98,6 +98,27 @@ int Game::getId(Event event)
     return (id);
 }
 
+std::shared_ptr<Character> Game::getRandomSpaceship()
+{
+    int random = rand() % 5;
+
+    switch (random)
+    {
+        case 0:
+            return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
+        case 1:
+            return (std::make_shared<Speed>(_assets["Speed"](), 50, 100, _lastId++, 5));
+        case 2:
+            return (std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++, 5));
+        case 3:
+            return (std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++, 5));
+        case 4:
+            return (std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
+        default:
+            return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
+    }
+}
+
 void Game::update(ThreadSafeQueue<Event> &events)
 {
     while (!events.empty()) {
@@ -123,7 +144,7 @@ void Game::update(ThreadSafeQueue<Event> &events)
                 _players[getId(event) - 1]->action();
                 break;
             case ACTION::READY:
-                _players.push_back(std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
+                _players.push_back(getRandomSpaceship());
                 _playersGroups->insert(_players[_players.size() - 1]);
                 for (auto staticObject: _staticObjects) {
                     staticObject->setCreated(false);
