@@ -32,3 +32,10 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
     }
     return {};
 }
+
+std::vector<std::string> Core::getAllEntitiesToCreate()
+{
+    auto entities = _engine->getEntities();
+    std::vector<std::string> protocol = Protocol::transformAllEntitiesToCreate(entities);
+    return protocol;
+}

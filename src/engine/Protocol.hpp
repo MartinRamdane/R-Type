@@ -24,6 +24,7 @@ public:
     static std::string transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity);
     static std::vector<std::string> transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities);
     static std::string transformWindowCreateToProtocol(std::string title, int width, int height);
+    static std::vector<std::string> transformAllEntitiesToCreate(std::list<EntityType<IEntity> *> entities);
 
 protected:
 private:

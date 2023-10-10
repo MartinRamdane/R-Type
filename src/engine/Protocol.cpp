@@ -64,3 +64,16 @@ std::string Protocol::transformWindowCreateToProtocol(std::string title, int wid
 {
     return "wcreate " + title + " " + std::to_string(width) + " " + std::to_string(height);
 }
+
+std::vector<std::string> Protocol::transformAllEntitiesToCreate(std::list<EntityType<IEntity> *> entities)
+{
+    std::vector<std::string> protocol;
+    for (auto entityType : entities)
+    {
+        for (auto entity : entityType->getEntities())
+        {
+            protocol.push_back(transformEntityCreateToProtocol(entity));
+        }
+    }
+    return protocol;
+}

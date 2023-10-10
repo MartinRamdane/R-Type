@@ -20,6 +20,7 @@ public:
     std::vector<std::string> mainLoop(ThreadSafeQueue<Event> &events);
     std::shared_ptr<Engine> getEngine() { return _engine; }
     std::shared_ptr<IGame> getGame() { return _game; }
+    std::vector<std::string> getAllEntitiesToCreate();
 
 private:
     std::shared_ptr<Engine> _engine;
