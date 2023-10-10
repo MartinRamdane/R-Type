@@ -118,10 +118,8 @@ void Menu::mainloop()
             }
             if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Tab || event.key.code == sf::Keyboard::Return))
             {
-                std::cout << "Tab pressed" << std::endl;
                 if (_inputs["nameInput"]->getActive())
                 {
-                    std::cout << "Tab pressed2" << std::endl;
                     _inputs["nameInput"]->setActive(false);
                     _inputs["portInput"]->setActive(true);
                 }

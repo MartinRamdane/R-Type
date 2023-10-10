@@ -24,7 +24,6 @@ Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &re
     {
         if (it->first == path)
         {
-            std::cout << "texture found: " << it->first << std::endl;
             entity._texture = it->second;
             entity._sprite.setTexture(*entity._texture);
             return entity;
@@ -47,15 +46,6 @@ void Parser::getConfig(std::string path, std::string type, Entity *entity)
 
 std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
 {
-    std::cout << "id: " << value["id"] << std::endl;
-    std::cout << "path: " << value["path"] << std::endl;
-    std::cout << "scale.x: " << value["scale.x"] << std::endl;
-    std::cout << "scale.y: " << value["scale.y"] << std::endl;
-    std::cout << "rotation: " << value["rotation"] << std::endl;
-    std::cout << "x: " << value["x"] << std::endl;
-    std::cout << "y: " << value["y"] << std::endl;
-    std::cout << "config_path: " << value["config_path"] << std::endl;
-    std::cout << "object_type: " << value["object_type"] << std::endl;
     int id = std::stoi(value["id"]);
     Entity entity;
     entity = loadTexture(entity, value["path"], ressourceManager);
@@ -65,7 +55,6 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     entity.setSpriteRotation(std::stof(value["rotation"]));
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setOldPosY(std::stoi(value["y"]));
-    std::cout << "entity added, id: " << id << std::endl;
     return std::make_tuple(id, entity);
 }
 
@@ -113,7 +102,6 @@ std::tuple<int, Entity> Parser::parseMessage(std::string message, RessourceManag
     {
         std::string commande = message.substr(0, com);
         std::string tmp = message.substr(com);
-        std::cout << "commande: " << commande << std::endl;
         if (commande == "ecreate")
         {
             std::istringstream iss(tmp);

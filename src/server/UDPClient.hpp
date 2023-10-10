@@ -47,7 +47,6 @@ public:
     }
     bool check_ping(const std::string &data)
     {
-        std::cout << "Received:3 " << data << std::endl;
         return data == "Ping";
     }
 

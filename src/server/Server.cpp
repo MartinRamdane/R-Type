@@ -19,19 +19,16 @@ ServerClass::ServerClass() : _threadPool(1)
 ServerClass::~ServerClass()
 {
     _server->StopServer();
-    std::cout << "[Server] is destroyed" << std::endl;
 }
 
 InstanceInfos ServerClass::createInstance()
 {
-    std::cout << "instances size: " << _instances.size() << std::endl;
     Instance *instance = new Instance(_instances.size());
     instance->setServer(this);
     _instances.push_back(instance);
     InstanceInfos instanceinfos;
     instanceinfos.id = instance->getId();
     instanceinfos.port = instance->getPort();
-    std::cout << "creating instance !" << std::endl;
     return instanceinfos;
 }
 

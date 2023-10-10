@@ -103,17 +103,15 @@ private:
                     }
                 }
             } else {
-                std::cout << "Write header failed" << std::endl;
             } });
     }
     void WriteBody()
     {
         boost::asio::async_write(m_socket, boost::asio::buffer(m_qMessagesOut.front().body, m_qMessagesOut.front().body.size()),
-                                 [this](std::error_code ec, std::size_t length)
+                                 [this](std::error_code ec, std::size_t)
                                  {
                                      if (!ec)
                                      {
-                                         std::cout << "Sent: " << length << std::endl;
                                          m_qMessagesOut.pop_front();
                                          if (!m_qMessagesOut.empty())
                                          {
@@ -130,11 +128,10 @@ private:
     void ReadHeader()
     {
         boost::asio::async_read(m_socket, boost::asio::buffer(&m_msgTemporaryIn.header, sizeof(message_header<T>)),
-                                [this](const boost::system::error_code &error, std::size_t length)
+                                [this](const boost::system::error_code &error, std::size_t)
                                 {
                                     if (!error)
                                     {
-                                        std::cout << "Received: " << length << std::endl;
                                         if (m_msgTemporaryIn.header.size > 0)
                                         {
                                             m_msgTemporaryIn.body.resize(m_msgTemporaryIn.header.size);
@@ -155,11 +152,10 @@ private:
     void ReadBody()
     {
         boost::asio::async_read(m_socket, boost::asio::buffer(m_msgTemporaryIn.body.data(), m_msgTemporaryIn.body.size()),
-                                [this](const boost::system::error_code &error, std::size_t length)
+                                [this](const boost::system::error_code &error, std::size_t)
                                 {
                                     if (!error)
                                     {
-                                        std::cout << "[DEBUG] Received: " << length << std::endl;
                                         AddToIncomingMessageQueue();
                                     }
                                     else

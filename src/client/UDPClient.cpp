@@ -89,7 +89,6 @@ void UDPClient::sendEvent(Event evt)
 {
     std::vector<uint8_t> data = encodeEvent(evt);
     SendAsync(data, remote_endpoint_);
-    std::cout << "added event : " << actionToString(evt.ACTION_NAME) << std::endl;
 }
 
 std::vector<uint8_t> UDPClient::encodeEvent(Event event)
@@ -108,7 +107,6 @@ void UDPClient::joinGame(Event evt)
     ss >> gameTitle;
     ss >> width;
     ss >> height;
-    std::cout << "window should be created: " << gameTitle << " " << std::stoi(width) << " " << std::stoi(height) << std::endl;
     _gameRef->setUDPConnected(true);
     _gameRef->setGameTitle(gameTitle);
     _gameRef->setWidth(std::stoi(width));
@@ -130,7 +128,6 @@ void UDPClient::updateSprite(Event evt)
   ss >> sprite;
   ss >> jsonPath;
   ss >> objectType;
-  std::cout << "update sprite message: " << evt.body << std::endl;
   Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
   std::tuple<int, Entity> res = parseRef->parseMessage(evt.body, ressourceManagerRef);
@@ -177,14 +174,13 @@ void UDPClient::processSendQueue() {
   {
       if (!error)
       {
-          std::cout << "sent data" << std::endl;
           _outQueue.pop_front();
           if (!_outQueue.empty())
               processSendQueue();
       }
       else
       {
-          std::cout << "error sending data" << std::endl;
+          std::cout << "[ERROR] sending data" << std::endl;
       }
   });
 

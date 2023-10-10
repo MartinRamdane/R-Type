@@ -19,7 +19,6 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
 {
     instance = this;
     initializeLevel();
-    std::cout << "end" << std::endl;
 
     // Create all entities groups
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
@@ -66,7 +65,6 @@ void Game::initializeLevel()
                     std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "config.json", "Background");
                     _staticObjects.push_back(background);
                     _staticObjectsGroups->insert(background);
-                    std::cout << "Background" << std::endl;
                 }
                 else
                 {
@@ -77,7 +75,6 @@ void Game::initializeLevel()
                             std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), 500 + i * 100, 100, _lastId++);
                             _enemies.push_back(enemy);
                             _enemiesGroups->insert(enemy);
-                            std::cout << key << std::endl;
                         }
                     }
                     count = 0;
@@ -172,10 +169,8 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
 
 std::shared_ptr<StaticObject> Game::createShield(int x, int y)
 {
-    std::cout << "x la: " << x << std::endl;
     std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"](), x, y, _lastId++, "config.json", "Shield", 0, 1, 1, 1);
     _staticObjectsGroups->insert(_shield);
-    std::cout << "SHIELD CREATED" << std::endl;
     return (_shield);
 }
 

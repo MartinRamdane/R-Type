@@ -192,7 +192,6 @@ bool Game::connectToServer(std::string host, int port)
     _client = new TCPClientImpl();
     _client->setGame(this);
     bool connected = _client->Connect(host, port, this);
-    std::cout << "connected: " << connected << std::endl;
     _host = host;
     return connected;
 }

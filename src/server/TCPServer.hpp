@@ -33,7 +33,6 @@ public:
       std::cerr << "[ERROR]: " << e.what() << std::endl;
       return false;
     }
-    std::cout << "[DEBUG] Server started" << std::endl;
     return true;
   }
   void StopServer()
@@ -41,7 +40,6 @@ public:
     io_context_.stop();
     if (context_thread_.joinable())
       context_thread_.join();
-    std::cout << "[DEBUG] TCP Server stopped" << std::endl;
   }
   void WaitForClientAsync()
   {
@@ -55,11 +53,10 @@ public:
             {
               m_deqConnections.push_back(std::move(new_connection));
               m_deqConnections.back()->ConnectToClient(IDCounter++);
-              std::cout << "Client connected" << std::endl;
             }
             else
             {
-              std::cout << "Connection Denied" << std::endl;
+              std::cout << "[ERROR] Connection Denied" << std::endl;
             }
           }
           else

@@ -42,21 +42,17 @@ protected:
         {
         case ACTION::CONNECT:
         {
-            std::cout << "[" << client->GetID() << "]: CONNECT" << std::endl;
             EventHandler evt;
             evt.decodeMessage(msg.body);
-            std::cout << "[CONNECT BODY DATA : ] " << evt.getBody() << std::endl;
         }
         break;
         case ACTION::CREATE:
         {
-            std::cout << "[" << client->GetID() << "]: CREATE" << std::endl;
             if (_server->getInstancesNb() >= 1) {
                 Instance *instance = _server->getInstance(0);
                 Event evt;
                 evt.ACTION_NAME = ACTION::CREATE;
                 int playerId = _server->getPlayerIdToGive();
-                std::cout << "server id, player id " << playerId << std::endl;
                 evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(instance->getId()) + " " + std::to_string(instance->getPort());
                 std::string playerEntityId = "p" + std::to_string(playerId);
                 instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
@@ -67,11 +63,9 @@ protected:
             }
             InstanceInfos infos = _server->createInstance();
             Instance *instance = _server->getInstance(_server->getInstancesNb() - 1);
-            std::cout << "[DEBUG] Instance created: " << infos.id << " " << infos.port << std::endl;
             Event evt;
             evt.ACTION_NAME = ACTION::CREATE;
             int playerId = _server->getPlayerIdToGive();
-            std::cout << "server id, player id " << playerId << std::endl;
             evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(infos.id) + " " + std::to_string(infos.port);
             std::string playerEntityId = "p" + std::to_string(playerId);
             instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);

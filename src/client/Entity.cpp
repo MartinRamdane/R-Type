@@ -51,8 +51,6 @@ void Entity::setSpriteScale(const sf::Vector2f &scale)
 
 void Entity::setSpriteOrigin()
 {
-    std::cout << "texture size: " << _texture->getSize().x << _texture->getSize().y << std::endl;
-    std::cout << "nb rect: " << _nbRect << std::endl;
     sf::Vector2f size = sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
     _sprite.setOrigin(size.x / 2, size.y / 2);
 }

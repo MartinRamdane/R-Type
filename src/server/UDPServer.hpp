@@ -128,7 +128,7 @@ public:
     void setNbPlayers(int nbPlayers) { _nbPlayers = nbPlayers; }
     void addPlayerEntity(int id, std::string entity);
     std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
-    void sendSpriteToReadyClient(Event evt, std::vector<Client>::iterator client);
+    void sendSpriteToReadyClient(std::vector<Client>::iterator client);
 
 private:
     /**

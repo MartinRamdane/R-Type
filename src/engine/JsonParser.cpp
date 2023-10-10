@@ -30,7 +30,6 @@ nlohmann::json JsonParser::readFile(std::string const &fileName)
                 std::ifstream inputFile(filePath);
                 if (inputFile.is_open())
                 {
-                    // std::cout << "JSON contenu : " << inputFile.rdbuf() << std::endl;
                     return nlohmann::json::parse(inputFile);
                 }
                 else

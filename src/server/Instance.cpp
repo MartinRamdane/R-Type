@@ -50,7 +50,6 @@ void Instance::EventLoop()
       evt.ACTION_NAME  = ACTION::SPRITE;
       evt.body_size = message.size();
       evt.body = message;
-      std::cout << "message: " << message << std::endl;
       _udpServer->sendEventToAllClients(evt);
     }
   }
