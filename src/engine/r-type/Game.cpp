@@ -21,15 +21,13 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     initializeLevel();
     std::cout << "end" << std::endl;
 
-    // Create all entities
-    // _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    // _staticObjectsGroups->insert(std::make_shared<StaticObject>(_assets["Background"](), 0, 239, _lastId++, "config.json", "Background"));
+    // Create all entities groups
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    // _enemiesGroups = std::make_shared<EntityType<IEntity>>(20);
-    // _enemiesGroups->insert(std::make_shared<Enemy>(_assets["Enemy1"](), 500, 100, _lastId++));
-    // Add collision
+
+    // Add collision between entities groups
     engine->setRelation(_projectilesGroups, _enemiesGroups, Projectile::hurtEntity);
+    engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
 Game::~Game()
