@@ -15,7 +15,7 @@ Character::Character(std::string path, float x, float y, int id, float angle, fl
     _angle = angle;
     _scaleX = scaleX;
     _scaleY = scaleY;
-    _speed = 3;
+    _speed = 1;
     _id = id;
     _oldX = x;
     _oldY = y;

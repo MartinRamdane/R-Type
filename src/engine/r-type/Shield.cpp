@@ -18,6 +18,7 @@ Shield::Shield(std::string path, float x, float y, int id, int nbSprite, float a
     _reloadShieldDuration = std::chrono::seconds(15);
     _shieldStart = std::chrono::high_resolution_clock::now();
     _shield = nullptr;
+    setSpeed(3);
 }
 
 Shield::~Shield()

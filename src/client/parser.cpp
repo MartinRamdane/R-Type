@@ -53,8 +53,10 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
     entity.setSpriteOrigin();
     entity.setSpriteRotation(std::stof(value["rotation"]));
+    entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setOldPosY(std::stoi(value["y"]));
+    entity.setSpeed(std::stof(value["speed"]));
     return std::make_tuple(id, entity);
 }
 
@@ -80,7 +82,7 @@ std::tuple<int, Entity> Parser::modifyPosEntity(std::map<std::string, std::strin
 {
     int id = std::stoi(value["id"]);
     Entity entity;
-    entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+    entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     return std::make_tuple(id, entity);
 }
 
@@ -104,6 +106,8 @@ std::string Parser::setKey(std::string key, int i)
         key = "config_path";
     else if (i == 8)
         key = "object_type";
+    else if (i == 9)
+        key = "speed";
     return key;
 }
 

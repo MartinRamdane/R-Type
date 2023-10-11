@@ -185,3 +185,23 @@ sf::Color Entity::getColor(std::string color)
         return sf::Color::Cyan;
     return sf::Color::White;
 }
+
+void Entity::update()
+{
+    sf::Vector2f pos = _sprite.getPosition();
+    if (pos.x == _nextPos.x && pos.y == _nextPos.y)
+        return;
+    if (pos.x < _nextPos.x)
+        pos.x += speed;
+    else if (pos.x > _nextPos.x)
+        pos.x -= speed;
+    if (pos.y < _nextPos.y)
+        pos.y += speed;
+    else if (pos.y > _nextPos.y)
+        pos.y -= speed;
+    if (pos.x + speed > _nextPos.x && pos.x - speed < _nextPos.x)
+        pos.x = _nextPos.x;
+    if (pos.y + speed > _nextPos.y && pos.y - speed < _nextPos.y)
+        pos.y = _nextPos.y;
+    _sprite.setPosition(pos);
+}

@@ -11,6 +11,7 @@ Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig
     : Character(path, x, y, id, angle, scaleX, scaleY, nbSprite, "config.json", enemyConfig)
 {
     setShootAsset("BulletEnemy1");
+    setSpeed(1);
 }
 
 Enemy::~Enemy()

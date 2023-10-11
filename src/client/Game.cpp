@@ -88,7 +88,7 @@ void Game::handleEvent()
     std::string playerId = "p" + std::to_string(_playerId);
     if (_lastFrameTime.time_since_epoch().count() == 0)
         _lastFrameTime = std::chrono::high_resolution_clock::now();
-    if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 20)
+    if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 10)
     {
         _lastFrameTime = std::chrono::high_resolution_clock::now();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -104,47 +104,47 @@ void Game::handleEvent()
             evt.ACTION_NAME = ACTION::RIGHT;
             evt.body_size = playerId.size();
             evt.body = playerId;
-        _udpClient->sendEvent(evt);
-        _event_indicator = 0;
+            _udpClient->sendEvent(evt);
+            _event_indicator = 0;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            evt.ACTION_NAME = ACTION::UP;
+            evt.body_size = playerId.size();
+            evt.body = playerId;
+            _udpClient->sendEvent(evt);
+            _event_indicator = 1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            evt.ACTION_NAME = ACTION::DOWN;
+            evt.body_size = playerId.size();
+            evt.body = playerId;
+            _udpClient->sendEvent(evt);
+            _event_indicator = 1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            evt.ACTION_NAME = ACTION::SHOOT;
+            evt.body_size = playerId.size();
+            evt.body = playerId;
+            _udpClient->sendEvent(evt);
+            _event_indicator = 0;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            _window.close();
+            _client->Disconnect();
+            closed = true;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        {
+            evt.ACTION_NAME = ACTION::SHIELD;
+            evt.body_size = playerId.size();
+            evt.body = playerId;
+            _udpClient->sendEvent(evt);
+        }
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        evt.ACTION_NAME = ACTION::UP;
-        evt.body_size = playerId.size();
-        evt.body = playerId;
-        _udpClient->sendEvent(evt);
-        _event_indicator = 1;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        evt.ACTION_NAME = ACTION::DOWN;
-        evt.body_size = playerId.size();
-        evt.body = playerId;
-        _udpClient->sendEvent(evt);
-        _event_indicator = 1;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-        evt.ACTION_NAME = ACTION::SHOOT;
-        evt.body_size = playerId.size();
-        evt.body = playerId;
-        _udpClient->sendEvent(evt);
-        _event_indicator = 0;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-    {
-        _window.close();
-        _client->Disconnect();
-        closed = true;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        evt.ACTION_NAME = ACTION::SHIELD;
-        evt.body_size = playerId.size();
-        evt.body = playerId;
-        _udpClient->sendEvent(evt);
-    }
-}
 }
 
 void Game::animate()
@@ -198,6 +198,7 @@ void Game::update()
     _window.display();
     for (auto it = _entities.begin(); it != _entities.end();)
     {
+        (*it).second.update();
         if ((*it).second.isDead())
         {
             Event evt;
@@ -251,7 +252,7 @@ void Game::addEntity(int id, Entity entity)
 {
     if (findEntity(id) == true)
     {
-        _entities[id].setSpritePosition(entity.getSpritePosition());
+        _entities[id].setNextPos(entity.getNextPos());
     }
     else
         _entities[id] = entity;

@@ -30,6 +30,8 @@ std::string actionToString(ACTION action) {
       case ACTION::SPRITE: return "SPRITE";
       case ACTION::UNKNOWN: return "UNKNOWN";
       case ACTION::SHIELD: return "SHIELD";
+      case ACTION::TEXT: return "TEXT";
+      case ACTION::DEAD: return "DEAD";
     }
     return "";
   }
@@ -115,6 +117,8 @@ void UDPClient::joinGame(Event evt)
 
 void UDPClient::updateSprite(Event evt)
 {
+  std::cout << "update sprite" << std::endl;
+  std::cout << evt.body << std::endl;
   std::stringstream ss(evt.body);
   std::string id;
   std::string x;
@@ -122,12 +126,14 @@ void UDPClient::updateSprite(Event evt)
   std::string sprite;
   std::string jsonPath;
   std::string objectType;
+  std::string speed;
   ss >> id;
   ss >> x;
   ss >> y;
   ss >> sprite;
   ss >> jsonPath;
   ss >> objectType;
+  ss >> speed;
   Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
   std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);

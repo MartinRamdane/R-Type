@@ -57,6 +57,11 @@ public:
     void setTextInfo(int size, std::string color);
     sf::Font getFont() const { return _font; };
     sf::Color getColor(std::string color);
+    void setSpeed(float speed) { this->speed = speed; };
+    float getSpeed() const { return speed; };
+    void setNextPos(sf::Vector2f pos) { _nextPos = pos; };
+    sf::Vector2f getNextPos() const { return _nextPos; };
+    void update();
 
 public:
     sf::Sprite _sprite;
@@ -70,6 +75,8 @@ public:
     Type _type;
     sf::Text _text;
     sf::Font _font;
+    float speed;
+    sf::Vector2f _nextPos;
 };
 
 // ecreate id x y text size color
