@@ -190,15 +190,27 @@ void Entity::update()
 {
     sf::Vector2f pos = _sprite.getPosition();
     if (pos.x == _nextPos.x && pos.y == _nextPos.y)
+    {
+        if (_event_form == "event")
+            setInitPos();
         return;
+    }
     if (pos.x < _nextPos.x)
         pos.x += speed;
     else if (pos.x > _nextPos.x)
         pos.x -= speed;
     if (pos.y < _nextPos.y)
+    {
         pos.y += speed;
+        if (_event_form == "event")
+            animateSprite(2, 100);
+    }
     else if (pos.y > _nextPos.y)
+    {
         pos.y -= speed;
+        if (_event_form == "event")
+            animateSprite(1, 100);
+    }
     if (pos.x + speed > _nextPos.x && pos.x - speed < _nextPos.x)
         pos.x = _nextPos.x;
     if (pos.y + speed > _nextPos.y && pos.y - speed < _nextPos.y)
