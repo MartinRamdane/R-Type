@@ -23,7 +23,8 @@
                 {
                     "X": 500,
                     "Y": 400
-                }]
+                }],
+            "BulletType": "BulletEnemy1"
         },
         "Enemy1": {
             "Type": "Enemy1",
@@ -45,7 +46,8 @@
                 {
                     "X": 500,
                     "Y": 400
-                }]
+                }],
+            "BulletType": "BulletEnemy2"
         }
     },
     "Level-2": {

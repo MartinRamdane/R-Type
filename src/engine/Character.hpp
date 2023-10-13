@@ -59,6 +59,7 @@ public:
     void setIsPositionSeted();
     void setMovementType(std::string movementType);
     std::string getMovementType() const;
+    std::string getShootAsset() const;
 
 protected:
     float _x;

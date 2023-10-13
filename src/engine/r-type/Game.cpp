@@ -23,11 +23,13 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     // Create all entities groups
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
+    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(4);
 
     // Add collision between entities groups
     engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
     engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
+    engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
 Game::~Game()
@@ -49,6 +51,7 @@ void Game::initializeLevel()
     nlohmann::json level = levelsFile["Level-" + std::to_string(currentLevel)];
     std::vector<std::tuple<int, int>> positions;
     std::string movementType;
+    std::string bulletType;
 
     for (auto it2 = level.begin(); it2 != level.end(); it2++)
     {
@@ -75,14 +78,14 @@ void Game::initializeLevel()
                     {
                         if (it3.value() == "Enemy1")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value());
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType);
                             enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _enemie1Groups->insert(enemy);
                         }
                         else if (it3.value() == "Flyer")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value());
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType);
                             enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _flyerGroups->insert(enemy);
@@ -106,6 +109,10 @@ void Game::initializeLevel()
             else if (it3.key() == "MovementType")
             {
                 movementType = it3.value();
+            }
+            else if (it3.key() == "BulletType")
+            {
+                bulletType = it3.value();
             }
         }
     }

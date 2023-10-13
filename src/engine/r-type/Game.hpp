@@ -43,6 +43,7 @@ private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
+    std::shared_ptr<EntityType<IEntity>> _enemyProjectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
     std::shared_ptr<EntityType<IEntity>> _enemie1Groups;
     std::shared_ptr<EntityType<IEntity>> _flyerGroups;

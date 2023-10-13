@@ -261,3 +261,8 @@ std::string Character::getMovementType() const
 {
     return _movementType;
 }
+
+std::string Character::getShootAsset() const
+{
+    return _shootAsset;
+}
