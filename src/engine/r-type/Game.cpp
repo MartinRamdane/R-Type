@@ -99,12 +99,14 @@ void Game::initializeLevel()
             }
             else if (it3.key() == "Positions")
             {
+                positions.clear();
                 auto position = it3.value();
                 for (int i = 0; i < count; i++)
                 {
                     if (it2.key() == "Enemy1" || it2.key() == "Flyer")
                     {
                         nlohmann::json pos = position[i];
+                        std::cout << pos.at("X") << " " << pos.at("Y") << std::endl;
                         positions.push_back(std::make_tuple(pos.at("X"), pos.at("Y")));
                     }
                 }

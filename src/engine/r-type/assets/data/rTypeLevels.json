@@ -9,24 +9,24 @@
             "Count": 4,
             "Positions": [
                 {
-                    "X": 500,
-                    "Y": 100
+                    "X": 800,
+                    "Y": 150
                 },
                 {
-                    "X": 500,
-                    "Y": 200
+                    "X": 820,
+                    "Y": 155
                 },
                 {
-                    "X": 500,
-                    "Y": 300
+                    "X": 840,
+                    "Y": 160
                 },
                 {
-                    "X": 500,
-                    "Y": 400
+                    "X": 860,
+                    "Y": 165
                 }],
             "BulletType": "BulletEnemy1",
             "FireRate": 2,
-            "BulletSpeed": 0.5,
+            "BulletSpeed": -0.5,
             "Speed": 1
         },
         "Enemy1": {
@@ -52,7 +52,7 @@
                 }],
             "BulletType": "BulletEnemy2",
             "FireRate": 5,
-            "BulletSpeed": 1,
+            "BulletSpeed": -1,
             "Speed": 0.5
         }
     },

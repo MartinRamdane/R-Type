@@ -14,7 +14,6 @@ Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig
     setSpeed(speed);
     setFireRate(fireRate);
     setBulletSpeed(bulletSpeed);
-    setBulletSpeed(bulletSpeed);
 }
 
 Enemy::~Enemy()
