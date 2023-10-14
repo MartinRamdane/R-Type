@@ -60,6 +60,8 @@ public:
     void setMovementType(std::string movementType);
     std::string getMovementType() const;
     std::string getShootAsset() const;
+    void setBulletSpeed(float bulletSpeed);
+    float getBulletSpeed() const;
 
 protected:
     float _x;
@@ -78,6 +80,7 @@ private:
     float _fireRate;
     int _life;
     int _damage;
+    float _bulletSpeed = 5;
     std::chrono::duration<double> _targetFrameDuration;
     std::chrono::high_resolution_clock::time_point _lastShootTime;
     std::chrono::high_resolution_clock::time_point _currentTime;

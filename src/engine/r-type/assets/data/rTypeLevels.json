@@ -26,6 +26,7 @@
                 }],
             "BulletType": "BulletEnemy1",
             "FireRate": 2,
+            "BulletSpeed": 0.5,
             "Speed": 1
         },
         "Enemy1": {
@@ -51,6 +52,7 @@
                 }],
             "BulletType": "BulletEnemy2",
             "FireRate": 5,
+            "BulletSpeed": 1,
             "Speed": 0.5
         }
     },

@@ -204,7 +204,7 @@ void Character::shoot()
     if (!canShoot())
         return;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) + 33, std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, 5, getDamage(), _shootAsset, "_projectilesGroups");
+    Game::instance->createProjectile(std::get<0>(pos) + 33, std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getBulletSpeed(), getDamage(), _shootAsset, "_projectilesGroups");
 }
 
 std::string Character::getSpriteConfigJsonPath() const
@@ -265,4 +265,14 @@ std::string Character::getMovementType() const
 std::string Character::getShootAsset() const
 {
     return _shootAsset;
+}
+
+void Character::setBulletSpeed(float bulletSpeed)
+{
+    _bulletSpeed = bulletSpeed;
+}
+
+float Character::getBulletSpeed() const
+{
+    return _bulletSpeed;
 }
