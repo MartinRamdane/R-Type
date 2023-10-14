@@ -24,7 +24,9 @@
                     "X": 500,
                     "Y": 400
                 }],
-            "BulletType": "BulletEnemy1"
+            "BulletType": "BulletEnemy1",
+            "FireRate": 2,
+            "Speed": 1
         },
         "Enemy1": {
             "Type": "Enemy1",
@@ -47,7 +49,9 @@
                     "X": 500,
                     "Y": 400
                 }],
-            "BulletType": "BulletEnemy2"
+            "BulletType": "BulletEnemy2",
+            "FireRate": 5,
+            "Speed": 0.5
         }
     },
     "Level-2": {

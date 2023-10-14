@@ -52,6 +52,8 @@ void Game::initializeLevel()
     std::vector<std::tuple<int, int>> positions;
     std::string movementType;
     std::string bulletType;
+    float fireRate = 0;
+    float speed = 0;
 
     for (auto it2 = level.begin(); it2 != level.end(); it2++)
     {
@@ -78,14 +80,14 @@ void Game::initializeLevel()
                     {
                         if (it3.value() == "Enemy1")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType);
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed);
                             enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _enemie1Groups->insert(enemy);
                         }
                         else if (it3.value() == "Flyer")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType);
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed);
                             enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _flyerGroups->insert(enemy);
@@ -113,6 +115,14 @@ void Game::initializeLevel()
             else if (it3.key() == "BulletType")
             {
                 bulletType = it3.value();
+            }
+            else if (it3.key() == "FireRate")
+            {
+                fireRate = it3.value();
+            }
+            else if (it3.key() == "Speed")
+            {
+                speed = it3.value();
             }
         }
     }
@@ -211,11 +221,19 @@ void Game::createExplosion(int x, int y)
     _staticObjects.push_back(explosion);
 }
 
-void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName)
+void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName)
 {
     std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName);
-    _projectilesGroups->insert(projectile);
-    _projectiles.push_back(projectile);
+    if (groupName == "_projectilesGroups")
+    {
+        _projectilesGroups->insert(projectile);
+        _projectiles.push_back(projectile);
+    }
+    else if (groupName == "_enemyProjectilesGroups")
+    {
+        _enemyProjectilesGroups->insert(projectile);
+        _projectiles.push_back(projectile);
+    }
 }
 
 std::shared_ptr<StaticObject> Game::createShield(int x, int y)
