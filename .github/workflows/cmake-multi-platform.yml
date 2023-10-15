@@ -79,6 +79,7 @@ jobs:
       with:
         path: |
           ~/.conan2
+          ${{ runner.os == 'ubuntu' && '/root/conan2' }}
         key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
     - name: Set up Conan
       run: |
