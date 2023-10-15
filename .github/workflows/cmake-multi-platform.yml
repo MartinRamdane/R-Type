@@ -73,17 +73,6 @@ jobs:
         else
             pip install conan
         fi
-      shell: bash
-    - name: Cache Conan directory
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.conan
-        key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
-        restore-keys: |
-          conan-${{ runner.os }}-
-    - name:  Install conan packages
-      run:   |
         if [ "$RUNNER_OS" == "Linux" ]; then
           conan profile detect --force && sudo conan profile detect --force
         elif [ "$RUNNER_OS" == "Windows" ]; then
@@ -98,6 +87,18 @@ jobs:
         else
           sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
         fi
+      shell: bash
+    - name: Cache Conan directory
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.conan2
+        key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          conan-${{ runner.os }}-
+    - name:  Install conan packages
+      run:   |
+          conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
       shell: bash
     - name: Compile R_Type
       run: |
