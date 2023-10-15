@@ -64,7 +64,7 @@ jobs:
           sudo apt-get install -y pkg-config
         fi
       shell: bash
-    - name: Set up Conan
+    - name: Install conan with Pip on ubuntu
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
           pip install conan && sudo pip install conan
@@ -73,6 +73,17 @@ jobs:
         else
             pip install conan
         fi
+      shell: bash
+    - name: Cache Conan directory
+      uses: actions/cache@v3.3.2
+      with:
+        path: |
+          ~/.conan2
+        key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          conan-${{ runner.os }}-
+    - name: Set up Conan
+      run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
           conan profile detect --force && sudo conan profile detect --force
         elif [ "$RUNNER_OS" == "Windows" ]; then
@@ -88,14 +99,6 @@ jobs:
           sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
         fi
       shell: bash
-    - name: Cache Conan directory
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.conan2
-        key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
-        restore-keys: |
-          conan-${{ runner.os }}-
     - name:  Install conan packages
       run:   |
           conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
@@ -110,13 +113,13 @@ jobs:
       shell: bash
     - name: Store build artifacts (windows)
       if: matrix.os == 'windows-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: R_Type Windows
         path: Release/*.exe
     - name: Store build artifacts (linux)
       if: matrix.os == 'ubuntu-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: R_Type Linux
         path: |
@@ -124,7 +127,7 @@ jobs:
           r-type_server
     - name: Store build artifacts (macos)
       if: matrix.os == 'macos-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: R_Type Macos
         path: |
