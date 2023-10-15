@@ -122,3 +122,11 @@ jobs:
         path: |
           r-type_client
           r-type_server
+    - name: Cache Conan directory
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.conan
+        key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          conan-${{ runner.os }}-
