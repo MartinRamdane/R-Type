@@ -63,15 +63,15 @@ creates the Entities according to the information received.
 The Entities created are sent to the **Game** class and added to the map.
 
 You have to use the `Parser.parseMessage()` function that take a string in argument.
-The string is the commande translate from the binary send by the server.
+The string is the command translate from the binary send by the server.
 We use a protocol:
     - `ecreate id pos.x pos.y path rotaion scale.x scale.y configPath objectType`
-        > this commande call the `Paser.addEntity()` function who is creating a new **Entity** and send it to the **Client**
+        > this command call the `Paser.addEntity()` function who is creating a new **Entity** and send it to the **Client**
     - `emove id newPos.x newPos.y`
-        > this commande call the `Parser.moveEntity()` function whos is modifying the position of an **Entity**
+        > this command call the `Parser.moveEntity()` function whos is modifying the position of an **Entity**
     - `dead id`
-        > this commande informe the Client that the Entity is dead
-All the commande return a `tuple<int, Entity>` with the new Entity and here ID
+        > this command inform the Client that the Entity is dead
+All the command return a `tuple<int, Entity>` with the new Entity and here ID
 
 # Arguments of protocol
 
