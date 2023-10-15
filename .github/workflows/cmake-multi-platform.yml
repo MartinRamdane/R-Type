@@ -73,20 +73,6 @@ jobs:
         else
             pip install conan
         fi
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          conan profile detect --force && sudo conan profile detect --force
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-            conan profile detect --force
-        else
-          conan profile detect --force
-        fi
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-            conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
-        else
-          sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
-        fi
       shell: bash
     - name: Cache Conan directory
       uses: actions/cache@v2
@@ -98,7 +84,20 @@ jobs:
           conan-${{ runner.os }}-
     - name:  Install conan packages
       run:   |
-          conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            conan profile detect --force && sudo conan profile detect --force
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+              conan profile detect --force
+          else
+            conan profile detect --force
+          fi
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+              conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
+          else
+            sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
+          fi
       shell: bash
     - name: Compile R_Type
       run: |
