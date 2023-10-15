@@ -131,3 +131,8 @@ jobs:
         path: |
           r-type_client
           r-type_server
+    - name: Set permissions to conan directory (macos)
+      if: matrix.os == 'macos-latest'
+      run: |
+        sudo chown -R $USER ~/.conan2
+      shell: bash
