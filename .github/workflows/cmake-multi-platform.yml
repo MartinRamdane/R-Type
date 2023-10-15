@@ -80,8 +80,6 @@ jobs:
         path: |
           ~/.conan2
         key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
-        restore-keys: |
-          conan-${{ runner.os }}-
     - name: Set up Conan
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
