@@ -112,13 +112,13 @@ jobs:
       with:
         name: R_Type Linux
         path: |
-          r-type_client.exe
-          r-type_server.exe
+          r-type_client
+          r-type_server
     - name: Store build artifacts (macos)
       if: matrix.os == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
         name: R_Type Macos
         path: |
-          r-type_client.exe
-          r-type_server.exe
+          r-type_client
+          r-type_server
