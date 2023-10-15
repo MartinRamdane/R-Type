@@ -88,6 +88,14 @@ jobs:
           sudo conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install && sudo rm CMakeUserPresets.json && sudo rm -rf build/
         fi
       shell: bash
+    - name: Cache Conan directory
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.conan
+        key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
+        restore-keys: |
+          conan-${{ runner.os }}-
     - name:  Install conan packages
       run:   |
           conan install . --output-folder=build --build=missing -c tools.system.package_manager:mode=install
@@ -122,11 +130,3 @@ jobs:
         path: |
           r-type_client
           r-type_server
-    - name: Cache Conan directory
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.conan
-        key: conan-${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
-        restore-keys: |
-          conan-${{ runner.os }}-
