@@ -100,3 +100,25 @@ jobs:
           cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release && cmake --build . --config Release
         fi
       shell: bash
+    - name: Store build artifacts (windows)
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: R_Type Windows
+        path: Release/*.exe
+    - name: Store build artifacts (linux)
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: R_Type Linux
+        path: |
+          r-type_client.exe
+          r-type_server.exe
+    - name: Store build artifacts (macos)
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: R_Type Macos
+        path: |
+          r-type_client.exe
+          r-type_server.exe
