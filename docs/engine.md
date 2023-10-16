@@ -59,4 +59,35 @@ Your class must inherit the **IGame** interface, but here's what else you can im
 	> `static  void  hurtEntity(IEntity  &self, IEntity  &you);`
 
 ## Json configuration
- [@gabrielmorais](https://github.com/gabrielmorais4) To do
+To configure your game and sprites behavior like the game assets, sprite positions, etc., you are going to use a Json file. There is a **JsonParser class** that is responsible for parsing the Json file. This class uses a  builtin library called **JSON for Modern C++**.
+Here is the link to the library doc: https://github.com/nlohmann/json
+
+**IMPORTANT:** The parser searches recursively for your file in all folders, so name your files correctly so you don't have two with the same name
+
+Along with the ones I'll list below, the other files do not have a specific way or rule to follow. It is up to you to decide the structure and informations that you are goint to put on it!
+
+- WindowConfig.json is used to config the screen size and name.
+- config.json *(you must create one for each game)* is how the sprite's behavior should be handled in the graphical display. When creating a sprite using the `ecreate` protocol, you must specify the name of the file containig the sprites config and also the object that will be used to do the sprite animation: 
+`return ... entity->getSpriteJsonFileName() " " + entity->getSpriteConfigJsonObjectName() ...`
+
+Taking a look into the config.json file, you will find this:
+
+	...
+    "Enemy1":
+    {
+		"nb_rect": "2",
+		"rect_init": "0",
+		"form": "loop"
+	}
+	...
+	
+	- nb_rect: number of animations that make up the sprite
+	- rect_init: in which rect the animations starts
+	- form: the animation type (loop, once, event...)
+
+The following files are examples:
+
+- rTypeSetup.json is used to load all the game assets
+- rTypeLevels.json is used to create the game levels, the sprites, their amout, positions, speed, fire rate and all other informations that are necessary for your game to run.
+
+The two files mentioned above are specific to each game and the way the information contained in them is managed and parsed can be structured any way you like! 
