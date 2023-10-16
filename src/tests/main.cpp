@@ -6,13 +6,8 @@
 */
 
 #include <gtest/gtest.h>
-#include "../server/Server.hpp"
 
 int main(int argc, char **argv) {
-    ServerClass server;
-    std::thread([&server]()
-                { server.loop(); }).detach();
-
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
 
