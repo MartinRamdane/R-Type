@@ -1,8 +1,5 @@
 {
     "Game": {
-        "Title": "r-type",
-        "Width": 1920,
-        "Height": 1080,
         "Assets": {
             "Images": {
                 "Background": "background.png",

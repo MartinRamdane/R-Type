@@ -39,7 +39,7 @@ public:
     void setDamage(int damage);
     int getDamage() const;
     void takeDamage(int damage);
-    std::string getSpriteConfigJsonPath() const;
+    std::string getSpriteJsonFileName() const;
     std::string getSpriteConfigJsonObjectName() const;
     void kill();
     void setRadius(float radius);

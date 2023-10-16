@@ -207,7 +207,7 @@ void Character::shoot()
     Game::instance->createProjectile(std::get<0>(pos) + 33, std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getBulletSpeed(), getDamage(), _shootAsset, "_projectilesGroups");
 }
 
-std::string Character::getSpriteConfigJsonPath() const
+std::string Character::getSpriteJsonFileName() const
 {
     return _spriteConfigJsonPath;
 }
