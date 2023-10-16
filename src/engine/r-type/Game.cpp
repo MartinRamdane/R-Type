@@ -48,6 +48,17 @@ void Game::initializeLevel()
     int damage = 0;
     int life = 0;
 
+
+    //TODO: replace the parsing by this one
+    // for (const auto& [key, value] : level.items())
+    // {
+    //     std::cout << key << " " << value << std::endl;
+    //     std::cout << "---------------------" << std::endl;
+    //     if (value.contains("Count")) {
+    //         std::cout << "Count: " << value["Count"] << std::endl;
+    //     }
+    // }
+
     for (auto it2 = level.begin(); it2 != level.end(); it2++)
     {
         std::string key = it2.key();
