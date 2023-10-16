@@ -67,7 +67,7 @@ void Enemy::shoot()
 
 void Enemy::move(float x, float y)
 {
-    if ((_x + x * getSpeed()) > Engine::instance->getWindowWidth() - _radius || (_x + x * getSpeed()) < 0 - _radius || (_y + y * getSpeed()) > Engine::instance->getWindowHeight() - (_radius / 2) || (_y + y * getSpeed()) < 0 + (_radius / 2))
+    if ((_x + x * getSpeed()) < 0 - _radius)
     {
         kill();
         return;
