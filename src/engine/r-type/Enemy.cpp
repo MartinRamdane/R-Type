@@ -62,5 +62,17 @@ void Enemy::shoot()
     if (!canShoot())
         return;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) - 33, std::get<1>(pos) - 2, getShootAsset(), 0.25, 0.25, getBulletSpeed(), getDamage(), getShootAsset(), "_enemyProjectilesGroups");
+    Game::instance->createProjectile(std::get<0>(pos) - 33, std::get<1>(pos) - 2, getShootAsset(), 0.25, 0.25, getBulletSpeed(), getDamage(), getShootAsset(), "_enemyProjectilesGroups", Direction::LEFT);
+}
+
+void Enemy::move(float x, float y)
+{
+    if ((_x + x * getSpeed()) > Engine::instance->getWindowWidth() - _radius || (_x + x * getSpeed()) < 0 - _radius || (_y + y * getSpeed()) > Engine::instance->getWindowHeight() - (_radius / 2) || (_y + y * getSpeed()) < 0 + (_radius / 2))
+    {
+        kill();
+        return;
+    }
+    setOldPosition(_x, _y);
+    _x += x * getSpeed();
+    _y += y * getSpeed();
 }

@@ -7,7 +7,7 @@
 
 #include "Projectile.hpp"
 
-Projectile::Projectile(std::string path, float x, float y, int id, int damage, float angle, float scaleX, float scaleY, float speed, int nbSprite, std::string spriteConfigJsonObjectName)
+Projectile::Projectile(std::string path, float x, float y, int id, int damage, float angle, float scaleX, float scaleY, float speed, int nbSprite, std::string spriteConfigJsonObjectName, Direction direction)
 {
     _path = path;
     _x = x;
@@ -25,6 +25,7 @@ Projectile::Projectile(std::string path, float x, float y, int id, int damage, f
     _damage = damage;
     _spriteConfigJsonPath = "config.json";
     _spriteConfigJsonObjectName = spriteConfigJsonObjectName;
+    _direction = direction;
 }
 
 Projectile::~Projectile()
@@ -45,11 +46,14 @@ void Projectile::setRotation(float angle)
 
 void Projectile::move(float x, float y)
 {
-    if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius || (_x + x * _speed) < 0 + _radius || (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) || (_y + y * _speed) < 0 + (_radius / 2))
+    if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius || (_x + x * _speed) < 0 + _radius || (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) || (_y + y * _speed) < 0 + (_radius / 2)) {
+        _isDead = true;
+        std::cout << "Projectile out of bounds" << std::endl;
         return;
+    }
     setOldPosition(_x, _y);
-    _x += x;
-    _y += y;
+    _x += x * _speed;
+    _y += y * _speed;
 }
 
 void Projectile::rotate(float angle)
@@ -59,9 +63,22 @@ void Projectile::rotate(float angle)
 
 void Projectile::update()
 {
-    setPosition(_x + _speed, _y);
-    if (_x > Engine::instance->getWindowWidth())
-        _isDead = true;
+    switch (_direction) {
+        case UP:
+            move(0, -1);
+            break;
+        case DOWN:
+            move(0, 1);
+            break;
+        case LEFT:
+            move(-1, 0);
+            break;
+        case RIGHT:
+            move(1, 0);
+            break;
+        default:
+            break;
+    }
 }
 
 std::tuple<float, float> Projectile::getPosition() const
@@ -154,8 +171,7 @@ int Projectile::getDamage() const
 void Projectile::takeDamage(int damage)
 {
     _damage -= damage;
-    if (_damage <= 0)
-        _isDead = true;
+    _isDead = true;
 }
 
 void Projectile::hurtEntity(IEntity &self, IEntity &you)

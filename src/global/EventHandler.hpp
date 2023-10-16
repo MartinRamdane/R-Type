@@ -36,6 +36,7 @@ enum class ACTION : uint8_t
   TEXT,
   SHIELD,
   DEAD,
+  ROTATE,
   UNKNOWN,
 };
 

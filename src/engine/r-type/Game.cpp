@@ -23,7 +23,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     // Create all entities groups
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(4);
+    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
 
     // Add collision between entities groups
     engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
@@ -228,9 +228,9 @@ void Game::createExplosion(int x, int y)
     _staticObjects.push_back(explosion);
 }
 
-void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName)
+void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, IEntity::Direction direction)
 {
-    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName);
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName, direction);
     if (groupName == "_projectilesGroups")
     {
         _projectilesGroups->insert(projectile);

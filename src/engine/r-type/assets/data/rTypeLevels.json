@@ -25,8 +25,8 @@
                     "Y": 165
                 }],
             "BulletType": "BulletEnemy1",
-            "FireRate": 2,
-            "BulletSpeed": -0.5,
+            "FireRate": 1,
+            "BulletSpeed": 2.5,
             "Speed": 1
         },
         "Enemy1": {
@@ -35,24 +35,24 @@
             "Count": 4,
             "Positions": [
                 {
-                    "X": 500,
+                    "X": 800,
                     "Y": 100
                 },
                 {
-                    "X": 500,
+                    "X": 800,
                     "Y": 200
                 },
                 {
-                    "X": 500,
+                    "X": 800,
                     "Y": 300
                 },
                 {
-                    "X": 500,
+                    "X": 800,
                     "Y": 400
                 }],
             "BulletType": "BulletEnemy2",
-            "FireRate": 5,
-            "BulletSpeed": -1,
+            "FireRate": 2,
+            "BulletSpeed": 2,
             "Speed": 0.5
         }
     },

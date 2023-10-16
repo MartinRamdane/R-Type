@@ -13,6 +13,14 @@
 class IEntity
 {
 public:
+    enum Direction
+    {
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
     virtual ~IEntity() = default;
     virtual void setPosition(float x, float y) = 0;
     virtual void setRotation(float angle) = 0;
