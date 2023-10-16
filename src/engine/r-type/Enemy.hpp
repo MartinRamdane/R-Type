@@ -23,6 +23,7 @@ public:
     ~Enemy();
     void update() override;
     void shoot() override;
+    void move(float x, float y) override;
 
 protected:
 private:
