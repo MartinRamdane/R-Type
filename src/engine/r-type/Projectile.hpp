@@ -45,6 +45,9 @@ public:
     void kill();
     void setRadius(float radius);
     float getRadius() const;
+    void flip();
+    bool isFlip() const;
+    void setFlip(bool flip);
 
 protected:
 private:
@@ -60,4 +63,5 @@ private:
     bool _isDead;
     int _damage;
     Direction _direction;
+    bool _flip = false;
 };

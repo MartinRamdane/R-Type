@@ -44,6 +44,9 @@ public:
     void kill();
     void setRadius(float radius);
     float getRadius() const;
+    void flip();
+    bool isFlip() const;
+    void setFlip(bool flip);
 
 private:
     std::string _path;
@@ -58,4 +61,6 @@ private:
     bool _isDead;
     int _damage;
     int _life = 100000;
+    bool _flip = false;
+    Direction _direction;
 };

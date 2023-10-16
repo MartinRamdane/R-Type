@@ -49,6 +49,13 @@ void Entity::setSpriteScale(const sf::Vector2f &scale)
     _sprite.setScale(scale);
 }
 
+void Entity::flip()
+{
+    auto scale = _sprite.getScale();
+    scale.x *= -1;
+    _sprite.setScale(scale);
+}
+
 void Entity::setSpriteOrigin()
 {
     sf::Vector2f size = sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
@@ -147,9 +154,7 @@ bool Entity::isDead() const
 
 void Entity::setFont()
 {
-    if (_font.loadFromFile("font/pixel.ttf"))
-        std::cout << "Font loaded" << std::endl;
-    else
+    if (!_font.loadFromFile("font/pixel.ttf"))
         std::cout << "Font not loaded" << std::endl;
     _text.setFont(_font);
 }

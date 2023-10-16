@@ -46,6 +46,7 @@ public:
     void setPlayerId(int id) { _playerId = id; }
     std::string getHost() { return _host; }
     TCPClientImpl *getClient() { return _client; }
+    void flipEntity(int id);
 
 private:
     sf::RenderWindow _window;

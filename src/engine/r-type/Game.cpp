@@ -193,6 +193,10 @@ void Game::update(ThreadSafeQueue<Event> &events)
         case ACTION::SHIELD:
             _players[getId(event) - 1]->action();
             break;
+        case ACTION::FLIP:
+            std::cout << "flip: " << getId(event) << std::endl;
+            _players[getId(event) - 1]->flip();
+            break;
         case ACTION::READY:
             _players.push_back(getRandomSpaceship());
             _playersGroups->insert(_players[_players.size() - 1]);

@@ -48,7 +48,6 @@ void Projectile::move(float x, float y)
 {
     if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius || (_x + x * _speed) < 0 + _radius || (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) || (_y + y * _speed) < 0 + (_radius / 2)) {
         _isDead = true;
-        std::cout << "Projectile out of bounds" << std::endl;
         return;
     }
     setOldPosition(_x, _y);
@@ -214,4 +213,23 @@ void Projectile::setRadius(float radius)
 float Projectile::getRadius() const
 {
     return _radius;
+}
+
+void Projectile::flip()
+{
+    _flip = true;
+    if (_direction == RIGHT)
+        _direction = LEFT;
+    else
+        _direction = RIGHT;
+}
+
+bool Projectile::isFlip() const
+{
+    return _flip;
+}
+
+void Projectile::setFlip(bool flip)
+{
+    _flip = flip;
 }
