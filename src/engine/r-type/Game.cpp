@@ -246,7 +246,7 @@ void Game::createExplosion(int x, int y)
     _staticObjects.push_back(explosion);
 }
 
-void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, IEntity::Direction direction)
+void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction)
 {
     std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName, direction);
     if (groupName == "_projectilesGroups")
@@ -259,6 +259,8 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
         _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     }
+    if (flip)
+        projectile->setFlip(flip);
 }
 
 std::shared_ptr<StaticObject> Game::createShield(int x, int y)

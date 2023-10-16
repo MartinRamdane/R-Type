@@ -205,7 +205,7 @@ void Character::shoot()
     if (!canShoot())
         return;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) + (_direction == RIGHT ? 30 : - 30), std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getBulletSpeed(), getDamage(), _shootAsset, "_projectilesGroups", _direction);
+    Game::instance->createProjectile(std::get<0>(pos) + (_direction == RIGHT ? 30 : - 30), std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getBulletSpeed(), getDamage(), _shootAsset, "_projectilesGroups", _direction == IEntity::LEFT ? true : false, _direction);
 }
 
 std::string Character::getSpriteJsonFileName() const
@@ -295,4 +295,9 @@ bool Character::isFlip() const
 void Character::setFlip(bool flip)
 {
     _flip = flip;
+}
+
+Character::Direction Character::getDirection() const
+{
+    return _direction;
 }

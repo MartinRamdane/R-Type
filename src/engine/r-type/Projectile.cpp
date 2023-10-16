@@ -233,3 +233,8 @@ void Projectile::setFlip(bool flip)
 {
     _flip = flip;
 }
+
+Projectile::Direction Projectile::getDirection() const
+{
+    return _direction;
+}

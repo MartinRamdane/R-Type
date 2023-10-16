@@ -32,7 +32,7 @@ public:
 
     void update(ThreadSafeQueue<Event> &events);
     void createExplosion(int x, int y);
-    void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, IEntity::Direction direction = IEntity::RIGHT);
+    void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction = IEntity::RIGHT);
     std::shared_ptr<StaticObject> createShield(int x, int y);
     void initializeLevel();
     int getId(Event event);

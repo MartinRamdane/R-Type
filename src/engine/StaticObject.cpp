@@ -202,3 +202,8 @@ void StaticObject::setFlip(bool flip)
 {
     _flip = flip;
 }
+
+IEntity::Direction StaticObject::getDirection() const
+{
+    return _direction;
+}

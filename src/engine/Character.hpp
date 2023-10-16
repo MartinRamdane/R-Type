@@ -65,10 +65,12 @@ public:
     void flip();
     bool isFlip() const;
     void setFlip(bool flip);
+    Direction getDirection() const;
 
 protected:
     float _x;
     float _y;
+    Direction _direction;
 
 private:
     bool _positionSeted = false;
@@ -90,5 +92,4 @@ private:
     std::string _shootAsset = "BulletSpaceship";
     std::string _movementType;
     bool _flip = false;
-    Direction _direction;
 };

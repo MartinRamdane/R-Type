@@ -74,6 +74,8 @@ std::vector<std::string> Protocol::transformAllEntitiesToCreate(std::list<Entity
         for (auto entity : entityType->getEntities())
         {
             protocol.push_back(transformEntityCreateToProtocol(entity));
+            if (entity->getDirection() == IEntity::Direction::LEFT)
+                protocol.push_back("eflip " + std::to_string(entity->getId()));
         }
     }
     return protocol;

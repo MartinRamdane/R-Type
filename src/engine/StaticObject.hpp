@@ -47,6 +47,7 @@ public:
     void flip();
     bool isFlip() const;
     void setFlip(bool flip);
+    Direction getDirection() const;
 
 private:
     std::string _path;

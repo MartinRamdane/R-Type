@@ -210,11 +210,22 @@ void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
     std::vector<std::string> protocol = _instanceRef->getCore()->getAllEntitiesToCreate();
     for (auto message : protocol)
     {
+       if (message.substr(0, message.find(" ")) == "eflip")
+      {
+        Event evt;
+        evt.ACTION_NAME = ACTION::FLIP;
+        evt.body_size = message.size();
+        evt.body = message;
+        sendEvent(evt, client->client.address().to_string(), client->client.port());
+      }
+      else
+      {
         Event evt;
         evt.ACTION_NAME = ACTION::SPRITE;
         evt.body_size = message.size();
         evt.body = message;
         sendEvent(evt, client->client.address().to_string(), client->client.port());
+      }
     }
 }
 

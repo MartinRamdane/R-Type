@@ -54,6 +54,7 @@ public:
     virtual void flip() = 0;
     virtual bool isFlip() const = 0;
     virtual void setFlip(bool flip) = 0;
+    virtual Direction getDirection() const = 0;
 
 protected:
     float _oldX;
