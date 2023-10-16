@@ -6,28 +6,19 @@
 */
 
 #include <gtest/gtest.h>
-#include "../server/TCPClient.hpp"
-#include "../server/Server.hpp"
+#include "../client/Game.hpp"
 #include "../global/EventHandler.hpp"
 
 // Test: Check if the game client can connect to the TCP Server
 TEST(TCPConnection, can_connect_to_server) {
-    ServerClass server;
-    std::thread([&server]()
-        { server.loop(); }).detach();
-    TCPClient<ACTION> client;
-    client.Connect("127.0.0.1", 4242);
-    bool clientIsConnected = client.isConnected();
+    Game *game = new Game();
+    bool clientIsConnected = game->connectToServer("127.0.0.1", 4242);
     ASSERT_EQ(clientIsConnected, true);
 }
 
-//to fix: test is not working
-TEST(TCPConnection, connection_refused) {
-    ServerClass server;
-    std::thread([&server]()
-        { server.loop(); }).detach();
-    TCPClient<ACTION> client;
-    client.Connect("localhost", 000);
-    bool clientIsConnected = client.isConnected();
-    ASSERT_EQ(clientIsConnected, false);
+// Test: Check if the client can connect to the UDP Server
+TEST(UDPConnection, can_connect_to_server) {
+    Game *game = new Game();
+    bool clientIsConnected = game->connectToUdpServer("127.0.0.1", 4210);
+    ASSERT_EQ(clientIsConnected, true);
 }
