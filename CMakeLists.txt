@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
 find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
+find_package(GTest REQUIRED)
 
 if (UNIX)
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
@@ -29,9 +30,18 @@ file(GLOB SERVER_SRC_LIST src/*.cpp src/server/*.cpp src/engine/*.cpp src/engine
 add_executable(r-type_server ${SERVER_SRC_LIST})
 target_link_libraries(r-type_server PRIVATE nlohmann_json::nlohmann_json boost::boost)
 
-file(GLOB TEST_SRC_LIST src/test/*.cpp src/engine/*.cpp src/engine/r-type/*.cpp src/global/*.cpp src/client/*.cpp src/server/*.cpp)
+file(GLOB TEST_SRC_LIST src/tests/*.cpp src/engine/*.cpp src/engine/r-type/*.cpp src/global/*.cpp src/client/*.cpp src/server/*.cpp)
+list(REMOVE_ITEM TEST_SRC_LIST src/client/main.cpp)
+foreach(item ${TEST_SRC_LIST})
+    if(${item} MATCHES "client/main.cpp")
+        list(REMOVE_ITEM TEST_SRC_LIST ${item})
+    endif()
+endforeach()
+foreach(item ${TEST_SRC_LIST})
+    message(${item})
+endforeach()
 add_executable(r-type_test ${TEST_SRC_LIST})
-target_link_libraries(r-type_test sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost)
+target_link_libraries(r-type_test sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost gtest::gtest)
 
 set_target_properties(r-type_client r-type_server r-type_test PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../

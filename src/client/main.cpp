@@ -14,6 +14,7 @@
 
 int main()
 {
+    std::cout << "MDRRR" << std::endl;
     struct Login login;
     std::shared_ptr<Game> game = std::make_shared<Game>();
     Menu *menu = new Menu(game);
