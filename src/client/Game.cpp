@@ -144,6 +144,13 @@ void Game::handleEvent()
             evt.body = playerId;
             _udpClient->sendEvent(evt);
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+        {
+            evt.ACTION_NAME = ACTION::ROTATE;
+            evt.body_size = playerId.size();
+            evt.body = playerId;
+            _udpClient->sendEvent(evt);
+        }
     }
 }
 
@@ -250,10 +257,10 @@ void Game::removeEntity(int id)
 
 void Game::addEntity(int id, Entity entity)
 {
-    if (findEntity(id) == true)
-    {
-        _entities[id].setNextPos(entity.getNextPos());
-    }
-    else
+    // if (findEntity(id) == true)
+    // {
+    //     _entities[id].setNextPos(entity.getNextPos());
+    // }
+    // else
         _entities[id] = entity;
 }
