@@ -62,7 +62,7 @@ Your class must inherit the **IGame** interface, but here's what else you can im
 To configure your game and sprites behavior like the game assets, sprite positions, etc., you are going to use a Json file. There is a **JsonParser class** that is responsible for parsing the Json file. This class uses a  builtin library called **JSON for Modern C++**.
 Here is the link to the library doc: https://github.com/nlohmann/json
 
-**IMPORTANT:** The parser searches recursively for your file in all folders, so name your files correctly so you don't have two with the same name
+**IMPORTANT:** The parser searches recursively for your file starting from the root directory, so name your files correctly so you don't have two with the same name
 
 Along with the ones I'll list below, the other files do not have a specific way or rule to follow. It is up to you to decide the structure and informations that you are goint to put on it!
 
