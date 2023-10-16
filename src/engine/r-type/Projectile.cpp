@@ -187,7 +187,7 @@ void Projectile::hurtEntity(IEntity &self, IEntity &you)
     }
 }
 
-std::string Projectile::getSpriteConfigJsonPath() const
+std::string Projectile::getSpriteJsonFileName() const
 {
     return _spriteConfigJsonPath;
 }

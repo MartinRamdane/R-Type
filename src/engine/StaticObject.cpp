@@ -154,7 +154,7 @@ void StaticObject::takeDamage(int damage)
     _life -= damage;
 }
 
-std::string StaticObject::getSpriteConfigJsonPath() const
+std::string StaticObject::getSpriteJsonFileName() const
 {
     return _spriteConfigJsonPath;
 }
