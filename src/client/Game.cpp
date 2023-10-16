@@ -257,10 +257,8 @@ void Game::removeEntity(int id)
 
 void Game::addEntity(int id, Entity entity)
 {
-    // if (findEntity(id) == true)
-    // {
-    //     _entities[id].setNextPos(entity.getNextPos());
-    // }
-    // else
+    if (findEntity(id) == true)
+        _entities[id].setNextPos(entity.getNextPos());
+    else
         _entities[id] = entity;
 }
