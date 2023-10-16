@@ -13,7 +13,7 @@
 #include <thread>
 #include "IEntity.hpp"
 #include "EntityType.hpp"
-#include "./JsonParser.hpp"
+#include "../global/JsonParser.hpp"
 
 class Engine
 {

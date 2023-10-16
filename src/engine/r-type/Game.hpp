@@ -14,7 +14,7 @@
 #include <vector>
 #include <map>
 #include "../StaticObject.hpp"
-#include "../JsonParser.hpp"
+#include "../../global/JsonParser.hpp"
 #include "../IGame.hpp"
 #include <random>
 #include <tuple>
