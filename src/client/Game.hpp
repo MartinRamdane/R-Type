@@ -11,12 +11,12 @@
 #include "Entity.hpp"
 #include "RessourceManager.hpp"
 #include "Parser.hpp"
-#include "JsonParser.hpp"
+#include "../global/JsonParser.hpp"
 #include "../global/EventHandler.hpp"
 #include <thread>
 #include <queue>
 #include "UDPClient.hpp"
-#include "ThreadPool.hpp"
+#include "../global/ThreadPool.hpp"
 
 class TCPClientImpl;
 class Game
