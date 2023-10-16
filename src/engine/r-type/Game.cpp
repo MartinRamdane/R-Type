@@ -19,18 +19,6 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
 {
     instance = this;
     initializeLevel();
-
-    // Create all entities groups
-    _playersGroups = std::make_shared<EntityType<IEntity>>(16);
-    _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
-
-    // Add collision between entities groups
-    engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
-    engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
-    engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
-    engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
-    engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
 Game::~Game()
@@ -50,7 +38,7 @@ void Game::initializeLevel()
     _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
     _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
 
-    nlohmann::json level = levelsFile["Level-" + std::to_string(currentLevel)];
+    nlohmann::json level = levelsFile["Level-" + std::to_string(_currentLevel)];
     std::vector<std::tuple<int, int>> positions;
     std::string movementType;
     std::string bulletType;
@@ -152,6 +140,18 @@ void Game::initializeLevel()
             }
         }
     }
+
+    // Create all entities groups
+    _playersGroups = std::make_shared<EntityType<IEntity>>(16);
+    _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
+    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
+
+    // Add collision between entities groups
+    _engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
+    _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
 int Game::getId(Event event)
@@ -236,12 +236,33 @@ void Game::update(ThreadSafeQueue<Event> &events)
         {
             int id = std::stoi(event.body);
             eraseDeadEntity(id);
+            //for now, just to test! after this will be replaced by the one commented below
+            if (_currentLevel != MAX_LEVEL)
+            {
+                std::cout << "Level " << _currentLevel << " finished" << std::endl;
+                _currentLevel++;
+                initializeLevel();
+                int playerSize = _players.size();
+                _players.clear();
+                for (int i = 0; i < playerSize; i++)
+                {
+                    _players.push_back(getRandomSpaceship());
+                    _playersGroups->insert(_players[_players.size() - 1]);
+                }
+            }
             break;
         }
         default:
             break;
         }
     }
+    // std::cout << _enemies.size() << std::endl;
+    // if (_enemies.size() == 0 && _currentLevel != 2)
+    // {
+    //     std::cout << "Level " << _currentLevel << " finished" << std::endl;
+    //     _currentLevel++;
+    //     initializeLevel();
+    // }
 }
 
 void Game::createExplosion(int x, int y)
@@ -308,10 +329,12 @@ void Game::eraseDeadEntity(int id)
     }
     for (auto it = _enemies.begin(); it != _enemies.end(); it++)
     {
+        std::cout << (*it)->getId() << " " << id << std::endl;
         if ((*it)->getId() == id)
         {
             (*it)->setDead(true);
             _enemies.erase(it);
+            std::cout << _enemies.size() << std::endl;
             break;
         }
     }

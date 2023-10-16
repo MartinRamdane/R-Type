@@ -6,6 +6,26 @@
         "Flyer": {
             "Type": "Flyer",
             "MovementType": "UpAndDown",
+            "Count": 2,
+            "Positions": [
+                {"X": 960, "Y": 231},
+                {"X": 980, "Y": 200}
+              ],
+            "BulletType": "BulletEnemy1",
+            "FireRate": 0.5,
+            "BulletSpeed": 8,
+            "Speed": 2,
+            "Damage": 10,
+            "Life": 10
+        }
+    },
+    "Level-2": {
+        "Background": {
+            "Type": "StaticObject"
+        },
+        "Flyer": {
+            "Type": "Flyer",
+            "MovementType": "UpAndDown",
             "Count": 20,
             "Positions": [
                 {"X": 960, "Y": 231},
@@ -81,15 +101,6 @@
             "Speed": 1,
             "Damage": 25,
             "Life": 50
-        }
-    },
-    "Level-2": {
-        "Background": {
-            "Type": "StaticObject"
-        },
-        "Enemy1": {
-            "Type": "Enemy",
-            "Count": 4
         }
     }
 }

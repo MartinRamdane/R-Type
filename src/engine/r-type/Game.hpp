@@ -23,6 +23,8 @@ class Character;
 class Enemy;
 class Projectile;
 
+#define MAX_LEVEL 2
+
 class Game : public IGame
 {
 public:
@@ -54,5 +56,5 @@ private:
     std::vector<std::shared_ptr<Enemy>> _enemies;
     int _lastId = 0;
     static std::map<std::string, std::function<std::string()>> _assets;
-    int currentLevel = 1;
+    int _currentLevel = 1;
 };
