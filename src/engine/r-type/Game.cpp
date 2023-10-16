@@ -74,7 +74,7 @@ void Game::initializeLevel()
             {
                 if (count == 0)
                 {
-                    std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "config.json", "Background");
+                    std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "rTypeConfig.json", "Background");
                     _staticObjects.push_back(background);
                     _staticObjectsGroups->insert(background);
                 }
@@ -241,7 +241,7 @@ void Game::update(ThreadSafeQueue<Event> &events)
 
 void Game::createExplosion(int x, int y)
 {
-    std::shared_ptr<StaticObject> explosion = std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "config.json", "ExplosionSpaceship", 0, 2, 2, 6);
+    std::shared_ptr<StaticObject> explosion = std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "rTypeConfig.json", "ExplosionSpaceship", 0, 2, 2, 6);
     _staticObjectsGroups->insert(explosion);
     _staticObjects.push_back(explosion);
 }
@@ -265,7 +265,7 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
 
 std::shared_ptr<StaticObject> Game::createShield(int x, int y)
 {
-    std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"](), x, y, _lastId++, "config.json", "Shield", 0, 1, 1, 1);
+    std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"](), x, y, _lastId++, "rTypeConfig.json", "Shield", 0, 1, 1, 1);
     _staticObjectsGroups->insert(_shield);
     _staticObjects.push_back(_shield);
     return (_shield);

@@ -23,7 +23,7 @@ Projectile::Projectile(std::string path, float x, float y, int id, int damage, f
     _created = false;
     _isDead = false;
     _damage = damage;
-    _spriteConfigJsonPath = "config.json";
+    _spriteConfigJsonPath = "rTypeConfig.json";
     _spriteConfigJsonObjectName = spriteConfigJsonObjectName;
     _direction = direction;
 }
