@@ -24,6 +24,7 @@ StaticObject::StaticObject(std::string path, float x, float y, int id, std::stri
     _isDead = false;
     _spriteConfigJsonPath = spriteConfigJsonPath;
     _spriteConfigJsonObjectName = spriteConfigJsonObjectName;
+    _direction = RIGHT;
 }
 
 StaticObject::~StaticObject()
@@ -181,4 +182,23 @@ void StaticObject::setRadius(float radius)
 float StaticObject::getRadius() const
 {
     return _radius;
+}
+
+void StaticObject::flip()
+{
+    _flip = true;
+    if (_direction == RIGHT)
+        _direction = LEFT;
+    else
+        _direction = RIGHT;
+}
+
+bool StaticObject::isFlip() const
+{
+    return _flip;
+}
+
+void StaticObject::setFlip(bool flip)
+{
+    _flip = flip;
 }

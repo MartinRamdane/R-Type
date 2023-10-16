@@ -11,12 +11,12 @@
 #include "Entity.hpp"
 #include "RessourceManager.hpp"
 #include "Parser.hpp"
-#include "JsonParser.hpp"
+#include "../global/JsonParser.hpp"
 #include "../global/EventHandler.hpp"
 #include <thread>
 #include <queue>
 #include "UDPClient.hpp"
-#include "ThreadPool.hpp"
+#include "../global/ThreadPool.hpp"
 
 class TCPClientImpl;
 class Game
@@ -46,6 +46,7 @@ public:
     void setPlayerId(int id) { _playerId = id; }
     std::string getHost() { return _host; }
     TCPClientImpl *getClient() { return _client; }
+    void flipEntity(int id);
 
 private:
     sf::RenderWindow _window;

@@ -62,6 +62,7 @@ public:
     void setNextPos(sf::Vector2f pos) { _nextPos = pos; };
     sf::Vector2f getNextPos() const { return _nextPos; };
     void update();
+    void flip();
 
 public:
     sf::Sprite _sprite;

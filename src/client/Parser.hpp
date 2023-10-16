@@ -13,7 +13,7 @@
 #include <sstream>
 #include "Entity.hpp"
 #include "RessourceManager.hpp"
-#include "JsonParser.hpp"
+#include "../global/JsonParser.hpp"
 #include "../global/EventHandler.hpp"
 
 class Parser

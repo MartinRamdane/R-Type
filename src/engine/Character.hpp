@@ -62,6 +62,9 @@ public:
     std::string getShootAsset() const;
     void setBulletSpeed(float bulletSpeed);
     float getBulletSpeed() const;
+    void flip();
+    bool isFlip() const;
+    void setFlip(bool flip);
 
 protected:
     float _x;
@@ -86,4 +89,6 @@ private:
     std::chrono::high_resolution_clock::time_point _currentTime;
     std::string _shootAsset = "BulletSpaceship";
     std::string _movementType;
+    bool _flip = false;
+    Direction _direction;
 };

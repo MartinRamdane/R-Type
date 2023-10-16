@@ -39,6 +39,7 @@ public:
   void SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
   ThreadSafeQueue<std::vector<uint8_t>> &Incoming() { return _queue; }
   void processSendQueue();
+  void flipEntity(Event evt);
 
 private:
   boost::asio::io_context io_context_;

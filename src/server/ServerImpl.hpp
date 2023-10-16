@@ -168,9 +168,9 @@ protected:
         {
             std::cout << "[" << client->GetID() << "]: DEAD" << std::endl;
         }
-        case ACTION::ROTATE:
+        case ACTION::FLIP:
         {
-            std::cout << "[" << client->GetID() << "]: ROTATE" << std::endl;
+            std::cout << "[" << client->GetID() << "]: FLIP" << std::endl;
         }
         case ACTION::TEXT:
         {

@@ -43,17 +43,18 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityT
                 protocol.push_back(transformEntityCreateToProtocol(entity));
                 entity->setCreated(true);
             }
-            else if (entity->isDead())
+            if (entity->isDead())
             {
                 protocol.push_back("edead " + std::to_string(entity->getId()));
             }
-            else
+            if (entity->isFlip())
             {
-
-                std::string move = transformEntityMoveToProtocol(entity);
-                if (move != "")
-                    protocol.push_back(move);
+                protocol.push_back("eflip " + std::to_string(entity->getId()));
+                entity->setFlip(false);
             }
+            std::string move = transformEntityMoveToProtocol(entity);
+            if (move != "")
+                protocol.push_back(move);
         }
         entityType->removeDead();
     }

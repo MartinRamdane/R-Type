@@ -111,7 +111,7 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
   case ACTION::DEAD:
   {
   }
-  case ACTION::ROTATE:
+  case ACTION::FLIP:
   {
   }
   break;

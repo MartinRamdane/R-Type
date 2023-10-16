@@ -83,6 +83,19 @@ void Game::handleEvent()
             _client->Disconnect();
             closed = true;
         }
+        if (_event.type == (sf::Event::KeyPressed))
+        {
+            if (_event.key.code == sf::Keyboard::R)
+            {
+                Event evt;
+                std::string playerId = "p" + std::to_string(_playerId);
+                std::cout << "flip" << std::endl;
+                evt.ACTION_NAME = ACTION::FLIP;
+                evt.body_size = playerId.size();
+                evt.body = playerId;
+                _udpClient->sendEvent(evt);
+            }
+        }
     }
     Event evt;
     std::string playerId = "p" + std::to_string(_playerId);
@@ -140,13 +153,6 @@ void Game::handleEvent()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
             evt.ACTION_NAME = ACTION::SHIELD;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
-            _udpClient->sendEvent(evt);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-        {
-            evt.ACTION_NAME = ACTION::ROTATE;
             evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
@@ -261,4 +267,9 @@ void Game::addEntity(int id, Entity entity)
         _entities[id].setNextPos(entity.getNextPos());
     else
         _entities[id] = entity;
+}
+
+void Game::flipEntity(int id)
+{
+    _entities[id].flip();
 }

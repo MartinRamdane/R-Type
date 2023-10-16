@@ -51,6 +51,9 @@ public:
     virtual void kill() = 0;
     virtual void setRadius(float radius) = 0;
     virtual float getRadius() const = 0;
+    virtual void flip() = 0;
+    virtual bool isFlip() const = 0;
+    virtual void setFlip(bool flip) = 0;
 
 protected:
     float _oldX;
