@@ -11,7 +11,7 @@
 #include <vector>
 #include <boost/asio.hpp>
 #include "UDPServer.hpp"
-#include "ThreadPool.hpp"
+#include "../global/ThreadPool.hpp"
 #include "../engine/Core.hpp"
 
 class ServerClass;
