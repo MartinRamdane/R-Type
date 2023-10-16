@@ -29,6 +29,7 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
     engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
+    engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
     engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
@@ -47,6 +48,7 @@ void Game::initializeLevel()
     _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
     _enemie1Groups = std::make_shared<EntityType<IEntity>>(20);
     _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
+    _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
 
     nlohmann::json level = levelsFile["Level-" + std::to_string(currentLevel)];
     std::vector<std::tuple<int, int>> positions;
@@ -55,6 +57,7 @@ void Game::initializeLevel()
     float fireRate = 0;
     float speed = 0;
     float bulletSpeed = 0;
+    int damage = 0;
 
     for (auto it2 = level.begin(); it2 != level.end(); it2++)
     {
@@ -81,17 +84,24 @@ void Game::initializeLevel()
                     {
                         if (it3.value() == "Enemy1")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed);
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed, damage);
                             enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _enemie1Groups->insert(enemy);
                         }
                         else if (it3.value() == "Flyer")
                         {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed);
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed, damage);
                             enemy->setMovementType(movementType);
                             _enemies.push_back(enemy);
                             _flyerGroups->insert(enemy);
+                        }
+                        else if (it3.value() == "Enemy2")
+                        {
+                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed, damage);
+                            enemy->setMovementType(movementType);
+                            _enemies.push_back(enemy);
+                            _enemie2Groups->insert(enemy);
                         }
                     }
                     count = 0;
@@ -103,7 +113,7 @@ void Game::initializeLevel()
                 auto position = it3.value();
                 for (int i = 0; i < count; i++)
                 {
-                    if (it2.key() == "Enemy1" || it2.key() == "Flyer")
+                    if (it2.key() == "Enemy1" || it2.key() == "Flyer" || it2.key() == "Enemy2")
                     {
                         nlohmann::json pos = position[i];
                         std::cout << pos.at("X") << " " << pos.at("Y") << std::endl;
@@ -130,6 +140,10 @@ void Game::initializeLevel()
             else if (it3.key() == "BulletSpeed")
             {
                 bulletSpeed = it3.value();
+            }
+            else if (it3.key() == "Damage")
+            {
+                damage = it3.value();
             }
         }
     }
@@ -323,6 +337,11 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
      {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Enemy1");
+     }},
+    {"Enemy2", []()
+     {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Enemy2");
      }},
     {"Background", []()
      {

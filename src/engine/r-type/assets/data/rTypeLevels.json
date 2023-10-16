@@ -3,45 +3,11 @@
         "Background": {
             "Type": "StaticObject"
         },
-        "Flyer": {
-            "Type": "Flyer",
-            "MovementType": "UpAndDown",
-            "Count": 4,
+        "Enemy2": {
+            "Type": "Enemy2",
+            "MovementType": "Random",
+            "Count": 2,
             "Positions": [
-                {
-                    "X": 800,
-                    "Y": 150
-                },
-                {
-                    "X": 840,
-                    "Y": 155
-                },
-                {
-                    "X": 880,
-                    "Y": 160
-                },
-                {
-                    "X": 920,
-                    "Y": 165
-                }],
-            "BulletType": "BulletEnemy1",
-            "FireRate": 1,
-            "BulletSpeed": 2.5,
-            "Speed": 1
-        },
-        "Enemy1": {
-            "Type": "Enemy1",
-            "MovementType": "Horizontal",
-            "Count": 4,
-            "Positions": [
-                {
-                    "X": 800,
-                    "Y": 100
-                },
-                {
-                    "X": 800,
-                    "Y": 200
-                },
                 {
                     "X": 800,
                     "Y": 300
@@ -50,10 +16,11 @@
                     "X": 800,
                     "Y": 400
                 }],
-            "BulletType": "BulletEnemy2",
+            "BulletType": "BulletEnemy1",
             "FireRate": 2,
             "BulletSpeed": 2,
-            "Speed": 0.5
+            "Speed": 0.5,
+            "Damage": 20
         }
     },
     "Level-2": {

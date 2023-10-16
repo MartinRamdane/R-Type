@@ -43,9 +43,9 @@
     },
     "Enemy2":
     {
-        "nb_rect": 5,
+        "nb_rect": 3,
         "rect_init": 0,
-        "form": "event"
+        "form": "loop"
     },
     "Flyer":
     {

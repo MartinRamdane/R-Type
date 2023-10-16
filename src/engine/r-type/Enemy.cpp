@@ -7,13 +7,14 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string bulletType, float fireRate, float speed, float bulletSpeed, int nbSprite, float angle, float scaleX, float scaleY)
+Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string bulletType, float fireRate, float speed, float bulletSpeed, int damage, int nbSprite, float angle, float scaleX, float scaleY)
     : Character(path, x, y, id, angle, scaleX, scaleY, nbSprite, "config.json", enemyConfig)
 {
     setShootAsset(bulletType);
     setSpeed(speed);
     setFireRate(fireRate);
     setBulletSpeed(bulletSpeed);
+    setDamage(damage);
 }
 
 Enemy::~Enemy()
@@ -53,6 +54,29 @@ void Enemy::update()
         {
             move(-1, -1);
         }
+    }
+    else if (movementType == "Random")
+    {
+        srand(time(NULL));
+        int x = rand() % 3 - 1;
+        int y = rand() % 3 - 1;
+        auto pos = getPosition();
+        int new_x = std::get<0>(pos) + x * getSpeed();
+        int new_y = std::get<1>(pos) + y * getSpeed();
+        int radius = getRadius();
+        if (new_x > 850)
+        {
+            move(-1, 0);
+        }
+        else
+        {
+            if (new_y - radius < 0 || new_y + radius > 478)
+            {
+                y = -y;
+                new_y = std::get<1>(pos) + y * getSpeed();
+            }
+        }
+        move(x, y);
     }
     shoot();
 }
