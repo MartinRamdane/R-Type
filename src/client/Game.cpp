@@ -157,16 +157,6 @@ void Game::handleEvent()
             evt.body = playerId;
             _udpClient->sendEvent(evt);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
-        {
-            float percent = _progressBar.getProgress();
-            _progressBar.setProgress(percent - 10);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
-        {
-            float percent = _progressBar.getMaxProgress();
-            _progressBar.setProgress(percent);
-        }
     }
 }
 
@@ -277,12 +267,17 @@ void Game::addEntity(int id, Entity entity)
 {
     if (findEntity(id) == true)
     {
-        if (entity.getHit() == true && id == _playerId)
+        // std::cout << "id: " << id << " playerid: " << _playerId << std::endl;
+        if (entity.getHit() == true)
         {
+            std::cout << "hit" << std::endl;
             float percent = _progressBar.getProgress();
             _progressBar.setProgress(percent - 10);
+            _entities[id].setSpritePosition(entity.getSpritePosition());
         }
+        else
         _entities[id].setNextPos(entity.getNextPos());
+        _entities[id].setHit(false);
     }
     else
         _entities[id] = entity;

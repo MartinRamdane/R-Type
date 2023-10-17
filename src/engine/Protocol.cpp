@@ -7,6 +7,11 @@
 
 #include "Protocol.hpp"
 #include "Character.hpp"
+#include "r-type/Classic.hpp"
+#include "r-type/Shield.hpp"
+#include "r-type/Shooter.hpp"
+#include "r-type/Speed.hpp"
+#include "r-type/Tank.hpp"
 
 Protocol::Protocol()
 {
@@ -58,10 +63,12 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityT
                 auto character = std::dynamic_pointer_cast<Character>(entity);
                 if (character->getLife() < character->getOldLife())
                 {
-                    const auto pos = entity->getPosition();
+                    std::cout << "Character life: " << character->getLife() << " oldlife: " << character->getOldLife() << std::endl;
+                    const auto pos = character->getPosition();
                     std::string posX = std::to_string(std::get<0>(pos));
                     std::string posY = std::to_string(std::get<1>(pos));
                     protocol.push_back("etouch " + std::to_string(character->getId()) + " " + posX + " " + posY);
+                    character->setOldLife(character->getLife());
                 }
             }
             std::string move = transformEntityMoveToProtocol(entity);

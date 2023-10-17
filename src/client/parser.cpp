@@ -134,6 +134,7 @@ std::tuple<int, Entity> Parser::hitEntity(std::map<std::string, std::string> val
     Entity entity;
     entity.setHit(true);
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+    entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     return std::make_tuple(id, entity);
 }
 
@@ -202,7 +203,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         }
         else if (commande == "etouch")
         {
-            std::cout << "hit" << std::endl;
+            std::cout << "etouch" << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;

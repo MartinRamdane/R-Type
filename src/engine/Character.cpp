@@ -25,7 +25,7 @@ Character::Character(std::string path, float x, float y, int id, float angle, fl
     _fireRate = 3;
     _life = 100;
     _lifeValue = 100;
-    _oldlife = 100;
+    _oldlife = _life;
     _damage = 10;
     _targetFrameDuration = std::chrono::duration<double>(1.0 / _fireRate);
     _lastShootTime = std::chrono::high_resolution_clock::now();
@@ -151,6 +151,7 @@ bool Character::isDead() const
 void Character::setLife(int life)
 {
     _life = life;
+    _oldlife = _life;
 }
 
 int Character::getLife() const
@@ -323,6 +324,7 @@ void Character::setLifeValue(int lifeValue)
 void Character::resetLife()
 {
     _life = _lifeValue;
+    _oldlife = _lifeValue;
 }
 
 void Character::setId(int id)

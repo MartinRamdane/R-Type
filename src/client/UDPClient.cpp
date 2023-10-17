@@ -114,7 +114,7 @@ void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
 {
   EventHandler evt;
   Event event = evt.decodeMessage(msg);
-  std::cout << "UDP MESSAGE RECEIVED : " << event.body << std::endl;
+  // std::cout << "UDP MESSAGE RECEIVED : " << event.body << std::endl;
   handleEvents(event);
 }
 
