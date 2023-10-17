@@ -13,6 +13,7 @@
 #include "EntityType.hpp"
 #include <iostream>
 #include "r-type/Game.hpp"
+#include "../server/UDPServer.hpp"
 
 class Protocol
 {
@@ -22,7 +23,7 @@ public:
 
     static std::string transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity);
     static std::string transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity);
-    static std::vector<std::string> transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities);
+    static void transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities, UDPServer *server);
     static std::string transformWindowCreateToProtocol(std::string title, int width, int height);
     static std::vector<std::string> transformAllEntitiesToCreate(std::list<EntityType<IEntity> *> entities);
 

@@ -19,7 +19,7 @@ Core::~Core()
 {
 }
 
-std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
+void Core::mainLoop(ThreadSafeQueue<Event> &events, UDPServer *server)
 {
     if (_engine->frameRateControl())
     {
@@ -32,11 +32,9 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
         {
             _lastFrameTime = std::chrono::high_resolution_clock::now();
             auto entities = _engine->getEntities();
-            std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
-            return protocol;
+            Protocol::transformEntitiesToProtocol(entities, server);
         }
     }
-    return {};
 }
 
 std::vector<std::string> Core::getAllEntitiesToCreate()

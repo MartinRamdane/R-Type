@@ -43,7 +43,7 @@ void Instance::EventLoop()
     {
       continue; // TODO: destroy the instance
     }
-    std::vector<std::string> protocol = _core->mainLoop(_events);
+    _core->mainLoop(_events, _udpServer);
     if (_core->isReset())
     {
       _core->setReset(false);
@@ -53,24 +53,24 @@ void Instance::EventLoop()
       evt.body = "";
       _udpServer->sendEventToAllClients(evt);
     }
-    for (auto message : protocol)
-    {
-      if (message.substr(0, message.find(" ")) == "eflip")
-      {
-        Event evt;
-        evt.ACTION_NAME = ACTION::FLIP;
-        evt.body_size = message.size();
-        evt.body = message;
-        _udpServer->sendEventToAllClients(evt);
-      }
-      else
-      {
-        Event evt;
-        evt.ACTION_NAME = ACTION::SPRITE;
-        evt.body_size = message.size();
-        evt.body = message;
-        _udpServer->sendEventToAllClients(evt);
-      }
-    }
+    // for (auto message : protocol)
+    // {
+    //   if (message.substr(0, message.find(" ")) == "eflip")
+    //   {
+    //     Event evt;
+    //     evt.ACTION_NAME = ACTION::FLIP;
+    //     evt.body_size = message.size();
+    //     evt.body = message;
+    //     _udpServer->sendEventToAllClients(evt);
+    //   }
+    //   else
+    //   {
+    //     Event evt;
+    //     evt.ACTION_NAME = ACTION::SPRITE;
+    //     evt.body_size = message.size();
+    //     evt.body = message;
+    //     _udpServer->sendEventToAllClients(evt);
+    //   }
+    // }
   }
 }

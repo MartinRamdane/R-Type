@@ -31,34 +31,53 @@ std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> ent
     return "";
 }
 
-std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities)
+void Protocol::transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities, UDPServer *server)
 {
-    std::vector<std::string> protocol;
     for (auto entityType : entities)
     {
         for (auto entity : entityType->getEntities())
         {
             if (!entity->isCreated())
             {
-                protocol.push_back(transformEntityCreateToProtocol(entity));
+                std::string create = transformEntityCreateToProtocol(entity);
+                Event evt;
+                evt.ACTION_NAME = ACTION::SPRITE;
+                evt.body_size = create.size();
+                evt.body = create;
+                server->sendEventToAllClients(evt);
                 entity->setCreated(true);
             }
             if (entity->isDead())
             {
-                protocol.push_back("edead " + std::to_string(entity->getId()));
+                std::string dead = "edead " + std::to_string(entity->getId());
+                Event evt;
+                evt.ACTION_NAME = ACTION::SPRITE;
+                evt.body_size = dead.size();
+                evt.body = dead;
+                server->sendEventToAllClients(evt);
             }
             if (entity->isFlip())
             {
-                protocol.push_back("eflip " + std::to_string(entity->getId()));
+                std::string flip = "eflip " + std::to_string(entity->getId());
+                Event evt;
+                evt.ACTION_NAME = ACTION::FLIP;
+                evt.body_size = flip.size();
+                evt.body = flip;
+                server->sendEventToAllClients(evt);
                 entity->setFlip(false);
             }
             std::string move = transformEntityMoveToProtocol(entity);
-            if (move != "")
-                protocol.push_back(move);
+            std::cout << "move: " << move << std::endl;
+            if (move != "") {
+                Event evt;
+                evt.ACTION_NAME = ACTION::SPRITE;
+                evt.body_size = move.size();
+                evt.body = move;
+                server->sendEventToAllClients(evt);
+            }
         }
         entityType->removeDead();
     }
-    return protocol;
 }
 
 std::string Protocol::transformWindowCreateToProtocol(std::string title, int width, int height)

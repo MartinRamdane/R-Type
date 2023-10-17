@@ -10,6 +10,7 @@
 #include "IGame.hpp"
 #include "Protocol.hpp"
 #include "../server/ThreadSafeQueue.hpp"
+#include "../server/UDPServer.hpp"
 
 class Core
 {
@@ -17,7 +18,7 @@ public:
     Core();
     ~Core();
 
-    std::vector<std::string> mainLoop(ThreadSafeQueue<Event> &events);
+    void mainLoop(ThreadSafeQueue<Event> &events, UDPServer *server);
     std::shared_ptr<Engine> getEngine() { return _engine; }
     std::shared_ptr<IGame> getGame() { return _game; }
     std::vector<std::string> getAllEntitiesToCreate();
