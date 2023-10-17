@@ -75,9 +75,11 @@ void Game::initializeLevel()
             {
                 if (count == 0)
                 {
+                    std::cout << "Background initialized" << std::endl;
                     std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "rTypeConfig.json", "Background");
                     _staticObjects.push_back(background);
                     _staticObjectsGroups->insert(background);
+                    std::cout << "Background " << _staticObjects.size() << std::endl;
                 }
                 else
                 {
@@ -202,16 +204,20 @@ void Game::update(ThreadSafeQueue<Event> &events)
         switch (event.ACTION_NAME)
         {
         case ACTION::LEFT:
-            _players[getId(event) - 1]->move(-1, 0);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(-1, 0);
             break;
         case ACTION::RIGHT:
-            _players[getId(event) - 1]->move(1, 0);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(1, 0);
             break;
         case ACTION::UP:
-            _players[getId(event) - 1]->move(0, -1);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(0, -1);
             break;
         case ACTION::DOWN:
-            _players[getId(event) - 1]->move(0, 1);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(0, 1);
             break;
         case ACTION::SHOOT:
             _players[getId(event) - 1]->shoot();
@@ -237,7 +243,7 @@ void Game::update(ThreadSafeQueue<Event> &events)
             break;
         }
     }
-    if (_enemies.size() == 0 && _currentLevel != 2)
+    if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL)
     {
         std::cout << "Level " << _currentLevel << " finished" << std::endl;
         _currentLevel++;
