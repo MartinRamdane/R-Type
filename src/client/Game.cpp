@@ -100,7 +100,7 @@ void Game::handleEvent()
     std::string playerId = "p" + std::to_string(_playerId);
     if (_lastFrameTime.time_since_epoch().count() == 0)
         _lastFrameTime = std::chrono::high_resolution_clock::now();
-    if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 10)
+    if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 120)
     {
         _lastFrameTime = std::chrono::high_resolution_clock::now();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
