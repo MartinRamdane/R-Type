@@ -58,6 +58,8 @@ std::string actionToString(ACTION action)
     return "DEAD";
   case ACTION::FLIP:
     return "FLIP";
+  case ACTION::RESET:
+    return "RESET";
   }
   return "";
 }
@@ -112,6 +114,7 @@ void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
 {
   EventHandler evt;
   Event event = evt.decodeMessage(msg);
+  std::cout << "UDP MESSAGE RECEIVED : " << event.body << std::endl;
   handleEvents(event);
 }
 
@@ -145,8 +148,6 @@ void UDPClient::joinGame(Event evt)
 
 void UDPClient::updateSprite(Event evt)
 {
-  // std::cout << "update sprite" << std::endl;
-  // std::cout << evt.body << std::endl;
   std::stringstream ss(evt.body);
   std::string id;
   std::string x;
@@ -202,7 +203,6 @@ void UDPClient::flipEntity(Event evt)
   std::string id;
   ss >> tpm;
   ss >> id;
-  std::cout << "flip entity: " << id << std::endl;
   _gameRef->flipEntity(std::stoi(id));
 }
 
@@ -220,12 +220,13 @@ void UDPClient::handleEvents(Event evt)
     updateSprite(evt);
     break;
   case ACTION::TEXT:
-    std::cout << "gere" << std::endl;
     updateText(evt);
     break;
   case ACTION::FLIP:
     flipEntity(evt);
     break;
+  case ACTION::RESET:
+    _gameRef->clearEntities();
   default:
     break;
   }

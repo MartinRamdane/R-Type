@@ -12,6 +12,7 @@ Shield::Shield(std::string path, float x, float y, int id, int nbSprite, float a
 {
     // set special attributes
     setLife(70);
+    setLifeValue(70);
     _shieldIsUp = false;
     _canActivateShield = true;
     _targetShieldDuration = std::chrono::seconds(5);

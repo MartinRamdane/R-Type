@@ -44,6 +44,15 @@ void Instance::EventLoop()
       continue; // TODO: destroy the instance
     }
     std::vector<std::string> protocol = _core->mainLoop(_events);
+    if (_core->isReset())
+    {
+      _core->setReset(false);
+      Event evt;
+      evt.ACTION_NAME = ACTION::RESET;
+      evt.body_size = 0;
+      evt.body = "";
+      _udpServer->sendEventToAllClients(evt);
+    }
     for (auto message : protocol)
     {
       if (message.substr(0, message.find(" ")) == "eflip")

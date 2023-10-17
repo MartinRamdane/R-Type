@@ -48,6 +48,7 @@ public:
     std::string getHost() { return _host; }
     TCPClientImpl *getClient() { return _client; }
     void flipEntity(int id);
+    void clearEntities() { _entities.clear(); }
 
 private:
     sf::RenderWindow _window;
