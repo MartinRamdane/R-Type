@@ -15,7 +15,7 @@ Protocol::~Protocol()
 {
 }
 
-std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity)
+SpriteConfig Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity)
 {
     auto pos = entity->getPosition();
     auto scale = entity->getScale();
@@ -26,9 +26,11 @@ std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> e
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
         std::string entityDirection;
         projectile->getDirection() == IEntity::Direction::LEFT ? entityDirection = "left" : entityDirection = "right";
-        return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getSpriteJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() + " " + std::to_string(entity->getSpeed()) + " " + entityDirection + " " + std::to_string(projectile->getDamage());
+        SpriteConfig spriteConfig = {entity->getId(), pos, entity->getPath(), entity->getRotation(), scale, entity->getSpriteJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), entityDirection, projectile->getDamage()};
+        return spriteConfig;
     }
-    return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(entity->getRotation()) + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getSpriteJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() + " " + std::to_string(entity->getSpeed()) + " " + "none";
+    SpriteConfig spriteConfig = {entity->getId(), pos, entity->getPath(), entity->getRotation(), scale, entity->getSpriteJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), "none", 0};
+    return spriteConfig;
 }
 
 std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity)
