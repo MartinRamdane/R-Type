@@ -219,18 +219,7 @@ void Game::update(ThreadSafeQueue<Event> &events)
         case ACTION::READY:
             _players.push_back(getRandomSpaceship());
             _playersGroups->insert(_players[_players.size() - 1]);
-            for (auto staticObject : _staticObjects)
-            {
-                staticObject->setCreated(false);
-            }
-            for (auto enemy : _enemies)
-            {
-                enemy->setCreated(false);
-            }
-            for (auto player : _players)
-            {
-                player->setCreated(false);
-            }
+            setAllEntitiesToCreated();
             break;
         case ACTION::DEAD:
         {
@@ -299,25 +288,6 @@ std::shared_ptr<StaticObject> Game::createShield(int x, int y)
 
 void Game::eraseDeadEntity(int id)
 {
-    std::cout << "Entity " << id << " is dead" << std::endl;
-    for (auto it = _players.begin(); it != _players.end(); it++)
-    {
-        if ((*it)->getId() == id)
-        {
-            (*it)->setDead(true);
-            _players.erase(it);
-            break;
-        }
-    }
-    for (auto it = _projectiles.begin(); it != _projectiles.end(); it++)
-    {
-        if ((*it)->getId() == id)
-        {
-            (*it)->setDead(true);
-            _projectiles.erase(it);
-            break;
-        }
-    }
     for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++)
     {
         if ((*it)->getId() == id)
@@ -327,16 +297,25 @@ void Game::eraseDeadEntity(int id)
             break;
         }
     }
-    for (auto it = _enemies.begin(); it != _enemies.end(); it++)
+}
+
+void Game::setAllEntitiesToCreated()
+{
+    for (auto staticObject : _staticObjects)
     {
-        std::cout << (*it)->getId() << " " << id << std::endl;
-        if ((*it)->getId() == id)
-        {
-            (*it)->setDead(true);
-            _enemies.erase(it);
-            std::cout << _enemies.size() << std::endl;
-            break;
-        }
+        staticObject->setCreated(false);
+    }
+    for (auto enemy : _enemies)
+    {
+        enemy->setCreated(false);
+    }
+    for (auto player : _players)
+    {
+        player->setCreated(false);
+    }
+    for (auto projectile : _projectiles)
+    {
+        projectile->setCreated(false);
     }
 }
 

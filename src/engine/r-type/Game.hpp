@@ -40,6 +40,7 @@ public:
     int getId(Event event);
     std::shared_ptr<Character> getRandomSpaceship();
     void eraseDeadEntity(int id);
+    void setAllEntitiesToCreated();
 
 private:
     std::shared_ptr<Engine> _engine;
