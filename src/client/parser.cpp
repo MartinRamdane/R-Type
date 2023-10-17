@@ -57,6 +57,7 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setOldPosY(std::stoi(value["y"]));
     entity.setSpeed(std::stof(value["speed"]));
+    entity.setDirection(value["direction"]);
     return std::make_tuple(id, entity);
 }
 

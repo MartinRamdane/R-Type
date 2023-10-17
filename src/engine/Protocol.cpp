@@ -20,7 +20,7 @@ std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> e
     auto pos = entity->getPosition();
     auto scale = entity->getScale();
     // make a dynamic cast to get the type of the entity with Projectile class
-    if (std::dynamic_pointer_cast<Projectile>(entity))
+    if (auto test = std::dynamic_pointer_cast<Projectile>(entity))
     {
         std::cout << "pos: " << std::to_string(std::get<0>(pos)) << " " << std::to_string(std::get<1>(pos)) << std::endl;
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);

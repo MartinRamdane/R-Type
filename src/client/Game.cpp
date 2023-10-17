@@ -196,6 +196,18 @@ void Game::draw()
         else if (it->second.getType() == Entity::Type::SPRITE)
         {
             _window.draw(it->second.getSprite());
+            std::string direction = it->second.getDirection();
+            if (direction == "left" || direction == "right") {
+                std::cout << "NEW POSITIONS: " << it->second.getSpritePosition().x << " " << it->second.getSpritePosition().y << std::endl;
+                std::cout << "should move the sprite at " << direction << std::endl;
+                float speed = it->second.getSpeed();
+                if (direction == "left") {
+                    speed = speed * -1;
+                }
+                sf::Vector2f oldPos = it->second.getSpritePosition();
+                sf::Vector2f newPos = sf::Vector2f(oldPos.x + speed, oldPos.y);
+                it->second.setNextPos(newPos);
+            }
         }
         it++;
     }
