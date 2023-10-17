@@ -147,24 +147,6 @@ void UDPClient::joinGame(Event evt)
 
 void UDPClient::updateSprite(Event evt)
 {
-    std::cout << "bodyyyyy: " << evt.body << std::endl;
-  std::stringstream ss(evt.body);
-  std::string id;
-  std::string x;
-  std::string y;
-  std::string sprite;
-  std::string jsonPath;
-  std::string objectType;
-  std::string speed;
-  std::string direction;
-  ss >> id;
-  ss >> x;
-  ss >> y;
-  ss >> sprite;
-  ss >> jsonPath;
-  ss >> objectType;
-  ss >> speed;
-  ss >> direction;
   Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
   std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);

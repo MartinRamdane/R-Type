@@ -108,6 +108,8 @@ std::string Parser::setKey(std::string key, int i)
         key = "object_type";
     else if (i == 9)
         key = "speed";
+    else if (i == 10)
+        key = "direction";
     return key;
 }
 
@@ -145,6 +147,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
             {
                 key = setKey(key, i);
                 valueMap[key] = token;
+                std::cout << key << " " << token << std::endl;
                 key.clear();
             }
             return addEntity(valueMap, ressourceManager);
