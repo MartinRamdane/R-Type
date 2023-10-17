@@ -181,6 +181,7 @@ float Character::getFireRate() const
 
 void Character::takeDamage(int damage)
 {
+    _oldlife = _life;
     _life -= damage;
     if (_life <= 0)
         _isDead = true;

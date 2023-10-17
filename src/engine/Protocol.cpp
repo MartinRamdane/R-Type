@@ -6,6 +6,7 @@
 */
 
 #include "Protocol.hpp"
+#include "Character.hpp"
 
 Protocol::Protocol()
 {
@@ -51,6 +52,17 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityT
             {
                 protocol.push_back("eflip " + std::to_string(entity->getId()));
                 entity->setFlip(false);
+            }
+            if (std::dynamic_pointer_cast<Character>(entity))
+            {
+                auto character = std::dynamic_pointer_cast<Character>(entity);
+                if (character->getLife() < character->getOldLife())
+                {
+                    const auto pos = entity->getPosition();
+                    std::string posX = std::to_string(std::get<0>(pos));
+                    std::string posY = std::to_string(std::get<1>(pos));
+                    protocol.push_back("etouch " + std::to_string(character->getId()) + " " + posX + " " + posY);
+                }
             }
             std::string move = transformEntityMoveToProtocol(entity);
             if (move != "")

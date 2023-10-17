@@ -133,6 +133,7 @@ std::tuple<int, Entity> Parser::hitEntity(std::map<std::string, std::string> val
     int id = std::stoi(value["id"]);
     Entity entity;
     entity.setHit(true);
+    entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     return std::make_tuple(id, entity);
 }
 
