@@ -176,6 +176,10 @@ protected:
         {
             std::cout << "[" << client->GetID() << "]: TEXT" << std::endl;
         }
+        case ACTION::RESET:
+        {
+            std::cout << "[" << client->GetID() << "]: RESET" << std::endl;
+        }
         break;
         }
     }

@@ -18,7 +18,23 @@ Game *Game::instance = nullptr;
 Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
 {
     instance = this;
+    // Create all entities groups
+    _playersGroups = std::make_shared<EntityType<IEntity>>(16);
+    _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
+    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
+    _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
+    _enemie1Groups = std::make_shared<EntityType<IEntity>>(20);
+    _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
+    _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
+
     initializeLevel();
+
+    // Add collision between entities groups
+    _engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
+    _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
 Game::~Game()
@@ -29,15 +45,11 @@ Game::~Game()
 
 void Game::initializeLevel()
 {
+    _lastId = 0;
     JsonParser parser;
     nlohmann::json levelsFile = JsonParser::readFile("rTypeLevels.json");
 
     int count = 0;
-    _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _enemie1Groups = std::make_shared<EntityType<IEntity>>(20);
-    _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
-    _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
-
     nlohmann::json level = levelsFile["Level-" + std::to_string(_currentLevel)];
     std::vector<std::tuple<int, int>> positions;
     std::string movementType;
@@ -140,24 +152,12 @@ void Game::initializeLevel()
             }
         }
     }
-
-    // Create all entities groups
-    _playersGroups = std::make_shared<EntityType<IEntity>>(16);
-    _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
-
-    if (_currentLevel != 1)
+    for (auto player : _players)
     {
-        _players.push_back(getRandomSpaceship());
-        _playersGroups->insert(_players[_players.size() - 1]);
+        player->setId(_lastId++);
+        player->setCreated(false);
+        player->resetLife();
     }
-
-    // Add collision between entities groups
-    _engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
-    _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
 int Game::getId(Event event)
@@ -242,6 +242,7 @@ void Game::update(ThreadSafeQueue<Event> &events)
         std::cout << "Level " << _currentLevel << " finished" << std::endl;
         _currentLevel++;
         deleteAllEntities();
+        _reset = true;
         initializeLevel();
     }
 }
@@ -349,18 +350,26 @@ void Game::setAllEntitiesToCreated()
 
 void Game::deleteAllEntities()
 {
+    for (auto staticObject : _staticObjects)
+        staticObject->kill();
+    for (auto enemy : _enemies)
+        enemy->kill();
+    for (auto projectile : _projectiles)
+        projectile->kill();
+
     _staticObjects.clear();
     _enemies.clear();
-    _players.clear();
     _projectiles.clear();
+}
 
-    _playersGroups->clear();
-    _projectilesGroups->clear();
-    _enemyProjectilesGroups->clear();
-    _staticObjectsGroups->clear();
-    _enemie1Groups->clear();
-    _enemie2Groups->clear();
-    _flyerGroups->clear();
+bool Game::isReset()
+{
+    return (_reset);
+}
+
+void Game::setReset(bool reset)
+{
+    _reset = reset;
 }
 
 std::map<std::string, std::function<std::string()>> Game::_assets = {

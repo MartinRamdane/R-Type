@@ -43,7 +43,8 @@ public:
     void eraseDeadEntity();
     void setAllEntitiesToCreated();
     void deleteAllEntities();
-
+    bool isReset();
+    void setReset(bool reset);
 private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
@@ -60,4 +61,5 @@ private:
     int _lastId = 0;
     static std::map<std::string, std::function<std::string()>> _assets;
     int _currentLevel = 1;
+    bool _reset = false;
 };

@@ -16,6 +16,8 @@ public:
     virtual ~IGame() = default;
 
     virtual void update(ThreadSafeQueue<Event> &events) = 0;
+    virtual bool isReset() = 0;
+    virtual void setReset(bool reset) = 0;
 
 protected:
 private:

@@ -66,6 +66,9 @@ public:
     bool isFlip() const;
     void setFlip(bool flip);
     Direction getDirection() const;
+    void setLifeValue(int lifeValue);
+    void resetLife();
+    void setId(int id);
 
 protected:
     float _x;
@@ -92,4 +95,5 @@ private:
     std::string _shootAsset = "BulletSpaceship";
     std::string _movementType;
     bool _flip = false;
+    int _lifeValue;
 };

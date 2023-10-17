@@ -58,6 +58,8 @@ std::string actionToString(ACTION action)
     return "DEAD";
   case ACTION::FLIP:
     return "FLIP";
+  case ACTION::RESET:
+    return "RESET";
   }
   return "";
 }
@@ -222,6 +224,8 @@ void UDPClient::handleEvents(Event evt)
   case ACTION::FLIP:
     flipEntity(evt);
     break;
+  case ACTION::RESET:
+    _gameRef->clearEntities();
   default:
     break;
   }

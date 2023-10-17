@@ -37,6 +37,7 @@ enum class ACTION : uint8_t
   SHIELD,
   DEAD,
   FLIP,
+  RESET,
   UNKNOWN,
 };
 

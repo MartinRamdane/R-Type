@@ -24,6 +24,7 @@ Character::Character(std::string path, float x, float y, int id, float angle, fl
     _isDead = false;
     _fireRate = 3;
     _life = 100;
+    _lifeValue = 100;
     _damage = 10;
     _targetFrameDuration = std::chrono::duration<double>(1.0 / _fireRate);
     _lastShootTime = std::chrono::high_resolution_clock::now();
@@ -300,4 +301,19 @@ void Character::setFlip(bool flip)
 Character::Direction Character::getDirection() const
 {
     return _direction;
+}
+
+void Character::setLifeValue(int lifeValue)
+{
+    _lifeValue = lifeValue;
+}
+
+void Character::resetLife()
+{
+    _life = _lifeValue;
+}
+
+void Character::setId(int id)
+{
+    _id = id;
 }
