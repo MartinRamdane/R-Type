@@ -10,13 +10,7 @@
             "Positions": [
                 {"X": 960, "Y": 231},
                 {"X": 980, "Y": 200}
-              ],
-            "BulletType": "BulletEnemy1",
-            "FireRate": 0.5,
-            "BulletSpeed": 8,
-            "Speed": 2,
-            "Damage": 10,
-            "Life": 10
+              ]
         }
     },
     "Level-2": {
