@@ -198,8 +198,6 @@ void Game::draw()
             _window.draw(it->second.getSprite());
             std::string direction = it->second.getDirection();
             if (direction == "left" || direction == "right") {
-                std::cout << "NEW POSITIONS: " << it->second.getSpritePosition().x << " " << it->second.getSpritePosition().y << std::endl;
-                std::cout << "should move the sprite at " << direction << std::endl;
                 float speed = it->second.getSpeed();
                 if (direction == "left") {
                     speed = speed * -1;
