@@ -49,7 +49,6 @@ void ServerClass::loop()
 {
     while (1)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         _server->HandleMessages(-1, true);
     }
 }
