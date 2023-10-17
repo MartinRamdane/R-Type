@@ -83,8 +83,7 @@ void UDPClient::connect_to(const std::string &host, int port)
   _port = port;
   _host = host;
   start_receive();
-  _thread = std::thread([this]()
-                        { io_context_.run(); });
+  _thread = std::thread([this]() { io_context_.run(); });
 }
 
 void UDPClient::setGameRef(Game *gameRef)
@@ -208,46 +207,44 @@ void UDPClient::flipEntity(Event evt)
 
 void UDPClient::handleEvents(Event evt)
 {
-  switch (evt.ACTION_NAME)
-  {
-  case ACTION::PING:
-    sendEvent({ACTION::PONG, 0, ""});
-    break;
-  case ACTION::JOINED:
-    joinGame(evt);
-    break;
-  case ACTION::SPRITE:
-    updateSprite(evt);
-    break;
-  case ACTION::TEXT:
-    updateText(evt);
-    break;
-  case ACTION::FLIP:
-    flipEntity(evt);
-    break;
-  case ACTION::RESET:
-    _gameRef->clearEntities();
-  default:
-    break;
-  }
+    switch (evt.ACTION_NAME) {
+    case ACTION::PING:
+        sendEvent({ACTION::PONG, 0, ""});
+        break;
+    case ACTION::JOINED:
+        joinGame(evt);
+        break;
+    case ACTION::SPRITE:
+        updateSprite(evt);
+        break;
+    case ACTION::TEXT:
+        updateText(evt);
+        break;
+    case ACTION::FLIP:
+        flipEntity(evt);
+        break;
+    case ACTION::RESET:
+        _gameRef->clearEntities();
+    default:
+        break;
+    }
 }
 
 void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
 {
-  boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
-                    {
-                          bool bWritingMessage = !_outQueue.empty();
-                          _outQueue.push_back({data, endpoint});
-                          if (!bWritingMessage)
-                          {
-                              processSendQueue();
-                          } });
+    boost::asio::post(socket_.get_executor(), [this, data, endpoint]() {
+        bool bWritingMessage = !_outQueue.empty();
+        _outQueue.push_back({data, endpoint});
+        if (!bWritingMessage)
+        {
+            processSendQueue();
+        } });
 }
 
 void UDPClient::processSendQueue()
 {
   socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint, [this](const std::error_code &error, std::size_t)
-                        {
+    {
       if (!error)
       {
           _outQueue.pop_front();
