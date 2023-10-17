@@ -66,6 +66,8 @@ public:
     bool isFlip() const;
     void setFlip(bool flip);
     Direction getDirection() const;
+    void setOldLife(int life);
+    int getOldLife() const;
 
 protected:
     float _x;
@@ -84,6 +86,7 @@ private:
     bool _isDead;
     float _fireRate;
     int _life;
+    int _oldlife;
     int _damage;
     float _bulletSpeed = 5;
     std::chrono::duration<double> _targetFrameDuration;
