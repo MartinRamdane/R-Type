@@ -147,7 +147,6 @@ void UDPClient::joinGame(Event evt)
 
 void UDPClient::updateSprite(Event evt)
 {
-    std::cout << "UDP MESSAGE EVENT " << evt.body << std::endl;
   Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
   std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
