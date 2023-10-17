@@ -145,8 +145,6 @@ void UDPClient::joinGame(Event evt)
 
 void UDPClient::updateSprite(Event evt)
 {
-  // std::cout << "update sprite" << std::endl;
-  // std::cout << evt.body << std::endl;
   std::stringstream ss(evt.body);
   std::string id;
   std::string x;
@@ -202,7 +200,6 @@ void UDPClient::flipEntity(Event evt)
   std::string id;
   ss >> tpm;
   ss >> id;
-  std::cout << "flip entity: " << id << std::endl;
   _gameRef->flipEntity(std::stoi(id));
 }
 
@@ -220,7 +217,6 @@ void UDPClient::handleEvents(Event evt)
     updateSprite(evt);
     break;
   case ACTION::TEXT:
-    std::cout << "gere" << std::endl;
     updateText(evt);
     break;
   case ACTION::FLIP:

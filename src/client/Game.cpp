@@ -89,7 +89,6 @@ void Game::handleEvent()
             {
                 Event evt;
                 std::string playerId = "p" + std::to_string(_playerId);
-                std::cout << "flip" << std::endl;
                 evt.ACTION_NAME = ACTION::FLIP;
                 evt.body_size = playerId.size();
                 evt.body = playerId;
