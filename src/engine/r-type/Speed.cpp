@@ -12,6 +12,7 @@ Speed::Speed(std::string path, float x, float y, int id, int nbSprite, float ang
 {
     // set special attributes
     setLife(70);
+    setLifeValue(70);
     setSpeed(6);
 }
 

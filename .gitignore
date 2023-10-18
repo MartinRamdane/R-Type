@@ -7,6 +7,5 @@ r-type_test
 .vscode/*
 .vs/
 vg*
-rTypeConfig.json
 .DS_Store
 */.DS_Store

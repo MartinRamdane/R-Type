@@ -63,9 +63,6 @@ bool Engine::frameRateControl()
 
         return true;
     }
-
-    // Sleep to control the frame rate
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
     return false;
 }
 

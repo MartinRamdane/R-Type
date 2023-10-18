@@ -18,7 +18,23 @@ Game *Game::instance = nullptr;
 Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
 {
     instance = this;
+    // Create all entities groups
+    _playersGroups = std::make_shared<EntityType<IEntity>>(16);
+    _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
+    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
+    _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
+    _enemie1Groups = std::make_shared<EntityType<IEntity>>(20);
+    _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
+    _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
+
     initializeLevel();
+
+    // Add collision between entities groups
+    _engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
+    _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
 }
 
 Game::~Game()
@@ -29,15 +45,11 @@ Game::~Game()
 
 void Game::initializeLevel()
 {
+    _lastId = 0;
     JsonParser parser;
     nlohmann::json levelsFile = JsonParser::readFile("rTypeLevels.json");
 
     int count = 0;
-    _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _enemie1Groups = std::make_shared<EntityType<IEntity>>(20);
-    _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
-    _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
-
     nlohmann::json level = levelsFile["Level-" + std::to_string(_currentLevel)];
     std::vector<std::tuple<int, int>> positions;
     std::string movementType;
@@ -74,9 +86,11 @@ void Game::initializeLevel()
             {
                 if (count == 0)
                 {
+                    std::cout << "Background initialized" << std::endl;
                     std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "rTypeConfig.json", "Background");
                     _staticObjects.push_back(background);
                     _staticObjectsGroups->insert(background);
+                    std::cout << "Background " << _staticObjects.size() << std::endl;
                 }
                 else
                 {
@@ -116,7 +130,7 @@ void Game::initializeLevel()
                     if (it2.key() == "Enemy1" || it2.key() == "Flyer" || it2.key() == "Enemy2")
                     {
                         nlohmann::json pos = position[i];
-                        std::cout << pos.at("X") << " " << pos.at("Y") << std::endl;
+                        // std::cout << pos.at("X") << " " << pos.at("Y") << std::endl;
                         positions.push_back(std::make_tuple(pos.at("X"), pos.at("Y")));
                     }
                 }
@@ -151,18 +165,12 @@ void Game::initializeLevel()
             }
         }
     }
-
-    // Create all entities groups
-    _playersGroups = std::make_shared<EntityType<IEntity>>(16);
-    _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
-
-    // Add collision between entities groups
-    _engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
-    _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
+    for (auto player : _players)
+    {
+        player->setId(_lastId++);
+        player->setCreated(false);
+        player->resetLife();
+    }
 }
 
 int Game::getId(Event event)
@@ -200,22 +208,27 @@ std::shared_ptr<Character> Game::getRandomSpaceship()
 
 void Game::update(ThreadSafeQueue<Event> &events)
 {
+    eraseDeadEntity();
     while (!events.empty())
     {
         auto event = events.pop_front();
         switch (event.ACTION_NAME)
         {
         case ACTION::LEFT:
-            _players[getId(event) - 1]->move(-1, 0);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(-1, 0);
             break;
         case ACTION::RIGHT:
-            _players[getId(event) - 1]->move(1, 0);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(1, 0);
             break;
         case ACTION::UP:
-            _players[getId(event) - 1]->move(0, -1);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(0, -1);
             break;
         case ACTION::DOWN:
-            _players[getId(event) - 1]->move(0, 1);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(0, 1);
             break;
         case ACTION::SHOOT:
             _players[getId(event) - 1]->shoot();
@@ -224,56 +237,31 @@ void Game::update(ThreadSafeQueue<Event> &events)
             _players[getId(event) - 1]->action();
             break;
         case ACTION::FLIP:
-            std::cout << "flip: " << getId(event) << std::endl;
             _players[getId(event) - 1]->flip();
             break;
         case ACTION::READY:
             _players.push_back(getRandomSpaceship());
             _playersGroups->insert(_players[_players.size() - 1]);
-            for (auto staticObject : _staticObjects)
-            {
-                staticObject->setCreated(false);
-            }
-            for (auto enemy : _enemies)
-            {
-                enemy->setCreated(false);
-            }
-            for (auto player : _players)
-            {
-                player->setCreated(false);
-            }
+            setAllEntitiesToCreated();
             break;
         case ACTION::DEAD:
         {
             int id = std::stoi(event.body);
             eraseDeadEntity(id);
-            //for now, just to test! after this will be replaced by the one commented below
-            if (_currentLevel != MAX_LEVEL)
-            {
-                std::cout << "Level " << _currentLevel << " finished" << std::endl;
-                _currentLevel++;
-                initializeLevel();
-                int playerSize = _players.size();
-                _players.clear();
-                for (int i = 0; i < playerSize; i++)
-                {
-                    _players.push_back(getRandomSpaceship());
-                    _playersGroups->insert(_players[_players.size() - 1]);
-                }
-            }
             break;
         }
         default:
             break;
         }
     }
-    // std::cout << _enemies.size() << std::endl;
-    // if (_enemies.size() == 0 && _currentLevel != 2)
-    // {
-    //     std::cout << "Level " << _currentLevel << " finished" << std::endl;
-    //     _currentLevel++;
-    //     initializeLevel();
-    // }
+    if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL)
+    {
+        std::cout << "Level " << _currentLevel << " finished" << std::endl;
+        _currentLevel++;
+        deleteAllEntities();
+        _reset = true;
+        initializeLevel();
+    }
 }
 
 void Game::createExplosion(int x, int y)
@@ -310,25 +298,6 @@ std::shared_ptr<StaticObject> Game::createShield(int x, int y)
 
 void Game::eraseDeadEntity(int id)
 {
-    std::cout << "Entity " << id << " is dead" << std::endl;
-    for (auto it = _players.begin(); it != _players.end(); it++)
-    {
-        if ((*it)->getId() == id)
-        {
-            (*it)->setDead(true);
-            _players.erase(it);
-            break;
-        }
-    }
-    for (auto it = _projectiles.begin(); it != _projectiles.end(); it++)
-    {
-        if ((*it)->getId() == id)
-        {
-            (*it)->setDead(true);
-            _projectiles.erase(it);
-            break;
-        }
-    }
     for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++)
     {
         if ((*it)->getId() == id)
@@ -338,17 +307,86 @@ void Game::eraseDeadEntity(int id)
             break;
         }
     }
-    for (auto it = _enemies.begin(); it != _enemies.end(); it++)
+}
+
+void Game::eraseDeadEntity()
+{
+    for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++)
     {
-        std::cout << (*it)->getId() << " " << id << std::endl;
-        if ((*it)->getId() == id)
+        if ((*it)->isDead())
         {
-            (*it)->setDead(true);
-            _enemies.erase(it);
-            std::cout << _enemies.size() << std::endl;
+            _staticObjects.erase(it);
             break;
         }
     }
+    for (auto it = _enemies.begin(); it != _enemies.end(); it++)
+    {
+        if ((*it)->isDead())
+        {
+            _enemies.erase(it);
+            break;
+        }
+    }
+    for (auto it = _players.begin(); it != _players.end(); it++)
+    {
+        if ((*it)->isDead())
+        {
+            _players.erase(it);
+            break;
+        }
+    }
+    for (auto it = _projectiles.begin(); it != _projectiles.end(); it++)
+    {
+        if ((*it)->isDead())
+        {
+            _projectiles.erase(it);
+            break;
+        }
+    }
+}
+
+void Game::setAllEntitiesToCreated()
+{
+    for (auto staticObject : _staticObjects)
+    {
+        staticObject->setCreated(false);
+    }
+    for (auto enemy : _enemies)
+    {
+        enemy->setCreated(false);
+    }
+    for (auto player : _players)
+    {
+        player->setCreated(false);
+    }
+    for (auto projectile : _projectiles)
+    {
+        projectile->setCreated(false);
+    }
+}
+
+void Game::deleteAllEntities()
+{
+    for (auto staticObject : _staticObjects)
+        staticObject->kill();
+    for (auto enemy : _enemies)
+        enemy->kill();
+    for (auto projectile : _projectiles)
+        projectile->kill();
+
+    _staticObjects.clear();
+    _enemies.clear();
+    _projectiles.clear();
+}
+
+bool Game::isReset()
+{
+    return (_reset);
+}
+
+void Game::setReset(bool reset)
+{
+    _reset = reset;
 }
 
 std::map<std::string, std::function<std::string()>> Game::_assets = {

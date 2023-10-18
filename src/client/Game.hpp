@@ -17,6 +17,7 @@
 #include <queue>
 #include "UDPClient.hpp"
 #include "../global/ThreadPool.hpp"
+#include "ProgressBar.hpp"
 
 class TCPClientImpl;
 class Game
@@ -47,6 +48,7 @@ public:
     std::string getHost() { return _host; }
     TCPClientImpl *getClient() { return _client; }
     void flipEntity(int id);
+    void clearEntities() { _entities.clear(); }
 
 private:
     sf::RenderWindow _window;
@@ -70,4 +72,6 @@ private:
     int _playerId;
     std::string _host;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
+    ProgressBar _progressBar;
+
 };

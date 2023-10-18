@@ -12,6 +12,7 @@ Tank::Tank(std::string path, float x, float y, int id, int nbSprite, float angle
 {
     // set special attributes
     setLife(200);
+    setLifeValue(200);
     setSpeed(1.5);
     setFireRate(1.5);
     setDamage(20);

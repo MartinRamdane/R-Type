@@ -58,6 +58,8 @@ std::string actionToString(ACTION action)
     return "DEAD";
   case ACTION::FLIP:
     return "FLIP";
+  case ACTION::RESET:
+    return "RESET";
   }
   return "";
 }
@@ -81,8 +83,7 @@ void UDPClient::connect_to(const std::string &host, int port)
   _port = port;
   _host = host;
   start_receive();
-  _thread = std::thread([this]()
-                        { io_context_.run(); });
+  _thread = std::thread([this]() { io_context_.run(); });
 }
 
 void UDPClient::setGameRef(Game *gameRef)
@@ -112,6 +113,7 @@ void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
 {
   EventHandler evt;
   Event event = evt.decodeMessage(msg);
+  std::cout << "UDP MESSAGE RECEIVED : " << event.body << std::endl;
   handleEvents(event);
 }
 
@@ -145,8 +147,6 @@ void UDPClient::joinGame(Event evt)
 
 void UDPClient::updateSprite(Event evt)
 {
-  // std::cout << "update sprite" << std::endl;
-  // std::cout << evt.body << std::endl;
   std::stringstream ss(evt.body);
   std::string id;
   std::string x;
@@ -202,51 +202,49 @@ void UDPClient::flipEntity(Event evt)
   std::string id;
   ss >> tpm;
   ss >> id;
-  std::cout << "flip entity: " << id << std::endl;
   _gameRef->flipEntity(std::stoi(id));
 }
 
 void UDPClient::handleEvents(Event evt)
 {
-  switch (evt.ACTION_NAME)
-  {
-  case ACTION::PING:
-    sendEvent({ACTION::PONG, 0, ""});
-    break;
-  case ACTION::JOINED:
-    joinGame(evt);
-    break;
-  case ACTION::SPRITE:
-    updateSprite(evt);
-    break;
-  case ACTION::TEXT:
-    std::cout << "gere" << std::endl;
-    updateText(evt);
-    break;
-  case ACTION::FLIP:
-    flipEntity(evt);
-    break;
-  default:
-    break;
-  }
+    switch (evt.ACTION_NAME) {
+    case ACTION::PING:
+        sendEvent({ACTION::PONG, 0, ""});
+        break;
+    case ACTION::JOINED:
+        joinGame(evt);
+        break;
+    case ACTION::SPRITE:
+        updateSprite(evt);
+        break;
+    case ACTION::TEXT:
+        updateText(evt);
+        break;
+    case ACTION::FLIP:
+        flipEntity(evt);
+        break;
+    case ACTION::RESET:
+        _gameRef->clearEntities();
+    default:
+        break;
+    }
 }
 
 void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
 {
-  boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
-                    {
-                          bool bWritingMessage = !_outQueue.empty();
-                          _outQueue.push_back({data, endpoint});
-                          if (!bWritingMessage)
-                          {
-                              processSendQueue();
-                          } });
+    boost::asio::post(socket_.get_executor(), [this, data, endpoint]() {
+        bool bWritingMessage = !_outQueue.empty();
+        _outQueue.push_back({data, endpoint});
+        if (!bWritingMessage)
+        {
+            processSendQueue();
+        } });
 }
 
 void UDPClient::processSendQueue()
 {
   socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint, [this](const std::error_code &error, std::size_t)
-                        {
+    {
       if (!error)
       {
           _outQueue.pop_front();

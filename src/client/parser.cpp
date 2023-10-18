@@ -128,6 +128,14 @@ std::string Parser::setKeyText(std::string key, int i)
     return key;
 }
 
+std::tuple<int, Entity> Parser::hitEntity(std::map<std::string, std::string> value)
+{
+    int id = std::stoi(value["id"]);
+    Entity entity;
+    entity.setHit(true);
+    return std::make_tuple(id, entity);
+}
+
 std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressourceManager)
 {
     std::size_t com = evt.body.find(' ');
@@ -190,6 +198,21 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
                 key.clear();
             }
             return removeEntity(valueMap);
+        }
+        else if (commande == "etouch")
+        {
+            std::cout << "hit" << std::endl;
+            std::istringstream iss(tmp);
+            std::map<std::string, std::string> valueMap;
+            std::string key;
+            std::string token;
+            for (int i = 0; iss >> token; i++)
+            {
+                key = setKey(key, i);
+                valueMap[key] = token;
+                key.clear();
+            }
+            return hitEntity(valueMap);
         }
     }
     return std::make_tuple(-1, Entity());

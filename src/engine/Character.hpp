@@ -66,6 +66,11 @@ public:
     bool isFlip() const;
     void setFlip(bool flip);
     Direction getDirection() const;
+    void setLifeValue(int lifeValue);
+    void resetLife();
+    void setId(int id);
+    void setOldLife(int life);
+    int getOldLife() const;
 
 protected:
     float _x;
@@ -84,6 +89,7 @@ private:
     bool _isDead;
     float _fireRate;
     int _life;
+    int _oldlife;
     int _damage;
     float _bulletSpeed = 5;
     std::chrono::duration<double> _targetFrameDuration;
@@ -92,4 +98,5 @@ private:
     std::string _shootAsset = "BulletSpaceship";
     std::string _movementType;
     bool _flip = false;
+    int _lifeValue;
 };
