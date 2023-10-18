@@ -12,7 +12,7 @@
                 {"X": 980, "Y": 400}
               ],
             "BulletType": "BulletEnemy1",
-            "FireRate": 0.5,
+            "FireRate": 1,
             "BulletSpeed": 8,
             "Speed": 2,
             "Damage": 10,
@@ -32,7 +32,7 @@
                 {"X": 2100, "Y": 389}
               ],
             "BulletType": "BulletEnemy1",
-            "FireRate": 0.5,
+            "FireRate": 1,
             "BulletSpeed": 8,
             "Speed": 2,
             "Damage": 10,
@@ -47,7 +47,7 @@
                 {"X": 1735, "Y": 389}
             ],
             "BulletType": "BulletEnemy2",
-            "FireRate": 0.2,
+            "FireRate": 1,
             "BulletSpeed": 4,
             "Speed": 0.8,
             "Damage": 35,
