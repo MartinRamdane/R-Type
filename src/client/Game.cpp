@@ -270,10 +270,8 @@ void Game::addEntity(int id, Entity entity)
         // std::cout << "id: " << id << " playerid: " << _playerId << std::endl;
         if (entity.getHit() == true)
         {
-            std::cout << "hit" << std::endl;
             float percent = _progressBar.getProgress();
             _progressBar.setProgress(percent - 10);
-            _entities[id].setSpritePosition(entity.getSpritePosition());
         }
         else
         _entities[id].setNextPos(entity.getNextPos());

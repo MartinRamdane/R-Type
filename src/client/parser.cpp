@@ -203,7 +203,6 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         }
         else if (commande == "etouch")
         {
-            std::cout << "etouch" << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
