@@ -7,11 +7,6 @@
 
 #include "Protocol.hpp"
 #include "Character.hpp"
-#include "r-type/Classic.hpp"
-#include "r-type/Shield.hpp"
-#include "r-type/Shooter.hpp"
-#include "r-type/Speed.hpp"
-#include "r-type/Tank.hpp"
 
 Protocol::Protocol()
 {
