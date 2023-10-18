@@ -211,7 +211,6 @@ void Game::draw()
         }
         it++;
     }
-    _progressBar.draw(_window);
 }
 
 void Game::update()
