@@ -206,20 +206,19 @@ void UDPClient::handleEvents(Event evt)
 
 void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
 {
-  boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
-                    {
-                          bool bWritingMessage = !_outQueue.empty();
-                          _outQueue.push_back({data, endpoint});
-                          if (!bWritingMessage)
-                          {
-                              processSendQueue();
-                          } });
+    boost::asio::post(socket_.get_executor(), [this, data, endpoint]() {
+        bool bWritingMessage = !_outQueue.empty();
+        _outQueue.push_back({data, endpoint});
+        if (!bWritingMessage)
+        {
+            processSendQueue();
+        } });
 }
 
 void UDPClient::processSendQueue()
 {
   socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint, [this](const std::error_code &error, std::size_t)
-                        {
+    {
       if (!error)
       {
           _outQueue.pop_front();

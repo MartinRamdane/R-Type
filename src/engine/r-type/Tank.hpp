@@ -13,7 +13,7 @@
 class Tank : public Character
 {
 public:
-    Tank(std::string path, float x, float y, int id, int nbSprite = 1, float angle = 0, float scaleX = 1, float scaleY = 1);
+    Tank(std::string path, float x, float y, int id, float scaleX = 1, float scaleY = 1);
     ~Tank();
 
 protected:

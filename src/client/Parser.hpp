@@ -33,6 +33,7 @@ public:
     std::string setKey(std::string key, int i);
     std::string setKeyText(std::string key, int i);
     std::tuple<int, Entity> parseMessage(Event evt, RessourceManager &ressourceManager);
+    std::tuple<int, Entity> hitEntity(std::map<std::string, std::string> value);
 
 public:
 };

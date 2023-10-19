@@ -7,8 +7,8 @@
 
 #include "Shield.hpp"
 
-Shield::Shield(std::string path, float x, float y, int id, int nbSprite, float angle, float scaleX, float scaleY)
-    : Character(path, x, y, id, angle, scaleX, scaleY, nbSprite, "rTypeConfig.json", "Spaceship")
+Shield::Shield(std::string path, float x, float y, int id, float scaleX, float scaleY)
+    : Character(path, x, y, id, scaleX, scaleY, "rTypeConfig.json", "Spaceship")
 {
     // set special attributes
     setLife(70);
@@ -57,7 +57,7 @@ void Shield::takeDamage(int damage)
 {
     if (_shieldIsUp)
         return;
-    Character::takeDamage(damage);
+    AEntity::takeDamage(damage);
 }
 
 void Shield::update()

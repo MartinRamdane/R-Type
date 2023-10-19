@@ -98,16 +98,14 @@ std::string Parser::setKey(std::string key, int i)
     else if (i == 3)
         key = "path";
     else if (i == 4)
-        key = "rotation";
-    else if (i == 5)
         key = "scale.x";
-    else if (i == 6)
+    else if (i == 5)
         key = "scale.y";
-    else if (i == 7)
+    else if (i == 6)
         key = "config_path";
-    else if (i == 8)
+    else if (i == 7)
         key = "object_type";
-    else if (i == 9)
+    else if (i == 8)
         key = "speed";
     else if (i == 10)
         key = "direction";
@@ -129,6 +127,14 @@ std::string Parser::setKeyText(std::string key, int i)
     else if (i == 5)
         key = "color";
     return key;
+}
+
+std::tuple<int, Entity> Parser::hitEntity(std::map<std::string, std::string> value)
+{
+    int id = std::stoi(value["id"]);
+    Entity entity;
+    entity.setHit(true);
+    return std::make_tuple(id, entity);
 }
 
 std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressourceManager)

@@ -54,14 +54,13 @@ public:
     {
         if (m_ownerType == owner::client)
         {
-            boost::asio::async_connect(m_socket, endpoints,
-                                       [this](const boost::system::error_code &ec, tcp::endpoint)
-                                       {
-                                           if (!ec)
-                                           {
-                                               ReadHeader();
-                                           }
-                                       });
+            boost::asio::async_connect(m_socket, endpoints, [this](const boost::system::error_code &ec, tcp::endpoint)
+            {
+                if (!ec)
+                {
+                    ReadHeader();
+                }
+            });
         }
     }
     void Disconnect()
@@ -76,23 +75,22 @@ public:
     }
     void SendAsync(const message<T> &msg)
     {
-        boost::asio::post(m_asioContext,
-                          [this, msg]()
-                          {
-                              bool bWritingMessage = !m_qMessagesOut.empty();
-                              m_qMessagesOut.push_back(msg);
-                              if (!bWritingMessage)
-                              {
-                                  WriteHeader();
-                              }
-                          });
+        boost::asio::post(m_asioContext, [this, msg]()
+        {
+            bool bWritingMessage = !m_qMessagesOut.empty();
+            m_qMessagesOut.push_back(msg);
+            if (!bWritingMessage)
+            {
+                WriteHeader();
+            }
+        });
     }
 
 private:
     void WriteHeader()
     {
         boost::asio::async_write(m_socket, boost::asio::buffer(&m_qMessagesOut.front().header, sizeof(message_header<T>)), [this](std::error_code error, std::size_t)
-                                 {
+        {
             if (!error) {
                 if (m_qMessagesOut.front().body.size() > 0) {
                     WriteBody();
@@ -108,62 +106,62 @@ private:
     void WriteBody()
     {
         boost::asio::async_write(m_socket, boost::asio::buffer(m_qMessagesOut.front().body, m_qMessagesOut.front().body.size()),
-                                 [this](std::error_code ec, std::size_t)
-                                 {
-                                     if (!ec)
-                                     {
-                                         m_qMessagesOut.pop_front();
-                                         if (!m_qMessagesOut.empty())
-                                         {
-                                             WriteHeader();
-                                         }
-                                     }
-                                     else
-                                     {
-                                         std::cout << "[ERROR] while writing data: " << ec.message() << std::endl;
-                                         m_socket.close();
-                                     }
-                                 });
+        [this](std::error_code ec, std::size_t)
+        {
+            if (!ec)
+            {
+                m_qMessagesOut.pop_front();
+                if (!m_qMessagesOut.empty())
+                {
+                    WriteHeader();
+                }
+            }
+            else
+            {
+                std::cout << "[ERROR] while writing data: " << ec.message() << std::endl;
+                m_socket.close();
+            }
+        });
     }
     void ReadHeader()
     {
         boost::asio::async_read(m_socket, boost::asio::buffer(&m_msgTemporaryIn.header, sizeof(message_header<T>)),
-                                [this](const boost::system::error_code &error, std::size_t)
-                                {
-                                    if (!error)
-                                    {
-                                        if (m_msgTemporaryIn.header.size > 0)
-                                        {
-                                            m_msgTemporaryIn.body.resize(m_msgTemporaryIn.header.size);
-                                            ReadBody();
-                                        }
-                                        else
-                                        {
-                                            AddToIncomingMessageQueue();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        std::cout << "[ERROR] while reading data: " << error.message() << std::endl;
-                                        m_socket.close();
-                                    }
-                                });
+        [this](const boost::system::error_code &error, std::size_t)
+        {
+            if (!error)
+            {
+                if (m_msgTemporaryIn.header.size > 0)
+                {
+                    m_msgTemporaryIn.body.resize(m_msgTemporaryIn.header.size);
+                    ReadBody();
+                }
+                else
+                {
+                    AddToIncomingMessageQueue();
+                }
+            }
+            else
+            {
+                std::cout << "[ERROR] while reading data: " << error.message() << std::endl;
+                m_socket.close();
+            }
+        });
     }
     void ReadBody()
     {
         boost::asio::async_read(m_socket, boost::asio::buffer(m_msgTemporaryIn.body.data(), m_msgTemporaryIn.body.size()),
-                                [this](const boost::system::error_code &error, std::size_t)
-                                {
-                                    if (!error)
-                                    {
-                                        AddToIncomingMessageQueue();
-                                    }
-                                    else
-                                    {
-                                        std::cout << "[ERROR] while reading data: " << error.message() << std::endl;
-                                        m_socket.close();
-                                    }
-                                });
+        [this](const boost::system::error_code &error, std::size_t)
+        {
+            if (!error)
+            {
+                AddToIncomingMessageQueue();
+            }
+            else
+            {
+                std::cout << "[ERROR] while reading data: " << error.message() << std::endl;
+                m_socket.close();
+            }
+        });
     }
     void AddToIncomingMessageQueue()
     {
@@ -171,10 +169,6 @@ private:
             m_qMessagesIn.push_back({this->shared_from_this(), m_msgTemporaryIn});
         else
             m_qMessagesIn.push_back({nullptr, m_msgTemporaryIn});
-
-        // We must now prime the asio context to receive the next message. It
-        // wil just sit and wait for bytes to arrive, and the message construction
-        // process repeats itself. Clever huh?
         ReadHeader();
     }
 

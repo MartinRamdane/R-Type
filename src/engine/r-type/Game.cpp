@@ -76,9 +76,11 @@ void Game::initializeLevel()
             {
                 if (count == 0)
                 {
-                    std::shared_ptr<StaticObject> background = std::make_shared<StaticObject>(_assets[key](), 425, 239, _lastId++, "rTypeConfig.json", "Background");
+                    std::cout << "Background initialized" << std::endl;
+                    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(_assets[key](), 425, 239, _lastId++, "rTypeConfig.json", "Background");
                     _staticObjects.push_back(background);
                     _staticObjectsGroups->insert(background);
+                    std::cout << "Background " << _staticObjects.size() << std::endl;
                 }
                 else
                 {
@@ -180,17 +182,17 @@ std::shared_ptr<Character> Game::getRandomSpaceship()
     switch (random)
     {
     case 0:
-        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
+        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++));
     case 1:
-        return (std::make_shared<Speed>(_assets["Speed"](), 50, 100, _lastId++, 5));
+        return (std::make_shared<Speed>(_assets["Speed"](), 50, 100, _lastId++));
     case 2:
-        return (std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++, 5));
+        return (std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++));
     case 3:
-        return (std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++, 5));
+        return (std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++));
     case 4:
-        return (std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++, 5));
+        return (std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++));
     default:
-        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++, 5));
+        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++));
     }
 }
 
@@ -203,16 +205,20 @@ void Game::update(ThreadSafeQueue<Event> &events)
         switch (event.ACTION_NAME)
         {
         case ACTION::LEFT:
-            _players[getId(event) - 1]->move(-1, 0);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(-1, 0);
             break;
         case ACTION::RIGHT:
-            _players[getId(event) - 1]->move(1, 0);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(1, 0);
             break;
         case ACTION::UP:
-            _players[getId(event) - 1]->move(0, -1);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(0, -1);
             break;
         case ACTION::DOWN:
-            _players[getId(event) - 1]->move(0, 1);
+            if (_players.size() > 0)
+                _players[getId(event) - 1]->move(0, 1);
             break;
         case ACTION::SHOOT:
             _players[getId(event) - 1]->shoot();
@@ -238,7 +244,7 @@ void Game::update(ThreadSafeQueue<Event> &events)
             break;
         }
     }
-    if (_enemies.size() == 0 && _currentLevel != 2)
+    if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL)
     {
         std::cout << "Level " << _currentLevel << " finished" << std::endl;
         _currentLevel++;
@@ -250,14 +256,16 @@ void Game::update(ThreadSafeQueue<Event> &events)
 
 void Game::createExplosion(int x, int y)
 {
-    std::shared_ptr<StaticObject> explosion = std::make_shared<StaticObject>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "rTypeConfig.json", "ExplosionSpaceship", 0, 2, 2, 6);
+    std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "rTypeConfig.json", "ExplosionSpaceship", 2, 2);
     _staticObjectsGroups->insert(explosion);
     _staticObjects.push_back(explosion);
 }
 
 void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction)
 {
-    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, 0, scaleX, scaleY, speed, 2, spriteConfigJsonObjectName, direction);
+    std::cout << "asset path: " << _assets[path]() << std::endl;
+    std::cout << "spriteConfigJsonObjectName: " << spriteConfigJsonObjectName << std::endl;
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, scaleX, scaleY, speed, spriteConfigJsonObjectName, direction);
     if (groupName == "_projectilesGroups")
     {
         _projectilesGroups->insert(projectile);
@@ -272,9 +280,9 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
         projectile->setFlip(flip);
 }
 
-std::shared_ptr<StaticObject> Game::createShield(int x, int y)
+std::shared_ptr<AEntity> Game::createShield(int x, int y)
 {
-    std::shared_ptr<StaticObject> _shield = std::make_shared<StaticObject>(_assets["Shield"](), x, y, _lastId++, "rTypeConfig.json", "Shield", 0, 1, 1, 1);
+    std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(_assets["Shield"](), x, y, _lastId++, "rTypeConfig.json", "Shield");
     _staticObjectsGroups->insert(_shield);
     _staticObjects.push_back(_shield);
     return (_shield);
@@ -286,7 +294,7 @@ void Game::eraseDeadEntity(int id)
     {
         if ((*it)->getId() == id)
         {
-            (*it)->setDead(true);
+            (*it)->kill();
             _staticObjects.erase(it);
             break;
         }

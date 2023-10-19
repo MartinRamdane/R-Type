@@ -68,7 +68,7 @@ void UDPServer::checkConnection(UDPMessage &msg)
     Client client{msg.endpoint, std::chrono::system_clock::now()};
     Event evt;
     if (std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c)
-                     { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }) == clients_.end())
+    { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }) == clients_.end())
     {
         userJoined(client);
     }
@@ -105,7 +105,7 @@ void UDPServer::handler(const std::error_code &error, std::size_t)
     {
         mutex_.lock();
         auto it = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
-                               { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
+        { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
         if (it != clients_.end())
         {
             clients_.erase(it);
@@ -117,7 +117,7 @@ void UDPServer::handler(const std::error_code &error, std::size_t)
     {
         mutex_.lock();
         auto it = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c)
-                               { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
+        { return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port(); });
         if (it != clients_.end())
         {
             clients_.erase(it); // Erase the found element
@@ -158,14 +158,14 @@ void UDPServer::addClient(Client client)
 void UDPServer::removeClient(Client client)
 {
     _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c)
-                                  { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }));
+    { return c.client.address() == client.client.address() && c.client.port() == client.client.port(); }));
     _nbPlayers--;
 }
 
 void UDPServer::processSendQueue()
 {
     socket_.async_send_to(boost::asio::buffer(_toSendQueue.front().data), _toSendQueue.front().endpoint, [this](const std::error_code &error, std::size_t)
-                          {
+    {
         if (!error) {
             _toSendQueue.pop_front();
             if (!_toSendQueue.empty())
@@ -173,7 +173,8 @@ void UDPServer::processSendQueue()
         }
         else {
             std::cout << "[ERROR] sending data" << std::endl;
-        } });
+        }
+    });
 }
 
 void UDPServer::sendEvent(Event evt, const std::string &host, int port)
@@ -239,8 +240,7 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint,
 
 void UDPServer::sendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
 {
-    boost::asio::post(socket_.get_executor(), [this, data, endpoint]()
-                      {
+    boost::asio::post(socket_.get_executor(), [this, data, endpoint]() {
         bool bWritingMessage = !_toSendQueue.empty();
         _toSendQueue.push_back({data, endpoint});
         if (!bWritingMessage)

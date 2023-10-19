@@ -25,8 +25,7 @@ public:
     try
     {
       WaitForClientAsync();
-      context_thread_ = std::thread([this]()
-                                    { io_context_.run(); });
+      context_thread_ = std::thread([this]() { io_context_.run(); });
     }
     catch (std::exception &e)
     {
