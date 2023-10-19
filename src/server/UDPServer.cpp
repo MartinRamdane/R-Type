@@ -10,6 +10,7 @@
 
 UDPServer::UDPServer(boost::asio::io_service &io_service, int port) : socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
 {
+    _ignoreMsg = false;
     _nbPlayers = 0;
     _clients = std::vector<Client>();
     try
@@ -96,6 +97,10 @@ void UDPServer::handler(const std::error_code &error, std::size_t)
 {
     if (!error)
     {
+        if (_ignoreMsg) {
+            startReceive();
+            return;
+        }
         _queue.push_back({recv_buffer_, remote_endpoint_});
         recv_buffer_.clear();
         recv_buffer_.resize(1024);
@@ -145,7 +150,7 @@ void UDPServer::sendPingToClient()
             }
         }
         mutex_.unlock();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 }
 

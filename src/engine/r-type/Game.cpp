@@ -196,7 +196,7 @@ std::shared_ptr<Character> Game::getRandomSpaceship()
     }
 }
 
-void Game::update(ThreadSafeQueue<Event> &events)
+void Game::update(ThreadSafeQueue<Event> &events, UDPServer *server)
 {
     eraseDeadEntity();
     while (!events.empty())
@@ -247,10 +247,12 @@ void Game::update(ThreadSafeQueue<Event> &events)
     if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL)
     {
         std::cout << "Level " << _currentLevel << " finished" << std::endl;
+        server->setIgnoreMsg(true);
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
         initializeLevel();
+        server->setIgnoreMsg(false);
     }
 }
 

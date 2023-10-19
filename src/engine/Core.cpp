@@ -25,7 +25,7 @@ void Core::mainLoop(ThreadSafeQueue<Event> &events, UDPServer *server)
     {
         // get events
         _engine->update();
-        _game->update(events);
+        _game->update(events, server);
         if (_lastFrameTime.time_since_epoch().count() == 0)
             _lastFrameTime = std::chrono::high_resolution_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 10)

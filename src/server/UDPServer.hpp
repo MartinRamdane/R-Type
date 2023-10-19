@@ -128,6 +128,9 @@ public:
     void setNbPlayers(int nbPlayers) { _nbPlayers = nbPlayers; }
     void addPlayerEntity(int id, std::string entity);
     void sendSpriteToReadyClient(std::vector<Client>::iterator client);
+    void setIgnoreMsg(bool ignore) {
+        _queue.clear();
+        _ignoreMsg = ignore; }
 
 private:
     /**
@@ -162,4 +165,5 @@ private:
     ThreadSafeQueue<UDPMessage> _toSendQueue;
     std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);
     std::vector<uint8_t> _tempMsg = {};
+    bool _ignoreMsg;
 };

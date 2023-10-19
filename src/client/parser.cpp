@@ -52,7 +52,6 @@ std::tuple<int, Entity> Parser::addEntity(SpriteConfig config, RessourceManager 
     getConfig(config.spriteJsonFileName, config.spriteConfigJsonObjectName, &entity);
     entity.setSpriteScale(sf::Vector2f(std::get<0>(config.scale), std::get<1>(config.scale)));
     entity.setSpriteOrigin();
-    entity.setSpriteRotation(config.rotation);
     entity.setNextPos(sf::Vector2f(std::get<0>(config.pos), std::get<1>(config.pos)));
     entity.setSpritePosition(sf::Vector2f(std::get<0>(config.pos), std::get<1>(config.pos)));
     entity.setOldPosY(std::get<1>(config.pos));
@@ -155,7 +154,6 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         return modifyPosEntity(moveConfig);
     }
     if (evt.ACTION_NAME == ACTION::DEAD) {
-        std::cout << "DEAD ENTITY !!!" << std::endl;
         StructsMessages<ActionConfig> deadConfigStruct;
         ActionConfig deadConfig = deadConfigStruct.deserialize(evt.body);
         return removeEntity(deadConfig);

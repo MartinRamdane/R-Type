@@ -195,6 +195,7 @@ void UDPClient::handleEvents(Event evt)
         flipEntity(evt);
         break;
     case ACTION::RESET:
+        std::cout << "RESET GAME" << std::endl;
         _gameRef->clearEntities();
         break;
     default:

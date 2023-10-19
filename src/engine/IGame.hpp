@@ -10,12 +10,14 @@
 
 #include "../global/EventHandler.hpp"
 #include "../server/ThreadSafeQueue.hpp"
+#include "../server/UDPServer.hpp"
+
 class IGame
 {
 public:
     virtual ~IGame() = default;
 
-    virtual void update(ThreadSafeQueue<Event> &events) = 0;
+    virtual void update(ThreadSafeQueue<Event> &events, UDPServer *server) = 0;
     virtual bool isReset() = 0;
     virtual void setReset(bool reset) = 0;
 

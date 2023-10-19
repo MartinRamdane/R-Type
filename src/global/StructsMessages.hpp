@@ -15,7 +15,6 @@ struct SpriteConfig
     int id;
     std::tuple <float, float> pos;
     std::string path;
-    float rotation;
     std::tuple<float, float> scale;
     std::string spriteJsonFileName;
     std::string spriteConfigJsonObjectName;
@@ -24,7 +23,7 @@ struct SpriteConfig
     int damage;
     template <typename Archive>
     void serialize(Archive& ar, const unsigned int version) {
-        ar & id & pos & path & rotation & scale & spriteJsonFileName &
+        ar & id & pos & path & scale & spriteJsonFileName &
             spriteConfigJsonObjectName & speed & direction & damage;
     }
 };

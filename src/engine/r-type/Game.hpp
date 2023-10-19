@@ -23,6 +23,7 @@ class Character;
 class Enemy;
 class Projectile;
 
+
 #define MAX_LEVEL 2
 
 class Game : public IGame
@@ -32,7 +33,7 @@ public:
     ~Game();
     static Game *instance;
 
-    void update(ThreadSafeQueue<Event> &events);
+    void update(ThreadSafeQueue<Event> &events, UDPServer *server);
     void createExplosion(int x, int y);
     void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction = IEntity::RIGHT);
     std::shared_ptr<AEntity> createShield(int x, int y);
