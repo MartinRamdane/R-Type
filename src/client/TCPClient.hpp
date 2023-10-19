@@ -27,8 +27,7 @@ public:
             boost::asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
             m_connection = std::make_unique<TCPConnection<T>>(TCPConnection<T>::owner::client, m_context, boost::asio::ip::tcp::socket(m_context), m_qMessagesIn, game);
             m_connection->ConnectToServer(endpoints);
-            thrContext = std::thread([this]()
-                                     { m_context.run(); });
+            thrContext = std::thread([this]() { m_context.run(); });
         }
         catch (std::exception &e)
         {

@@ -14,7 +14,7 @@
 class Shield : public Character
 {
 public:
-    Shield(std::string path, float x, float y, int id, int nbSprite = 1, float angle = 0, float scaleX = 1, float scaleY = 1);
+    Shield(std::string path, float x, float y, int id, float scaleX = 1, float scaleY = 1);
     ~Shield();
 
     void activateShield();
@@ -34,5 +34,5 @@ private:
     std::chrono::duration<double> _reloadShieldDuration;
     std::chrono::high_resolution_clock::time_point _shieldStart;
     std::chrono::high_resolution_clock::time_point _shieldEnd;
-    std::shared_ptr<StaticObject> _shield;
+    std::shared_ptr<AEntity> _shield;
 };

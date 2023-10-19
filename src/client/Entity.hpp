@@ -65,6 +65,8 @@ public:
     std::string getDirection() { return _direction; };
     void update();
     void flip();
+    void setHit(bool touch) { _isHit = touch; };
+    bool getHit() const { return _isHit; };
 
 public:
     sf::Sprite _sprite;
@@ -81,6 +83,7 @@ public:
     sf::Font _font;
     float speed;
     sf::Vector2f _nextPos;
+    bool _isHit = false;
 };
 
 // ecreate id x y text size color

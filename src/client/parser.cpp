@@ -52,7 +52,6 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     getConfig(value["config_path"], value["object_type"], &entity);
     entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
     entity.setSpriteOrigin();
-    entity.setSpriteRotation(std::stof(value["rotation"]));
     entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setOldPosY(std::stoi(value["y"]));
@@ -98,16 +97,14 @@ std::string Parser::setKey(std::string key, int i)
     else if (i == 3)
         key = "path";
     else if (i == 4)
-        key = "rotation";
-    else if (i == 5)
         key = "scale.x";
-    else if (i == 6)
+    else if (i == 5)
         key = "scale.y";
-    else if (i == 7)
+    else if (i == 6)
         key = "config_path";
-    else if (i == 8)
+    else if (i == 7)
         key = "object_type";
-    else if (i == 9)
+    else if (i == 8)
         key = "speed";
     else if (i == 10)
         key = "direction";
@@ -129,6 +126,14 @@ std::string Parser::setKeyText(std::string key, int i)
     else if (i == 5)
         key = "color";
     return key;
+}
+
+std::tuple<int, Entity> Parser::hitEntity(std::map<std::string, std::string> value)
+{
+    int id = std::stoi(value["id"]);
+    Entity entity;
+    entity.setHit(true);
+    return std::make_tuple(id, entity);
 }
 
 std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressourceManager)
@@ -194,6 +199,21 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
                 key.clear();
             }
             return removeEntity(valueMap);
+        }
+        else if (commande == "etouch")
+        {
+            std::cout << "hit" << std::endl;
+            std::istringstream iss(tmp);
+            std::map<std::string, std::string> valueMap;
+            std::string key;
+            std::string token;
+            for (int i = 0; iss >> token; i++)
+            {
+                key = setKey(key, i);
+                valueMap[key] = token;
+                key.clear();
+            }
+            return hitEntity(valueMap);
         }
     }
     return std::make_tuple(-1, Entity());

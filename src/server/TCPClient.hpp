@@ -27,7 +27,7 @@ public:
             m_connection = std::make_unique<TCPConnection<T>>(TCPConnection<T>::owner::client, m_context, boost::asio::ip::tcp::socket(m_context), m_qMessagesIn);
             m_connection->ConnectToServer(endpoints);
             thrContext = std::thread([this]()
-                                     { m_context.run(); });
+            { m_context.run(); });
         }
         catch (std::exception &e)
         {

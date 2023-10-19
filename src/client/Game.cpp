@@ -17,6 +17,7 @@ Game::Game() : _threadPool(2)
     _height = 478;
     _playerId = 0;
     closed = false;
+    _progressBar = ProgressBar();
 }
 
 void Game::createWindow(std::string name, int x, int y)
@@ -156,6 +157,16 @@ void Game::handleEvent()
             evt.body = playerId;
             _udpClient->sendEvent(evt);
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+        {
+            float percent = _progressBar.getProgress();
+            _progressBar.setProgress(percent - 10);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+        {
+            float percent = _progressBar.getMaxProgress();
+            _progressBar.setProgress(percent);
+        }
     }
 }
 
@@ -185,6 +196,7 @@ void Game::animate()
 
 void Game::draw()
 {
+    _progressBar.update();
     std::map<int, Entity>::iterator it = _entities.begin();
     while (it != _entities.end())
     {
@@ -273,7 +285,15 @@ void Game::removeEntity(int id)
 void Game::addEntity(int id, Entity entity)
 {
     if (findEntity(id) == true)
-        _entities[id].setNextPos(entity.getNextPos());
+    {
+        if (entity.getHit() == true && id == _playerId)
+        {
+            float percent = _progressBar.getProgress();
+            _progressBar.setProgress(percent - 10);
+        }
+        else
+            _entities[id].setNextPos(entity.getNextPos());
+    }
     else
         _entities[id] = entity;
 }

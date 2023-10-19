@@ -7,47 +7,17 @@
 
 #include "Character.hpp"
 
-Character::Character(std::string path, float x, float y, int id, float angle, float scaleX, float scaleY, int nbSprite, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName)
+Character::Character(std::string path, float x, float y, int id, float scaleX, float scaleY, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName) : AEntity(path, x, y, id, spriteConfigJsonPath, spriteConfigJsonObjectName, scaleX, scaleY)
 {
-    _path = path;
-    _x = x;
-    _y = y;
-    _angle = angle;
-    _scaleX = scaleX;
-    _scaleY = scaleY;
-    _speed = 1;
-    _id = id;
-    _oldX = x;
-    _oldY = y;
-    _nbSprite = nbSprite;
-    _created = false;
-    _isDead = false;
     _fireRate = 3;
-    _life = 100;
     _lifeValue = 100;
-    _damage = 10;
     _targetFrameDuration = std::chrono::duration<double>(1.0 / _fireRate);
     _lastShootTime = std::chrono::high_resolution_clock::now();
     _currentTime = _lastShootTime;
-    _spriteConfigJsonPath = spriteConfigJsonPath;
-    _spriteConfigJsonObjectName = spriteConfigJsonObjectName;
-    _direction = RIGHT;
 }
 
 Character::~Character()
 {
-}
-
-void Character::setPosition(float x, float y)
-{
-    setOldPosition(_x, _y);
-    _x = x;
-    _y = y;
-}
-
-void Character::setRotation(float angle)
-{
-    _angle = angle;
 }
 
 void Character::move(float x, float y)
@@ -59,118 +29,12 @@ void Character::move(float x, float y)
     _y += y * _speed;
 }
 
-void Character::rotate(float angle)
-{
-    _angle += angle;
-}
-
-void Character::update()
-{
-    if (_x != _oldX || _y != _oldY)
-        setOldPosition(_x, _y);
-}
-
-std::tuple<float, float> Character::getPosition() const
-{
-    return std::make_tuple(_x, _y);
-}
-
-float Character::getRotation() const
-{
-    return _angle;
-}
-
-void Character::setScale(float x, float y)
-{
-    _scaleX = x;
-    _scaleY = y;
-}
-
-std::tuple<float, float> Character::getScale() const
-{
-    return std::make_tuple(_scaleX, _scaleY);
-}
-
-std::string Character::getPath() const
-{
-    return _path;
-}
-
-void Character::setPath(std::string path)
-{
-    _path = path;
-}
-
-void Character::setSpeed(float speed)
-{
-    _speed = speed;
-}
-
-float Character::getSpeed() const
-{
-    return _speed;
-}
-
-void Character::setOldPosition(float x, float y)
-{
-    _oldX = x;
-    _oldY = y;
-}
-
-std::tuple<float, float> Character::getOldPosition() const
-{
-    return std::make_tuple(_oldX, _oldY);
-}
-
-int Character::getId() const
-{
-    return _id;
-}
-
-int Character::getNbSprite() const
-{
-    return _nbSprite;
-}
-
-bool Character::isCreated() const
-{
-    return _created;
-}
-
-void Character::setCreated(bool created)
-{
-    _created = created;
-}
-
-bool Character::isDead() const
-{
-    return _isDead;
-}
-
-void Character::setLife(int life)
-{
-    _life = life;
-}
-
-int Character::getLife() const
-{
-    return _life;
-}
-
-void Character::setDamage(int damage)
-{
-    _damage = damage;
-}
-
-int Character::getDamage() const
-{
-    return _damage;
-}
-
 void Character::setFireRate(float fireRate)
 {
+    std::cout << "Fire rate: " << fireRate << std::endl;
     _fireRate = fireRate;
     _targetFrameDuration = std::chrono::duration<double>(1.0 / _fireRate);
+    std::cout << "Target frame duration: " << _targetFrameDuration.count() << std::endl;
 }
 
 float Character::getFireRate() const
@@ -178,25 +42,19 @@ float Character::getFireRate() const
     return _fireRate;
 }
 
-void Character::takeDamage(int damage)
-{
-    _life -= damage;
-    if (_life <= 0)
-        _isDead = true;
-}
-
 bool Character::canShoot()
 {
     _currentTime = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsedTime = _currentTime - _lastShootTime;
-
+    // std::cout << elapsedTime.count() << std::endl;
+    // std::cout << std::endl;
+    // std::cout << _targetFrameDuration.count() << std::endl;
     if (elapsedTime >= _targetFrameDuration)
     {
         _lastShootTime = _currentTime;
 
         return true;
     }
-
     return false;
 }
 
@@ -205,52 +63,18 @@ void Character::shoot()
     if (!canShoot())
         return;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) + (_direction == RIGHT ? 30 : - 30), std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getBulletSpeed(), getDamage(), _shootAsset, "_projectilesGroups", _direction == IEntity::LEFT ? true : false, _direction);
+    Game::instance->createProjectile(std::get<0>(pos) + (_direction == RIGHT ? 30 : -30), std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getBulletSpeed(), getDamage(), _shootAsset, "_projectilesGroups", _direction == IEntity::LEFT ? true : false, _direction);
 }
 
-std::string Character::getSpriteJsonFileName() const
+void Character::update()
 {
-    return _spriteConfigJsonPath;
-}
-
-std::string Character::getSpriteConfigJsonObjectName() const
-{
-    return _spriteConfigJsonObjectName;
-}
-
-void Character::kill()
-{
-    _isDead = true;
+    if (_x != _oldX || _y != _oldY)
+        setOldPosition(_x, _y);
 }
 
 void Character::setShootAsset(std::string shootAsset)
 {
     _shootAsset = shootAsset;
-}
-
-void Character::setDead(bool dead)
-{
-    _isDead = dead;
-}
-
-void Character::setRadius(float radius)
-{
-    _radius = radius;
-}
-
-float Character::getRadius() const
-{
-    return _radius;
-}
-
-void Character::setIsPositionSeted()
-{
-    _positionSeted = true;
-}
-
-bool Character::getIsPositionSeted() const
-{
-    return _positionSeted;
 }
 
 void Character::setMovementType(std::string movementType)
@@ -278,35 +102,6 @@ float Character::getBulletSpeed() const
     return _bulletSpeed;
 }
 
-void Character::flip()
-{
-    _flip = true;
-    if (_direction == RIGHT)
-        _direction = LEFT;
-    else
-        _direction = RIGHT;
-}
-
-bool Character::isFlip() const
-{
-    return _flip;
-}
-
-void Character::setFlip(bool flip)
-{
-    _flip = flip;
-}
-
-Character::Direction Character::getDirection() const
-{
-    return _direction;
-}
-
-void Character::setLifeValue(int lifeValue)
-{
-    _lifeValue = lifeValue;
-}
-
 void Character::resetLife()
 {
     _life = _lifeValue;
@@ -315,4 +110,16 @@ void Character::resetLife()
 void Character::setId(int id)
 {
     _id = id;
+}
+
+void Character::setLifeValue(int lifeValue)
+{
+    _lifeValue = lifeValue;
+}
+
+void Character::takeDamage(int damage)
+{
+    _life -= damage;
+    if (_life <= 0)
+        _isDead = true;
 }

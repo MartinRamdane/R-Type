@@ -63,8 +63,6 @@ bool Engine::frameRateControl()
 
         return true;
     }
-
-    // Sleep to control the frame rate
     return false;
 }
 
