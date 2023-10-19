@@ -106,8 +106,10 @@ std::string Parser::setKey(std::string key, int i)
         key = "object_type";
     else if (i == 8)
         key = "speed";
-    else if (i == 10)
+    else if (i == 9)
         key = "direction";
+    else if (i == 10)
+        key = "damage";
     return key;
 }
 
@@ -145,6 +147,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         std::string tmp = evt.body.substr(com);
         if (commande == "ecreate" && evt.ACTION_NAME == ACTION::SPRITE)
         {
+            std::cout << tmp << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
