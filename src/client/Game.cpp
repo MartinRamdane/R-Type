@@ -208,6 +208,16 @@ void Game::draw()
         else if (it->second.getType() == Entity::Type::SPRITE)
         {
             _window.draw(it->second.getSprite());
+            std::string direction = it->second.getDirection();
+            if (direction == "left" || direction == "right") {
+                float speed = it->second.getSpeed();
+                if (direction == "left") {
+                    speed = speed * -1;
+                }
+                sf::Vector2f oldPos = it->second.getSpritePosition();
+                sf::Vector2f newPos = sf::Vector2f(oldPos.x + speed, oldPos.y);
+                it->second.setNextPos(newPos);
+            }
         }
         it++;
     }

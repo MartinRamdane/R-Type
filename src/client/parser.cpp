@@ -56,6 +56,7 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setOldPosY(std::stoi(value["y"]));
     entity.setSpeed(std::stof(value["speed"]));
+    entity.setDirection(value["direction"]);
     return std::make_tuple(id, entity);
 }
 
@@ -105,6 +106,8 @@ std::string Parser::setKey(std::string key, int i)
         key = "object_type";
     else if (i == 8)
         key = "speed";
+    else if (i == 10)
+        key = "direction";
     return key;
 }
 
@@ -150,6 +153,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
             {
                 key = setKey(key, i);
                 valueMap[key] = token;
+                std::cout << key << " " << token << std::endl;
                 key.clear();
             }
             return addEntity(valueMap, ressourceManager);
