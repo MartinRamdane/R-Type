@@ -22,5 +22,4 @@ public:
 protected:
 private:
     Game *_game;
-    Enemy_t _enemy_t;
 };

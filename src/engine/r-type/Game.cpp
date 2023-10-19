@@ -463,3 +463,13 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Flyer");
      }}};
+
+int Game::getCurrentId()
+{
+    return (_lastId);
+}
+
+int Game::getCurrentLevel()
+{
+    return (_currentLevel);
+}

@@ -40,5 +40,5 @@ LevelInitializer::~LevelInitializer()
 
 void LevelInitializer::createEnemy(nlohmann::json spriteConfig)
 {
-    Enemyconfig.
+    // Enemyconfig.
 }

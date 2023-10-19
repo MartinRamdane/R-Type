@@ -45,6 +45,9 @@ public:
     void deleteAllEntities();
     bool isReset();
     void setReset(bool reset);
+    int getCurrentId();
+    int getCurrentLevel();
+
 private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
