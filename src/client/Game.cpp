@@ -41,7 +41,7 @@ void Game::run()
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
             evt.body_size = 0;
-            evt.body = "";
+            evt.body = std::vector<uint8_t>();
             _udpClient->sendEvent(evt);
             _threadPool.enqueue([this]
                                 { this->LoopUDPMessages(); });
@@ -89,9 +89,12 @@ void Game::handleEvent()
             {
                 Event evt;
                 std::string playerId = "p" + std::to_string(_playerId);
+                ActionConfig actionConfig = {playerId};
+                StructsMessages<ActionConfig> actionConfigStruct;
+                std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
                 evt.ACTION_NAME = ACTION::FLIP;
-                evt.body_size = playerId.size();
-                evt.body = playerId;
+                evt.body = data;
+                evt.body_size = sizeof(data);
                 _udpClient->sendEvent(evt);
             }
         }
@@ -105,41 +108,56 @@ void Game::handleEvent()
         _lastFrameTime = std::chrono::high_resolution_clock::now();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
+            ActionConfig actionConfig = {playerId};
+            StructsMessages<ActionConfig> actionConfigStruct;
+            std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
             evt.ACTION_NAME = ACTION::LEFT;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
+            evt.body_size = sizeof(data);
+            evt.body = data;
             _udpClient->sendEvent(evt);
             _event_indicator = 0;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
+            ActionConfig actionConfig = {playerId};
+            StructsMessages<ActionConfig> actionConfigStruct;
+            std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
             evt.ACTION_NAME = ACTION::RIGHT;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
+            evt.body_size = sizeof(data);
+            evt.body = data;
             _udpClient->sendEvent(evt);
             _event_indicator = 0;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
+            ActionConfig actionConfig = {playerId};
+            StructsMessages<ActionConfig> actionConfigStruct;
+            std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
             evt.ACTION_NAME = ACTION::UP;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
+            evt.body_size = data.size() * sizeof(uint8_t);
+            evt.body = data;
             _udpClient->sendEvent(evt);
             _event_indicator = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
+            ActionConfig actionConfig = {playerId};
+            StructsMessages<ActionConfig> actionConfigStruct;
+            std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
             evt.ACTION_NAME = ACTION::DOWN;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
+            evt.body_size = sizeof(data);
+            evt.body = data;
             _udpClient->sendEvent(evt);
             _event_indicator = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
+            ActionConfig actionConfig = {playerId};
+            StructsMessages<ActionConfig> actionConfigStruct;
+            std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
             evt.ACTION_NAME = ACTION::SHOOT;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
+            evt.body_size = sizeof(data);
+            evt.body = data;
             _udpClient->sendEvent(evt);
             _event_indicator = 0;
         }
@@ -151,9 +169,12 @@ void Game::handleEvent()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
+            ActionConfig actionConfig = {playerId};
+            StructsMessages<ActionConfig> actionConfigStruct;
+            std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
             evt.ACTION_NAME = ACTION::SHIELD;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
+            evt.body_size = sizeof(data);
+            evt.body = data;
             _udpClient->sendEvent(evt);
         }
     }
@@ -224,9 +245,12 @@ void Game::update()
         if ((*it).second.isDead())
         {
             Event evt;
+            ActionConfig actionConfig = {std::to_string((*it).first)};
+            StructsMessages<ActionConfig> actionConfigStruct;
+            std::vector<uint8_t> data = actionConfigStruct.serialize(actionConfig);
             evt.ACTION_NAME = ACTION::DEAD;
-            evt.body_size = std::to_string((*it).first).size();
-            evt.body = std::to_string((*it).first);
+            evt.body_size = sizeof(data);
+            evt.body = data;
             _udpClient->sendEvent(evt);
             it = _entities.erase(it);
         }
@@ -250,6 +274,7 @@ bool Game::connectToUdpServer(std::string host, int port)
     _udpClient->setGameRef(this);
     _udpClient->connect_to(host, port);
     isUDPClientConnected = true;
+    std::cout << "UDP client connected" << std::endl;
     return true;
 }
 

@@ -12,6 +12,7 @@
 #include "Shooter.hpp"
 #include "Tank.hpp"
 #include "Shield.hpp"
+#include "../../global/StructsMessages.hpp"
 
 Game *Game::instance = nullptr;
 
@@ -162,10 +163,10 @@ void Game::initializeLevel()
 
 int Game::getId(Event event)
 {
-    std::stringstream ss(event.body);
-    std::string playerId;
-    ss >> playerId;
-    int id = std::stoi(playerId.substr(1));
+    ActionConfig actionConfig;
+    StructsMessages<ActionConfig> actionConfigStruct;
+    actionConfig = actionConfigStruct.deserialize(event.body);
+    int id = std::stoi(actionConfig.id.substr(1));
     return (id);
 }
 
@@ -223,14 +224,14 @@ void Game::update(ThreadSafeQueue<Event> &events)
             _players[getId(event) - 1]->flip();
             break;
         case ACTION::READY:
+            std::cout << "Player " " is ready" << std::endl;
             _players.push_back(getRandomSpaceship());
             _playersGroups->insert(_players[_players.size() - 1]);
             setAllEntitiesToCreated();
             break;
         case ACTION::DEAD:
         {
-            int id = std::stoi(event.body);
-            eraseDeadEntity(id);
+            eraseDeadEntity(getId(event) - 1);
             break;
         }
         default:

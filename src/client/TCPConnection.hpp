@@ -13,7 +13,7 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include "../global/EventHandler.hpp"
+#include "../global/TCPEventHandler.hpp"
 #include "ThreadSafeQueue.hpp"
 #include "Messages.hpp"
 #include "Game.hpp"
@@ -60,19 +60,19 @@ public:
                                        {
                                            if (!ec)
                                            {
-                                               _game->setConnected(true);
-                                               Event evt;
-                                               evt.ACTION_NAME = ACTION::CREATE;
-                                               evt.body_size = 0;
-                                               evt.body = "";
-                                                message<ACTION> msg;
+                                                _game->setConnected(true);
+                                                TCPEvent evt;
+                                                evt.ACTION_NAME = TCPACTION::CREATEINSTANCE;
+                                                evt.body_size = 0;
+                                                evt.body = "";
+                                                message<TCPACTION> msg;
                                                 std::vector<uint8_t> data = encodeEvent(evt);
                                                 msg.header.id = evt.ACTION_NAME;
                                                 msg.header.size = sizeof(data);
                                                 msg.body.resize(sizeof(data));
                                                 std::memcpy(msg.body.data(), data.data(), sizeof(data));
                                                 SendAsync(msg);
-                                               ReadHeader();
+                                                ReadHeader();
                                            }
                                            else
                                            {
@@ -91,9 +91,9 @@ public:
     {
         return m_socket.is_open();
     }
-    std::vector<uint8_t> encodeEvent(Event event)
+    std::vector<uint8_t> encodeEvent(TCPEvent event)
     {
-        EventHandler evt;
+        TCPEventHandler evt;
         evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
         return evt.encodeMessage();
     }

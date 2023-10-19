@@ -7,10 +7,10 @@
 
 #include "Core.hpp"
 
-Core::Core()
+Core::Core(UDPServer *server)
 {
     _engine = std::make_shared<Engine>();
-    std::string protocol = Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
+    // Protocol::sendWindowCreate(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight(), server);
     // send protocol to client
     _game = std::make_shared<Game>(_engine);
 }
@@ -19,7 +19,7 @@ Core::~Core()
 {
 }
 
-std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
+void Core::mainLoop(ThreadSafeQueue<Event> &events, UDPServer *server)
 {
     if (_engine->frameRateControl())
     {
@@ -32,16 +32,14 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
         {
             _lastFrameTime = std::chrono::high_resolution_clock::now();
             auto entities = _engine->getEntities();
-            std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
-            return protocol;
+            Protocol::sendEntitiesToServer(entities, server);
         }
     }
-    return {};
 }
 
-std::vector<std::string> Core::getAllEntitiesToCreate()
+void Core::getAllEntitiesToCreate(UDPServer *server, std::vector<Client>::iterator client)
 {
     auto entities = _engine->getEntities();
-    std::vector<std::string> protocol = Protocol::transformAllEntitiesToCreate(entities);
-    return protocol;
+    std::cout << "entities size: " << entities.size() << std::endl;
+    Protocol::sendAllEntitiesToCreate(entities, server, client);
 }

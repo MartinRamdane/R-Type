@@ -132,7 +132,7 @@ private:
   ThreadSafeQueue<owned_message<T>> _messagesIn;
   tcp::acceptor _acceptor;
   ServerClass *_server;
-  EventHandler _eventHandler;
+  TCPEventHandler _eventHandler;
   std::deque<std::shared_ptr<TCPConnection<T>>> m_deqConnections;
   uint32_t IDCounter = 10000;
 };

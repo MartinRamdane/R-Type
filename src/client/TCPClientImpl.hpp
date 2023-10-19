@@ -10,12 +10,12 @@
 #include <sstream>
 #include "TCPClient.hpp"
 class Game;
-class TCPClientImpl : public TCPClient<ACTION>
+class TCPClientImpl : public TCPClient<TCPACTION>
 {
 public:
-    void SendEvent(Event evt)
+    void SendEvent(TCPEvent evt)
     {
-        message<ACTION> msg;
+        message<TCPACTION> msg;
         std::vector<uint8_t> data = encodeEvent(evt);
         msg.header.id = evt.ACTION_NAME;
         msg.header.size = sizeof(data);
@@ -27,13 +27,13 @@ public:
     {
         _game = game;
     }
-    std::vector<uint8_t> encodeEvent(Event event)
+    std::vector<uint8_t> encodeEvent(TCPEvent event)
     {
-        EventHandler evt;
+        TCPEventHandler evt;
         evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
         return evt.encodeMessage();
     }
-    void HandleMessage(message<ACTION> &msg);
+    void HandleMessage(message<TCPACTION> &msg);
 
 private:
     Game *_game;

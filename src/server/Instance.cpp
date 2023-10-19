@@ -11,11 +11,11 @@ Instance::Instance(int id) : _id(id), _port((int)(4210 + id)), _threadPool(3)
 {
   _udpServer = new UDPServer(_io_service, (int)(4210 + id));
   _udpServer->setNbPlayers(1);
-  _core = new Core();
   _udpServer->setInstance(this);
   _threadPool.enqueue([this]()
                       { _io_service.run(); });
   // implement the main loop in thread
+  _core = new Core(_udpServer);
   _threadPool.enqueue([this]()
                       { MessagesLoop(); });
   _threadPool.enqueue([this]()
@@ -43,34 +43,15 @@ void Instance::EventLoop()
     {
       continue; // TODO: destroy the instance
     }
-    std::vector<std::string> protocol = _core->mainLoop(_events);
+    _core->mainLoop(_events, _udpServer);
     if (_core->isReset())
     {
       _core->setReset(false);
       Event evt;
       evt.ACTION_NAME = ACTION::RESET;
-      evt.body_size = 0;
-      evt.body = "";
+      evt.body = std::vector<uint8_t>();
+      evt.body_size = sizeof(evt.body);
       _udpServer->sendEventToAllClients(evt);
-    }
-    for (auto message : protocol)
-    {
-      if (message.substr(0, message.find(" ")) == "eflip")
-      {
-        Event evt;
-        evt.ACTION_NAME = ACTION::FLIP;
-        evt.body_size = message.size();
-        evt.body = message;
-        _udpServer->sendEventToAllClients(evt);
-      }
-      else
-      {
-        Event evt;
-        evt.ACTION_NAME = ACTION::SPRITE;
-        evt.body_size = message.size();
-        evt.body = message;
-        _udpServer->sendEventToAllClients(evt);
-      }
     }
   }
 }

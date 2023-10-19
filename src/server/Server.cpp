@@ -32,14 +32,6 @@ InstanceInfos ServerClass::createInstance()
     return instanceinfos;
 }
 
-void ServerClass::interpretEvent(Event &event)
-{
-    if (event.ACTION_NAME == ACTION::CREATE)
-    {
-        std::cout << "CREATE" << std::endl;
-    }
-}
-
 int ServerClass::getPortInstance(int instanceId)
 {
     return _instances[instanceId]->getPort();

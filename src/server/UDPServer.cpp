@@ -82,9 +82,12 @@ void UDPServer::userJoined(Client client)
     addClient(newClient);
     std::shared_ptr<Engine> engineRef = _instanceRef->getCore()->getEngine();
     engineRef->openWindow();
+    WindowConfig windowConfig = {engineRef->getWindowTitle(), engineRef->getWindowWidth(), engineRef->getWindowHeight()};
+    StructsMessages<WindowConfig> windowConfigStruct;
+    std::vector<uint8_t> serializedWindowConfig = windowConfigStruct.serialize(windowConfig);
     evt.ACTION_NAME = ACTION::JOINED;
-    evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
-    evt.body_size = evt.body.size();
+    evt.body = serializedWindowConfig;
+    evt.body_size = sizeof(serializedWindowConfig);
     _instanceRef->addAction(evt);
     sendEvent(evt, client.client.address().to_string(), client.client.port());
 }
@@ -137,7 +140,7 @@ void UDPServer::sendPingToClient()
             }
             else
             {
-                sendEvent({ACTION::PING, 0, ""}, it->client.address().to_string(), it->client.port());
+                sendEvent({ACTION::PING, 0, std::vector<uint8_t>()}, it->client.address().to_string(), it->client.port());
                 ++it;
             }
         }
@@ -205,43 +208,18 @@ std::vector<uint8_t> UDPServer::encodeEvent(Event event)
     return evt.encodeMessage();
 }
 
-void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
-{
-    std::vector<std::string> protocol = _instanceRef->getCore()->getAllEntitiesToCreate();
-    for (auto message : protocol)
-    {
-       if (message.substr(0, message.find(" ")) == "eflip")
-      {
-        Event evt;
-        evt.ACTION_NAME = ACTION::FLIP;
-        evt.body_size = message.size();
-        evt.body = message;
-        sendEvent(evt, client->client.address().to_string(), client->client.port());
-      }
-      else
-      {
-        Event evt;
-        evt.ACTION_NAME = ACTION::SPRITE;
-        evt.body_size = message.size();
-        evt.body = message;
-        sendEvent(evt, client->client.address().to_string(), client->client.port());
-      }
-    }
-}
-
 void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::vector<Client>::iterator client)
 {
     switch (evt.ACTION_NAME)
     {
     case ACTION::LEFT:
-        std::cout << "Player go to left " << evt.body << std::endl;
+        std::cout << "Player go to left " << std::endl;
         break;
     case ACTION::RIGHT:
         std::cout << "Player go to right" << std::endl;
         break;
     case ACTION::UP:
         std::cout << "Player go to up" << std::endl;
-        sendEvent({ACTION::UP, 2, "ok"}, endpoint.address().to_string(), endpoint.port());
         break;
     case ACTION::DOWN:
         std::cout << "Player go to down" << std::endl;
@@ -250,8 +228,8 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint,
         std::cout << "Player shoot" << std::endl;
         break;
     case ACTION::READY:
-        std::cout << "The user is ready to receive sprites" << std::endl;
-        sendSpriteToReadyClient(client);
+        std::cout << "The user isf ready to receive sprites" << std::endl;
+        _instanceRef->getCore()->getAllEntitiesToCreate(this, client);
         break;
     default:
         break;
@@ -282,9 +260,4 @@ void UDPServer::handleMessages(size_t maxMessages, bool bWait)
         processMessage(msg);
         nMessageCount++;
     }
-}
-
-void UDPServer::addPlayerEntity(int id, std::string entity)
-{
-    _playerEntities[id] = entity;
 }

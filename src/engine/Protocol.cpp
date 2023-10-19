@@ -22,7 +22,6 @@ SpriteConfig Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> 
     // make a dynamic cast to get the type of the entity with Projectile class
     if (auto test = std::dynamic_pointer_cast<Projectile>(entity))
     {
-        std::cout << "pos: " << std::to_string(std::get<0>(pos)) << " " << std::to_string(std::get<1>(pos)) << std::endl;
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
         std::string entityDirection;
         projectile->getDirection() == IEntity::Direction::LEFT ? entityDirection = "left" : entityDirection = "right";
@@ -33,61 +32,90 @@ SpriteConfig Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> 
     return spriteConfig;
 }
 
-std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity)
+MoveConfig Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity)
 {
     const auto pos = entity->getPosition();
     const auto oldPos = entity->getOldPosition();
-    if ((std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) && !std::dynamic_pointer_cast<Projectile>(entity))
-        return "emove " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos));
-    return "";
+    if ((std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) && !std::dynamic_pointer_cast<Projectile>(entity)) {
+        return MoveConfig{entity->getId(), pos};
+    }
+    return MoveConfig{-1, {-1, -1}};
 }
 
-std::vector<std::string> Protocol::transformEntitiesToProtocol(std::list<EntityType<IEntity> *> entities)
+void Protocol::sendEntitiesToServer(std::list<EntityType<IEntity> *> entities, UDPServer *server)
 {
-    std::vector<std::string> protocol;
     for (auto entityType : entities)
     {
         for (auto entity : entityType->getEntities())
         {
             if (!entity->isCreated())
             {
-                protocol.push_back(transformEntityCreateToProtocol(entity));
+                SpriteConfig spriteConfig = transformEntityCreateToProtocol(entity);
+                StructsMessages<SpriteConfig> spriteConfigStruct;
+                std::vector<uint8_t> serializedSpriteConfig = spriteConfigStruct.serialize(spriteConfig);
+                Event event = {ACTION::CREATE, serializedSpriteConfig.size(), serializedSpriteConfig};
+                server->sendEventToAllClients(event);
                 entity->setCreated(true);
             }
             if (entity->isDead())
             {
-                protocol.push_back("edead " + std::to_string(entity->getId()));
+                std::cout << "ENTITY DEAD !!" << std::endl;
+                ActionConfig deadConfig = {std::to_string(entity->getId())};
+                StructsMessages<ActionConfig> deadConfigStruct;
+                std::vector<uint8_t> serializedDeadConfig = deadConfigStruct.serialize(deadConfig);
+                Event event = {ACTION::DEAD, serializedDeadConfig.size(), serializedDeadConfig};
+                server->sendEventToAllClients(event);
             }
             if (entity->isFlip())
             {
-                protocol.push_back("eflip " + std::to_string(entity->getId()));
+                ActionConfig flipConfig = {std::to_string(entity->getId())};
+                StructsMessages<ActionConfig> flipConfigStruct;
+                std::vector<uint8_t> serializedFlipConfig = flipConfigStruct.serialize(flipConfig);
+                Event event = {ACTION::FLIP, serializedFlipConfig.size(), serializedFlipConfig};
                 entity->setFlip(false);
+                server->sendEventToAllClients(event);
             }
-            std::string move = transformEntityMoveToProtocol(entity);
-            if (move != "")
-                protocol.push_back(move);
+            MoveConfig move = transformEntityMoveToProtocol(entity);
+            if (move.id != -1) {
+                StructsMessages<MoveConfig> moveConfigStruct;
+                std::vector<uint8_t> serializedMoveConfig = moveConfigStruct.serialize(move);
+                Event event = {ACTION::MOVE, serializedMoveConfig.size(), serializedMoveConfig};
+                server->sendEventToAllClients(event);
+            }
         }
         entityType->removeDead();
     }
-    return protocol;
 }
 
-std::string Protocol::transformWindowCreateToProtocol(std::string title, int width, int height)
+void Protocol::sendWindowCreate(std::string title, int width, int height, UDPServer *server)
 {
-    return "wcreate " + title + " " + std::to_string(width) + " " + std::to_string(height);
+    WindowConfig windowConfig = {title, width, height};
+    StructsMessages<WindowConfig> windowConfigStruct;
+    std::vector<uint8_t> serializedWindowConfig = windowConfigStruct.serialize(windowConfig);
+    Event event = {ACTION::WINDOW, serializedWindowConfig.size(), serializedWindowConfig};
+    server->sendEventToAllClients(event);
 }
 
-std::vector<std::string> Protocol::transformAllEntitiesToCreate(std::list<EntityType<IEntity> *> entities)
+void Protocol::sendAllEntitiesToCreate(std::list<EntityType<IEntity> *> entities, UDPServer *server, std::vector<Client>::iterator client)
 {
     std::vector<std::string> protocol;
     for (auto entityType : entities)
     {
         for (auto entity : entityType->getEntities())
         {
-            protocol.push_back(transformEntityCreateToProtocol(entity));
-            if (entity->getDirection() == IEntity::Direction::LEFT)
-                protocol.push_back("eflip " + std::to_string(entity->getId()));
+            std::cout << "entity->getId() : " << entity->getId() << std::endl;
+            SpriteConfig spriteConfig = transformEntityCreateToProtocol(entity);
+            StructsMessages<SpriteConfig> spriteConfigStruct;
+            std::vector<uint8_t> serializedSpriteConfig = spriteConfigStruct.serialize(spriteConfig);
+            Event event = {ACTION::CREATE, serializedSpriteConfig.size(), serializedSpriteConfig};
+            server->sendEvent(event, client->client.address().to_string(), client->client.port());
+            if (entity->getDirection() == IEntity::Direction::LEFT) {
+                ActionConfig flipConfig = {std::to_string(entity->getId())};
+                StructsMessages<ActionConfig> flipConfigStruct;
+                std::vector<uint8_t> serializedFlipConfig = flipConfigStruct.serialize(flipConfig);
+                Event event = {ACTION::FLIP, serializedFlipConfig.size(), serializedFlipConfig};
+                server->sendEvent(event, client->client.address().to_string(), client->client.port());
+            }
         }
     }
-    return protocol;
 }

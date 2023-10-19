@@ -9,7 +9,7 @@
 #include <iostream>
 #include "TCPServer.hpp"
 #include "../global/ThreadPool.hpp"
-#include "../global/EventHandler.hpp"
+#include "../global/TCPEventHandler.hpp"
 #include <thread>
 #include "Instance.hpp"
 
@@ -28,7 +28,6 @@ public:
   InstanceInfos createInstance();
   int getPortInstance(int instanceId);
   int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers(); }
-  void interpretEvent(Event &event);
   int getInstancesNb() { return _instances.size(); }
   int getPlayerIdToGive() { return _playerIdToGive; }
   void setPlayerIdToGive(int id) { _playerIdToGive = id; }

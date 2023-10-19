@@ -13,7 +13,7 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include "../global/EventHandler.hpp"
+#include "../global/TCPEventHandler.hpp"
 #include "ThreadSafeQueue.hpp"
 #include "Messages.hpp"
 

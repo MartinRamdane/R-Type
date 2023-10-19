@@ -127,7 +127,6 @@ public:
     int getNbPlayers() const { return _nbPlayers; }
     void setNbPlayers(int nbPlayers) { _nbPlayers = nbPlayers; }
     void addPlayerEntity(int id, std::string entity);
-    std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
     void sendSpriteToReadyClient(std::vector<Client>::iterator client);
 
 private:
@@ -163,5 +162,4 @@ private:
     ThreadSafeQueue<UDPMessage> _toSendQueue;
     std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);
     std::vector<uint8_t> _tempMsg = {};
-    std::map<int, std::string> _playerEntities;
 };

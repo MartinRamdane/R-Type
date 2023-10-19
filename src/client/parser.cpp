@@ -43,21 +43,21 @@ void Parser::getConfig(std::string path, std::string type, Entity *entity)
     entity->setObjectType(type);
 }
 
-std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
+std::tuple<int, Entity> Parser::addEntity(SpriteConfig config, RessourceManager &ressourceManager)
 {
-    int id = std::stoi(value["id"]);
+    int id = config.id;
     Entity entity;
     entity.setType(Entity::Type::SPRITE);
-    entity = loadTexture(entity, value["path"], ressourceManager);
-    getConfig(value["config_path"], value["object_type"], &entity);
-    entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
+    entity = loadTexture(entity, config.path, ressourceManager);
+    getConfig(config.spriteJsonFileName, config.spriteConfigJsonObjectName, &entity);
+    entity.setSpriteScale(sf::Vector2f(std::get<0>(config.scale), std::get<1>(config.scale)));
     entity.setSpriteOrigin();
-    entity.setSpriteRotation(std::stof(value["rotation"]));
-    entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-    entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-    entity.setOldPosY(std::stoi(value["y"]));
-    entity.setSpeed(std::stof(value["speed"]));
-    entity.setDirection(value["direction"]);
+    entity.setSpriteRotation(config.rotation);
+    entity.setNextPos(sf::Vector2f(std::get<0>(config.pos), std::get<1>(config.pos)));
+    entity.setSpritePosition(sf::Vector2f(std::get<0>(config.pos), std::get<1>(config.pos)));
+    entity.setOldPosY(std::get<1>(config.pos));
+    entity.setSpeed(config.speed);
+    entity.setDirection(config.direction);
     return std::make_tuple(id, entity);
 }
 
@@ -73,17 +73,17 @@ std::tuple<int, Entity> Parser::addEntityText(std::map<std::string, std::string>
     return std::make_tuple(id, entity);
 }
 
-std::tuple<int, Entity> Parser::removeEntity(std::map<std::string, std::string> value)
+std::tuple<int, Entity> Parser::removeEntity(ActionConfig config)
 {
-    int id = -std::stoi(value["id"]);
+    int id = -std::stoi(config.id);
     return std::make_tuple(id, Entity());
 }
 
-std::tuple<int, Entity> Parser::modifyPosEntity(std::map<std::string, std::string> value)
+std::tuple<int, Entity> Parser::modifyPosEntity(MoveConfig config)
 {
-    int id = std::stoi(value["id"]);
+    int id = config.id;
     Entity entity;
-    entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+    entity.setNextPos(sf::Vector2f(std::get<0>(config.pos), std::get<1>(config.pos)));
     return std::make_tuple(id, entity);
 }
 
@@ -133,68 +133,24 @@ std::string Parser::setKeyText(std::string key, int i)
 
 std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressourceManager)
 {
-    std::size_t com = evt.body.find(' ');
-    if (com != std::string::npos)
-    {
-        std::string commande = evt.body.substr(0, com);
-        std::string tmp = evt.body.substr(com);
-        if (commande == "ecreate" && evt.ACTION_NAME == ACTION::SPRITE)
-        {
-            std::istringstream iss(tmp);
-            std::map<std::string, std::string> valueMap;
-            std::string key;
-            std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
-                key = setKey(key, i);
-                valueMap[key] = token;
-                std::cout << key << " " << token << std::endl;
-                key.clear();
-            }
-            return addEntity(valueMap, ressourceManager);
-        }
-        else if (commande == "ecreate" && evt.ACTION_NAME == ACTION::TEXT)
-        {
-            std::istringstream iss(tmp);
-            std::map<std::string, std::string> valueMap;
-            std::string key;
-            std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
-                key = setKeyText(key, i);
-                valueMap[key] = token;
-                key.clear();
-            }
-            return addEntityText(valueMap);
-        }
-        else if (commande == "pmove" || commande == "emove")
-        {
-            std::istringstream iss(tmp);
-            std::map<std::string, std::string> valueMap;
-            std::string key;
-            std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
-                key = setKey(key, i);
-                valueMap[key] = token;
-                key.clear();
-            }
-            return modifyPosEntity(valueMap);
-        }
-        else if (commande == "dead" || commande == "edead")
-        {
-            std::istringstream iss(tmp);
-            std::map<std::string, std::string> valueMap;
-            std::string key;
-            std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
-                key = setKey(key, i);
-                valueMap[key] = token;
-                key.clear();
-            }
-            return removeEntity(valueMap);
-        }
+    if (evt.ACTION_NAME == ACTION::CREATE) {
+//        std::cout << "CREATE ENTITY !!!" << std::endl;
+        StructsMessages<SpriteConfig> spriteConfigStruct;
+        SpriteConfig spriteConfig = spriteConfigStruct.deserialize(evt.body);
+        // std::cout << "spriteConfig->id : " << spriteConfig.id << std::endl;
+        // std::cout << "spriteConfig->path : " << spriteConfig.path << std::endl;
+        return addEntity(spriteConfig, ressourceManager);
+    }
+    if (evt.ACTION_NAME == ACTION::MOVE) {
+        StructsMessages<MoveConfig> moveConfigStruct;
+        MoveConfig moveConfig = moveConfigStruct.deserialize(evt.body);
+        return modifyPosEntity(moveConfig);
+    }
+    if (evt.ACTION_NAME == ACTION::DEAD) {
+        std::cout << "DEAD ENTITY !!!" << std::endl;
+        StructsMessages<ActionConfig> deadConfigStruct;
+        ActionConfig deadConfig = deadConfigStruct.deserialize(evt.body);
+        return removeEntity(deadConfig);
     }
     return std::make_tuple(-1, Entity());
 }
