@@ -113,7 +113,6 @@ void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
 {
   EventHandler evt;
   Event event = evt.decodeMessage(msg);
-  std::cout << "UDP MESSAGE RECEIVED : " << event.body << std::endl;
   handleEvents(event);
 }
 
@@ -147,21 +146,6 @@ void UDPClient::joinGame(Event evt)
 
 void UDPClient::updateSprite(Event evt)
 {
-  std::stringstream ss(evt.body);
-  std::string id;
-  std::string x;
-  std::string y;
-  std::string sprite;
-  std::string jsonPath;
-  std::string objectType;
-  std::string speed;
-  ss >> id;
-  ss >> x;
-  ss >> y;
-  ss >> sprite;
-  ss >> jsonPath;
-  ss >> objectType;
-  ss >> speed;
   Parser *parseRef = new Parser();
   RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
   std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);

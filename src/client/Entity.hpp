@@ -61,6 +61,8 @@ public:
     float getSpeed() const { return speed; };
     void setNextPos(sf::Vector2f pos) { _nextPos = pos; };
     sf::Vector2f getNextPos() const { return _nextPos; };
+    void setDirection(std::string direction) { _direction = direction; };
+    std::string getDirection() { return _direction; };
     void update();
     void flip();
     void setHit(bool touch) { _isHit = touch; };
@@ -71,6 +73,7 @@ public:
     std::shared_ptr<sf::Texture> _texture;
     int _nbRect;
     int _init_rect;
+    std::string _direction;
     sf::Clock _clock;
     std::string _event_form;
     std::string _object_type;

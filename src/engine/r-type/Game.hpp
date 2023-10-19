@@ -13,7 +13,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
-#include "../StaticObject.hpp"
+#include "../AEntity.hpp"
 #include "../../global/JsonParser.hpp"
 #include "../IGame.hpp"
 #include <random>
@@ -35,7 +35,7 @@ public:
     void update(ThreadSafeQueue<Event> &events);
     void createExplosion(int x, int y);
     void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction = IEntity::RIGHT);
-    std::shared_ptr<StaticObject> createShield(int x, int y);
+    std::shared_ptr<AEntity> createShield(int x, int y);
     void initializeLevel();
     int getId(Event event);
     std::shared_ptr<Character> getRandomSpaceship();
@@ -56,7 +56,7 @@ private:
     std::shared_ptr<EntityType<IEntity>> _flyerGroups;
     std::vector<std::shared_ptr<Character>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
-    std::vector<std::shared_ptr<StaticObject>> _staticObjects;
+    std::vector<std::shared_ptr<AEntity>> _staticObjects;
     std::vector<std::shared_ptr<Enemy>> _enemies;
     int _lastId = 0;
     static std::map<std::string, std::function<std::string()>> _assets;

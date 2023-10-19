@@ -7,8 +7,8 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string bulletType, float fireRate, float speed, float bulletSpeed, int damage, int life, int nbSprite, float angle, float scaleX, float scaleY)
-    : Character(path, x, y, id, angle, scaleX, scaleY, nbSprite, "rTypeConfig.json", enemyConfig)
+Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string bulletType, float fireRate, float speed, float bulletSpeed, int damage, int life, float scaleX, float scaleY)
+    : Character(path, x, y, id, scaleX, scaleY, "rTypeConfig.json", enemyConfig)
 {
     setShootAsset(bulletType);
     setSpeed(speed);
@@ -86,6 +86,7 @@ void Enemy::shoot()
 {
     if (!canShoot())
         return;
+    std::cout << "Enemy shoot" << std::endl;
     auto pos = getPosition();
     Game::instance->createProjectile(std::get<0>(pos) - 33, std::get<1>(pos) - 2, getShootAsset(), 0.25, 0.25, getBulletSpeed(), getDamage(), getShootAsset(), "_enemyProjectilesGroups", _direction == IEntity::LEFT ? true : false, Direction::LEFT);
 }

@@ -52,11 +52,11 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     getConfig(value["config_path"], value["object_type"], &entity);
     entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
     entity.setSpriteOrigin();
-    entity.setSpriteRotation(std::stof(value["rotation"]));
     entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
     entity.setOldPosY(std::stoi(value["y"]));
     entity.setSpeed(std::stof(value["speed"]));
+    entity.setDirection(value["direction"]);
     return std::make_tuple(id, entity);
 }
 
@@ -97,17 +97,19 @@ std::string Parser::setKey(std::string key, int i)
     else if (i == 3)
         key = "path";
     else if (i == 4)
-        key = "rotation";
-    else if (i == 5)
         key = "scale.x";
-    else if (i == 6)
+    else if (i == 5)
         key = "scale.y";
-    else if (i == 7)
+    else if (i == 6)
         key = "config_path";
-    else if (i == 8)
+    else if (i == 7)
         key = "object_type";
-    else if (i == 9)
+    else if (i == 8)
         key = "speed";
+    else if (i == 9)
+        key = "direction";
+    else if (i == 10)
+        key = "damage";
     return key;
 }
 
@@ -145,6 +147,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         std::string tmp = evt.body.substr(com);
         if (commande == "ecreate" && evt.ACTION_NAME == ACTION::SPRITE)
         {
+            std::cout << tmp << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
@@ -153,6 +156,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
             {
                 key = setKey(key, i);
                 valueMap[key] = token;
+                std::cout << key << " " << token << std::endl;
                 key.clear();
             }
             return addEntity(valueMap, ressourceManager);

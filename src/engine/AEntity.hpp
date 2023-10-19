@@ -2,26 +2,22 @@
 ** EPITECH PROJECT, 2023
 ** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
-** StaticObject
+** AEntity
 */
 
 #pragma once
 
 #include "IEntity.hpp"
-#include "Engine.hpp"
 
-class StaticObject : public IEntity
+class AEntity : public IEntity
 {
 public:
-    StaticObject(std::string path, float x, float y, int id, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName, float angle = 0, float scaleX = 1, float scaleY = 1, int nbSprite = 1);
-    ~StaticObject();
+    AEntity(std::string path, float x, float y, int id, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName, float scaleX = 1, float scaleY = 1);
+    ~AEntity();
+
     void setPosition(float x, float y);
-    void setRotation(float angle);
-    void move(float x, float y);
-    void rotate(float angle);
-    void update();
+    virtual void update();
     std::tuple<float, float> getPosition() const;
-    float getRotation() const;
     void setScale(float x, float y);
     std::tuple<float, float> getScale() const;
     std::string getPath() const;
@@ -31,37 +27,43 @@ public:
     void setOldPosition(float x, float y);
     std::tuple<float, float> getOldPosition() const;
     int getId() const;
-    int getNbSprite() const;
     bool isCreated() const;
     void setCreated(bool created);
     bool isDead() const;
-    void setDead(bool dead);
+    void kill();
     void setDamage(int damage);
     int getDamage() const;
-    void takeDamage(int damage);
+    virtual void takeDamage(int damage);
     std::string getSpriteJsonFileName() const;
     std::string getSpriteConfigJsonObjectName() const;
-    void kill();
     void setRadius(float radius);
     float getRadius() const;
     void flip();
     bool isFlip() const;
     void setFlip(bool flip);
     Direction getDirection() const;
+    void setLife(int life);
 
-private:
-    std::string _path;
+protected:
     float _x;
     float _y;
-    float _angle;
+    float _oldX;
+    float _oldY;
+    Direction _direction;
+    std::string _path;
     float _scaleX;
     float _scaleY;
     float _speed;
-    int _nbSprite;
     bool _created;
     bool _isDead;
     int _damage;
-    int _life = 100000;
-    bool _flip = false;
-    Direction _direction;
+    int _life;
+    float _radius;
+    bool _flip;
+    int _id;
+    std::string _spriteConfigJsonPath;
+    std::string _spriteConfigJsonObjectName;
+
+private:
+
 };
