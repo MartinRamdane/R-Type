@@ -15,6 +15,7 @@
 #include "r-type/Game.hpp"
 #include "../server/UDPServer.hpp"
 #include "../global/StructsMessages.hpp"
+#include "r-type/Enemy.hpp"
 
 class Protocol
 {

@@ -107,8 +107,10 @@ std::string Parser::setKey(std::string key, int i)
         key = "object_type";
     else if (i == 8)
         key = "speed";
-    else if (i == 10)
+    else if (i == 9)
         key = "direction";
+    else if (i == 10)
+        key = "damage";
     return key;
 }
 
