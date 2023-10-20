@@ -5,7 +5,7 @@
         "rect_init": 2,
         "form": "event"
     },
-    "BulletSpaceship":
+    "PlayerProjectile":
     {
         "nb_rect": 2,
         "rect_init": 0,
@@ -59,13 +59,13 @@
         "rect_init": 0,
         "form": "once"
     },
-    "BulletEnemy1":
+    "DiskProjectile":
     {
         "nb_rect": 3,
         "rect_init": 0,
         "form": "loop"
     },
-    "BulletEnemy2":
+    "OrangeProjectile":
     {
         "nb_rect": 4,
         "rect_init": 0,

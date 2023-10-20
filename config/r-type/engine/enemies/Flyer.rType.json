@@ -2,7 +2,7 @@
     "Type": "Enemy",
     "Name": "Flyer",
     "MovementType": "UpAndDown",
-    "ProjectileType": "BulletEnemy1",
+    "ProjectileType": "DiskProjectile",
     "FireRate": 1,
     "ProjectileSpeed": 8,
     "Speed": 2,

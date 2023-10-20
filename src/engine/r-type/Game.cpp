@@ -483,20 +483,20 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Shield");
      }},
-    {"BulletSpaceship", []()
+    {"PlayerProjectile", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletSpaceship");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.PlayerProjectile");
      }},
-    {"BulletEnemy1", []()
+    {"DiskProjectile", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletEnemy1");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.DiskProjectile");
      }},
-    {"BulletEnemy2", []()
+    {"OrangeProjectile", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletEnemy2");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.OrangeProjectile");
      }},
     {"Flyer", []()
      {

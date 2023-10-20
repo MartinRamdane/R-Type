@@ -2,7 +2,7 @@
     "Type": "Enemy",
     "Name": "OrangeRobot",
     "MovementType": "Linear",
-    "ProjectileType": "BulletEnemy2",
+    "ProjectileType": "OrangeProjectile",
     "FireRate": 1,
     "ProjectileSpeed": 8,
     "Speed": 2,
