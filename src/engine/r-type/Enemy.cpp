@@ -88,7 +88,18 @@ void Enemy::shoot()
         return;
     std::cout << "Enemy shoot" << std::endl;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) - 33, std::get<1>(pos) - 2, getShootAsset(), 0.25, 0.25, getProjectileSpeed(), getDamage(), getShootAsset(), "_enemyProjectilesGroups", _direction == IEntity::LEFT ? true : false, Direction::LEFT);
+    EntityInfo info;
+    info.x = std::get<0>(pos) - 33;
+    info.y = std::get<1>(pos) - 2;
+    info.name = getShootAsset();
+    info.scaleX = 0.25;
+    info.scaleY = 0.25;
+    info.speed = getProjectileSpeed();
+    info.damage = getDamage();
+    info.spriteConfigJsonObjectName = getShootAsset();
+    info.spriteJsonFileName = "rTypeConfig.json";
+    info.direction = IEntity::LEFT;
+    Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::ENEMY);
 }
 
 void Enemy::move(float x, float y)

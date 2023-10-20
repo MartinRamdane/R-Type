@@ -63,7 +63,18 @@ void Character::shoot()
     if (!canShoot())
         return;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) + (_direction == RIGHT ? 30 : -30), std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getProjectileSpeed(), getDamage(), _shootAsset, "_projectilesGroups", _direction == IEntity::LEFT ? true : false, _direction);
+    EntityInfo info;
+    info.x = std::get<0>(pos) + (_direction == RIGHT ? 30 : -30);
+    info.y = std::get<1>(pos) + 2;
+    info.name = getShootAsset();
+    info.scaleX = 0.25;
+    info.scaleY = 0.25;
+    info.speed = getProjectileSpeed();
+    info.damage = getDamage();
+    info.spriteConfigJsonObjectName = getShootAsset();
+    info.spriteJsonFileName = "rTypeConfig.json";
+    info.direction = IEntity::RIGHT;
+    Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::PLAYER);
 }
 
 void Character::update()

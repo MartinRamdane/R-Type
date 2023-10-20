@@ -152,17 +152,18 @@ void Game::createExplosion(int x, int y)
     _staticObjects.push_back(explosion);
 }
 
-void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction)
+void Game::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group)
 {
-    std::cout << "asset path: " << _assets[path]() << std::endl;
-    std::cout << "spriteConfigJsonObjectName: " << spriteConfigJsonObjectName << std::endl;
-    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, scaleX, scaleY, speed, spriteConfigJsonObjectName, direction);
-    if (groupName == "_projectilesGroups")
+    info.assetFile = _assets[info.name]();
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(info.assetFile, info.x, info.y, info.id, info.damage, info.scaleX, info.scaleY, info.speed, info.spriteConfigJsonObjectName, info.direction);
+    if (group == ProjectileGroup::PLAYER)
     {
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     }
-    else if (groupName == "_enemyProjectilesGroups")
+    else if (group == ProjectileGroup::ENEMY)
     {
         _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);

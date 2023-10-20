@@ -13,8 +13,15 @@
 class IGame
 {
 public:
-    virtual ~IGame() = default;
+    enum ProjectileGroup
+    {
+        PLAYER,
+        ENEMY,
+        BOSS
+    };
 
+
+    virtual ~IGame() = default;
     virtual void update(ThreadSafeQueue<Event> &events) = 0;
     virtual bool isReset() = 0;
     virtual void setReset(bool reset) = 0;
