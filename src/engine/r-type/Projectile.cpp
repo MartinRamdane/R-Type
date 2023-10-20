@@ -7,11 +7,11 @@
 
 #include "Projectile.hpp"
 
-Projectile::Projectile(std::string path, float x, float y, int id, int damage, float scaleX, float scaleY, float speed, std::string spriteConfigJsonObjectName, Direction direction) : AEntity(path, x, y, id, "rTypeConfig.json", spriteConfigJsonObjectName, scaleX, scaleY)
+Projectile::Projectile(EntityInfo info) : AEntity(info)
 {
-    _damage = damage;
-    _speed = speed;
-    _direction = direction;
+    _damage = info.damage;
+    _speed = info.speed;
+    _direction = info.direction;
     _life = 1;
 }
 

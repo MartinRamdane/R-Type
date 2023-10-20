@@ -60,21 +60,34 @@ std::shared_ptr<Character> Game::getRandomSpaceship()
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 4);
     int random = distrib(gen);
+    IEntity::EntityInfo info;
+    info.x = 50;
+    info.y = 100;
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonObjectName = "Spaceship";
+    info.id = _lastId;
+    _lastId++;
 
     switch (random)
     {
     case 0:
-        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Classic"]();
+        return (std::make_shared<Classic>(info));
     case 1:
-        return (std::make_shared<Speed>(_assets["Speed"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Speed"]();
+        return (std::make_shared<Speed>(info));
     case 2:
-        return (std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Shooter"]();
+        return (std::make_shared<Shooter>(info));
     case 3:
-        return (std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Tank"]();
+        return (std::make_shared<Tank>(info));
     case 4:
-        return (std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++));
+        info.assetFile = _assets["ShieldSpaceship"]();
+        return (std::make_shared<Shield>(info));
     default:
-        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Classic"]();
+        return (std::make_shared<Classic>(info));
     }
 }
 
@@ -142,28 +155,38 @@ void Game::update(ThreadSafeQueue<Event> &events)
             _lastId++;
         }
         std::cout << "Last2 id: " << _lastId << std::endl;
-
     }
 }
 
 void Game::createExplosion(int x, int y)
 {
-    std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "rTypeConfig.json", "ExplosionSpaceship", 2, 2);
+    IEntity::EntityInfo info;
+    info.x = x;
+    info.y = y;
+    info.assetFile = _assets["ExplosionSpaceship"]();
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonObjectName = "ExplosionSpaceship";
+    info.scaleX = 2;
+    info.scaleY = 2;
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(explosion);
     _staticObjects.push_back(explosion);
 }
 
-void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction)
+void Game::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group)
 {
-    std::cout << "asset path: " << _assets[path]() << std::endl;
-    std::cout << "spriteConfigJsonObjectName: " << spriteConfigJsonObjectName << std::endl;
-    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, scaleX, scaleY, speed, spriteConfigJsonObjectName, direction);
-    if (groupName == "_projectilesGroups")
+    info.assetFile = _assets[info.name]();
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(info);
+    if (group == ProjectileGroup::PLAYER)
     {
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     }
-    else if (groupName == "_enemyProjectilesGroups")
+    else if (group == ProjectileGroup::ENEMY)
     {
         _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
@@ -174,7 +197,15 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
 
 std::shared_ptr<AEntity> Game::createShield(int x, int y)
 {
-    std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(_assets["Shield"](), x, y, _lastId++, "rTypeConfig.json", "Shield");
+    IEntity::EntityInfo info;
+    info.x = x;
+    info.y = y;
+    info.assetFile = _assets["Shield"]();
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonObjectName = "Shield";
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(_shield);
     _staticObjects.push_back(_shield);
     return (_shield);
@@ -300,7 +331,8 @@ void Game::setCurrentId(int id)
 
 void Game::createEnemy(IEntity::EntityInfo info)
 {
-    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info.assetName, info.x, info.y, info.id, info.name, info.projectileType, info.fireRate, info.speed, info.projectileSpeed, info.damage, info.life);
+    std::cout << info.assetFile << std::endl;
+    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
     enemy->setMovementType(info.movementType);
     _enemies.push_back(enemy);
     if (info.name == "OrangeRobot")
@@ -313,7 +345,7 @@ void Game::createEnemy(IEntity::EntityInfo info)
 
 void Game::createBackground(IEntity::EntityInfo info)
 {
-    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info.assetName, info.x, info.y, info.id, info.spriteJsonFileName, info.spriteConfigJsonObjectName);
+    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info);
     _staticObjects.push_back(background);
     _staticObjectsGroups->insert(background);
 }

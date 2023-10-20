@@ -23,8 +23,8 @@ public:
     };
     typedef struct EntityInfo {
         std::string name;
-        std::string assetName;
-        std::string spriteJsonFileName;
+        std::string assetFile;
+        std::string spriteConfigJsonFileName;
         std::string spriteConfigJsonObjectName;
         std::string movementType;
         std::string projectileType;
@@ -34,16 +34,13 @@ public:
         float oldY;
         float speed;
         float radius;
-        float scaleX;
-        float scaleY;
+        float scaleX = 1;
+        float scaleY = 1;
         float projectileSpeed;
         float fireRate;
         int damage;
         int life;
         int id;
-        bool created;
-        bool dead;
-        bool flip;
         Direction direction;
     } EntityInfo;
     virtual ~IEntity() = default;
@@ -66,7 +63,7 @@ public:
     virtual void setDamage(int damage) = 0;
     virtual int getDamage() const = 0;
     virtual void takeDamage(int damage) = 0;
-    virtual std::string getSpriteJsonFileName() const = 0;
+    virtual std::string getspriteConfigJsonFileName() const = 0;
     virtual std::string getSpriteConfigJsonObjectName() const = 0;
     virtual void setRadius(float radius) = 0;
     virtual float getRadius() const = 0;

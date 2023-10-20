@@ -16,7 +16,7 @@
 class Character : public AEntity
 {
 public:
-    Character(std::string path, float x, float y, int id, float scaleX, float scaleY, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName);
+    Character(EntityInfo info);
     ~Character();
     virtual void move(float x, float y);
     virtual void update();
@@ -30,8 +30,8 @@ public:
     void setMovementType(std::string movementType);
     std::string getMovementType() const;
     std::string getShootAsset() const;
-    void setBulletSpeed(float projectileSpeed);
-    float getBulletSpeed() const;
+    void setProjectileSpeed(float projectileSpeed);
+    float getProjectileSpeed() const;
     void resetLife();
     void setId(int id);
     void setLifeValue(int lifeValue);
