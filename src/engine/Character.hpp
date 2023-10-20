@@ -30,8 +30,8 @@ public:
     void setMovementType(std::string movementType);
     std::string getMovementType() const;
     std::string getShootAsset() const;
-    void setBulletSpeed(float projectileSpeed);
-    float getBulletSpeed() const;
+    void setProjectileSpeed(float projectileSpeed);
+    float getProjectileSpeed() const;
     void resetLife();
     void setId(int id);
     void setLifeValue(int lifeValue);

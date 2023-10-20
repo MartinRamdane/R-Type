@@ -13,7 +13,7 @@ Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig
     setShootAsset(projectileType);
     setSpeed(speed);
     setFireRate(fireRate);
-    setBulletSpeed(projectileSpeed);
+    setProjectileSpeed(projectileSpeed);
     setDamage(damage);
     setLife(life);
 }
@@ -88,7 +88,7 @@ void Enemy::shoot()
         return;
     std::cout << "Enemy shoot" << std::endl;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) - 33, std::get<1>(pos) - 2, getShootAsset(), 0.25, 0.25, getBulletSpeed(), getDamage(), getShootAsset(), "_enemyProjectilesGroups", _direction == IEntity::LEFT ? true : false, Direction::LEFT);
+    Game::instance->createProjectile(std::get<0>(pos) - 33, std::get<1>(pos) - 2, getShootAsset(), 0.25, 0.25, getProjectileSpeed(), getDamage(), getShootAsset(), "_enemyProjectilesGroups", _direction == IEntity::LEFT ? true : false, Direction::LEFT);
 }
 
 void Enemy::move(float x, float y)

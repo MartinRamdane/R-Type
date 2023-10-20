@@ -142,7 +142,6 @@ void Game::update(ThreadSafeQueue<Event> &events)
             _lastId++;
         }
         std::cout << "Last2 id: " << _lastId << std::endl;
-
     }
 }
 
@@ -300,7 +299,8 @@ void Game::setCurrentId(int id)
 
 void Game::createEnemy(IEntity::EntityInfo info)
 {
-    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info.assetName, info.x, info.y, info.id, info.name, info.projectileType, info.fireRate, info.speed, info.projectileSpeed, info.damage, info.life);
+    std::cout << info.assetFile << std::endl;
+    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info.assetFile, info.x, info.y, info.id, info.name, info.projectileType, info.fireRate, info.speed, info.projectileSpeed, info.damage, info.life);
     enemy->setMovementType(info.movementType);
     _enemies.push_back(enemy);
     if (info.name == "OrangeRobot")
@@ -313,7 +313,7 @@ void Game::createEnemy(IEntity::EntityInfo info)
 
 void Game::createBackground(IEntity::EntityInfo info)
 {
-    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info.assetName, info.x, info.y, info.id, info.spriteJsonFileName, info.spriteConfigJsonObjectName);
+    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info.assetFile, info.x, info.y, info.id, info.spriteJsonFileName, info.spriteConfigJsonObjectName);
     _staticObjects.push_back(background);
     _staticObjectsGroups->insert(background);
 }

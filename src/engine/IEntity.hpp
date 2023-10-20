@@ -23,7 +23,7 @@ public:
     };
     typedef struct EntityInfo {
         std::string name;
-        std::string assetName;
+        std::string assetFile;
         std::string spriteJsonFileName;
         std::string spriteConfigJsonObjectName;
         std::string movementType;
@@ -41,9 +41,6 @@ public:
         int damage;
         int life;
         int id;
-        bool created;
-        bool dead;
-        bool flip;
         Direction direction;
     } EntityInfo;
     virtual ~IEntity() = default;
