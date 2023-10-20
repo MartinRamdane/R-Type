@@ -21,7 +21,7 @@ public:
         RIGHT,
         NONE
     };
-    Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string bulletType, float fireRate, float speed, float bulletSpeed, int damage, int life, float scaleX = 1, float scaleY = 1);
+    Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string projectileType, float fireRate, float speed, float projectileSpeed, int damage, int life, float scaleX = 1, float scaleY = 1);
     ~Enemy();
     void update() override;
     void shoot() override;

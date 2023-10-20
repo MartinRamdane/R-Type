@@ -51,7 +51,7 @@ Your class must inherit the **IGame** interface, but here's what else you can im
 
     To set the relation juste use `setRelation`, the first parameter is the first group, the second is the second group and the last parameter is the function to call when there is a collision.
 
-    > `engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);`
+    > `engine->setRelation(_projectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);`
 
     It must be static and have this definition:
 

@@ -30,7 +30,8 @@ std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> e
     if (std::dynamic_pointer_cast<Enemy>(entity))
     {
         auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
-        if (enemy->getMovementType() == "Horizontal") {
+        if (enemy->getMovementType() == "Linear")
+        {
             return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getSpriteJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() + " " + std::to_string(entity->getSpeed()) + " " + "left";
         }
     }
@@ -41,9 +42,11 @@ std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> ent
 {
     const auto pos = entity->getPosition();
     const auto oldPos = entity->getOldPosition();
-    if (std::dynamic_pointer_cast<Enemy>(entity)) {
+    if (std::dynamic_pointer_cast<Enemy>(entity))
+    {
         auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
-        if (enemy->getMovementType() == "Horizontal") {
+        if (enemy->getMovementType() == "Linear")
+        {
             return "";
         }
     }

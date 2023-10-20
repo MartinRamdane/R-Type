@@ -18,6 +18,7 @@
 #include "../IGame.hpp"
 #include <random>
 #include <tuple>
+#include "LevelInitializer.hpp"
 
 class Character;
 class Enemy;
@@ -45,13 +46,21 @@ public:
     void deleteAllEntities();
     bool isReset();
     void setReset(bool reset);
+    int getCurrentId();
+    int getCurrentLevel();
+    void setCurrentId(int id);
+    std::map<std::string, std::function<std::string()>> getAssets();
+    void createEnemy(IEntity::EntityInfo info);
+    void createBackground(IEntity::EntityInfo info);
+    void clearLevel();
+
 private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _enemyProjectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
-    std::shared_ptr<EntityType<IEntity>> _enemie1Groups;
+    std::shared_ptr<EntityType<IEntity>> _orangeRobotGroups;
     std::shared_ptr<EntityType<IEntity>> _enemie2Groups;
     std::shared_ptr<EntityType<IEntity>> _flyerGroups;
     std::vector<std::shared_ptr<Character>> _players;
@@ -62,4 +71,5 @@ private:
     static std::map<std::string, std::function<std::string()>> _assets;
     int _currentLevel = 1;
     bool _reset = false;
+    std::shared_ptr<LevelInitializer> _levelInitializer;
 };

@@ -30,18 +30,18 @@ public:
     void setMovementType(std::string movementType);
     std::string getMovementType() const;
     std::string getShootAsset() const;
-    void setBulletSpeed(float bulletSpeed);
+    void setBulletSpeed(float projectileSpeed);
     float getBulletSpeed() const;
     void resetLife();
     void setId(int id);
     void setLifeValue(int lifeValue);
 
 private:
-    float _bulletSpeed = 5;
+    float _projectileSpeed = 5;
     std::chrono::duration<double> _targetFrameDuration;
     std::chrono::high_resolution_clock::time_point _lastShootTime;
     std::chrono::high_resolution_clock::time_point _currentTime;
-    std::string _shootAsset = "BulletSpaceship";
+    std::string _shootAsset = "PlayerProjectile";
     std::string _movementType;
     int _lifeValue;
     int _fireRate;

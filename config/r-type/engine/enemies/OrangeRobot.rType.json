@@ -1,10 +1,11 @@
 {
-    "Type": "OrangeRobot",
-    "MovementType": "Random",
-    "BulletType": "BulletEnemy2",
-    "FireRate": 0.2,
-    "BulletSpeed": 4,
-    "Speed": 0.8,
-    "Damage": 35,
-    "Life": 55
+    "Type": "Enemy",
+    "Name": "OrangeRobot",
+    "MovementType": "Linear",
+    "ProjectileType": "OrangeProjectile",
+    "FireRate": 1,
+    "ProjectileSpeed": 8,
+    "Speed": 2,
+    "Damage": 10,
+    "Life": 10
 }
