@@ -52,6 +52,7 @@ public:
     std::map<std::string, std::function<std::string()>> getAssets();
     void createEnemy(IEntity::EntityInfo info);
     void createBackground(IEntity::EntityInfo info);
+    void clearLevel();
 
 private:
     std::shared_ptr<Engine> _engine;
@@ -59,7 +60,7 @@ private:
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _enemyProjectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
-    std::shared_ptr<EntityType<IEntity>> _enemie1Groups;
+    std::shared_ptr<EntityType<IEntity>> _orangeRobotGroups;
     std::shared_ptr<EntityType<IEntity>> _enemie2Groups;
     std::shared_ptr<EntityType<IEntity>> _flyerGroups;
     std::vector<std::shared_ptr<Character>> _players;

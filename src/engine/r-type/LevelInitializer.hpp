@@ -18,6 +18,7 @@ class LevelInitializer
 public:
     LevelInitializer(IGame *game);
     ~LevelInitializer();
+    void loadLevel(int currentLevel);
     void loadConfig(nlohmann::json spriteConfig);
     void createEnemy(int count, auto positions);
     void createBackground();
@@ -26,4 +27,5 @@ protected:
 private:
     Game *_game;
     IEntity::EntityInfo _info;
+    int _currentLevel = 1;
 };

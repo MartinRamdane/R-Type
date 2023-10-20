@@ -7,13 +7,13 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string bulletType, float fireRate, float speed, float bulletSpeed, int damage, int life, float scaleX, float scaleY)
+Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string projectileType, float fireRate, float speed, float projectileSpeed, int damage, int life, float scaleX, float scaleY)
     : Character(path, x, y, id, scaleX, scaleY, "rTypeConfig.json", enemyConfig)
 {
-    setShootAsset(bulletType);
+    setShootAsset(projectileType);
     setSpeed(speed);
     setFireRate(fireRate);
-    setBulletSpeed(bulletSpeed);
+    setBulletSpeed(projectileSpeed);
     setDamage(damage);
     setLife(life);
 }

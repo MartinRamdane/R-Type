@@ -3,6 +3,19 @@
         "Background": {
             "Type": "Background"
         },
+        "Enemy2": {
+            "Config": "OrangeRobot.rType.json",
+            "Count": 2,
+            "Positions": [
+                {"X": 960, "Y": 331},
+                {"X": 980, "Y": 300}
+              ]
+        }
+    },
+    "Level-2": {
+        "Background": {
+            "Type": "Background"
+        },
         "Enemy1": {
             "Config": "Flyer.rType.json",
             "Count": 2,

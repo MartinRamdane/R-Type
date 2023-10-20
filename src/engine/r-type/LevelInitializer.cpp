@@ -11,9 +11,16 @@
 LevelInitializer::LevelInitializer(IGame *game)
 {
     _game = dynamic_cast<Game *>(game);
+}
 
+LevelInitializer::~LevelInitializer()
+{
+}
+
+void LevelInitializer::loadLevel(int currentLevel)
+{
     nlohmann::json levelsFile = JsonParser::readFile("rTypeLevels.json");
-    nlohmann::json level = levelsFile["Level-" + std::to_string(_game->getCurrentLevel())];
+    nlohmann::json level = levelsFile["Level-" + std::to_string(currentLevel)];
 
     for (const auto &[key, value] : level.items())
     {
@@ -31,10 +38,6 @@ LevelInitializer::LevelInitializer(IGame *game)
             createBackground();
         }
     }
-}
-
-LevelInitializer::~LevelInitializer()
-{
 }
 
 void LevelInitializer::loadConfig(nlohmann::json spriteConfig)
@@ -60,13 +63,14 @@ void LevelInitializer::createEnemy(int cout, auto positions)
         _info.x = positions[i]["X"];
         _info.y = positions[i]["Y"];
         _game->createEnemy(_info);
-        _game->setCurrentId(_game->getCurrentId() + 1);
+        _game->setCurrentId(_info.id + 1);
     }
     _info = {};
 }
 
 void LevelInitializer::createBackground()
 {
+    std::cout << "ID background: " << _game->getCurrentId() << std::endl;
     _info.id = _game->getCurrentId();
     _info.name = "Background";
     _info.assetName = _game->getAssets()["Background"]();
@@ -75,6 +79,6 @@ void LevelInitializer::createBackground()
     _info.x = 425;
     _info.y = 239;
     _game->createBackground(_info);
-    _game->setCurrentId(_game->getCurrentId() + 1);
+    _game->setCurrentId(_info.id + 1);
     _info = {};
 }

@@ -92,14 +92,14 @@ std::string Character::getShootAsset() const
     return _shootAsset;
 }
 
-void Character::setBulletSpeed(float bulletSpeed)
+void Character::setBulletSpeed(float projectileSpeed)
 {
-    _bulletSpeed = bulletSpeed;
+    _projectileSpeed = projectileSpeed;
 }
 
 float Character::getBulletSpeed() const
 {
-    return _bulletSpeed;
+    return _projectileSpeed;
 }
 
 void Character::resetLife()
