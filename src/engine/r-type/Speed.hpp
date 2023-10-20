@@ -13,7 +13,7 @@
 class Speed : public Character
 {
 public:
-    Speed(std::string path, float x, float y, int id, float scaleX = 1, float scaleY = 1);
+    Speed(EntityInfo info);
     ~Speed();
 
 protected:

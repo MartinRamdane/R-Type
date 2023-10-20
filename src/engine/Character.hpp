@@ -16,7 +16,7 @@
 class Character : public AEntity
 {
 public:
-    Character(std::string path, float x, float y, int id, float scaleX, float scaleY, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName);
+    Character(EntityInfo info);
     ~Character();
     virtual void move(float x, float y);
     virtual void update();

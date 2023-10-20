@@ -7,15 +7,15 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string projectileType, float fireRate, float speed, float projectileSpeed, int damage, int life, float scaleX, float scaleY)
-    : Character(path, x, y, id, scaleX, scaleY, "rTypeConfig.json", enemyConfig)
+Enemy::Enemy(EntityInfo info)
+    : Character(info)
 {
-    setShootAsset(projectileType);
-    setSpeed(speed);
-    setFireRate(fireRate);
-    setProjectileSpeed(projectileSpeed);
-    setDamage(damage);
-    setLife(life);
+    setShootAsset(info.projectileType);
+    setSpeed(info.speed);
+    setFireRate(info.fireRate);
+    setProjectileSpeed(info.projectileSpeed);
+    setDamage(info.damage);
+    setLife(info.life);
 }
 
 Enemy::~Enemy()
@@ -97,7 +97,7 @@ void Enemy::shoot()
     info.speed = getProjectileSpeed();
     info.damage = getDamage();
     info.spriteConfigJsonObjectName = getShootAsset();
-    info.spriteJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
     info.direction = IEntity::LEFT;
     Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::ENEMY);
 }

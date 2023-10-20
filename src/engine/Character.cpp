@@ -7,7 +7,7 @@
 
 #include "Character.hpp"
 
-Character::Character(std::string path, float x, float y, int id, float scaleX, float scaleY, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName) : AEntity(path, x, y, id, spriteConfigJsonPath, spriteConfigJsonObjectName, scaleX, scaleY)
+Character::Character(EntityInfo info) : AEntity(info)
 {
     _fireRate = 3;
     _lifeValue = 100;
@@ -71,8 +71,8 @@ void Character::shoot()
     info.scaleY = 0.25;
     info.speed = getProjectileSpeed();
     info.damage = getDamage();
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
     info.spriteConfigJsonObjectName = getShootAsset();
-    info.spriteJsonFileName = "rTypeConfig.json";
     info.direction = IEntity::RIGHT;
     Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::PLAYER);
 }
