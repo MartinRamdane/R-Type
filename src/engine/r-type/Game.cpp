@@ -61,16 +61,15 @@ void Game::initializeLevel()
     int damage = 0;
     int life = 0;
 
-
-    //TODO: replace the parsing by this one
-    // for (const auto& [key, value] : level.items())
-    // {
-    //     std::cout << key << " " << value << std::endl;
-    //     std::cout << "---------------------" << std::endl;
-    //     if (value.contains("Count")) {
-    //         std::cout << "Count: " << value["Count"] << std::endl;
-    //     }
-    // }
+    // TODO: replace the parsing by this one
+    //  for (const auto& [key, value] : level.items())
+    //  {
+    //      std::cout << key << " " << value << std::endl;
+    //      std::cout << "---------------------" << std::endl;
+    //      if (value.contains("Count")) {
+    //          std::cout << "Count: " << value["Count"] << std::endl;
+    //      }
+    //  }
 
     for (auto it2 = level.begin(); it2 != level.end(); it2++)
     {
@@ -392,6 +391,46 @@ void Game::setReset(bool reset)
     _reset = reset;
 }
 
+int Game::getCurrentId()
+{
+    return (_lastId);
+}
+
+int Game::getCurrentLevel()
+{
+    return (_currentLevel);
+}
+
+std::map<std::string, std::function<std::string()>> Game::getAssets()
+{
+    return (_assets);
+}
+
+void Game::setCurrentId(int id)
+{
+    _lastId = id;
+}
+
+void Game::createEnemy(IEntity::EntityInfo info)
+{
+    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info.assetName, info.x, info.y, info.id, info.name, info.projectileType, info.fireRate, info.speed, info.projectileSpeed, info.damage, info.life);
+    enemy->setMovementType(info.movementType);
+    _enemies.push_back(enemy);
+    if (info.name == "OrangeRobot")
+        _enemie1Groups->insert(enemy);
+    else if (info.name == "Flyer")
+        _flyerGroups->insert(enemy);
+    else if (info.name == "Enemy2")
+        _enemie2Groups->insert(enemy);
+}
+
+void Game::createBackground(IEntity::EntityInfo info)
+{
+    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info.assetName, info.x, info.y, info.id, info.spriteJsonFileName, info.spriteConfigJsonObjectName);
+    _staticObjects.push_back(background);
+    _staticObjectsGroups->insert(background);
+}
+
 std::map<std::string, std::function<std::string()>> Game::_assets = {
 
     {"Classic", []()
@@ -464,36 +503,3 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Flyer");
      }}};
-
-int Game::getCurrentId()
-{
-    return (_lastId);
-}
-
-int Game::getCurrentLevel()
-{
-    return (_currentLevel);
-}
-
-std::map<std::string, std::function<std::string()>> Game::getAssets()
-{
-    return (_assets);
-}
-
-void Game::setCurrentId(int id)
-{
-    _lastId = id;
-}
-
-void Game::createEnemy(IEntity::EntityInfo info)
-{
-    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info.assetName, info.x, info.y, info.id, info.name, info.projectileType, info.fireRate, info.speed, info.projectileSpeed, info.damage, info.life);
-    enemy->setMovementType(info.movementType);
-    _enemies.push_back(enemy);
-    if (info.name == "OrangeRobot")
-        _enemie1Groups->insert(enemy);
-    else if (info.name == "Flyer")
-        _flyerGroups->insert(enemy);
-    else if (info.name == "Enemy2")
-        _enemie2Groups->insert(enemy);
-}

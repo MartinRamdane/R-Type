@@ -1,7 +1,7 @@
 {
     "Level-1": {
         "Background": {
-            "Type": "StaticObject"
+            "Type": "Background"
         },
         "Enemy1": {
             "Config": "Flyer.rType.json",

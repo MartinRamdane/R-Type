@@ -51,6 +51,7 @@ public:
     void setCurrentId(int id);
     std::map<std::string, std::function<std::string()>> getAssets();
     void createEnemy(IEntity::EntityInfo info);
+    void createBackground(IEntity::EntityInfo info);
 
 private:
     std::shared_ptr<Engine> _engine;

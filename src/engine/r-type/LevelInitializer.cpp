@@ -26,6 +26,10 @@ LevelInitializer::LevelInitializer(IGame *game)
                 createEnemy(value["Count"], value["Positions"]);
             }
         }
+        else
+        {
+            createBackground();
+        }
     }
 }
 
@@ -58,5 +62,19 @@ void LevelInitializer::createEnemy(int cout, auto positions)
         _game->createEnemy(_info);
         _game->setCurrentId(_game->getCurrentId() + 1);
     }
+    _info = {};
+}
+
+void LevelInitializer::createBackground()
+{
+    _info.id = _game->getCurrentId();
+    _info.name = "Background";
+    _info.assetName = _game->getAssets()["Background"]();
+    _info.spriteJsonFileName = "rTypeConfig.json";
+    _info.spriteConfigJsonObjectName = "Background";
+    _info.x = 425;
+    _info.y = 239;
+    _game->createBackground(_info);
+    _game->setCurrentId(_game->getCurrentId() + 1);
     _info = {};
 }
