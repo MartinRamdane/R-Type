@@ -12,7 +12,7 @@
 class AEntity : public IEntity
 {
 public:
-    AEntity(std::string path, float x, float y, int id, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName, float scaleX = 1, float scaleY = 1);
+    AEntity(EntityInfo info);
     ~AEntity();
 
     void setPosition(float x, float y);
@@ -34,7 +34,7 @@ public:
     void setDamage(int damage);
     int getDamage() const;
     virtual void takeDamage(int damage);
-    std::string getSpriteJsonFileName() const;
+    std::string getspriteConfigJsonFileName() const;
     std::string getSpriteConfigJsonObjectName() const;
     void setRadius(float radius);
     float getRadius() const;
@@ -50,7 +50,7 @@ protected:
     float _oldX;
     float _oldY;
     Direction _direction;
-    std::string _path;
+    std::string _assetFile;
     float _scaleX;
     float _scaleY;
     float _speed;
@@ -61,9 +61,8 @@ protected:
     float _radius;
     bool _flip;
     int _id;
-    std::string _spriteConfigJsonPath;
+    std::string _spriteConfigJsonFileName;
     std::string _spriteConfigJsonObjectName;
 
 private:
-
 };

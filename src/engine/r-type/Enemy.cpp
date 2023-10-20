@@ -7,15 +7,15 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(std::string path, float x, float y, int id, std::string enemyConfig, std::string bulletType, float fireRate, float speed, float bulletSpeed, int damage, int life, float scaleX, float scaleY)
-    : Character(path, x, y, id, scaleX, scaleY, "rTypeConfig.json", enemyConfig)
+Enemy::Enemy(EntityInfo info)
+    : Character(info)
 {
-    setShootAsset(bulletType);
-    setSpeed(speed);
-    setFireRate(fireRate);
-    setBulletSpeed(bulletSpeed);
-    setDamage(damage);
-    setLife(life);
+    setShootAsset(info.projectileType);
+    setSpeed(info.speed);
+    setFireRate(info.fireRate);
+    setProjectileSpeed(info.projectileSpeed);
+    setDamage(info.damage);
+    setLife(info.life);
 }
 
 Enemy::~Enemy()
@@ -31,7 +31,7 @@ void Enemy::update()
 
     std::string movementType = getMovementType();
 
-    if (movementType == "Horizontal")
+    if (movementType == "Linear")
     {
         move(-1, 0);
     }
@@ -88,7 +88,18 @@ void Enemy::shoot()
         return;
     std::cout << "Enemy shoot" << std::endl;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) - 33, std::get<1>(pos) - 2, getShootAsset(), 0.25, 0.25, getBulletSpeed(), getDamage(), getShootAsset(), "_enemyProjectilesGroups", _direction == IEntity::LEFT ? true : false, Direction::LEFT);
+    EntityInfo info;
+    info.x = std::get<0>(pos) - 33;
+    info.y = std::get<1>(pos) - 2;
+    info.name = getShootAsset();
+    info.scaleX = 0.25;
+    info.scaleY = 0.25;
+    info.speed = getProjectileSpeed();
+    info.damage = getDamage();
+    info.spriteConfigJsonObjectName = getShootAsset();
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.direction = IEntity::LEFT;
+    Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::ENEMY);
 }
 
 void Enemy::move(float x, float y)

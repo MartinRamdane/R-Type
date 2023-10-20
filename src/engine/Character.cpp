@@ -7,7 +7,7 @@
 
 #include "Character.hpp"
 
-Character::Character(std::string path, float x, float y, int id, float scaleX, float scaleY, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName) : AEntity(path, x, y, id, spriteConfigJsonPath, spriteConfigJsonObjectName, scaleX, scaleY)
+Character::Character(EntityInfo info) : AEntity(info)
 {
     _fireRate = 3;
     _lifeValue = 100;
@@ -63,7 +63,18 @@ void Character::shoot()
     if (!canShoot())
         return;
     auto pos = getPosition();
-    Game::instance->createProjectile(std::get<0>(pos) + (_direction == RIGHT ? 30 : -30), std::get<1>(pos) + 2, _shootAsset, 0.25, 0.25, getBulletSpeed(), getDamage(), _shootAsset, "_projectilesGroups", _direction == IEntity::LEFT ? true : false, _direction);
+    EntityInfo info;
+    info.x = std::get<0>(pos) + (_direction == RIGHT ? 30 : -30);
+    info.y = std::get<1>(pos) + 2;
+    info.name = getShootAsset();
+    info.scaleX = 0.25;
+    info.scaleY = 0.25;
+    info.speed = getProjectileSpeed();
+    info.damage = getDamage();
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonObjectName = getShootAsset();
+    info.direction = _direction;
+    Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::PLAYER);
 }
 
 void Character::update()
@@ -92,14 +103,14 @@ std::string Character::getShootAsset() const
     return _shootAsset;
 }
 
-void Character::setBulletSpeed(float bulletSpeed)
+void Character::setProjectileSpeed(float projectileSpeed)
 {
-    _bulletSpeed = bulletSpeed;
+    _projectileSpeed = projectileSpeed;
 }
 
-float Character::getBulletSpeed() const
+float Character::getProjectileSpeed() const
 {
-    return _bulletSpeed;
+    return _projectileSpeed;
 }
 
 void Character::resetLife()

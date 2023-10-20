@@ -1,57 +1,36 @@
 {
     "Level-1": {
         "Background": {
-            "Type": "StaticObject"
+            "Type": "Background"
         },
-        "Flyer": {
-            "Type": "Flyer",
-            "MovementType": "UpAndDown",
+        "Enemy2": {
+            "Config": "OrangeRobot.rType.json",
             "Count": 2,
             "Positions": [
-                {"X": 960, "Y": 431},
-                {"X": 980, "Y": 400}
-              ],
-            "BulletType": "BulletEnemy1",
-            "FireRate": 1,
-            "BulletSpeed": 8,
-            "Speed": 2,
-            "Damage": 10,
-            "Life": 10
+                {"X": 960, "Y": 331},
+                {"X": 980, "Y": 300}
+              ]
         }
     },
     "Level-2": {
         "Background": {
-            "Type": "StaticObject"
-        },
-        "Flyer": {
-            "Type": "Flyer",
-            "MovementType": "UpAndDown",
-            "Count": 2,
-            "Positions": [
-                {"X": 960, "Y": 231},
-                {"X": 2100, "Y": 389}
-              ],
-            "BulletType": "BulletEnemy1",
-            "FireRate": 1,
-            "BulletSpeed": 8,
-            "Speed": 2,
-            "Damage": 10,
-            "Life": 10
+            "Type": "Background"
         },
         "Enemy1": {
-            "Type": "Enemy1",
-            "MovementType": "Random",
+            "Config": "Flyer.rType.json",
             "Count": 2,
             "Positions": [
-                {"X": 1590, "Y": 231},
-                {"X": 1735, "Y": 389}
-            ],
-            "BulletType": "BulletEnemy2",
-            "FireRate": 1,
-            "BulletSpeed": 4,
-            "Speed": 0.8,
-            "Damage": 35,
-            "Life": 55
+                {"X": 960, "Y": 431},
+                {"X": 980, "Y": 400}
+              ]
+        },
+        "Enemy2": {
+            "Config": "OrangeRobot.rType.json",
+            "Count": 2,
+            "Positions": [
+                {"X": 960, "Y": 331},
+                {"X": 980, "Y": 300}
+              ]
         }
     }
 }

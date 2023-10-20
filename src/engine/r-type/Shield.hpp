@@ -14,7 +14,7 @@
 class Shield : public Character
 {
 public:
-    Shield(std::string path, float x, float y, int id, float scaleX = 1, float scaleY = 1);
+    Shield(EntityInfo info);
     ~Shield();
 
     void activateShield();
