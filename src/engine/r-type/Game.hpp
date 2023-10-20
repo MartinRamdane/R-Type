@@ -18,6 +18,7 @@
 #include "../IGame.hpp"
 #include <random>
 #include <tuple>
+#include "LevelInitializer.hpp"
 
 class Character;
 class Enemy;
@@ -47,6 +48,9 @@ public:
     void setReset(bool reset);
     int getCurrentId();
     int getCurrentLevel();
+    void setCurrentId(int id);
+    std::map<std::string, std::function<std::string()>> getAssets();
+    void createEnemy(IEntity::EntityInfo info);
 
 private:
     std::shared_ptr<Engine> _engine;
@@ -65,4 +69,5 @@ private:
     static std::map<std::string, std::function<std::string()>> _assets;
     int _currentLevel = 1;
     bool _reset = false;
+    std::shared_ptr<LevelInitializer> _levelInitializer;
 };

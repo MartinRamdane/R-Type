@@ -31,7 +31,7 @@ void Enemy::update()
 
     std::string movementType = getMovementType();
 
-    if (movementType == "Horizontal")
+    if (movementType == "Linear")
     {
         move(-1, 0);
     }

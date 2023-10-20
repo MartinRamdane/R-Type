@@ -27,7 +27,8 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
     _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
 
-    initializeLevel();
+    // initializeLevel();
+    _levelInitializer = std::make_shared<LevelInitializer>(this);
 
     // Add collision between entities groups
     _engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
@@ -418,10 +419,10 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.ShieldSpaceship");
      }},
-    {"Enemy1", []()
+    {"OrangeRobot", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Enemy1");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.OrangeRobot");
      }},
     {"Enemy2", []()
      {
@@ -472,4 +473,27 @@ int Game::getCurrentId()
 int Game::getCurrentLevel()
 {
     return (_currentLevel);
+}
+
+std::map<std::string, std::function<std::string()>> Game::getAssets()
+{
+    return (_assets);
+}
+
+void Game::setCurrentId(int id)
+{
+    _lastId = id;
+}
+
+void Game::createEnemy(IEntity::EntityInfo info)
+{
+    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info.assetName, info.x, info.y, info.id, info.name, info.projectileType, info.fireRate, info.speed, info.projectileSpeed, info.damage, info.life);
+    enemy->setMovementType(info.movementType);
+    _enemies.push_back(enemy);
+    if (info.name == "OrangeRobot")
+        _enemie1Groups->insert(enemy);
+    else if (info.name == "Flyer")
+        _flyerGroups->insert(enemy);
+    else if (info.name == "Enemy2")
+        _enemie2Groups->insert(enemy);
 }

@@ -21,6 +21,31 @@ public:
         LEFT,
         RIGHT
     };
+    typedef struct EntityInfo {
+        std::string name;
+        std::string assetName;
+        std::string spriteJsonFileName;
+        std::string spriteConfigJsonObjectName;
+        std::string movementType;
+        std::string projectileType;
+        float x;
+        float y;
+        float oldX;
+        float oldY;
+        float speed;
+        float radius;
+        float scaleX;
+        float scaleY;
+        float projectileSpeed;
+        float fireRate;
+        int damage;
+        int life;
+        int id;
+        bool created;
+        bool dead;
+        bool flip;
+        Direction direction;
+    } EntityInfo;
     virtual ~IEntity() = default;
     virtual void setPosition(float x, float y) = 0;
     virtual void update() = 0;
