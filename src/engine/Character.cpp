@@ -73,7 +73,7 @@ void Character::shoot()
     info.damage = getDamage();
     info.spriteConfigJsonFileName = "rTypeConfig.json";
     info.spriteConfigJsonObjectName = getShootAsset();
-    info.direction = IEntity::RIGHT;
+    info.direction = _direction;
     Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::PLAYER);
 }
 
