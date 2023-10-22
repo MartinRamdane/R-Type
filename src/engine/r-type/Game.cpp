@@ -157,6 +157,7 @@ void Game::update(ThreadSafeQueue<Event> &events, UDPServer *server)
             _lastId++;
         }
         std::cout << "Last2 id: " << _lastId << std::endl;
+        server->setIgnoreMsg(false);
     }
 }
 

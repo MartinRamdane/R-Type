@@ -24,23 +24,21 @@ SpriteConfig Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> 
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
         std::string entityDirection;
         projectile->getDirection() == IEntity::Direction::LEFT ? entityDirection = "left" : entityDirection = "right";
-        SpriteConfig spriteConfig = {entity->getId(), pos, entity->getPath(), scale, entity->getSpriteJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), entityDirection, projectile->getDamage()};
+        SpriteConfig spriteConfig = {entity->getId(), pos, entity->getPath(), scale, entity->getSpriteConfigJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), entityDirection, projectile->getDamage()};
         return spriteConfig;
     }
     if (std::dynamic_pointer_cast<Enemy>(entity))
     {
         auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
         if (enemy->getMovementType() == "Horizontal") {
-            return SpriteConfig{entity->getId(), pos, entity->getPath(), scale, entity->getSpriteJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), "left", 0};
+            return SpriteConfig{entity->getId(), pos, entity->getPath(), scale, entity->getSpriteConfigJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), "left", 0};
         }
-    }
-    return SpriteConfig{entity->getId(), pos, entity->getPath(), scale, entity->getSpriteJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), "none", 0};
         if (enemy->getMovementType() == "Linear")
         {
-            return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() + " " + std::to_string(entity->getSpeed()) + " " + "left";
+            return SpriteConfig{entity->getId(), pos, entity->getPath(), scale, entity->getSpriteConfigJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), "left", 0};
         }
     }
-    return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() + " " + std::to_string(entity->getSpeed()) + " " + "none";
+    return SpriteConfig{entity->getId(), pos, entity->getPath(), scale, entity->getSpriteConfigJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), "none", 0};
 }
 
 MoveConfig Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity)
@@ -52,9 +50,10 @@ MoveConfig Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> enti
         auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
         if (enemy->getMovementType() == "Horizontal") {
             return MoveConfig{-1, pos};
+        }
         if (enemy->getMovementType() == "Linear")
         {
-            return "";
+            return MoveConfig{-1, pos};
         }
     }
     if ((std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) && !std::dynamic_pointer_cast<Projectile>(entity))
@@ -118,7 +117,6 @@ void Protocol::sendWindowCreate(std::string title, int width, int height, UDPSer
 
 void Protocol::sendAllEntitiesToCreate(std::list<EntityType<IEntity> *> entities, UDPServer *server, std::vector<Client>::iterator client)
 {
-    std::vector<std::string> protocol;
     for (auto entityType : entities)
     {
         for (auto entity : entityType->getEntities())

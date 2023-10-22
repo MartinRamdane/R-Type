@@ -43,7 +43,6 @@ void Instance::EventLoop()
     {
       continue; // TODO: destroy the instance
     }
-    _core->mainLoop(_events, _udpServer);
     if (_core->isReset())
     {
       _core->setReset(false);
@@ -53,5 +52,6 @@ void Instance::EventLoop()
       evt.body_size = sizeof(evt.body);
       _udpServer->sendEventToAllClients(evt);
     }
+    _core->mainLoop(_events, _udpServer);
   }
 }

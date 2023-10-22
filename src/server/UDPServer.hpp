@@ -122,6 +122,7 @@ public:
 
     void setInstance(Instance *instance) { _instanceRef = instance; }
     ThreadSafeQueue<UDPMessage> &incoming() { return _queue; }
+    ThreadSafeQueue<UDPMessage> &outgoing() { return _toSendQueue; }
     void handleEngineEvents(std::string request);
     void handleMessages(size_t maxMessages = -1, bool bWait = false);
     int getNbPlayers() const { return _nbPlayers; }

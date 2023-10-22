@@ -134,7 +134,7 @@ void AEntity::takeDamage(int damage)
         _isDead = true;
 }
 
-std::string AEntity::getspriteConfigJsonFileName() const
+std::string AEntity::getSpriteConfigJsonFileName() const
 {
     return _spriteConfigJsonFileName;
 }
