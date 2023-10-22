@@ -17,6 +17,8 @@ LevelInitializer::~LevelInitializer()
 {
 }
 
+#include <typeinfo>
+
 void LevelInitializer::loadLevel(int currentLevel)
 {
     nlohmann::json levelsFile = JsonParser::readFile("rTypeLevels.json");
@@ -30,8 +32,7 @@ void LevelInitializer::loadLevel(int currentLevel)
             loadConfig(config);
             if (config["Type"] == "Enemy")
             {
-                // createEnemy(value["Count"], value["Positions"]);
-                createEnemy(value["Count"]);
+                createEnemy(value["Count"], value["Positions"]);
             }
         }
         else
@@ -56,26 +57,13 @@ void LevelInitializer::loadConfig(nlohmann::json spriteConfig)
     _info.speed = spriteConfig["Speed"];
 }
 
-// void LevelInitializer::createEnemy(int cout, auto positions)
-// {
-//     for (int i = 0; i < cout; i++)
-//     {
-//         _info.id = _game->getCurrentId();
-//         _info.x = positions[i]["X"];
-//         _info.y = positions[i]["Y"];
-//         _game->createEnemy(_info);
-//         _game->setCurrentId(_info.id + 1);
-//     }
-//     _info = {};
-// }
-
-void LevelInitializer::createEnemy(int cout)
+void LevelInitializer::createEnemy(int cout, nlohmann::json positions)
 {
     for (int i = 0; i < cout; i++)
     {
         _info.id = _game->getCurrentId();
-        _info.x = 700;
-        _info.y = 300;
+        _info.x = positions[i]["X"];
+        _info.y = positions[i]["Y"];
         _game->createEnemy(_info);
         _game->setCurrentId(_info.id + 1);
     }

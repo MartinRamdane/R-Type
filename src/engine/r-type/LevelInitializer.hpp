@@ -20,8 +20,7 @@ public:
     ~LevelInitializer();
     void loadLevel(int currentLevel);
     void loadConfig(nlohmann::json spriteConfig);
-    // void createEnemy(int count, auto positions);
-    void createEnemy(int count);
+    void createEnemy(int cout, nlohmann::json positions);
     void createBackground();
 
 protected:
