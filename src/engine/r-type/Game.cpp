@@ -24,14 +24,16 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _projectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _enemyProjectilesGroups = std::make_shared<EntityType<IEntity>>(3);
     _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-    _enemie1Groups = std::make_shared<EntityType<IEntity>>(20);
+    _orangeRobotGroups = std::make_shared<EntityType<IEntity>>(20);
     _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
     _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
 
-    initializeLevel();
+    // initializeLevel();
+    _levelInitializer = std::make_shared<LevelInitializer>(this);
+    _levelInitializer->loadLevel(_currentLevel);
 
     // Add collision between entities groups
-    _engine->setRelation(_projectilesGroups, _enemie1Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
@@ -42,125 +44,6 @@ Game::~Game()
 {
     // Destroy all entities
     _players.clear();
-}
-
-void Game::initializeLevel()
-{
-    _lastId = 0;
-    JsonParser parser;
-    nlohmann::json levelsFile = JsonParser::readFile("rTypeLevels.json");
-
-    int count = 0;
-    nlohmann::json level = levelsFile["Level-" + std::to_string(_currentLevel)];
-    std::vector<std::tuple<int, int>> positions;
-    std::string movementType;
-    std::string bulletType;
-    float fireRate = 0;
-    float speed = 0;
-    float bulletSpeed = 0;
-    int damage = 0;
-    int life = 0;
-
-    for (auto it2 = level.begin(); it2 != level.end(); it2++)
-    {
-        std::string key = it2.key();
-        auto value = it2.value();
-
-        for (auto it3 = value.begin(); it3 != value.end(); it3++)
-        {
-            if (it3.key() == "Count")
-            {
-                count = *it3;
-            }
-            else if (it3.key() == "Type")
-            {
-                if (count == 0)
-                {
-                    std::cout << "Background initialized" << std::endl;
-                    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(_assets[key](), 425, 239, _lastId++, "rTypeConfig.json", "Background");
-                    _staticObjects.push_back(background);
-                    _staticObjectsGroups->insert(background);
-                    std::cout << "Background " << _staticObjects.size() << std::endl;
-                }
-                else
-                {
-                    for (int i = 0; i < count; i++)
-                    {
-                        if (it3.value() == "Enemy1")
-                        {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed, damage, life);
-                            enemy->setMovementType(movementType);
-                            _enemies.push_back(enemy);
-                            _enemie1Groups->insert(enemy);
-                        }
-                        else if (it3.value() == "Flyer")
-                        {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed, damage, life);
-                            enemy->setMovementType(movementType);
-                            _enemies.push_back(enemy);
-                            _flyerGroups->insert(enemy);
-                        }
-                        else if (it3.value() == "Enemy2")
-                        {
-                            std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(_assets[key](), std::get<0>(positions[i]), std::get<1>(positions[i]), _lastId++, it3.value(), bulletType, fireRate, speed, bulletSpeed, damage, life);
-                            enemy->setMovementType(movementType);
-                            _enemies.push_back(enemy);
-                            _enemie2Groups->insert(enemy);
-                        }
-                    }
-                    count = 0;
-                }
-            }
-            else if (it3.key() == "Positions")
-            {
-                positions.clear();
-                auto position = it3.value();
-                for (int i = 0; i < count; i++)
-                {
-                    if (it2.key() == "Enemy1" || it2.key() == "Flyer" || it2.key() == "Enemy2")
-                    {
-                        nlohmann::json pos = position[i];
-                        // std::cout << pos.at("X") << " " << pos.at("Y") << std::endl;
-                        positions.push_back(std::make_tuple(pos.at("X"), pos.at("Y")));
-                    }
-                }
-            }
-            else if (it3.key() == "MovementType")
-            {
-                movementType = it3.value();
-            }
-            else if (it3.key() == "BulletType")
-            {
-                bulletType = it3.value();
-            }
-            else if (it3.key() == "FireRate")
-            {
-                fireRate = it3.value();
-            }
-            else if (it3.key() == "Speed")
-            {
-                speed = it3.value();
-            }
-            else if (it3.key() == "BulletSpeed")
-            {
-                bulletSpeed = it3.value();
-            }
-            else if (it3.key() == "Damage")
-            {
-                damage = it3.value();
-            }
-            else if (it3.key() == "Life")
-            {
-                life = it3.value();
-            }
-        }
-    }
-    for (auto player : _players)
-    {
-        player->setId(_lastId++);
-        player->setCreated(false);
-        player->resetLife();
-    }
 }
 
 int Game::getId(Event event)
@@ -178,21 +61,34 @@ std::shared_ptr<Character> Game::getRandomSpaceship()
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 4);
     int random = distrib(gen);
+    IEntity::EntityInfo info;
+    info.x = 50;
+    info.y = 100;
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonObjectName = "Spaceship";
+    info.id = _lastId;
+    _lastId++;
 
     switch (random)
     {
     case 0:
-        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Classic"]();
+        return (std::make_shared<Classic>(info));
     case 1:
-        return (std::make_shared<Speed>(_assets["Speed"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Speed"]();
+        return (std::make_shared<Speed>(info));
     case 2:
-        return (std::make_shared<Shooter>(_assets["Shooter"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Shooter"]();
+        return (std::make_shared<Shooter>(info));
     case 3:
-        return (std::make_shared<Tank>(_assets["Tank"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Tank"]();
+        return (std::make_shared<Tank>(info));
     case 4:
-        return (std::make_shared<Shield>(_assets["ShieldSpaceship"](), 50, 100, _lastId++));
+        info.assetFile = _assets["ShieldSpaceship"]();
+        return (std::make_shared<Shield>(info));
     default:
-        return (std::make_shared<Classic>(_assets["Classic"](), 50, 100, _lastId++));
+        info.assetFile = _assets["Classic"]();
+        return (std::make_shared<Classic>(info));
     }
 }
 
@@ -251,29 +147,48 @@ void Game::update(ThreadSafeQueue<Event> &events, UDPServer *server)
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
-        initializeLevel();
-        server->setIgnoreMsg(false);
+        _levelInitializer->loadLevel(_currentLevel);
+        std::cout << "Last1 id: " << _lastId << std::endl;
+        for (auto player : _players)
+        {
+            player->setId(_lastId);
+            player->setCreated(false);
+            player->resetLife();
+            _lastId++;
+        }
+        std::cout << "Last2 id: " << _lastId << std::endl;
     }
 }
 
 void Game::createExplosion(int x, int y)
 {
-    std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(_assets["ExplosionSpaceship"](), x, y, _lastId++, "rTypeConfig.json", "ExplosionSpaceship", 2, 2);
+    IEntity::EntityInfo info;
+    info.x = x;
+    info.y = y;
+    info.assetFile = _assets["ExplosionSpaceship"]();
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonObjectName = "ExplosionSpaceship";
+    info.scaleX = 2;
+    info.scaleY = 2;
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(explosion);
     _staticObjects.push_back(explosion);
 }
 
-void Game::createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction)
+void Game::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group)
 {
-    std::cout << "asset path: " << _assets[path]() << std::endl;
-    std::cout << "spriteConfigJsonObjectName: " << spriteConfigJsonObjectName << std::endl;
-    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(_assets[path](), x, y, _lastId++, damage, scaleX, scaleY, speed, spriteConfigJsonObjectName, direction);
-    if (groupName == "_projectilesGroups")
+    info.assetFile = _assets[info.name]();
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(info);
+    if (group == ProjectileGroup::PLAYER)
     {
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     }
-    else if (groupName == "_enemyProjectilesGroups")
+    else if (group == ProjectileGroup::ENEMY)
     {
         _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
@@ -284,7 +199,15 @@ void Game::createProjectile(int x, int y, std::string path, float scaleX, float 
 
 std::shared_ptr<AEntity> Game::createShield(int x, int y)
 {
-    std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(_assets["Shield"](), x, y, _lastId++, "rTypeConfig.json", "Shield");
+    IEntity::EntityInfo info;
+    info.x = x;
+    info.y = y;
+    info.assetFile = _assets["Shield"]();
+    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonObjectName = "Shield";
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(_shield);
     _staticObjects.push_back(_shield);
     return (_shield);
@@ -361,16 +284,21 @@ void Game::setAllEntitiesToCreated()
 
 void Game::deleteAllEntities()
 {
+    _lastId = 0;
     for (auto staticObject : _staticObjects)
         staticObject->kill();
     for (auto enemy : _enemies)
         enemy->kill();
     for (auto projectile : _projectiles)
         projectile->kill();
-
     _staticObjects.clear();
     _enemies.clear();
     _projectiles.clear();
+    _staticObjectsGroups->clear();
+    _enemie2Groups->clear();
+    _flyerGroups->clear();
+    _orangeRobotGroups->clear();
+    _projectilesGroups->clear();
 }
 
 bool Game::isReset()
@@ -381,6 +309,67 @@ bool Game::isReset()
 void Game::setReset(bool reset)
 {
     _reset = reset;
+}
+
+int Game::getCurrentId()
+{
+    return (_lastId);
+}
+
+int Game::getCurrentLevel()
+{
+    return (_currentLevel);
+}
+
+std::map<std::string, std::function<std::string()>> Game::getAssets()
+{
+    return (_assets);
+}
+
+void Game::setCurrentId(int id)
+{
+    _lastId = id;
+}
+
+void Game::createEnemy(IEntity::EntityInfo info)
+{
+    std::cout << info.assetFile << std::endl;
+    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
+    enemy->setMovementType(info.movementType);
+    _enemies.push_back(enemy);
+    if (info.name == "OrangeRobot")
+        _orangeRobotGroups->insert(enemy);
+    else if (info.name == "Flyer")
+        _flyerGroups->insert(enemy);
+    else if (info.name == "Enemy2")
+        _enemie2Groups->insert(enemy);
+}
+
+void Game::createBackground(IEntity::EntityInfo info)
+{
+    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info);
+    _staticObjects.push_back(background);
+    _staticObjectsGroups->insert(background);
+}
+
+void Game::clearLevel()
+{
+    _lastId = 0;
+    for (auto player : _players)
+    {
+        player->setId(_lastId++);
+        player->setCreated(false);
+        player->resetLife();
+    }
+    _orangeRobotGroups->clear();
+    _flyerGroups->clear();
+    _enemie2Groups->clear();
+    _projectilesGroups->clear();
+    _enemyProjectilesGroups->clear();
+    _staticObjectsGroups->clear();
+    _enemies.clear();
+    _projectiles.clear();
+    _staticObjects.clear();
 }
 
 std::map<std::string, std::function<std::string()>> Game::_assets = {
@@ -410,10 +399,10 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.ShieldSpaceship");
      }},
-    {"Enemy1", []()
+    {"OrangeRobot", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Enemy1");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.OrangeRobot");
      }},
     {"Enemy2", []()
      {
@@ -435,20 +424,20 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.Shield");
      }},
-    {"BulletSpaceship", []()
+    {"PlayerProjectile", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletSpaceship");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.PlayerProjectile");
      }},
-    {"BulletEnemy1", []()
+    {"DiskProjectile", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletEnemy1");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.DiskProjectile");
      }},
-    {"BulletEnemy2", []()
+    {"OrangeProjectile", []()
      {
          JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.BulletEnemy2");
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"), "Game.Assets.Images.OrangeProjectile");
      }},
     {"Flyer", []()
      {

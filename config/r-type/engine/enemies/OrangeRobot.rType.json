@@ -1,0 +1,11 @@
+{
+    "Type": "Enemy",
+    "Name": "OrangeRobot",
+    "MovementType": "Linear",
+    "ProjectileType": "OrangeProjectile",
+    "FireRate": 1,
+    "ProjectileSpeed": 8,
+    "Speed": 2,
+    "Damage": 10,
+    "Life": 10
+}

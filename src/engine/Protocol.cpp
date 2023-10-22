@@ -35,16 +35,26 @@ SpriteConfig Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> 
         }
     }
     return SpriteConfig{entity->getId(), pos, entity->getPath(), scale, entity->getSpriteJsonFileName(), entity->getSpriteConfigJsonObjectName(), entity->getSpeed(), "none", 0};
+        if (enemy->getMovementType() == "Linear")
+        {
+            return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() + " " + std::to_string(entity->getSpeed()) + " " + "left";
+        }
+    }
+    return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() + " " + std::to_string(entity->getSpeed()) + " " + "none";
 }
 
 MoveConfig Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity)
 {
     const auto pos = entity->getPosition();
     const auto oldPos = entity->getOldPosition();
-    if (std::dynamic_pointer_cast<Enemy>(entity)) {
+    if (std::dynamic_pointer_cast<Enemy>(entity))
+    {
         auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
         if (enemy->getMovementType() == "Horizontal") {
             return MoveConfig{-1, pos};
+        if (enemy->getMovementType() == "Linear")
+        {
+            return "";
         }
     }
     if ((std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) && !std::dynamic_pointer_cast<Projectile>(entity))

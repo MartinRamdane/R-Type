@@ -7,24 +7,24 @@
 
 #include "AEntity.hpp"
 
-AEntity::AEntity(std::string path, float x, float y, int id, std::string spriteConfigJsonPath, std::string spriteConfigJsonObjectName, float scaleX, float scaleY)
+AEntity::AEntity(EntityInfo info)
 {
-    _path = path;
-    _x = x;
-    _y = y;
-    _scaleX = scaleX;
-    _scaleY = scaleY;
+    _assetFile = info.assetFile;
+    _x = info.x;
+    _y = info.y;
+    _scaleX = info.scaleX;
+    _scaleY = info.scaleY;
     _speed = 1;
-    _id = id;
-    _oldX = x;
-    _oldY = y;
+    _id = info.id;
+    _oldX = info.x;
+    _oldY = info.y;
     _created = false;
     _isDead = false;
     _damage = 10;
     _life = 100;
     _flip = false;
-    _spriteConfigJsonPath = spriteConfigJsonPath;
-    _spriteConfigJsonObjectName = spriteConfigJsonObjectName;
+    _spriteConfigJsonFileName = info.spriteConfigJsonFileName;
+    _spriteConfigJsonObjectName = info.spriteConfigJsonObjectName;
     _direction = RIGHT;
 }
 
@@ -63,12 +63,12 @@ std::tuple<float, float> AEntity::getScale() const
 
 std::string AEntity::getPath() const
 {
-    return _path;
+    return _assetFile;
 }
 
 void AEntity::setPath(std::string path)
 {
-    _path = path;
+    _assetFile = path;
 }
 
 void AEntity::setSpeed(float speed)
@@ -134,9 +134,9 @@ void AEntity::takeDamage(int damage)
         _isDead = true;
 }
 
-std::string AEntity::getSpriteJsonFileName() const
+std::string AEntity::getspriteConfigJsonFileName() const
 {
-    return _spriteConfigJsonPath;
+    return _spriteConfigJsonFileName;
 }
 
 std::string AEntity::getSpriteConfigJsonObjectName() const
