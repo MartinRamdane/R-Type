@@ -12,16 +12,9 @@ Pong* Pong::instance = nullptr;
 Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
   instance = this;
   _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-  IEntity::EntityInfo info;
-  info.x = 425;
-  info.y = 239;
-  info.assetFile = _assets["Border"]();
-  info.spriteConfigJsonFileName = "pongConfig.json";
-  info.spriteConfigJsonObjectName = "Border";
-  info.id = _lastId++;
-  std::shared_ptr<AEntity> border = std::make_shared<AEntity>(info);
-  _staticObjects.push_back(border);
-  _staticObjectsGroups->insert(border);
+
+  _pongInitializer = std::make_unique<PongInitializer>(this);
+  _pongInitializer->loadLevel(1);
 }
 
 Pong::~Pong() {}
@@ -51,6 +44,17 @@ void Pong::setAllEntitiesToCreated() {
   for (auto& entity : _staticObjects) {
     entity->setCreated(false);
   }
+}
+
+void Pong::createEntity(IEntity::EntityInfo info) {
+  info.id = _lastId++;
+  std::shared_ptr<AEntity> entity = std::make_shared<AEntity>(info);
+  _staticObjects.push_back(entity);
+  _staticObjectsGroups->insert(entity);
+}
+
+std::map<std::string, std::function<std::string()>> Pong::getAssets() {
+  return _assets;
 }
 
 std::map<std::string, std::function<std::string()>> Pong::_assets = {

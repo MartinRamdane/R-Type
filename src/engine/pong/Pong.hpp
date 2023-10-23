@@ -7,12 +7,13 @@
 
 #pragma once
 
+#include <iostream>
+#include <memory>
+#include "../AEntity.hpp"
 #include "../Engine.hpp"
 #include "../IEntity.hpp"
-#include "../AEntity.hpp"
 #include "../IGame.hpp"
-#include <memory>
-#include <iostream>
+#include "PongInitializer.hpp"
 
 class Pong : public IGame {
  public:
@@ -24,6 +25,8 @@ class Pong : public IGame {
   bool isReset();
   void setReset(bool reset);
   void setAllEntitiesToCreated();
+  void createEntity(IEntity::EntityInfo info);
+  std::map<std::string, std::function<std::string()>> getAssets();
 
  private:
   std::shared_ptr<Engine> _engine;
@@ -32,4 +35,5 @@ class Pong : public IGame {
   std::vector<std::shared_ptr<AEntity>> _staticObjects;
   std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
   static std::map<std::string, std::function<std::string()>> _assets;
+  std::unique_ptr<PongInitializer> _pongInitializer;
 };

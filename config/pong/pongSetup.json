@@ -4,6 +4,9 @@
             "Images": {
                 "Border": "border.png"
             }
+        },
+        "Data": {
+            "Levels": "./src/GameEngine/pong/assets/data/levels.json"
         }
     }
 }

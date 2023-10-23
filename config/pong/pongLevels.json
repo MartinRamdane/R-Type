@@ -1,0 +1,11 @@
+{
+    "Level-1": {
+        "Border": {
+            "Config": "Border",
+            "Count": 1,
+            "Positions": [
+                {"X": 425, "Y": 239}
+              ]
+        }
+    }
+}
