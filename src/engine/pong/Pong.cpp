@@ -7,6 +7,7 @@
 
 #include "Pong.hpp"
 #include "../Character.hpp"
+#include "Ball.hpp"
 
 Pong* Pong::instance = nullptr;
 
@@ -14,6 +15,7 @@ Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
   instance = this;
   _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
   _playersGroups = std::make_shared<EntityType<IEntity>>(10);
+  _ballsGroups = std::make_shared<EntityType<IEntity>>(30);
 
   _pongInitializer = std::make_unique<PongInitializer>(this);
   _pongInitializer->loadLevel(1);
@@ -43,6 +45,7 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
         break;
       case ACTION::READY:
         addPlayer();
+        createBall();
         setAllEntitiesToCreated();
         break;
       default:
@@ -74,6 +77,25 @@ void Pong::createEntity(IEntity::EntityInfo info) {
 
 std::map<std::string, std::function<std::string()>> Pong::getAssets() {
   return _assets;
+}
+
+void Pong::createBall() {
+  if (_players.size() != 2)
+    return;
+  IEntity::EntityInfo info;
+  info.id = _lastId++;
+  info.speed = 5;
+  info.name = "Ball";
+  info.assetFile = _assets["Ball"]();
+  info.spriteConfigJsonFileName = "pongConfig.json";
+  info.spriteConfigJsonObjectName = "Ball";
+  info.scaleX = 0.75;
+  info.scaleY = 0.75;
+  info.x = 425;
+  info.y = 239;
+  std::shared_ptr<Ball> entity = std::make_shared<Ball>(info);
+  balls.push_back(entity);
+  _ballsGroups->insert(entity);
 }
 
 void Pong::addPlayer() {

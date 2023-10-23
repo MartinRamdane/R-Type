@@ -17,6 +17,7 @@
 #include <sstream>
 
 class Character;
+class Ball;
 
 class Pong : public IGame {
  public:
@@ -32,6 +33,7 @@ class Pong : public IGame {
   std::map<std::string, std::function<std::string()>> getAssets();
   void addPlayer();
   int getId(Event event);
+  void createBall();
 
  private:
   std::shared_ptr<Engine> _engine;
@@ -41,6 +43,8 @@ class Pong : public IGame {
   std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
   std::vector<std::shared_ptr<Character>> _players;
   std::shared_ptr<EntityType<IEntity>> _playersGroups;
+  std::vector<std::shared_ptr<Ball>> balls;
+  std::shared_ptr<EntityType<IEntity>> _ballsGroups;
   static std::map<std::string, std::function<std::string()>> _assets;
   std::unique_ptr<PongInitializer> _pongInitializer;
 };
