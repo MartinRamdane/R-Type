@@ -12,6 +12,7 @@
 #include <vector>
 #include <cstring>
 #include <memory>
+#include "DataCompress.hpp"
 
 enum class ACTION : uint8_t
 {
@@ -44,7 +45,8 @@ enum class ACTION : uint8_t
 struct Event
 {
   ACTION ACTION_NAME;
-  int body_size;
+  int compressed_size;
+  int original_size;
   std::string body;
 };
 
@@ -52,19 +54,19 @@ class EventHandler
 {
 public:
   EventHandler() = default;
-  EventHandler(ACTION ACTION_NAME, int body_size, std::string body);
+  EventHandler(ACTION ACTION_NAME, int compressed_size, int original_size, std::string body);
   ~EventHandler();
   std::vector<uint8_t> encodeMessage();
   Event decodeMessage(std::vector<uint8_t> data);
-  void addEvent(ACTION ACTION_NAME, int body_size, std::string body);
-  int getRequestId() const { return _body_size; };
+  void addEvent(ACTION ACTION_NAME, int compressed_size, int original_size, std::string body);
   const std::string getBody() const { return _body; };
-  const Event getEvent() const { return Event{_ACTION_NAME, _body_size, _body}; };
+  const Event getEvent() const { return Event{_ACTION_NAME, _compressed_size, _original_size, _body}; };
 
 protected:
 private:
   ACTION _ACTION_NAME;
-  int _body_size;
+  int _compressed_size;
+  int _original_size;
   std::string _body;
 };
 

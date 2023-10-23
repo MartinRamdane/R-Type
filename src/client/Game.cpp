@@ -41,7 +41,8 @@ void Game::run()
             createWindow(_gameTitle, _width, _height);
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
-            evt.body_size = 0;
+            evt.original_size = 0;
+            evt.compressed_size = 0;
             evt.body = "";
             _udpClient->sendEvent(evt);
             _threadPool.enqueue([this]
@@ -90,9 +91,8 @@ void Game::handleEvent()
             {
                 Event evt;
                 std::string playerId = "p" + std::to_string(_playerId);
-                evt.ACTION_NAME = ACTION::FLIP;
-                evt.body_size = playerId.size();
                 evt.body = playerId;
+                evt.ACTION_NAME = ACTION::FLIP;
                 _udpClient->sendEvent(evt);
             }
         }
@@ -103,44 +103,35 @@ void Game::handleEvent()
         _lastFrameTime = std::chrono::high_resolution_clock::now();
     if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 10)
     {
+        evt.body = playerId;
         _lastFrameTime = std::chrono::high_resolution_clock::now();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
             evt.ACTION_NAME = ACTION::LEFT;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
             _udpClient->sendEvent(evt);
             _event_indicator = 0;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             evt.ACTION_NAME = ACTION::RIGHT;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
             _udpClient->sendEvent(evt);
             _event_indicator = 0;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
             evt.ACTION_NAME = ACTION::UP;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
             _udpClient->sendEvent(evt);
             _event_indicator = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             evt.ACTION_NAME = ACTION::DOWN;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
             _udpClient->sendEvent(evt);
             _event_indicator = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             evt.ACTION_NAME = ACTION::SHOOT;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
             _udpClient->sendEvent(evt);
             _event_indicator = 0;
         }
@@ -153,8 +144,6 @@ void Game::handleEvent()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
             evt.ACTION_NAME = ACTION::SHIELD;
-            evt.body_size = playerId.size();
-            evt.body = playerId;
             _udpClient->sendEvent(evt);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
@@ -235,10 +224,13 @@ void Game::update()
         (*it).second.update();
         if ((*it).second.isDead())
         {
+            std::string id = std::to_string((*it).first);
+            DataCompress compressor(id.c_str());
             Event evt;
             evt.ACTION_NAME = ACTION::DEAD;
-            evt.body_size = std::to_string((*it).first).size();
-            evt.body = std::to_string((*it).first);
+            evt.compressed_size = compressor.getCompressedSize();
+            evt.original_size = compressor.getOriginalSize();
+            evt.body = std::string(compressor.getCompressed());
             _udpClient->sendEvent(evt);
             it = _entities.erase(it);
         }

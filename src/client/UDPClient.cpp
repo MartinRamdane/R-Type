@@ -79,7 +79,9 @@ UDPClient::~UDPClient()
 void UDPClient::connect_to(const std::string &host, int port)
 {
   remote_endpoint_ = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(host), port);
-  sendEvent({ACTION::JOIN, 2, "ok"});
+  std::string data = "ok";
+  DataCompress compressor(data.c_str());
+  sendEvent({ACTION::JOIN, compressor.getCompressedSize(), compressor.getOriginalSize(), std::string(compressor.getCompressed())});
   _port = port;
   _host = host;
   start_receive();
@@ -118,6 +120,10 @@ void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
 
 void UDPClient::sendEvent(Event evt)
 {
+  DataCompress compressor(evt.body.c_str());
+  evt.compressed_size = compressor.getCompressedSize();
+  evt.original_size = compressor.getOriginalSize();
+  evt.body = std::string(compressor.getCompressed());
   std::vector<uint8_t> data = encodeEvent(evt);
   SendAsync(data, remote_endpoint_);
 }
@@ -125,7 +131,7 @@ void UDPClient::sendEvent(Event evt)
 std::vector<uint8_t> UDPClient::encodeEvent(Event event)
 {
   EventHandler evt;
-  evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+  evt.addEvent(event.ACTION_NAME, event.compressed_size, event.original_size, event.body);
   return evt.encodeMessage();
 }
 
@@ -193,7 +199,7 @@ void UDPClient::handleEvents(Event evt)
 {
     switch (evt.ACTION_NAME) {
     case ACTION::PING:
-        sendEvent({ACTION::PONG, 0, ""});
+        sendEvent({ACTION::PONG, 0, 0, ""});
         break;
     case ACTION::JOINED:
         joinGame(evt);

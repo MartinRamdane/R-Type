@@ -84,9 +84,8 @@ void UDPServer::userJoined(Client client)
     engineRef->openWindow();
     evt.ACTION_NAME = ACTION::JOINED;
     evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
-    evt.body_size = evt.body.size();
     _instanceRef->addAction(evt);
-    sendEvent(evt, client.client.address().to_string(), client.client.port());
+    sendEvent(evt, client.client.address().to_string(), client.client.port(), true);
 }
 
 void UDPServer::handler(const std::error_code &error, std::size_t)
@@ -137,7 +136,7 @@ void UDPServer::sendPingToClient()
             }
             else
             {
-                sendEvent({ACTION::PING, 0, ""}, it->client.address().to_string(), it->client.port());
+                sendEvent({ACTION::PING, 0, 0, ""}, it->client.address().to_string(), it->client.port(), true);
                 ++it;
             }
         }
@@ -174,8 +173,14 @@ void UDPServer::processSendQueue()
     });
 }
 
-void UDPServer::sendEvent(Event evt, const std::string &host, int port)
+void UDPServer::sendEvent(Event evt, const std::string &host, int port, bool compress)
 {
+    if (compress) {
+        DataCompress compressor(evt.body.c_str());
+        evt.compressed_size = compressor.getCompressedSize();
+        evt.original_size = compressor.getOriginalSize();
+        evt.body = std::string(compressor.getCompressed());
+    }
     message<ACTION> msg;
     std::vector<uint8_t> data = encodeEvent(evt);
     boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
@@ -184,9 +189,13 @@ void UDPServer::sendEvent(Event evt, const std::string &host, int port)
 
 void UDPServer::sendEventToAllClients(Event evt)
 {
+    DataCompress compressor(evt.body.c_str());
+    evt.compressed_size = compressor.getCompressedSize();
+    evt.original_size = compressor.getOriginalSize();
+    evt.body = std::string(compressor.getCompressed());
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
-        sendEvent(evt, it->client.address().to_string(), it->client.port());
+        sendEvent(evt, it->client.address().to_string(), it->client.port(), false);
     }
 }
 
@@ -202,7 +211,7 @@ void UDPServer::handleEngineEvents(std::string request)
 std::vector<uint8_t> UDPServer::encodeEvent(Event event)
 {
     EventHandler evt;
-    evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+    evt.addEvent(event.ACTION_NAME, event.compressed_size, event.original_size, event.body);
     return evt.encodeMessage();
 }
 
@@ -215,23 +224,22 @@ void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
       {
         Event evt;
         evt.ACTION_NAME = ACTION::FLIP;
-        evt.body_size = message.size();
         evt.body = message;
-        sendEvent(evt, client->client.address().to_string(), client->client.port());
+        sendEvent(evt, client->client.address().to_string(), client->client.port(), true);
       }
       else
       {
         Event evt;
         evt.ACTION_NAME = ACTION::SPRITE;
-        evt.body_size = message.size();
         evt.body = message;
-        sendEvent(evt, client->client.address().to_string(), client->client.port());
+        sendEvent(evt, client->client.address().to_string(), client->client.port(), true);
       }
     }
 }
 
 void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::vector<Client>::iterator client)
 {
+    Event event;
     switch (evt.ACTION_NAME)
     {
     case ACTION::LEFT:
@@ -242,7 +250,9 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint,
         break;
     case ACTION::UP:
         std::cout << "Player go to up" << std::endl;
-        sendEvent({ACTION::UP, 2, "ok"}, endpoint.address().to_string(), endpoint.port());
+        event.ACTION_NAME = ACTION::UP;
+        event.body = "ok";
+        sendEvent(event, endpoint.address().to_string(), endpoint.port(), true);
         break;
     case ACTION::DOWN:
         std::cout << "Player go to down" << std::endl;

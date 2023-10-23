@@ -1,6 +1,5 @@
 #include "engine/Core.hpp"
 #include "server/Server.hpp"
-
 int main() {
   try {
     ServerClass server;
