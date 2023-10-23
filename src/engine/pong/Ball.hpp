@@ -8,14 +8,14 @@
 #pragma once
 
 #include "../AEntity.hpp"
-#include "../IEntity.hpp"
 #include "../Engine.hpp"
+#include "../IEntity.hpp"
 
-class Ball : public AEntity
-{
-public:
-    Ball(EntityInfo info);
-    ~Ball();
-    void move(float x, float y);
-    virtual void update() override;
+class Ball : public AEntity {
+ public:
+  Ball(EntityInfo info);
+  ~Ball();
+  void move(float x, float y);
+  virtual void update() override;
+  static void hurtPlayer(IEntity& self, IEntity& you);
 };

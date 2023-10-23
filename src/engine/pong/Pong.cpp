@@ -19,6 +19,8 @@ Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
 
   _pongInitializer = std::make_unique<PongInitializer>(this);
   _pongInitializer->loadLevel(1);
+
+  engine->setRelation(_ballsGroups, _playersGroups, Ball::hurtPlayer);
 }
 
 Pong::~Pong() {}

@@ -182,3 +182,30 @@ void AEntity::setLife(int life)
 {
     _life = life;
 }
+
+std::tuple<float, float> AEntity::getDirectionVector() const
+{
+    return std::make_tuple(dirX, dirY);
+}
+
+void AEntity::setDirectionVector(float x, float y)
+{
+    dirX = x;
+    dirY = y;
+}
+
+int AEntity::getWidth() const
+{
+    return _width;
+}
+
+int AEntity::getHeight() const
+{
+    return _height;
+}
+
+void AEntity::setSize(int width, int height)
+{
+    _width = width;
+    _height = height;
+}

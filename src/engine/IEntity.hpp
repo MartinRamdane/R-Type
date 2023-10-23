@@ -72,4 +72,9 @@ public:
     virtual void setFlip(bool flip) = 0;
     virtual Direction getDirection() const = 0;
     virtual void setLife(int life) = 0;
+    virtual std::tuple<float, float> getDirectionVector() const = 0;
+    virtual void setDirectionVector(float x, float y) = 0;
+    virtual int getWidth() const = 0;
+    virtual int getHeight() const = 0;
+    virtual void setSize(int width, int height) = 0;
 };
