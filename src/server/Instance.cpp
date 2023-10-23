@@ -9,11 +9,12 @@
 
 Instance::Instance(int id, std::string gameName)
     : _id(id), _port((int)(4210 + id)), _threadPool(3), _gameName(gameName) {
-    JsonParser jsonParser;
-    std::cout << "MAX " << jsonParser.get<int>(JsonParser::readFile("rTypeConfig.json"),
-                        "nbPlayersMax") << std::endl;
-    // std::cout << "players: " << _nbPlayersMax << " only: " << _onlyMultiplayer
-    //           << std::endl;
+    std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
+    nlohmann::json jsonFile = _jsonParser.readFile(gameConfigFilePathName);
+    _nbPlayersMax = _jsonParser.get<int>(jsonFile, "nbPlayersMax");
+    _onlyMultiplayer = _jsonParser.get<bool>(jsonFile, "onlyMultiplayer");
+    std::cout << "nbplayersmax: " << _nbPlayersMax << " only multiplayer "
+              << _onlyMultiplayer << std::endl;
     _udpServer = new UDPServer(_io_service, (int)(4210 + id));
     _udpServer->setNbPlayers(1);
     _core = new Core();
