@@ -66,7 +66,7 @@ void Character::shoot() {
   info.scaleY = 0.25;
   info.speed = getProjectileSpeed();
   info.damage = getDamage();
-  info.spriteConfigJsonFileName = "rTypeConfig.json";
+  info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
   info.spriteConfigJsonObjectName = getShootAsset();
   info.direction = _direction;
   Game::instance->createProjectile(info,

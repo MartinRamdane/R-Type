@@ -46,7 +46,7 @@ void LevelInitializer::loadConfig(nlohmann::json spriteConfig)
 {
     _info.name = spriteConfig["Name"];
     _info.assetFile = _game->getAssets()[spriteConfig["Name"]]();
-    _info.spriteConfigJsonFileName = "rTypeConfig.json";
+    _info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     _info.spriteConfigJsonObjectName = spriteConfig["Name"];
     _info.projectileSpeed = spriteConfig["ProjectileSpeed"];
     _info.projectileType = spriteConfig["ProjectileType"];
@@ -76,7 +76,7 @@ void LevelInitializer::createBackground()
     _info.id = _game->getCurrentId();
     _info.name = "Background";
     _info.assetFile = _game->getAssets()["Background"]();
-    _info.spriteConfigJsonFileName = "rTypeConfig.json";
+    _info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     _info.spriteConfigJsonObjectName = "Background";
     _info.x = 425;
     _info.y = 239;
