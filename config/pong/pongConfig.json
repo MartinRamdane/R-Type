@@ -4,5 +4,17 @@
         "nb_rect": 1,
         "rect_init": 0,
         "form": "loop"
+    },
+    "Ball":
+    {
+        "nb_rect": 1,
+        "rect_init": 0,
+        "form": "loop"
+    },
+    "Player":
+    {
+        "nb_rect": 1,
+        "rect_init": 0,
+        "form": "loop"
     }
 }

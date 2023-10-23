@@ -27,6 +27,7 @@ class Pong : public IGame {
   void setAllEntitiesToCreated();
   void createEntity(IEntity::EntityInfo info);
   std::map<std::string, std::function<std::string()>> getAssets();
+  void addPlayer();
 
  private:
   std::shared_ptr<Engine> _engine;
@@ -34,6 +35,8 @@ class Pong : public IGame {
   int _lastId = 0;
   std::vector<std::shared_ptr<AEntity>> _staticObjects;
   std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
+  std::vector<std::shared_ptr<AEntity>> _players;
+  std::shared_ptr<EntityType<IEntity>> _playersGroups;
   static std::map<std::string, std::function<std::string()>> _assets;
   std::unique_ptr<PongInitializer> _pongInitializer;
 };

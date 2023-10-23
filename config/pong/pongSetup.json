@@ -2,7 +2,9 @@
     "Game": {
         "Assets": {
             "Images": {
-                "Border": "border.png"
+                "Border": "border.png",
+                "Player": "pong_player.png",
+                "Ball": "pong_ball.png"
             }
         },
         "Data": {

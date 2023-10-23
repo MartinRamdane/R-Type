@@ -12,6 +12,7 @@ Pong* Pong::instance = nullptr;
 Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
   instance = this;
   _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
+  _playersGroups = std::make_shared<EntityType<IEntity>>(10);
 
   _pongInitializer = std::make_unique<PongInitializer>(this);
   _pongInitializer->loadLevel(1);
@@ -24,6 +25,7 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
     auto event = events.pop_front();
     switch (event.ACTION_NAME) {
       case ACTION::READY:
+        addPlayer();
         setAllEntitiesToCreated();
         break;
       default:
@@ -57,11 +59,46 @@ std::map<std::string, std::function<std::string()>> Pong::getAssets() {
   return _assets;
 }
 
+void Pong::addPlayer() {
+  IEntity::EntityInfo info;
+  info.id = _lastId++;
+  info.speed = 2;
+  info.name = "Player";
+  info.assetFile = _assets["Player"]();
+  info.spriteConfigJsonFileName = "pongConfig.json";
+  info.spriteConfigJsonObjectName = "Player";
+  info.scaleX = 0.75;
+  info.scaleY = 0.75;
+  if (_players.size() == 0) {
+    info.x = 35;
+    info.y = 239;
+  } else if (_players.size() == 1) {
+    info.x = 815;
+    info.y = 239;
+  } else
+    return;
+  std::shared_ptr<AEntity> entity = std::make_shared<AEntity>(info);
+  _players.push_back(entity);
+  _playersGroups->insert(entity);
+}
+
 std::map<std::string, std::function<std::string()>> Pong::_assets = {
     {"Border",
      []() {
        JsonParser parser;
        return parser.get<std::string>(JsonParser::readFile("pongSetup.json"),
                                       "Game.Assets.Images.Border");
+     }},
+    {"Player",
+     []() {
+       JsonParser parser;
+       return parser.get<std::string>(JsonParser::readFile("pongSetup.json"),
+                                      "Game.Assets.Images.Player");
+     }},
+    {"Ball",
+     []() {
+       JsonParser parser;
+       return parser.get<std::string>(JsonParser::readFile("pongSetup.json"),
+                                      "Game.Assets.Images.Ball");
      }},
 };
