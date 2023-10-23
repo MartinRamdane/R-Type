@@ -6,6 +6,7 @@
 */
 
 #include "Pong.hpp"
+#include "../Character.hpp"
 
 Pong* Pong::instance = nullptr;
 
@@ -20,10 +21,26 @@ Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
 
 Pong::~Pong() {}
 
+int Pong::getId(Event event) {
+  std::stringstream ss(event.body);
+  std::string playerId;
+  ss >> playerId;
+  int id = std::stoi(playerId.substr(1));
+  return (id);
+}
+
 void Pong::update(ThreadSafeQueue<Event>& events) {
   while (!events.empty()) {
     auto event = events.pop_front();
     switch (event.ACTION_NAME) {
+      case ACTION::UP:
+        if (_players.size() > 0)
+          _players[getId(event) - 1]->move(0, -1);
+        break;
+      case ACTION::DOWN:
+        if (_players.size() > 0)
+          _players[getId(event) - 1]->move(0, 1);
+        break;
       case ACTION::READY:
         addPlayer();
         setAllEntitiesToCreated();
@@ -62,7 +79,7 @@ std::map<std::string, std::function<std::string()>> Pong::getAssets() {
 void Pong::addPlayer() {
   IEntity::EntityInfo info;
   info.id = _lastId++;
-  info.speed = 2;
+  info.speed = 5;
   info.name = "Player";
   info.assetFile = _assets["Player"]();
   info.spriteConfigJsonFileName = "pongConfig.json";
@@ -77,7 +94,7 @@ void Pong::addPlayer() {
     info.y = 239;
   } else
     return;
-  std::shared_ptr<AEntity> entity = std::make_shared<AEntity>(info);
+  std::shared_ptr<Character> entity = std::make_shared<Character>(info);
   _players.push_back(entity);
   _playersGroups->insert(entity);
 }

@@ -14,7 +14,7 @@ AEntity::AEntity(EntityInfo info)
     _y = info.y;
     _scaleX = info.scaleX;
     _scaleY = info.scaleY;
-    _speed = 1;
+    _speed = info.speed;
     _id = info.id;
     _oldX = info.x;
     _oldY = info.y;

@@ -14,6 +14,9 @@
 #include "../IEntity.hpp"
 #include "../IGame.hpp"
 #include "PongInitializer.hpp"
+#include <sstream>
+
+class Character;
 
 class Pong : public IGame {
  public:
@@ -28,6 +31,7 @@ class Pong : public IGame {
   void createEntity(IEntity::EntityInfo info);
   std::map<std::string, std::function<std::string()>> getAssets();
   void addPlayer();
+  int getId(Event event);
 
  private:
   std::shared_ptr<Engine> _engine;
@@ -35,7 +39,7 @@ class Pong : public IGame {
   int _lastId = 0;
   std::vector<std::shared_ptr<AEntity>> _staticObjects;
   std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
-  std::vector<std::shared_ptr<AEntity>> _players;
+  std::vector<std::shared_ptr<Character>> _players;
   std::shared_ptr<EntityType<IEntity>> _playersGroups;
   static std::map<std::string, std::function<std::string()>> _assets;
   std::unique_ptr<PongInitializer> _pongInitializer;
