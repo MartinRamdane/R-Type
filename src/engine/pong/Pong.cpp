@@ -13,8 +13,8 @@ Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
   instance = this;
   _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
   IEntity::EntityInfo info;
-  info.x = 0;
-  info.y = 0;
+  info.x = 425;
+  info.y = 239;
   info.assetFile = _assets["Border"]();
   info.spriteConfigJsonFileName = "pongConfig.json";
   info.spriteConfigJsonObjectName = "Border";

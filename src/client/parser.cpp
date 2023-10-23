@@ -38,6 +38,8 @@ void Parser::getConfig(std::string path, std::string type, Entity *entity)
     nlohmann::json jsonfile = jsonParser.readFile(path);
     int nbRect = jsonParser.get<int>(jsonfile, type + ".nb_rect");
     int initRect = jsonParser.get<int>(jsonfile, type + ".rect_init");
+    std::cout << "nbRect: " << nbRect << std::endl;
+    std::cout << "initRect: " << initRect << std::endl;
     entity->setRect(nbRect, initRect);
     entity->setEventForm(jsonParser.get<std::string>(jsonfile, type + ".form"));
     entity->setObjectType(type);
