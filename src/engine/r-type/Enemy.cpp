@@ -97,7 +97,7 @@ void Enemy::shoot()
     info.speed = getProjectileSpeed();
     info.damage = getDamage();
     info.spriteConfigJsonObjectName = getShootAsset();
-    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.direction = IEntity::LEFT;
     Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::ENEMY);
 }

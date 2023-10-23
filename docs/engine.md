@@ -67,10 +67,10 @@ Here is the link to the library doc: https://github.com/nlohmann/json
 Along with the ones I'll list below, the other files do not have a specific way or rule to follow. It is up to you to decide the structure and informations that you are goint to put on it!
 
 -   WindowConfig.json is used to config the screen size and name.
--   rTypeConfig.json _(you must create one for each game)_ is how the sprite's behavior should be handled in the graphical display. When creating a sprite using the `ecreate` protocol, you must specify the name of the file containig the sprites config and also the object that will be used to do the sprite animation:
+-   rTypeAnimationConfig.json _(you must create one for each game)_ is how the sprite's behavior should be handled in the graphical display. When creating a sprite using the `ecreate` protocol, you must specify the name of the file containig the sprites config and also the object that will be used to do the sprite animation:
     `return ... entity->getSpriteJsonFileName() " " + entity->getSpriteConfigJsonObjectName() ...`
 
-Taking a look into the rTypeConfig.json file, you will find this:
+Taking a look into the rTypeAnimationConfig.json file, you will find this:
 
     ...
     "Enemy1":

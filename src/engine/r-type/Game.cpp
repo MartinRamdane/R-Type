@@ -66,7 +66,7 @@ std::shared_ptr<Character> Game::getRandomSpaceship()
     IEntity::EntityInfo info;
     info.x = 50;
     info.y = 100;
-    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Spaceship";
     info.id = _lastId;
     _lastId++;
@@ -167,7 +167,7 @@ void Game::createExplosion(int x, int y)
     info.x = x;
     info.y = y;
     info.assetFile = _assets["ExplosionSpaceship"]();
-    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "ExplosionSpaceship";
     info.scaleX = 2;
     info.scaleY = 2;
@@ -204,7 +204,7 @@ std::shared_ptr<AEntity> Game::createShield(int x, int y)
     info.x = x;
     info.y = y;
     info.assetFile = _assets["Shield"]();
-    info.spriteConfigJsonFileName = "rTypeConfig.json";
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Shield";
     info.id = _lastId;
     _lastId++;
