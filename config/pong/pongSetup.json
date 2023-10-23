@@ -1,0 +1,9 @@
+{
+    "Game": {
+        "Assets": {
+            "Images": {
+                "Border": "border.png"
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "Border":
+    {
+        "nb_rect": 1,
+        "rect_init": 1,
+        "form": "loop"
+    }
+}

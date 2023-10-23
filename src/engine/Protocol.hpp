@@ -12,7 +12,6 @@
 #include "IEntity.hpp"
 #include "EntityType.hpp"
 #include <iostream>
-#include "r-type/Game.hpp"
 #include "r-type/Enemy.hpp"
 
 class Protocol

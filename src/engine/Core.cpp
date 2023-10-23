@@ -12,7 +12,7 @@ Core::Core()
     _engine = std::make_shared<Engine>();
     std::string protocol = Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
     // send protocol to client
-    _game = std::make_shared<Game>(_engine);
+    _game = std::make_shared<Pong>(_engine);
 }
 
 Core::~Core()
