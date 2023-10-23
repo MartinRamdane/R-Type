@@ -37,6 +37,9 @@ Game::Game(std::shared_ptr<Engine> &engine) : _engine(engine)
     _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
+    _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEnemy);
+    _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
+    _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEnemy);
 }
 
 Game::~Game()

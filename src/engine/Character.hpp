@@ -35,6 +35,7 @@ public:
     void resetLife();
     void setId(int id);
     void setLifeValue(int lifeValue);
+    static void hurtEnemy(IEntity &self, IEntity &you);
 
 private:
     float _projectileSpeed = 5;
