@@ -21,7 +21,7 @@ std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> e
     auto scale = entity->getScale();
     if (auto test = std::dynamic_pointer_cast<Projectile>(entity))
     {
-        std::cout << "pos: " << std::to_string(std::get<0>(pos)) << " " << std::to_string(std::get<1>(pos)) << std::endl;
+        //std::cout << "pos: " << std::to_string(std::get<0>(pos)) << " " << std::to_string(std::get<1>(pos)) << std::endl;
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
         std::string entityDirection;
         projectile->getDirection() == IEntity::Direction::LEFT ? entityDirection = "left" : entityDirection = "right";

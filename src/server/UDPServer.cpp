@@ -235,20 +235,14 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint,
     switch (evt.ACTION_NAME)
     {
     case ACTION::LEFT:
-        std::cout << "Player go to left " << evt.body << std::endl;
         break;
     case ACTION::RIGHT:
-        std::cout << "Player go to right" << std::endl;
         break;
     case ACTION::UP:
-        std::cout << "Player go to up" << std::endl;
-        sendEvent({ACTION::UP, 2, "ok"}, endpoint.address().to_string(), endpoint.port());
         break;
     case ACTION::DOWN:
-        std::cout << "Player go to down" << std::endl;
         break;
     case ACTION::SHOOT:
-        std::cout << "Player shoot" << std::endl;
         break;
     case ACTION::READY:
         std::cout << "The user is ready to receive sprites" << std::endl;

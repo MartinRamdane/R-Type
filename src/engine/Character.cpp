@@ -29,11 +29,8 @@ void Character::move(float x, float y) {
 }
 
 void Character::setFireRate(float fireRate) {
-  std::cout << "Fire rate: " << fireRate << std::endl;
   _fireRate = fireRate;
   _targetFrameDuration = std::chrono::duration<double>(1.0 / _fireRate);
-  std::cout << "Target frame duration: " << _targetFrameDuration.count()
-            << std::endl;
 }
 
 float Character::getFireRate() const {

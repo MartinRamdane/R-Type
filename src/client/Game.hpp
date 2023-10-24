@@ -20,6 +20,8 @@
 #include "ProgressBar.hpp"
 
 class TCPClientImpl;
+class IDisplay;
+
 class Game
 {
 public:
@@ -27,10 +29,6 @@ public:
     ~Game(){};
     void run();
     void createWindow(std::string name, int x, int y);
-    void animate();
-    void draw();
-    void handleEvent();
-    void update();
     void getinfos(){};
     bool connectToServer(std::string host, int port);
     bool connectToUdpServer(std::string host, int port);
@@ -44,7 +42,7 @@ public:
     void addEntity(int id, Entity entity);
     void removeEntity(int);
     void LoopUDPMessages();
-    void setPlayerId(int id) { _playerId = id; }
+    void setPlayerId(int id);
     std::string getHost() { return _host; }
     TCPClientImpl *getClient() { return _client; }
     void flipEntity(int id);
@@ -73,5 +71,5 @@ private:
     std::string _host;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     ProgressBar _progressBar;
-
+    std::shared_ptr<IDisplay> _display;
 };
