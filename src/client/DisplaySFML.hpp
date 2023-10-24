@@ -22,10 +22,10 @@ class DisplaySFML : public IDisplay {
   void update(std::map<int, Entity>* _entities, UDPClient* _udpClient);
   void run(std::map<int, Entity>* _entities, UDPClient* _udpClient,
            TCPClientImpl* _client);
-  bool getClosed() { return closed; };
+  bool getClosed() const { return closed; };
   void setPlayerId(int id) { _playerId = id; };
-  int getPlayerId() { return _playerId; };
-  sf::RenderWindow& getWindow() { return _window; };
+  int getPlayerId() const { return _playerId; };
+  sf::RenderWindow& getWindow() const { return _window; };
   bool windowIsOpen() { return _window.isOpen(); };
 
  protected:

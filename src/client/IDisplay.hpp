@@ -31,8 +31,8 @@ class IDisplay {
   virtual void run(std::map<int, Entity>* _entities, UDPClient* _udpClient,
                    TCPClientImpl* _client) = 0;
   virtual void setPlayerId(int id) = 0;
-  virtual int getPlayerId() = 0;
-  virtual bool getClosed() = 0;
-  virtual sf::RenderWindow& getWindow() = 0;
+  virtual int getPlayerId() const = 0;
+  virtual bool getClosed() const = 0;
+  virtual sf::RenderWindow& getWindow() const = 0;
   virtual bool windowIsOpen() = 0;
 };
