@@ -28,6 +28,10 @@ void Ball::move(float x, float y) {
     y = -y;    // Inverser la direction en Y
     dirY = -dirY;
   }
+  if (((_x + x * _speed) < _radius / 2) ||
+      ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius / 2)) {
+    kill();
+  }
   setOldPosition(_x, _y);
   _x += x * _speed;
   _y += y * _speed;

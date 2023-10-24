@@ -19,8 +19,6 @@ Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
 
   _pongInitializer = std::make_unique<PongInitializer>(this);
   _pongInitializer->loadLevel(1);
-
-  engine->setRelation(_ballsGroups, _playersGroups, Ball::hurtPlayer);
 }
 
 Pong::~Pong() {}
@@ -34,6 +32,29 @@ int Pong::getId(Event event) {
 }
 
 void Pong::update(ThreadSafeQueue<Event>& events) {
+
+  if (balls.size() > 0) {
+    std::tuple<float, float> ballPos = balls[0]->getPosition();
+    float ballX = std::get<0>(ballPos);
+    float ballY = std::get<1>(ballPos) - balls[0]->getRadius() / 2;
+
+    for (auto& player : _players) {
+      std::tuple<float, float> playerPos = player->getPosition();
+      float playerWidth = player->getWidth();
+      float playerHeight = player->getHeight();
+      float playerX = std::get<0>(playerPos);
+      float playerY = std::get<1>(playerPos) - playerHeight / 2;
+      float _radius = balls[0]->getRadius() * std::get<0>(balls[0]->getScale());
+
+      if (ballX + _radius > playerX &&
+          ballX - _radius < playerX + playerWidth &&
+          ballY + _radius > playerY &&
+          ballY - _radius < playerY + playerHeight) {
+        balls[0]->hurtPlayer(*balls[0], *player);
+      }
+    }
+  }
+
   while (!events.empty()) {
     auto event = events.pop_front();
     switch (event.ACTION_NAME) {
@@ -52,6 +73,12 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
         break;
       default:
         break;
+    }
+  }
+  if (balls.size() > 0) {
+    if (balls[0]->isDead()) {
+      balls.clear();
+      createBall();
     }
   }
 }
@@ -121,6 +148,7 @@ void Pong::addPlayer() {
   std::shared_ptr<Character> entity = std::make_shared<Character>(info);
   _players.push_back(entity);
   _playersGroups->insert(entity);
+  entity->setSize(8, 75);
 }
 
 std::map<std::string, std::function<std::string()>> Pong::_assets = {
