@@ -43,9 +43,7 @@ float Character::getFireRate() const {
 bool Character::canShoot() {
   _currentTime = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsedTime = _currentTime - _lastShootTime;
-  // std::cout << elapsedTime.count() << std::endl;
-  // std::cout << std::endl;
-  // std::cout << _targetFrameDuration.count() << std::endl;
+
   if (elapsedTime >= _targetFrameDuration) {
     _lastShootTime = _currentTime;
 
@@ -126,4 +124,9 @@ void Character::hurtEnemy(IEntity& self, IEntity& you) {
   you.kill();
   auto pos = you.getPosition();
   Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+}
+
+void Character::alliesTouched(IEntity& self, IEntity& you) {
+  self.setAlliesTouched(true);
+  you.setAlliesTouched(true);
 }

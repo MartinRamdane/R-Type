@@ -43,6 +43,8 @@ public:
     void setFlip(bool flip);
     Direction getDirection() const;
     void setLife(int life);
+    void setAlliesTouched(bool alliesTouched);
+    bool getAlliesTouched() const;
 
 protected:
     float _x;
@@ -61,6 +63,7 @@ protected:
     float _radius;
     bool _flip;
     int _id;
+    bool _alliesTouched = false;
     std::string _spriteConfigJsonFileName;
     std::string _spriteConfigJsonObjectName;
 

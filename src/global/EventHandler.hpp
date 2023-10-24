@@ -38,6 +38,7 @@ enum class ACTION : uint8_t
   DEAD,
   FLIP,
   RESET,
+  LAUNCH,
   UNKNOWN,
 };
 

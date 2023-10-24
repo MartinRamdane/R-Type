@@ -117,6 +117,9 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
         case ACTION::RESET:
         {
         }
+        case ACTION::LAUNCH:
+        {
+        }
         break;
     }
 }

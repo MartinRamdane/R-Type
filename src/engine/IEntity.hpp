@@ -72,4 +72,5 @@ public:
     virtual void setFlip(bool flip) = 0;
     virtual Direction getDirection() const = 0;
     virtual void setLife(int life) = 0;
+    virtual void setAlliesTouched(bool alliesTouched) = 0;
 };

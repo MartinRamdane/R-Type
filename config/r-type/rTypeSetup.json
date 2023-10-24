@@ -17,7 +17,8 @@
                 "Shield" : "shield.png",
                 "PowerUP": "power_up.png",
                 "Flyer": "flyer.png",
-                "ExplosionEnemy": "explosion_type3.png"
+                "ExplosionEnemy": "explosion_type3.png",
+                "SupportShip": "support_ship.png"
             },
             "Sounds": {
                 "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",

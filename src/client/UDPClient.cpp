@@ -60,6 +60,8 @@ std::string actionToString(ACTION action)
     return "FLIP";
   case ACTION::RESET:
     return "RESET";
+  case ACTION::LAUNCH:
+    return "LAUNCH";
   }
   return "";
 }

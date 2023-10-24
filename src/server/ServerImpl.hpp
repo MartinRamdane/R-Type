@@ -180,6 +180,10 @@ protected:
         {
             std::cout << "[" << client->GetID() << "]: RESET" << std::endl;
         }
+        case ACTION::LAUNCH:
+        {
+            std::cout << "[" << client->GetID() << "]: LAUNCH" << std::endl;
+        }
         break;
         }
     }

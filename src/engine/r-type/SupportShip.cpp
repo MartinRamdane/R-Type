@@ -1,0 +1,96 @@
+/*
+** EPITECH PROJECT, 2023
+** r-type
+** File description:
+** SupportShip
+*/
+
+#include "SupportShip.hpp"
+
+SupportShip::SupportShip(EntityInfo info, int relatedPlayerId)
+    : Character(info) {
+    JsonParser parser;
+    nlohmann::json json = parser.readFile("SupportShip.rType.json");
+    setShootAsset(parser.get<std::string>(json, "ProjectileType"));
+    setSpeed(Game::instance->getPlayer(relatedPlayerId)->getSpeed());
+    setFireRate(parser.get<float>(json, "FireRate"));
+    setProjectileSpeed(parser.get<float>(json, "ProjectileSpeed"));
+    setDamage(parser.get<int>(json, "Damage"));
+    setLife(parser.get<int>(json, "Life"));
+    _relatedPlayerId = relatedPlayerId;
+}
+
+void SupportShip::update() {
+    if (_x != _oldX || _y != _oldY) {
+        setOldPosition(_x, _y);
+    }
+
+    int random = rand() % 2;
+    auto player = Game::instance->getPlayer(_relatedPlayerId);
+    auto pos = player->getPosition();
+    int x = std::get<0>(pos);
+    int y = std::get<1>(pos);
+    if (player->getAlliesTouched() == true &&
+        AEntity::getAlliesTouched() == false) {
+        player->setAlliesTouched(false);
+        setAlliesTouched(false);
+    }
+
+    shoot();
+    bool touched = AEntity::getAlliesTouched();
+    IEntity::Direction playerDirection = player->getDirection();
+
+    if (playerDirection == IEntity::LEFT && _direction == IEntity::RIGHT) {
+        flip();
+    } else if (playerDirection == IEntity::RIGHT && _direction == IEntity::LEFT) {
+        flip();
+    }
+
+    if (playerDirection == IEntity::LEFT && touched) {
+        setPosition(x - player->getRadius() - 10, y);
+    } else if (playerDirection == IEntity::RIGHT && touched) {
+        setPosition(x + player->getRadius() + 10, y);
+    } else {
+
+        // if (x == _playerOldX && y == _playerOldY) {
+        //     return;
+        // } else if (x != _playerOldX && y == _playerOldY) {
+        //     _playerOldX = x;
+        //     setPosition(x, _y);
+        // } else {
+        //     _playerOldX = x;
+        //     _playerOldY = y;
+        //     if (random == 0)
+        //         y = y - 50;
+        //     else
+        //         y = y + 50;
+        //     setPosition(x, y);
+        // }
+    }
+}
+
+void SupportShip::shoot() {
+    if (!canShoot())
+        return;
+    auto pos = getPosition();
+    EntityInfo info;
+    info.x = std::get<0>(pos) + (_direction == RIGHT ? 30 : -30);
+    info.y = std::get<1>(pos) - 2;
+    info.name = getShootAsset();
+    info.scaleX = 0.25;
+    info.scaleY = 0.25;
+    info.speed = getProjectileSpeed();
+    info.damage = getDamage();
+    info.spriteConfigJsonObjectName = getShootAsset();
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
+    info.direction = _direction;
+    Game::instance->createProjectile(info,
+                                     _direction == IEntity::LEFT ? true : false,
+                                     IGame::ProjectileGroup::SUPPORT);
+    info.y = info.y + 4;
+    Game::instance->createProjectile(info,
+                                     _direction == IEntity::LEFT ? true : false,
+                                     IGame::ProjectileGroup::SUPPORT);
+}
+
+SupportShip::~SupportShip() {}

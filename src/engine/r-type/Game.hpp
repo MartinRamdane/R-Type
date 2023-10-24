@@ -23,8 +23,9 @@
 class Character;
 class Enemy;
 class Projectile;
+class SupportShip ;
 
-#define MAX_LEVEL 2
+#define MAX_LEVEL 1
 
 class Game : public IGame
 {
@@ -35,10 +36,8 @@ public:
 
     void update(ThreadSafeQueue<Event> &events);
     void createExplosion(int x, int y);
-    // void createProjectile(int x, int y, std::string path, float scaleX, float scaleY, int speed, int damage, std::string spriteConfigJsonObjectName, std::string groupName, bool flip, IEntity::Direction direction = IEntity::RIGHT);
     void createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group);
     std::shared_ptr<AEntity> createShield(int x, int y);
-    void initializeLevel();
     int getId(Event event);
     std::shared_ptr<Character> getRandomSpaceship();
     void eraseDeadEntity(int id);
@@ -54,11 +53,15 @@ public:
     void createEnemy(IEntity::EntityInfo info);
     void createBackground(IEntity::EntityInfo info);
     void clearLevel();
+    std::shared_ptr<AEntity> createSupportShip(int x, int y, int playerId);
+    std::shared_ptr<AEntity> getPlayer(int id);
 
 private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
+    std::shared_ptr<EntityType<IEntity>> _supportShipGroups;
     std::shared_ptr<EntityType<IEntity>> _projectilesGroups;
+    std::shared_ptr<EntityType<IEntity>> _supportProjectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _enemyProjectilesGroups;
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
     std::shared_ptr<EntityType<IEntity>> _orangeRobotGroups;
@@ -68,6 +71,7 @@ private:
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     std::vector<std::shared_ptr<AEntity>> _staticObjects;
     std::vector<std::shared_ptr<Enemy>> _enemies;
+    std::vector<std::shared_ptr<SupportShip>> _supportShips;
     int _lastId = 0;
     static std::map<std::string, std::function<std::string()>> _assets;
     int _currentLevel = 1;
