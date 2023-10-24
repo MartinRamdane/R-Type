@@ -12,18 +12,21 @@ Ball::Ball(EntityInfo info) : AEntity(info) {
   _speed = info.speed;
   _direction = info.direction;
   _life = 1;
-  setDirectionVector(1, 0);
+  setDirectionVector(-1, 0);
 }
 
 Ball::~Ball() {}
 
 void Ball::move(float x, float y) {
-  if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius ||
-      (_x + x * _speed) < 0 + _radius ||
-      (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) ||
-      (_y + y * _speed) < 0 + (_radius / 2)) {
-    _isDead = true;
-    return;
+  if (((_y + y * _speed) < 10 + _radius / 2) && dirY < 0) {
+    y = -y;    // Inverser la direction en Y
+    dirY = -dirY;
+  }
+  if (((_y + y * _speed) >
+       Engine::instance->getWindowHeight() - 10 - _radius) &&
+      dirY > 0) {
+    y = -y;    // Inverser la direction en Y
+    dirY = -dirY;
   }
   setOldPosition(_x, _y);
   _x += x * _speed;
@@ -31,41 +34,42 @@ void Ball::move(float x, float y) {
 }
 
 void Ball::update() {
-
-  std::tuple<float, float> pos = getDirectionVector();
-  float dirX = std::get<0>(pos);
-  float dirY = std::get<1>(pos);
   move(dirX, dirY);
-
-  if ((_x + _radius >= Engine::instance->getWindowWidth() && dirX > 0) ||
-      (_x - _radius <= 0 && dirX < 0)) {
-    dirX = -dirX;
-  }
-
-  if ((_y + _radius / 2 >= Engine::instance->getWindowHeight() && dirY > 0) ||
-      (_y - _radius / 2 <= 0 && dirY < 0)) {
-    dirY = -dirY;
-  }
-  setDirectionVector(dirX, dirY);
 }
 
 void Ball::hurtPlayer(IEntity& self, IEntity& you) {
-
+  // Obtenir les positions du joueur et de la balle
   float playerY = std::get<1>(you.getPosition());
   float ballY = std::get<1>(self.getPosition());
   float dirX = std::get<0>(self.getDirectionVector());
   float dirY = std::get<1>(self.getDirectionVector());
+  float currentSpeed = self.getSpeed();
 
   float playerHeight = you.getHeight();
 
+  // Calculer la position relative de la collision par rapport au joueur
   float relativeY = (ballY - playerY) / playerHeight;
 
-  float maxAngle = M_PI / 4.0;
+  // Calculer l'angle d'impact en radians
+  float maxAngle = M_PI / 2.0;    // Angle maximal de réflexion (45 degrés)
   float reflectionAngle = maxAngle * relativeY;
 
-  float currentSpeed = sqrt(dirX * dirX + dirY * dirY);
-  dirX = -cos(reflectionAngle) * currentSpeed;
+  // Inverser la direction en X si la balle se déplace vers la gauche (dirX < 0)
+  if (dirX < 0) {
+    dirX = cos(reflectionAngle) * currentSpeed;
+  } else {
+    dirX = -cos(reflectionAngle) * currentSpeed;
+  }
 
+  // Calculer la nouvelle direction en Y en fonction de l'angle de réflexion
   dirY = sin(reflectionAngle) * currentSpeed;
+
+  // Normaliser le vecteur direction
+  float length = std::sqrt(dirX * dirX + dirY * dirY);
+  if (length != 0) {
+    dirX /= length;
+    dirY /= length;
+  }
+
   self.setDirectionVector(dirX, dirY);
 }

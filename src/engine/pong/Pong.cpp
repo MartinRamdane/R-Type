@@ -14,8 +14,8 @@ Pong* Pong::instance = nullptr;
 Pong::Pong(std::shared_ptr<Engine>& engine) : _engine(engine) {
   instance = this;
   _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
-  _playersGroups = std::make_shared<EntityType<IEntity>>(10);
-  _ballsGroups = std::make_shared<EntityType<IEntity>>(30);
+  _playersGroups = std::make_shared<EntityType<IEntity>>(5);
+  _ballsGroups = std::make_shared<EntityType<IEntity>>(15);
 
   _pongInitializer = std::make_unique<PongInitializer>(this);
   _pongInitializer->loadLevel(1);
@@ -86,7 +86,7 @@ void Pong::createBall() {
     return;
   IEntity::EntityInfo info;
   info.id = _lastId++;
-  info.speed = 5;
+  info.speed = 8;
   info.name = "Ball";
   info.assetFile = _assets["Ball"]();
   info.spriteConfigJsonFileName = "pongConfig.json";
