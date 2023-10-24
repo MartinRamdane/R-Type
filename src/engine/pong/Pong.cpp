@@ -61,11 +61,11 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::UP:
-                if (_players.size() > 0)
+                if (_players.size() > 0 && getId(event) - 1 < _players.size())
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (_players.size() > 0)
+                if (_players.size() > 0 && getId(event) - 1 < _players.size())
                     _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::READY:
