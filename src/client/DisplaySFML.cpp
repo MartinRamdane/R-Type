@@ -49,6 +49,7 @@ void DisplaySFML::animate(std::map<int, Entity>* _entities)
 
 void DisplaySFML::draw(std::map<int, Entity>* _entities)
 {
+  
   std::map<int, Entity>::iterator it = _entities->begin();
   while (it != _entities->end())
   {

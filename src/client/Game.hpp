@@ -29,10 +29,6 @@ public:
     ~Game(){};
     void run();
     void createWindow(std::string name, int x, int y);
-    void animate();
-    void draw();
-    void handleEvent();
-    void update();
     void getinfos(){};
     bool connectToServer(std::string host, int port);
     bool connectToUdpServer(std::string host, int port);

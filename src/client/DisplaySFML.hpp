@@ -11,9 +11,6 @@
 #include "TCPClientImpl.hpp"
 #include "UDPClient.hpp"
 
-// mais zeb jetais pas dans la bonne classe
-//mdrrrrrrr ptn j'avaic cette erreur aussi tout a l'heure quand j'ai mis class IDisplay dans GAme.hpp
-
 class DisplaySFML : public IDisplay {
  public:
   DisplaySFML();

@@ -153,8 +153,6 @@ bool Entity::isDead() const
 
 void Entity::setFont()
 {
-    // if (!_font.loadFromFile("font/pixel.ttf"))
-    //     std::cout << "Font not loaded" << std::endl;
     _text.setFont(_font);
 }
 
