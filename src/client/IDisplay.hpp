@@ -33,6 +33,5 @@ class IDisplay {
   virtual void setPlayerId(int id) = 0;
   virtual int getPlayerId() const = 0;
   virtual bool getClosed() const = 0;
-  virtual sf::RenderWindow& getWindow() const = 0;
   virtual bool windowIsOpen() const = 0;
 };

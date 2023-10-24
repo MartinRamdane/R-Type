@@ -25,7 +25,6 @@ class DisplaySFML : public IDisplay {
   bool getClosed() const { return closed; };
   void setPlayerId(int id) { _playerId = id; };
   int getPlayerId() const { return _playerId; };
-  sf::RenderWindow& getWindow() const { return _window; };
   bool windowIsOpen() const { return _window.isOpen(); };
 
  private:
