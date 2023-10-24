@@ -26,9 +26,7 @@ class DisplaySFML : public IDisplay {
   void setPlayerId(int id) { _playerId = id; };
   int getPlayerId() const { return _playerId; };
   sf::RenderWindow& getWindow() const { return _window; };
-  bool windowIsOpen() { return _window.isOpen(); };
-
- protected:
+  bool windowIsOpen() const { return _window.isOpen(); };
 
  private:
   sf::RenderWindow _window;
