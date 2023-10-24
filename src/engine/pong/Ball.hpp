@@ -10,6 +10,7 @@
 #include "../AEntity.hpp"
 #include "../Engine.hpp"
 #include "../IEntity.hpp"
+#include <random>
 
 class Ball : public AEntity {
  public:

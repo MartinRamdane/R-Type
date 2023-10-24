@@ -12,7 +12,11 @@ Ball::Ball(EntityInfo info) : AEntity(info) {
   _speed = info.speed;
   _direction = info.direction;
   _life = 1;
-  setDirectionVector(-1, 0);
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> distrib(0, 1);
+  int random = distrib(gen);
+  setDirectionVector(random == 0 ? -1 : 1, 0);
 }
 
 Ball::~Ball() {}
