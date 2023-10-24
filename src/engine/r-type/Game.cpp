@@ -144,12 +144,10 @@ void Game::update(ThreadSafeQueue<Event> &events)
     }
     if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL)
     {
-        std::cout << "Level " << _currentLevel << " finished" << std::endl;
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
-        std::cout << "Last1 id: " << _lastId << std::endl;
         for (auto player : _players)
         {
             player->setId(_lastId);
@@ -157,7 +155,6 @@ void Game::update(ThreadSafeQueue<Event> &events)
             player->resetLife();
             _lastId++;
         }
-        std::cout << "Last2 id: " << _lastId << std::endl;
     }
 }
 
@@ -334,7 +331,6 @@ void Game::setCurrentId(int id)
 
 void Game::createEnemy(IEntity::EntityInfo info)
 {
-    std::cout << info.assetFile << std::endl;
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
     enemy->setMovementType(info.movementType);
     _enemies.push_back(enemy);

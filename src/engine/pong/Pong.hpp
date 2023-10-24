@@ -34,6 +34,7 @@ class Pong : public IGame {
   void addPlayer();
   int getId(Event event);
   void createBall();
+  void createScores();
 
  private:
   std::shared_ptr<Engine> _engine;
@@ -43,8 +44,12 @@ class Pong : public IGame {
   std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
   std::vector<std::shared_ptr<Player>> _players;
   std::shared_ptr<EntityType<IEntity>> _playersGroups;
-  std::vector<std::shared_ptr<Ball>> balls;
+  std::vector<std::shared_ptr<Ball>> _balls;
   std::shared_ptr<EntityType<IEntity>> _ballsGroups;
+  std::vector<std::shared_ptr<AEntity>> _texts;
+  std::shared_ptr<EntityType<IEntity>> _textGroups;
   static std::map<std::string, std::function<std::string()>> _assets;
   std::unique_ptr<PongInitializer> _pongInitializer;
+  int _scorePlayer1 = 0;
+  int _scorePlayer2 = 0;
 };

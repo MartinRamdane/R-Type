@@ -291,8 +291,11 @@ void Game::addEntity(int id, Entity entity)
             float percent = _progressBar.getProgress();
             _progressBar.setProgress(percent - 10);
         }
-        else
+        else {
             _entities[id].setNextPos(entity.getNextPos());
+            if (entity.getText().getString() != "")
+                _entities[id].setTextString(entity.getText().getString());
+        }
     }
     else
         _entities[id] = entity;

@@ -47,6 +47,10 @@ class AEntity : public IEntity {
   int getWidth() const;
   int getHeight() const;
   void setSize(int width, int height);
+  std::string getText() const;
+  void setText(std::string text);
+  std::string getOldText() const;
+  void setOldText(std::string text);
 
  protected:
   float _x;
@@ -71,6 +75,6 @@ class AEntity : public IEntity {
   float dirY;
   int _width;
   int _height;
-
- private:
+  std::string _text = "";
+  std::string _oldText = "";
 };

@@ -72,7 +72,6 @@ void LevelInitializer::createEnemy(int cout, nlohmann::json positions)
 
 void LevelInitializer::createBackground()
 {
-    std::cout << "ID background: " << _game->getCurrentId() << std::endl;
     _info.id = _game->getCurrentId();
     _info.name = "Background";
     _info.assetFile = _game->getAssets()["Background"]();
