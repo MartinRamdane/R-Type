@@ -16,7 +16,7 @@
 #include "PongInitializer.hpp"
 #include <sstream>
 
-class Character;
+class Player;
 class Ball;
 
 class Pong : public IGame {
@@ -41,7 +41,7 @@ class Pong : public IGame {
   int _lastId = 0;
   std::vector<std::shared_ptr<AEntity>> _staticObjects;
   std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
-  std::vector<std::shared_ptr<Character>> _players;
+  std::vector<std::shared_ptr<Player>> _players;
   std::shared_ptr<EntityType<IEntity>> _playersGroups;
   std::vector<std::shared_ptr<Ball>> balls;
   std::shared_ptr<EntityType<IEntity>> _ballsGroups;

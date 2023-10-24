@@ -8,6 +8,7 @@
 #include "Pong.hpp"
 #include "../Character.hpp"
 #include "Ball.hpp"
+#include "Player.hpp"
 
 Pong* Pong::instance = nullptr;
 
@@ -145,7 +146,7 @@ void Pong::addPlayer() {
     info.y = 239;
   } else
     return;
-  std::shared_ptr<Character> entity = std::make_shared<Character>(info);
+  std::shared_ptr<Player> entity = std::make_shared<Player>(info);
   _players.push_back(entity);
   _playersGroups->insert(entity);
   entity->setSize(8, 75);
