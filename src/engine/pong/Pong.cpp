@@ -89,6 +89,10 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
             }
             _balls.clear();
             createBall();
+            _players[0]->setPosition(std::get<0>(_defaultPlayer1Pos),
+                                     std::get<1>(_defaultPlayer1Pos));
+            _players[1]->setPosition(std::get<0>(_defaultPlayer2Pos),
+                                     std::get<1>(_defaultPlayer2Pos));
         }
     }
 }
@@ -159,9 +163,11 @@ void Pong::addPlayer() {
     if (_players.size() == 0) {
         info.x = 35;
         info.y = 239;
+        _defaultPlayer1Pos = std::make_tuple(info.x, info.y);
     } else if (_players.size() == 1) {
         info.x = 815;
         info.y = 239;
+        _defaultPlayer2Pos = std::make_tuple(info.x, info.y);
     } else
         return;
     std::shared_ptr<Player> entity = std::make_shared<Player>(info);

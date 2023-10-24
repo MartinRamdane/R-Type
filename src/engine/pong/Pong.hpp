@@ -52,4 +52,6 @@ class Pong : public IGame {
   std::unique_ptr<PongInitializer> _pongInitializer;
   int _scorePlayer1 = 0;
   int _scorePlayer2 = 0;
+  std::tuple<float, float> _defaultPlayer1Pos;
+  std::tuple<float, float> _defaultPlayer2Pos;
 };
