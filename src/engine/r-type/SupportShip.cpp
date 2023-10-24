@@ -20,6 +20,8 @@ SupportShip::SupportShip(EntityInfo info, int relatedPlayerId)
     _relatedPlayerId = relatedPlayerId;
 }
 
+SupportShip::~SupportShip() {}
+
 void SupportShip::update() {
     if (_x != _oldX || _y != _oldY) {
         setOldPosition(_x, _y);
@@ -36,13 +38,25 @@ void SupportShip::update() {
         setAlliesTouched(false);
     }
 
+    if (_launched) {
+        if (_launchX <= 100) {
+            _direction == IEntity::RIGHT ? move(1, 0) : move(-1, 0);
+            _launchX++;
+            return;
+        } else {
+            _launchX = 0;
+            _launched = false;
+        }
+    }
+
     shoot();
     bool touched = AEntity::getAlliesTouched();
     IEntity::Direction playerDirection = player->getDirection();
 
     if (playerDirection == IEntity::LEFT && _direction == IEntity::RIGHT) {
         flip();
-    } else if (playerDirection == IEntity::RIGHT && _direction == IEntity::LEFT) {
+    } else if (playerDirection == IEntity::RIGHT &&
+               _direction == IEntity::LEFT) {
         flip();
     }
 
@@ -93,4 +107,12 @@ void SupportShip::shoot() {
                                      IGame::ProjectileGroup::SUPPORT);
 }
 
-SupportShip::~SupportShip() {}
+int SupportShip::getRelatedPlayerId() const {
+    return _relatedPlayerId;
+}
+
+void SupportShip::launch() {
+    if (AEntity::getAlliesTouched()) {
+        _launched = true;
+    }
+}

@@ -150,7 +150,12 @@ void Game::update(ThreadSafeQueue<Event>& events) {
                 setAllEntitiesToCreated();
                 break;
             case ACTION::LAUNCH:
-                std::cout << "Launch support" << std::endl;
+                for (auto supportShip : _supportShips) {
+                    if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
+                        supportShip->launch();
+                        break;
+                    }
+                }
                 break;
             case ACTION::DEAD: {
                 int id = std::stoi(event.body);

@@ -17,10 +17,14 @@ public:
     ~SupportShip();
     void shoot() override;
     void update() override;
+    int getRelatedPlayerId() const;
+    void launch();
 
 protected:
 private:
     int _relatedPlayerId;
     int _playerOldX;
     int _playerOldY;
+    bool _launched = false;
+    int _launchX = 0;
 };
