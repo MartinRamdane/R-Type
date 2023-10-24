@@ -14,8 +14,7 @@ Entity::Entity()
 
 void Entity::setTexture(const std::string &path)
 {
-    if (!_texture->loadFromFile(path))
-        std::cerr << "Error: could not load texture" << std::endl;
+    _texture->loadFromFile(path);
 }
 
 void Entity::setSprite()
@@ -154,8 +153,6 @@ bool Entity::isDead() const
 
 void Entity::setFont()
 {
-    if (!_font.loadFromFile("font/pixel.ttf"))
-        std::cout << "Font not loaded" << std::endl;
     _text.setFont(_font);
 }
 
