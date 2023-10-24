@@ -7,16 +7,19 @@
 
 #pragma once
 
+#include <random>
 #include "../AEntity.hpp"
 #include "../Engine.hpp"
 #include "../IEntity.hpp"
-#include <random>
 
 class Ball : public AEntity {
- public:
-  Ball(EntityInfo info);
-  ~Ball();
-  void move(float x, float y);
-  virtual void update() override;
-  static void hurtPlayer(IEntity& self, IEntity& you);
+   public:
+    Ball(EntityInfo info);
+    ~Ball();
+    void move(float x, float y);
+    virtual void update() override;
+    static void hurtPlayer(IEntity& self, IEntity& you);
+
+   private:
+    float initialSpeed;
 };
