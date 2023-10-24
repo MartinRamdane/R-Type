@@ -1,5 +1,9 @@
 For conan:
 
+Make sure to manually install the system dependency `python3-tkinter`
+
+pip install -r python-requirements.txt
+
 pip install conan
 
 conan profile detect --force # if your profile is not already created
