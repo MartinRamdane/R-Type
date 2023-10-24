@@ -61,11 +61,11 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::UP:
-                if (_players.size() > 0 && getId(event) - 1 < _players.size())
+                if (_players.size() > 0 && getId(event) - 1 < (int)_players.size())
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (_players.size() > 0 && getId(event) - 1 < _players.size())
+                if (_players.size() > 0 && getId(event) - 1 < (int)_players.size())
                     _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::READY:
@@ -175,7 +175,7 @@ void Pong::createScores() {
     info.id = _lastId++;
     info.text = std::to_string(_scorePlayer1);
     info.name = "ScorePlayer1";
-    info.x = 212;
+    info.x = 248;
     info.y = 50;
     info.scaleX = 30;
     std::shared_ptr<AEntity> entity = std::make_shared<AEntity>(info);
@@ -184,7 +184,7 @@ void Pong::createScores() {
     info.id = _lastId++;
     info.text = std::to_string(_scorePlayer2);
     info.name = "ScorePlayer2";
-    info.x = 636;
+    info.x = 600;
     info.y = 50;
     info.scaleX = 30;
     std::shared_ptr<AEntity> entity2 = std::make_shared<AEntity>(info);
