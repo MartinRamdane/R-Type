@@ -40,20 +40,9 @@ class MyServer : public TCPServer<ACTION> {
                 evt.decodeMessage(msg.body);
             } break;
             case ACTION::CREATE: {
-                if (_server->getInstancesNb() >= 1) {
-                    Instance* instance = _server->getInstance(0);
-                    Event evt;
-                    evt.ACTION_NAME = ACTION::CREATE;
-                    int playerId = _server->getPlayerIdToGive();
-                    evt.body = std::to_string(_server->getPlayerIdToGive()) + " " +
-                               std::to_string(instance->getId()) + " " +
-                               std::to_string(instance->getPort());
-                    std::string playerEntityId = "p" + std::to_string(playerId);
-                    instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
-                    _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
-                    SendEvent(client, evt);
-                    return;
-                };
+                EventHandler getEvt;
+                getEvt.decodeMessage(msg.body);
+                std::cout << "body of create requst: " << getEvt.getBody() << std::endl;
                 std::string gameName = "rType";
                 InstanceInfos infos = _server->createInstance(gameName);
                 Instance* instance = _server->getInstance(_server->getInstancesNb() - 1);

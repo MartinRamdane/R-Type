@@ -31,6 +31,7 @@ class InstanceMenu {
     sf::Font _font;
     std::map<std::string, std::unique_ptr<Entity>> _entities;
     std::map<std::string, std::unique_ptr<sf::Text>> _texts;
+    std::map<std::string, std::unique_ptr<Entity>> _gameSelector;
     bool _errorConnect = true;
     std::shared_ptr<Game> _game;
     bool _openInstanceModal = false;
