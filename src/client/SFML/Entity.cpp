@@ -7,24 +7,35 @@
 
 #include "Entity.hpp"
 
-Entity::Entity() {
+Entity::Entity(std::shared_ptr<RessourceManager> ressourceManager) : _ressourceManager(ressourceManager) {
     _clock.restart();
 }
 
 Entity::~Entity() {}
 
 void Entity::setTexture(const std::string& path) {
-    _texture->loadFromFile(path);
-    _sprite.setTexture(*_texture);
+    std::map<std::string, std::shared_ptr<sf::Texture>> textures = _ressourceManager->getTextures();
+    std::map<std::string, std::shared_ptr<sf::Texture>>::iterator it = textures.begin();
+    while (it != textures.end())
+    {
+        if (it->first == path)
+        {
+            _texture = it->second;
+            _sprite.setTexture(*_texture);
+            break;
+        }
+        it++;
+    }
 }
 
 void Entity::setSpriteScale(float scaleX, float scaleY) {
     _sprite.setScale(sf::Vector2f(scaleX, scaleY));
 }
 
-void Entity::setSpritePosition(float x, float y) {
+void Entity::setPosition(float x, float y) {
     _oldPosY = _sprite.getPosition().y;
     _sprite.setPosition(sf::Vector2f(x, y));
+    _text.setPosition((sf::Vector2f(x, y)));
 }
 
 std::tuple<float, float> Entity::getSpritePosition() const {
@@ -100,7 +111,7 @@ void Entity::setTextString(std::string str) {
     _text.setString(str);
 }
 
-void Entity::setType(int type) {
+void Entity::setType(IEntity::Type type) {
     _type = type;
 }
 
@@ -145,6 +156,10 @@ void Entity::update() {
         pos.x = _nextPos.x;
     if (pos.y + _speed > _nextPos.y && pos.y - _speed < _nextPos.y)
         pos.y = _nextPos.y;
+    if (_sprite.getPosition().y > _oldPosY)
+        animateSprite(2, 100);
+    else if (_sprite.getPosition().y < _oldPosY)
+        animateSprite(1, 100);
     _sprite.setPosition(pos);
 }
 
@@ -194,4 +209,44 @@ sf::Color Entity::getColor(std::string color) {
     if (color == "cyan")
         return sf::Color::Cyan;
     return sf::Color::White;
+}
+
+IEntity::Type Entity::getType() const {
+    return _type;
+}
+
+void Entity::makePrediction() {
+    if (_direction == "left" || _direction == "right")
+    {
+        if (_direction == "left")
+        {
+            _speed = _speed * -1;
+        }
+        sf::Vector2f oldPos = _sprite.getPosition();
+        setNextPos(oldPos.x + _speed, oldPos.y);
+    }
+}
+
+std::string Entity::getEventForm() const {
+    return _eventForm;
+}
+
+void Entity::setFont() {
+    _font.loadFromFile("../../../font/pixel.ttf");
+    _text.setFont(_font);
+}
+
+void Entity::draw(sf::RenderWindow& window) {
+    if (_type == IEntity::Type::SPRITE)
+        window.draw(_sprite);
+    else if (_type == IEntity::Type::TEXT)
+        window.draw(_text);
+}
+
+sf::Text Entity::getText() const {
+    return _text;
+}
+
+sf::Sprite Entity::getSprite() const {
+    return _sprite;
 }

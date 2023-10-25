@@ -6,11 +6,12 @@
 */
 
 #include "DisplaySFML.hpp"
+#include "Entity.hpp"
 
 DisplaySFML::DisplaySFML()
 {
-    _event_indicator = 0;
-    _ressourceManager = RessourceManager();
+    _eventIndicator = 0;
+    _ressourceManager = std::make_shared<RessourceManager>();
     _playerId = 0;
 }
 
@@ -21,58 +22,35 @@ void DisplaySFML::createWindow(std::string name, int x, int y)
   _window.create(sf::VideoMode(1920, 1080), name);
   _window.setFramerateLimit(60);
   _view = sf::View(sf::FloatRect(0, 0, x, y));
+  _window.setView(_view);
 }
 
-void DisplaySFML::animate(std::map<int, Entity>* _entities)
+void DisplaySFML::animate(std::map<int, std::shared_ptr<IEntity>> &_entities)
 {
-  std::map<int, Entity>::iterator it = _entities->begin();
-  while (it != _entities->end())
+  std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities.begin();
+  while (it != _entities.end())
   {
-    if (it->second.getEventForm() == "loop")
-      it->second.animateSprite(0, 100);
-    if (it->second.getEventForm() == "once")
-      it->second.animateSprite(3, 100);
-    if (it->second.getEventForm() == "event" && _event_indicator == 0)
-      it->second.setInitPos();
-    if (it->second.getEventForm() == "paralaxe")
-      it->second.animateSprite(4, 1);
-    if (it->second.getEventForm() == "event" && _event_indicator == 1)
-    {
-      if (it->second.getSpritePosition().y > it->second.getOldPosY())
-        it->second.animateSprite(2, 100);
-      else if (it->second.getSpritePosition().y < it->second.getOldPosY())
-        it->second.animateSprite(1, 100);
-    }
+    if (it->second->getEventForm() == "loop")
+      it->second->animateSprite(0, 100);
+    if (it->second->getEventForm() == "once")
+      it->second->animateSprite(3, 100);
+    if (it->second->getEventForm() == "event" && _eventIndicator == 0)
+      it->second->setInitPos();
+    if (it->second->getEventForm() == "paralaxe")
+      it->second->animateSprite(4, 1);
     it++;
   }
 }
 
-void DisplaySFML::draw(std::map<int, Entity>* _entities)
+void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>> &_entities)
 {
-  
-  std::map<int, Entity>::iterator it = _entities->begin();
-  while (it != _entities->end())
+  std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities.begin();
+  while (it != _entities.end())
   {
-    if (it->second.getType() == Entity::Type::TEXT)
-    {
-      it->second.setFont();
-      _window.draw(it->second.getText());
-    } else if (it->second.getType() == Entity::Type::SPRITE)
-    {
-      _window.draw(it->second.getSprite());
-      std::string direction = it->second.getDirection();
-      if (direction == "left" || direction == "right")
-      {
-        float speed = it->second.getSpeed();
-        if (direction == "left")
-        {
-          speed = speed * -1;
-        }
-        sf::Vector2f oldPos = it->second.getSpritePosition();
-        sf::Vector2f newPos = sf::Vector2f(oldPos.x + speed, oldPos.y);
-        it->second.setNextPos(newPos);
-      }
-    }
+    auto entity = std::dynamic_pointer_cast<Entity>(it->second);
+    entity->draw(_window);
+    if (it->second->getType() == IEntity::Type::SPRITE)
+      it->second->makePrediction();
     it++;
   }
 }
@@ -113,7 +91,7 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
             evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
-            _event_indicator = 0;
+            _eventIndicator = 0;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
@@ -121,7 +99,7 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
             evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
-            _event_indicator = 0;
+            _eventIndicator = 0;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
@@ -129,7 +107,7 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
             evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
-            _event_indicator = 1;
+            _eventIndicator = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
@@ -137,7 +115,7 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
             evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
-            _event_indicator = 1;
+            _eventIndicator = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
@@ -145,7 +123,7 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
             evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
-            _event_indicator = 0;
+            _eventIndicator = 0;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
@@ -163,40 +141,60 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
     }
 }
 
-void DisplaySFML::update(std::map<int, Entity>* _entities, UDPClient *_udpClient)
+void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>> &_entities, UDPClient *_udpClient)
 {
     _window.clear();
     draw(_entities);
     animate(_entities);
-    _window.setView(_view);
     _window.display();
-    for (auto it = _entities->begin(); it != _entities->end();)
+    for (auto it = _entities.begin(); it != _entities.end();)
     {
-        (*it).second.update();
-        if ((*it).second.isDead())
+        (*it).second->update();
+        if ((*it).second->isDead())
         {
             Event evt;
             evt.ACTION_NAME = ACTION::DEAD;
             evt.body_size = std::to_string((*it).first).size();
             evt.body = std::to_string((*it).first);
             _udpClient->sendEvent(evt);
-            it = _entities->erase(it);
+            it = _entities.erase(it);
         }
         else
             it++;
     }
 }
 
-void DisplaySFML::run(std::map<int, Entity>* _entities, UDPClient *_udpClient, TCPClientImpl *_client)
+std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityInfos)
 {
-    while (_window.isOpen())
-    {
-        if (_client->Incoming().empty() == false)
-        {
-            auto msg = _client->Incoming().pop_front().msg;
-            _client->HandleMessage(msg);
-        }
-        handleEvent(_udpClient, _client);
-        update(_entities, _udpClient);
-    }
+  if (entityInfos.type == IEntity::Type::SPRITE)
+    return createSprite(entityInfos);
+  return createText(entityInfos);
+}
+
+std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityInfos)
+{
+  std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
+  entity->setTexture(entityInfos.path);
+  entity->setPosition(entityInfos.x, entityInfos.y);
+  entity->setSpriteScale(entityInfos.scaleX, entityInfos.scaleY);
+  entity->setRect(entityInfos.nbRect, entityInfos.initRect);
+  entity->setNextPos(entityInfos.nextX, entityInfos.nextY);
+  entity->setSpeed(entityInfos.speed);
+  entity->setDirection(entityInfos.direction);
+  entity->setEventForm(entityInfos.eventForm);
+  entity->setObjectType(entityInfos.objectType);
+  entity->setType(entityInfos.type);
+  entity->setSpriteOriginToCenter();
+  return entity;
+}
+
+std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfos)
+{
+  std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
+  entity->setFont();
+  entity->setTextString(entityInfos.text);
+  entity->setTextInfo(entityInfos.size, entityInfos.color);
+  entity->setPosition(entityInfos.x, entityInfos.y);
+  entity->setType(entityInfos.type);
+  return entity;
 }

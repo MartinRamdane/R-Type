@@ -147,12 +147,11 @@ void UDPClient::joinGame(Event evt)
 void UDPClient::updateSprite(Event evt)
 {
   Parser *parseRef = new Parser();
-  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
-  if (std::get<0>(res) < 0)
-    _gameRef->removeEntity(-std::get<0>(res));
+  IEntity::EntityInfos entityInfos = parseRef->parseMessage(evt);
+  if (entityInfos.id < 0)
+    _gameRef->removeEntity(entityInfos.id);
   else
-    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
+    _gameRef->addEntity(entityInfos);
 }
 
 void UDPClient::updateText(Event evt)
@@ -171,12 +170,11 @@ void UDPClient::updateText(Event evt)
   ss >> color;
   ss >> objectType;
   Parser *parseRef = new Parser();
-  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
-  if (std::get<0>(res) < 0)
-    _gameRef->removeEntity(-std::get<0>(res));
+  IEntity::EntityInfos entityInfos = parseRef->parseMessage(evt);
+  if (entityInfos.id < 0)
+    _gameRef->removeEntity(entityInfos.id);
   else
-    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
+    _gameRef->addEntity(entityInfos);
 }
 
 void UDPClient::flipEntity(Event evt)

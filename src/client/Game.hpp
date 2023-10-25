@@ -9,7 +9,6 @@
 #include <map>
 #include <sstream>
 #include "IEntity.hpp"
-#include "RessourceManager.hpp"
 #include "Parser.hpp"
 #include "../global/JsonParser.hpp"
 #include "../global/EventHandler.hpp"
@@ -33,7 +32,6 @@ public:
     Game();
     ~Game(){};
     void run();
-    void createWindow(std::string name, int x, int y);
     void getinfos(){};
     bool connectToServer(std::string host, int port);
     bool connectToUdpServer(std::string host, int port);
@@ -42,26 +40,23 @@ public:
     void setGameTitle(std::string gameTitle) { _gameTitle = gameTitle; };
     void setWidth(int width) { _width = width; };
     void setHeight(int height) { _height = height; };
-    RessourceManager getRessourceManager() const { return _ressourceManager; };
     bool findEntity(int id);
-    void addEntity(int id, Entity entity);
-    void removeEntity(int);
+    void addEntity(IEntity::EntityInfos entityInfos);
+    void removeEntity(int id);
     void LoopUDPMessages();
     void setPlayerId(int id);
     std::string getHost() { return _host; };
     TCPClientImpl *getClient() { return _client; };
     void flipEntity(int id);
     void clearEntities() { _entities.clear(); };
-    Type getLib() const { return _lib; };
+    Lib getLib() const { return _lib; };
     void setLib(int lib);
     void setLibToUse();
 
 private:
     sf::RenderWindow _window;
     sf::View _view;
-    sf::Event _event;
     sf::Clock _clock;
-    RessourceManager _ressourceManager;
     TCPClientImpl *_client;
     UDPClient *_udpClient;
     int _event_indicator;
@@ -73,7 +68,7 @@ private:
     std::string _gameTitle;
     int _width;
     int _height;
-    std::map<int, IEntity> _entities;
+    std::map<int, std::shared_ptr<IEntity>> _entities;
     int _playerId;
     std::string _host;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;

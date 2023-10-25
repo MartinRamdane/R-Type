@@ -14,15 +14,37 @@
 
 class IEntity {
    public:
-   enum Type
+    enum Type
     {
         SPRITE,
         TEXT,
     };
+    typedef struct EntityInfos
+    {
+        int id;
+        std::string path;
+        float scaleX;
+        float scaleY;
+        float x;
+        float y;
+        float nextX;
+        float nextY;
+        float speed;
+        int nbRect;
+        int initRect;
+        std::string objectType;
+        std::string eventForm;
+        std::string direction;
+        Type type;
+        std::string text;
+        int size;
+        std::string color;
+        bool hit;
+    } EntityInfo;
     virtual ~IEntity() {}
     virtual void setTexture(const std::string& path) = 0;
     virtual void setSpriteScale(float scaleX, float scaleY) = 0;
-    virtual void setSpritePosition(float x, float y) = 0;
+    virtual void setPosition(float x, float y) = 0;
     virtual std::tuple<float, float> getSpritePosition() const = 0;
     virtual void setSpriteRotation(const float angle) = 0;
     virtual void setSpriteOriginToCenter() = 0;
@@ -30,7 +52,7 @@ class IEntity {
     virtual void animateSprite(const int ei, const int framerate) = 0;
     virtual void setInitPos() = 0;
     virtual void setTextString(std::string str) = 0;
-    virtual void setType(int type) = 0;
+    virtual void setType(IEntity::Type type) = 0;
     virtual void setTextInfo(int size, std::string color) = 0;
     virtual void setSpeed(float speed) = 0;
     virtual void setNextPos(float x, float y) = 0;
@@ -41,4 +63,8 @@ class IEntity {
     virtual bool isDead() const = 0;
     virtual void setEventForm(std::string form) = 0;
     virtual void setObjectType(std::string type) = 0;
+    virtual IEntity::Type getType() const = 0;
+    virtual void makePrediction() = 0;
+    virtual std::string getEventForm() const = 0;
+    virtual void setFont() = 0;
 };

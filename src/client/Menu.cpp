@@ -15,29 +15,20 @@ Menu::Menu(std::shared_ptr<Game> &game) : _game(game)
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
-    _entities["background"] = std::make_unique<Entity>();
-    _entities["background"]->setNbRect(1);
-    _entities["background"]->_texture = std::make_shared<sf::Texture>();
-    _entities["background"]->setTexture("assets/cenario/background.png");
-    _entities["background"]->setSprite();
-    _entities["background"]->setSpritePosition(sf::Vector2f(0, 0));
+    std::shared_ptr<RessourceManager> ressourceManager = std::make_shared<RessourceManager>();
 
-    _entities["logo"] = std::make_unique<Entity>();
-    _entities["logo"]->setNbRect(1);
-    _entities["logo"]->_texture = std::make_shared<sf::Texture>();
-    _entities["logo"]->setTexture("assets/cenario/Logo.png");
-    _entities["logo"]->setSprite();
-    _entities["logo"]->setSpritePosition(sf::Vector2f(425, 100));
-    _entities["logo"]->setSpriteOrigin();
+    _entities["background"] = std::make_unique<Entity>(ressourceManager);
+    _entities["background"]->setTexture("background.png");
+    _entities["background"]->setPosition(0, 0);
 
-    _entities["connectButton"] = std::make_unique<Entity>();
-    _entities["connectButton"]->setNbRect(1);
-    _entities["connectButton"]->_texture = std::make_shared<sf::Texture>();
-    _entities["connectButton"]->setTexture("assets/cenario/button.png");
-    _entities["connectButton"]->setSprite();
-    _entities["connectButton"]->setSpritePosition(sf::Vector2f(425, 380));
-    _entities["connectButton"]->setSpriteScale(sf::Vector2f(2.5, 2.5));
-    _entities["connectButton"]->setSpriteOrigin();
+    _entities["logo"] = std::make_unique<Entity>(ressourceManager);
+    _entities["logo"]->setTexture("Logo.png");
+    _entities["logo"]->setPosition(425, 100);
+
+    _entities["connectButton"] = std::make_unique<Entity>(ressourceManager);
+    _entities["connectButton"]->setTexture("button.png");
+    _entities["connectButton"]->setPosition(425, 380);
+    _entities["connectButton"]->setSpriteScale(2.5, 2.5);
 
     _inputs["nameInput"] = std::make_unique<Input>("assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png", "Name");
     _inputs["nameInput"]->setSpritePosition(sf::Vector2f(300, 170));

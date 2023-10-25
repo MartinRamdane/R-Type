@@ -15,15 +15,16 @@
 #include <memory>
 #include <iostream>
 #include <string>
+#include "RessourceManager.hpp"
 
 class Entity: public IEntity
 {
 public:
-    Entity();
+    Entity(std::shared_ptr<RessourceManager> ressourceManager);
     ~Entity();
     void setTexture(const std::string& path);
     void setSpriteScale(float scaleX, float scaleY);
-    void setSpritePosition(float x, float y);
+    void setPosition(float x, float y);
     std::tuple<float, float> getSpritePosition() const;
     void setSpriteRotation(const float angle);
     void setSpriteOriginToCenter();
@@ -31,7 +32,7 @@ public:
     void animateSprite(const int ei, const int framerate);
     void setInitPos();
     void setTextString(std::string str);
-    void setType(int type);
+    void setType(IEntity::Type type);
     void setTextInfo(int size, std::string color);
     void setSpeed(float speed);
     void setNextPos(float x, float y);
@@ -43,6 +44,13 @@ public:
     void setEventForm(std::string form);
     void setObjectType(std::string type);
     sf::Color getColor(std::string color);
+    IEntity::Type getType() const;
+    void makePrediction();
+    std::string getEventForm() const;
+    void setFont();
+    void draw(sf::RenderWindow& window);
+    sf::Text getText() const;
+    sf::Sprite getSprite() const;
 
 public:
     sf::Sprite _sprite;
@@ -54,12 +62,13 @@ public:
     std::string _eventForm;
     std::string _objectType;
     int _oldPosY;
-    Type _type;
+    IEntity::Type _type;
     sf::Text _text;
     sf::Font _font;
     float _speed;
     sf::Vector2f _nextPos;
     bool _isHit = false;
+    std::shared_ptr<RessourceManager> _ressourceManager;
 };
 
 // ecreate id x y text size color

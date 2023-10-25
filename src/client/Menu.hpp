@@ -12,7 +12,7 @@
 #include <map>
 #include <memory>
 #include "Input.hpp"
-#include "Entity.hpp"
+#include "SFML/Entity.hpp"
 #include "Game.hpp"
 
 class Menu

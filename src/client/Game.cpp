@@ -7,10 +7,10 @@
 
 #include "Game.hpp"
 #include "TCPClientImpl.hpp"
+#include "SFML/DisplaySFML.hpp"
 
 Game::Game() : _threadPool(2)
 {
-    _ressourceManager = RessourceManager();
     _event_indicator = 0;
     _gameTitle = "game";
     _width = 850;
@@ -20,25 +20,21 @@ Game::Game() : _threadPool(2)
     _progressBar = ProgressBar();
 }
 
-void Game::createWindow(std::string name, int x, int y)
-{
-    _window.create(sf::VideoMode(1920, 1080), name);
-    _window.setFramerateLimit(60);
-    _view = sf::View(sf::FloatRect(0, 0, x, y));
-}
-
 void Game::setLibToUse()
 {
-    if (_type == SDL) {
-        _display = std::make_shared<DisplaySDL>();
-    } else if (_type == SFML) {
+    // if (_lib == Lib::SDL) {
+    //     _display = std::make_shared<DisplaySDL>();
+    // }
+    // else
+    if (_lib == Lib::SFML) {
         _display = std::make_shared<DisplaySFML>();
     }
 }
 
 void Game::run()
 {
-    setLib();
+    setLib(1);
+    setLibToUse();
     while (_display->getClosed() == false)
     {
         if (_client->Incoming().empty() == false)
@@ -64,7 +60,7 @@ void Game::run()
                     _client->HandleMessage(msg);
                 }
                 _display->handleEvent(_udpClient, _client);
-                _display->update(&_entities, _udpClient);
+                _display->update(_entities, _udpClient);
             }
         }
     }
@@ -109,7 +105,7 @@ bool Game::connectToUdpServer(std::string host, int port)
 
 bool Game::findEntity(int id)
 {
-    std::map<int, Entity>::iterator it = _entities.begin();
+    std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities.begin();
     while (it != _entities.end())
     {
         if (it->first == id)
@@ -124,25 +120,25 @@ void Game::removeEntity(int id)
     _entities.erase(id);
 }
 
-void Game::addEntity(int id, Entity entity)
+void Game::addEntity(IEntity::EntityInfos entityInfos)
 {
-    if (findEntity(id) == true)
+    if (findEntity(entityInfos.id) == true)
     {
-        if (entity.getHit() == true && id == _playerId)
-        {
-            float percent = _progressBar.getProgress();
-            _progressBar.setProgress(percent - 10);
-        }
-        else
-            _entities[id].setNextPos(entity.getNextPos());
+        // if (entity.getHit() == true && id == _playerId)
+        // {
+        //     float percent = _progressBar.getProgress();
+        //     _progressBar.setProgress(percent - 10);
+        // }
+        // else
+        _entities[entityInfos.id]->setNextPos(entityInfos.nextX, entityInfos.nextY);
     }
     else
-        _entities[id] = entity;
+        _entities[entityInfos.id] = _display->createEntity(entityInfos);
 }
 
 void Game::flipEntity(int id)
 {
-    _entities[id].flip();
+    _entities[id]->flip();
 }
 
 void Game::setLib(int lib)
