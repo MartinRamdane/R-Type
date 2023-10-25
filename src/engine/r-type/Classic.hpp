@@ -9,7 +9,7 @@
 
 #include "../Character.hpp"
 #include <iostream>
-#include "Game.hpp"
+#include "RType.hpp"
 
 class Classic : public Character
 {

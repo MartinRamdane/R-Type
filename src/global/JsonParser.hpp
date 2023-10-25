@@ -21,6 +21,7 @@ public:
     ~JsonParser();
 
     static nlohmann::json readFile(std::string const &path);
+    static std::unordered_map<std::string, std::string> getJsonFile(std::string const &path);
 
     std::vector<std::string> split(std::string const &str, char const delim) noexcept;
 

@@ -31,7 +31,7 @@ public:
     std::vector<uint8_t> encodeEvent(Event event)
     {
         EventHandler evt;
-        evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+        evt.addEvent(event.ACTION_NAME, event.body);
         return evt.encodeMessage();
     }
 
@@ -57,7 +57,6 @@ protected:
                 std::string playerEntityId = "p" + std::to_string(playerId);
                 instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
                 _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
-                evt.body_size = evt.body.size();
                 SendEvent(client, evt);
                 return;
             }
@@ -70,7 +69,6 @@ protected:
             std::string playerEntityId = "p" + std::to_string(playerId);
             instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
             _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
-            evt.body_size = evt.body.size();
             SendEvent(client, evt);
         }
         break;
@@ -119,9 +117,9 @@ protected:
             std::cout << "[" << client->GetID() << "]: DOWN" << std::endl;
         }
         break;
-        case ACTION::SHOOT:
+        case ACTION::SPACE:
         {
-            std::cout << "[" << client->GetID() << "]: SHOOT" << std::endl;
+            std::cout << "[" << client->GetID() << "]: SPACE" << std::endl;
         }
         break;
         case ACTION::QUIT:
@@ -159,9 +157,9 @@ protected:
             std::cout << "[" << client->GetID() << "]: SPRITE" << std::endl;
         }
         break;
-        case ACTION::SHIELD:
+        case ACTION::KEY_S:
         {
-            std::cout << "[" << client->GetID() << "]: SHIELD" << std::endl;
+            std::cout << "[" << client->GetID() << "]: KEY_S" << std::endl;
         }
         break;
         case ACTION::DEAD:
@@ -179,6 +177,10 @@ protected:
         case ACTION::RESET:
         {
             std::cout << "[" << client->GetID() << "]: RESET" << std::endl;
+        }
+        case ACTION::KEY_L:
+        {
+            std::cout << "[" << client->GetID() << "]: KEY_L" << std::endl;
         }
         break;
         }

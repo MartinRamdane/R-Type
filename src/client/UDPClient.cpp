@@ -38,8 +38,8 @@ std::string actionToString(ACTION action)
     return "UP";
   case ACTION::DOWN:
     return "DOWN";
-  case ACTION::SHOOT:
-    return "SHOOT";
+  case ACTION::SPACE:
+    return "SPACE";
   case ACTION::QUIT:
     return "QUIT";
   case ACTION::PING:
@@ -50,8 +50,8 @@ std::string actionToString(ACTION action)
     return "SPRITE";
   case ACTION::UNKNOWN:
     return "UNKNOWN";
-  case ACTION::SHIELD:
-    return "SHIELD";
+  case ACTION::KEY_S:
+    return "KEY_S";
   case ACTION::TEXT:
     return "TEXT";
   case ACTION::DEAD:
@@ -60,6 +60,8 @@ std::string actionToString(ACTION action)
     return "FLIP";
   case ACTION::RESET:
     return "RESET";
+  case ACTION::KEY_L:
+    return "KEY_L";
   }
   return "";
 }
@@ -79,7 +81,7 @@ UDPClient::~UDPClient()
 void UDPClient::connect_to(const std::string &host, int port)
 {
   remote_endpoint_ = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(host), port);
-  sendEvent({ACTION::JOIN, 2, "ok"});
+  sendEvent({ACTION::JOIN, "ok"});
   _port = port;
   _host = host;
   start_receive();
@@ -125,7 +127,7 @@ void UDPClient::sendEvent(Event evt)
 std::vector<uint8_t> UDPClient::encodeEvent(Event event)
 {
   EventHandler evt;
-  evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+  evt.addEvent(event.ACTION_NAME, event.body);
   return evt.encodeMessage();
 }
 
@@ -191,7 +193,7 @@ void UDPClient::handleEvents(Event evt)
 {
     switch (evt.ACTION_NAME) {
     case ACTION::PING:
-        sendEvent({ACTION::PONG, 0, ""});
+        sendEvent({ACTION::PONG, ""});
         break;
     case ACTION::JOINED:
         joinGame(evt);

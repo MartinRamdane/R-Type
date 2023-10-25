@@ -74,7 +74,6 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
                 Event evt;
                 std::string playerId = "p" + std::to_string(_playerId);
                 evt.ACTION_NAME = ACTION::FLIP;
-                evt.body_size = playerId.size();
                 evt.body = playerId;
                 _udpClient->sendEvent(evt);
             }
@@ -90,7 +89,6 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
             evt.ACTION_NAME = ACTION::LEFT;
-            evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
             _eventIndicator = 0;
@@ -98,7 +96,6 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             evt.ACTION_NAME = ACTION::RIGHT;
-            evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
             _eventIndicator = 0;
@@ -106,7 +103,6 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
             evt.ACTION_NAME = ACTION::UP;
-            evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
             _eventIndicator = 1;
@@ -114,15 +110,13 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
             evt.ACTION_NAME = ACTION::DOWN;
-            evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
             _eventIndicator = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
-            evt.ACTION_NAME = ACTION::SHOOT;
-            evt.body_size = playerId.size();
+            evt.ACTION_NAME = ACTION::SPACE;
             evt.body = playerId;
             _udpClient->sendEvent(evt);
             _eventIndicator = 0;
@@ -135,8 +129,7 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            evt.ACTION_NAME = ACTION::SHIELD;
-            evt.body_size = playerId.size();
+            evt.ACTION_NAME = ACTION::KEY_S;
             evt.body = playerId;
             _udpClient->sendEvent(evt);
         }
@@ -156,7 +149,6 @@ void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>> *_entities, UDP
         {
             Event evt;
             evt.ACTION_NAME = ACTION::DEAD;
-            evt.body_size = std::to_string((*it).first).size();
             evt.body = std::to_string((*it).first);
             _udpClient->sendEvent(evt);
             it = _entities->erase(it);

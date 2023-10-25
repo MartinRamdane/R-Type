@@ -15,7 +15,7 @@ UDPServer::UDPServer(boost::asio::io_service &io_service, int port) : socket_(io
     try
     {
         startReceive();
-        ping_thread_ = std::thread(&UDPServer::sendPingToClient, this);
+        // ping_thread_ = std::thread(&UDPServer::sendPingToClient, this);
     }
     catch (const std::exception &e)
     {
@@ -84,7 +84,6 @@ void UDPServer::userJoined(Client client)
     engineRef->openWindow();
     evt.ACTION_NAME = ACTION::JOINED;
     evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
-    evt.body_size = evt.body.size();
     _instanceRef->addAction(evt);
     sendEvent(evt, client.client.address().to_string(), client.client.port());
 }
@@ -137,7 +136,7 @@ void UDPServer::sendPingToClient()
             }
             else
             {
-                sendEvent({ACTION::PING, 0, ""}, it->client.address().to_string(), it->client.port());
+                sendEvent({ACTION::PING, ""}, it->client.address().to_string(), it->client.port());
                 ++it;
             }
         }
@@ -202,7 +201,7 @@ void UDPServer::handleEngineEvents(std::string request)
 std::vector<uint8_t> UDPServer::encodeEvent(Event event)
 {
     EventHandler evt;
-    evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+    evt.addEvent(event.ACTION_NAME, event.body);
     return evt.encodeMessage();
 }
 
@@ -215,7 +214,6 @@ void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
       {
         Event evt;
         evt.ACTION_NAME = ACTION::FLIP;
-        evt.body_size = message.size();
         evt.body = message;
         sendEvent(evt, client->client.address().to_string(), client->client.port());
       }
@@ -223,7 +221,6 @@ void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
       {
         Event evt;
         evt.ACTION_NAME = ACTION::SPRITE;
-        evt.body_size = message.size();
         evt.body = message;
         sendEvent(evt, client->client.address().to_string(), client->client.port());
       }
@@ -232,23 +229,18 @@ void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
 
 void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::vector<Client>::iterator client)
 {
+    Event event;
     switch (evt.ACTION_NAME)
     {
     case ACTION::LEFT:
-        std::cout << "Player go to left " << evt.body << std::endl;
         break;
     case ACTION::RIGHT:
-        std::cout << "Player go to right" << std::endl;
         break;
     case ACTION::UP:
-        std::cout << "Player go to up" << std::endl;
-        sendEvent({ACTION::UP, 2, "ok"}, endpoint.address().to_string(), endpoint.port());
         break;
     case ACTION::DOWN:
-        std::cout << "Player go to down" << std::endl;
         break;
-    case ACTION::SHOOT:
-        std::cout << "Player shoot" << std::endl;
+    case ACTION::SPACE:
         break;
     case ACTION::READY:
         std::cout << "The user is ready to receive sprites" << std::endl;
