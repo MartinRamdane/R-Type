@@ -11,7 +11,10 @@
 #include "../AEntity.hpp"
 #include "../Engine.hpp"
 #include "../IEntity.hpp"
-
+#include <cmath>
+#ifdef WIN32
+    #define M_PI 3.14159265358979323846
+#endif
 class Ball : public AEntity {
    public:
     Ball(EntityInfo info);
