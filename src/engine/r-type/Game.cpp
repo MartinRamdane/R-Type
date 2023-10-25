@@ -166,302 +166,303 @@ void Game::update(ThreadSafeQueue<Event>& events) {
             _lastId++;
         }
     }
+}
 
-    void Game::createExplosion(int x, int y) {
-        IEntity::EntityInfo info;
-        info.x = x;
-        info.y = y;
-        info.assetFile = _assets["ExplosionSpaceship"]();
-        info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-        info.spriteConfigJsonObjectName = "ExplosionSpaceship";
-        info.scaleX = 2;
-        info.scaleY = 2;
-        info.id = _lastId;
-        _lastId++;
-        std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(info);
-        _staticObjectsGroups->insert(explosion);
-        _staticObjects.push_back(explosion);
+void Game::createExplosion(int x, int y) {
+    IEntity::EntityInfo info;
+    info.x = x;
+    info.y = y;
+    info.assetFile = _assets["ExplosionSpaceship"]();
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
+    info.spriteConfigJsonObjectName = "ExplosionSpaceship";
+    info.scaleX = 2;
+    info.scaleY = 2;
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(info);
+    _staticObjectsGroups->insert(explosion);
+    _staticObjects.push_back(explosion);
+}
+
+void Game::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group) {
+    info.assetFile = _assets[info.name]();
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(info);
+    if (group == ProjectileGroup::PLAYER) {
+        _projectilesGroups->insert(projectile);
+        _projectiles.push_back(projectile);
+    } else if (group == ProjectileGroup::ENEMY) {
+        _enemyProjectilesGroups->insert(projectile);
+        _projectiles.push_back(projectile);
+    } else if (group == ProjectileGroup::SUPPORT) {
+        _supportProjectilesGroups->insert(projectile);
+        _projectiles.push_back(projectile);
     }
+    if (flip)
+        projectile->setFlip(flip);
+}
 
-    void Game::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group) {
-        info.assetFile = _assets[info.name]();
-        info.id = _lastId;
-        _lastId++;
-        std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(info);
-        if (group == ProjectileGroup::PLAYER) {
-            _projectilesGroups->insert(projectile);
-            _projectiles.push_back(projectile);
-        } else if (group == ProjectileGroup::ENEMY) {
-            _enemyProjectilesGroups->insert(projectile);
-            _projectiles.push_back(projectile);
-        } else if (group == ProjectileGroup::SUPPORT) {
-            _supportProjectilesGroups->insert(projectile);
-            _projectiles.push_back(projectile);
-        }
-        if (flip)
-            projectile->setFlip(flip);
-    }
+std::shared_ptr<AEntity> Game::createShield(int x, int y) {
+    IEntity::EntityInfo info;
+    info.x = x;
+    info.y = y;
+    info.assetFile = _assets["Shield"]();
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
+    info.spriteConfigJsonObjectName = "Shield";
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(info);
+    _staticObjectsGroups->insert(_shield);
+    _staticObjects.push_back(_shield);
+    return (_shield);
+}
 
-    std::shared_ptr<AEntity> Game::createShield(int x, int y) {
-        IEntity::EntityInfo info;
-        info.x = x;
-        info.y = y;
-        info.assetFile = _assets["Shield"]();
-        info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-        info.spriteConfigJsonObjectName = "Shield";
-        info.id = _lastId;
-        _lastId++;
-        std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(info);
-        _staticObjectsGroups->insert(_shield);
-        _staticObjects.push_back(_shield);
-        return (_shield);
-    }
+std::shared_ptr<AEntity> Game::createSupportShip(int x, int y, int playerId) {
+    IEntity::EntityInfo info;
+    info.x = x;
+    info.y = y;
+    info.assetFile = _assets["SupportShip"]();
+    info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
+    info.spriteConfigJsonObjectName = "SupportShip";
+    info.scaleX = 0.7;
+    info.scaleY = 0.7;
+    info.id = _lastId;
+    _lastId++;
+    std::shared_ptr<SupportShip> support = std::make_shared<SupportShip>(info, playerId);
+    _supportShipGroups->insert(support);
+    _supportShips.push_back(support);
+    return (support);
+}
 
-    std::shared_ptr<AEntity> Game::createSupportShip(int x, int y, int playerId) {
-        IEntity::EntityInfo info;
-        info.x = x;
-        info.y = y;
-        info.assetFile = _assets["SupportShip"]();
-        info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-        info.spriteConfigJsonObjectName = "SupportShip";
-        info.scaleX = 0.7;
-        info.scaleY = 0.7;
-        info.id = _lastId;
-        _lastId++;
-        std::shared_ptr<SupportShip> support = std::make_shared<SupportShip>(info, playerId);
-        _supportShipGroups->insert(support);
-        _supportShips.push_back(support);
-        return (support);
-    }
-
-    void Game::eraseDeadEntity(int id) {
-        for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
-            if ((*it)->getId() == id) {
-                (*it)->kill();
-                _staticObjects.erase(it);
-                break;
-            }
-        }
-    }
-
-    void Game::eraseDeadEntity() {
-        for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
-            if ((*it)->isDead()) {
-                _staticObjects.erase(it);
-                break;
-            }
-        }
-        for (auto it = _enemies.begin(); it != _enemies.end(); it++) {
-            if ((*it)->isDead()) {
-                _enemies.erase(it);
-                break;
-            }
-        }
-        for (auto it = _players.begin(); it != _players.end(); it++) {
-            if ((*it)->isDead()) {
-                _players.erase(it);
-                break;
-            }
-        }
-        for (auto it = _projectiles.begin(); it != _projectiles.end(); it++) {
-            if ((*it)->isDead()) {
-                _projectiles.erase(it);
-                break;
-            }
+void Game::eraseDeadEntity(int id) {
+    for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
+        if ((*it)->getId() == id) {
+            (*it)->kill();
+            _staticObjects.erase(it);
+            break;
         }
     }
+}
 
-    void Game::setAllEntitiesToCreated() {
-        for (auto staticObject : _staticObjects) {
-            staticObject->setCreated(false);
-        }
-        for (auto enemy : _enemies) {
-            enemy->setCreated(false);
-        }
-        for (auto player : _players) {
-            player->setCreated(false);
-        }
-        for (auto projectile : _projectiles) {
-            projectile->setCreated(false);
-        }
-        for (auto supportShip : _supportShips) {
-            supportShip->setCreated(false);
+void Game::eraseDeadEntity() {
+    for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
+        if ((*it)->isDead()) {
+            _staticObjects.erase(it);
+            break;
         }
     }
-
-    void Game::deleteAllEntities() {
-        _lastId = 0;
-        for (auto staticObject : _staticObjects)
-            staticObject->kill();
-        for (auto enemy : _enemies)
-            enemy->kill();
-        for (auto projectile : _projectiles)
-            projectile->kill();
-        _staticObjects.clear();
-        _enemies.clear();
-        _projectiles.clear();
-        _staticObjectsGroups->clear();
-        _enemie2Groups->clear();
-        _flyerGroups->clear();
-        _orangeRobotGroups->clear();
-        _projectilesGroups->clear();
-    }
-
-    bool Game::isReset() {
-        return (_reset);
-    }
-
-    void Game::setReset(bool reset) {
-        _reset = reset;
-    }
-
-    int Game::getCurrentId() {
-        return (_lastId);
-    }
-
-    int Game::getCurrentLevel() {
-        return (_currentLevel);
-    }
-
-    std::map<std::string, std::function<std::string()>> Game::getAssets() {
-        return (_assets);
-    }
-
-    void Game::setCurrentId(int id) {
-        _lastId = id;
-    }
-
-    void Game::createEnemy(IEntity::EntityInfo info) {
-        std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
-        enemy->setMovementType(info.movementType);
-        _enemies.push_back(enemy);
-        if (info.name == "OrangeRobot")
-            _orangeRobotGroups->insert(enemy);
-        else if (info.name == "Flyer")
-            _flyerGroups->insert(enemy);
-        else if (info.name == "Enemy2")
-            _enemie2Groups->insert(enemy);
-    }
-
-    void Game::createBackground(IEntity::EntityInfo info) {
-        std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info);
-        _staticObjects.push_back(background);
-        _staticObjectsGroups->insert(background);
-    }
-
-    void Game::clearLevel() {
-        _lastId = 0;
-        for (auto player : _players) {
-            player->setId(_lastId++);
-            player->setCreated(false);
-            player->resetLife();
+    for (auto it = _enemies.begin(); it != _enemies.end(); it++) {
+        if ((*it)->isDead()) {
+            _enemies.erase(it);
+            break;
         }
-        _orangeRobotGroups->clear();
-        _flyerGroups->clear();
-        _enemie2Groups->clear();
-        _projectilesGroups->clear();
-        _enemyProjectilesGroups->clear();
-        _staticObjectsGroups->clear();
-        _enemies.clear();
-        _projectiles.clear();
-        _staticObjects.clear();
     }
-
-    std::shared_ptr<AEntity> Game::getPlayer(int id) {
-        for (auto player : _players)
-            if (player->getId() == id)
-                return (player);
-        return (nullptr);
+    for (auto it = _players.begin(); it != _players.end(); it++) {
+        if ((*it)->isDead()) {
+            _players.erase(it);
+            break;
+        }
     }
+    for (auto it = _projectiles.begin(); it != _projectiles.end(); it++) {
+        if ((*it)->isDead()) {
+            _projectiles.erase(it);
+            break;
+        }
+    }
+}
 
-    std::map<std::string, std::function<std::string()>> Game::_assets = {
+void Game::setAllEntitiesToCreated() {
+    for (auto staticObject : _staticObjects) {
+        staticObject->setCreated(false);
+    }
+    for (auto enemy : _enemies) {
+        enemy->setCreated(false);
+    }
+    for (auto player : _players) {
+        player->setCreated(false);
+    }
+    for (auto projectile : _projectiles) {
+        projectile->setCreated(false);
+    }
+    for (auto supportShip : _supportShips) {
+        supportShip->setCreated(false);
+    }
+}
 
-        {"Classic",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Classic");
-         }},
-        {"Speed",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Speed");
-         }},
-        {"Shooter",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Shooter");
-         }},
-        {"Tank",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Tank");
-         }},
-        {"ShieldSpaceship",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.ShieldSpaceship");
-         }},
-        {"OrangeRobot",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.OrangeRobot");
-         }},
-        {"Enemy2",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Enemy2");
-         }},
-        {"Background",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Background");
-         }},
-        {"ExplosionSpaceship",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.ExplosionSpaceShip");
-         }},
-        {"Shield",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Shield");
-         }},
-        {"PlayerProjectile",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.PlayerProjectile");
-         }},
-        {"DiskProjectile",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.DiskProjectile");
-         }},
-        {"OrangeProjectile",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.OrangeProjectile");
-         }},
-        {"Flyer",
-         []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.Flyer");
-         }},
-        {"SupportShip", []() {
-             JsonParser parser;
-             return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                            "Game.Assets.Images.SupportShip");
-         }}};
+void Game::deleteAllEntities() {
+    _lastId = 0;
+    for (auto staticObject : _staticObjects)
+        staticObject->kill();
+    for (auto enemy : _enemies)
+        enemy->kill();
+    for (auto projectile : _projectiles)
+        projectile->kill();
+    _staticObjects.clear();
+    _enemies.clear();
+    _projectiles.clear();
+    _staticObjectsGroups->clear();
+    _enemie2Groups->clear();
+    _flyerGroups->clear();
+    _orangeRobotGroups->clear();
+    _projectilesGroups->clear();
+}
+
+bool Game::isReset() {
+    return (_reset);
+}
+
+void Game::setReset(bool reset) {
+    _reset = reset;
+}
+
+int Game::getCurrentId() {
+    return (_lastId);
+}
+
+int Game::getCurrentLevel() {
+    return (_currentLevel);
+}
+
+std::map<std::string, std::function<std::string()>> Game::getAssets() {
+    return (_assets);
+}
+
+void Game::setCurrentId(int id) {
+    _lastId = id;
+}
+
+void Game::createEnemy(IEntity::EntityInfo info) {
+    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
+    enemy->setMovementType(info.movementType);
+    _enemies.push_back(enemy);
+    if (info.name == "OrangeRobot")
+        _orangeRobotGroups->insert(enemy);
+    else if (info.name == "Flyer")
+        _flyerGroups->insert(enemy);
+    else if (info.name == "Enemy2")
+        _enemie2Groups->insert(enemy);
+}
+
+void Game::createBackground(IEntity::EntityInfo info) {
+    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info);
+    _staticObjects.push_back(background);
+    _staticObjectsGroups->insert(background);
+}
+
+void Game::clearLevel() {
+    _lastId = 0;
+    for (auto player : _players) {
+        player->setId(_lastId++);
+        player->setCreated(false);
+        player->resetLife();
+    }
+    _orangeRobotGroups->clear();
+    _flyerGroups->clear();
+    _enemie2Groups->clear();
+    _projectilesGroups->clear();
+    _enemyProjectilesGroups->clear();
+    _staticObjectsGroups->clear();
+    _enemies.clear();
+    _projectiles.clear();
+    _staticObjects.clear();
+}
+
+std::shared_ptr<AEntity> Game::getPlayer(int id) {
+    for (auto player : _players)
+        if (player->getId() == id)
+            return (player);
+    return (nullptr);
+}
+
+std::map<std::string, std::function<std::string()>> Game::_assets = {
+
+    {"Classic",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Classic");
+     }},
+    {"Speed",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Speed");
+     }},
+    {"Shooter",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Shooter");
+     }},
+    {"Tank",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Tank");
+     }},
+    {"ShieldSpaceship",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.ShieldSpaceship");
+     }},
+    {"OrangeRobot",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.OrangeRobot");
+     }},
+    {"Enemy2",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Enemy2");
+     }},
+    {"Background",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Background");
+     }},
+    {"ExplosionSpaceship",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.ExplosionSpaceShip");
+     }},
+    {"Shield",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Shield");
+     }},
+    {"PlayerProjectile",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.PlayerProjectile");
+     }},
+    {"DiskProjectile",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.DiskProjectile");
+     }},
+    {"OrangeProjectile",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.OrangeProjectile");
+     }},
+    {"Flyer",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Flyer");
+     }},
+    {"SupportShip", []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.SupportShip");
+     }}};

@@ -27,7 +27,6 @@ void SupportShip::update() {
         setOldPosition(_x, _y);
     }
 
-    int random = rand() % 2;
     auto player = Game::instance->getPlayer(_relatedPlayerId);
     auto pos = player->getPosition();
     int x = std::get<0>(pos);

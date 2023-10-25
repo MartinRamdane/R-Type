@@ -8,7 +8,7 @@
 #include "Instance.hpp"
 
 Instance::Instance(int id, std::string gameName)
-    : _id(id), _port((int)(4210 + id)), _threadPool(3), _gameName(gameName) {
+    : _id(id), _port((int)(4210 + id)), _gameName(gameName), _threadPool(3) {
     std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
     nlohmann::json jsonFile = _jsonParser.readFile(gameConfigFilePathName);
     _nbPlayersMax = _jsonParser.get<int>(jsonFile, "nbPlayersMax");
