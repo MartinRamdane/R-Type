@@ -30,10 +30,12 @@ void DisplaySFML::animate(std::map<int, std::shared_ptr<IEntity>> *_entities)
   std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities->begin();
   while (it != _entities->end())
   {
-    if (it->second->getEventForm() == "loop")
-      it->second->animateSprite(0, 100);
-    if (it->second->getEventForm() == "once")
-      it->second->animateSprite(3, 100);
+    std::cout << "event form: " << it->second->getEventForm() << std::endl;
+    if (it->second->getEventForm() == "loop") {
+      std::cout << "loop here" << std::endl;
+      it->second->animateSprite(0, 60);
+    }if (it->second->getEventForm() == "once")
+      it->second->animateSprite(3, 60);
     if (it->second->getEventForm() == "event" && _eventIndicator == 0)
       it->second->setInitPos();
     if (it->second->getEventForm() == "paralaxe")
