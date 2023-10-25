@@ -18,7 +18,6 @@
 #include "UDPClient.hpp"
 #include "../global/ThreadPool.hpp"
 #include "ProgressBar.hpp"
-#include "../global/DataCompress.hpp"
 
 class TCPClientImpl;
 class IDisplay;

@@ -12,7 +12,6 @@
 #include <boost/asio.hpp>
 #include "../global/EventHandler.hpp"
 #include "ThreadSafeQueue.hpp"
-#include "../global/DataCompress.hpp"
 
 class Game;
 struct UDPMessage
