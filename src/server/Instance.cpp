@@ -44,7 +44,6 @@ void Instance::EventLoop() {
             _core->setReset(false);
             Event evt;
             evt.ACTION_NAME = ACTION::RESET;
-            evt.body_size = 0;
             evt.body = "";
             _udpServer->sendEventToAllClients(evt);
         }
@@ -58,13 +57,11 @@ void Instance::EventLoop() {
             } else if (message.substr(0, message.find(" ")) == "eflip") {
                 Event evt;
                 evt.ACTION_NAME = ACTION::FLIP;
-                evt.body_size = message.size();
                 evt.body = message;
                 _udpServer->sendEventToAllClients(evt);
             } else {
                 Event evt;
                 evt.ACTION_NAME = ACTION::SPRITE;
-                evt.body_size = message.size();
                 evt.body = message;
                 _udpServer->sendEventToAllClients(evt);
             }

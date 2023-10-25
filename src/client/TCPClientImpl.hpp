@@ -30,7 +30,7 @@ public:
     std::vector<uint8_t> encodeEvent(Event event)
     {
         EventHandler evt;
-        evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+        evt.addEvent(event.ACTION_NAME, event.body);
         return evt.encodeMessage();
     }
     void HandleMessage(message<ACTION> &msg);
