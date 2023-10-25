@@ -24,6 +24,7 @@ public:
     {
         entities.push_back(entity);
         entity->setRadius(_radius);
+        entity->setSize(_radius * 2, _radius * 2);
     }
     template <class T2>
     void collideAll(std::shared_ptr<EntityType<T2>> &t2, float radius, void (*func)(IEntity &, IEntity &))

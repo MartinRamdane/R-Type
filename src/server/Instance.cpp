@@ -49,7 +49,13 @@ void Instance::EventLoop() {
             _udpServer->sendEventToAllClients(evt);
         }
         for (auto message : protocol) {
-            if (message.substr(0, message.find(" ")) == "eflip") {
+            if (message.substr(0, message.find(" ")) == "etext") {
+                Event evt;
+                evt.ACTION_NAME = ACTION::TEXT;
+                evt.body_size = message.size();
+                evt.body = message;
+                _udpServer->sendEventToAllClients(evt);
+            } else if (message.substr(0, message.find(" ")) == "eflip") {
                 Event evt;
                 evt.ACTION_NAME = ACTION::FLIP;
                 evt.body_size = message.size();

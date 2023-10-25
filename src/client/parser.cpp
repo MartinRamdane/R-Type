@@ -159,7 +159,7 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
             }
             return addEntity(valueMap, ressourceManager);
         }
-        else if (commande == "ecreate" && evt.ACTION_NAME == ACTION::TEXT)
+        else if (commande == "etext" && evt.ACTION_NAME == ACTION::TEXT)
         {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;

@@ -7,9 +7,9 @@
 
 #pragma once
 #include "Engine.hpp"
-#include "IGame.hpp"
 #include "Protocol.hpp"
 #include "../server/ThreadSafeQueue.hpp"
+#include "r-type/Game.hpp"
 
 class Core
 {

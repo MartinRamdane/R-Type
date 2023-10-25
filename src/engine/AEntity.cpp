@@ -13,7 +13,7 @@ AEntity::AEntity(EntityInfo info) {
     _y = info.y;
     _scaleX = info.scaleX;
     _scaleY = info.scaleY;
-    _speed = 1;
+    _speed = info.speed;
     _id = info.id;
     _oldX = info.x;
     _oldY = info.y;
@@ -25,6 +25,7 @@ AEntity::AEntity(EntityInfo info) {
     _spriteConfigJsonFileName = info.spriteConfigJsonFileName;
     _spriteConfigJsonObjectName = info.spriteConfigJsonObjectName;
     _direction = RIGHT;
+    _text = info.text;
 }
 
 AEntity::~AEntity() {}
@@ -38,6 +39,8 @@ void AEntity::setPosition(float x, float y) {
 void AEntity::update() {
     if (_x != _oldX || _y != _oldY)
         setOldPosition(_x, _y);
+    if (_text != _oldText)
+        setOldText(_text);
 }
 
 std::tuple<float, float> AEntity::getPosition() const {
@@ -158,4 +161,42 @@ void AEntity::setAlliesTouched(bool alliesTouched) {
 
 bool AEntity::getAlliesTouched() const {
     return _alliesTouched;
+}
+
+std::tuple<float, float> AEntity::getDirectionVector() const {
+    return std::make_tuple(dirX, dirY);
+}
+
+void AEntity::setDirectionVector(float x, float y) {
+    dirX = x;
+    dirY = y;
+}
+
+int AEntity::getWidth() const {
+    return _width;
+}
+
+int AEntity::getHeight() const {
+    return _height;
+}
+
+void AEntity::setSize(int width, int height) {
+    _width = width;
+    _height = height;
+}
+
+std::string AEntity::getText() const {
+    return _text;
+}
+
+void AEntity::setText(std::string text) {
+    _text = text;
+}
+
+std::string AEntity::getOldText() const {
+    return _oldText;
+}
+
+void AEntity::setOldText(std::string text) {
+    _oldText = text;
 }

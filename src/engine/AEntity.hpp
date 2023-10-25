@@ -9,9 +9,8 @@
 
 #include "IEntity.hpp"
 
-class AEntity : public IEntity
-{
-public:
+class AEntity : public IEntity {
+   public:
     AEntity(EntityInfo info);
     ~AEntity();
 
@@ -43,10 +42,19 @@ public:
     void setFlip(bool flip);
     Direction getDirection() const;
     void setLife(int life);
+    std::tuple<float, float> getDirectionVector() const;
+    void setDirectionVector(float x, float y);
+    int getWidth() const;
+    int getHeight() const;
+    void setSize(int width, int height);
+    std::string getText() const;
+    void setText(std::string text);
+    std::string getOldText() const;
+    void setOldText(std::string text);
     void setAlliesTouched(bool alliesTouched);
     bool getAlliesTouched() const;
 
-protected:
+   protected:
     float _x;
     float _y;
     float _oldX;
@@ -63,9 +71,13 @@ protected:
     float _radius;
     bool _flip;
     int _id;
-    bool _alliesTouched = false;
     std::string _spriteConfigJsonFileName;
     std::string _spriteConfigJsonObjectName;
-
-private:
+    float dirX;
+    float dirY;
+    int _width;
+    int _height;
+    bool _alliesTouched = false;
+    std::string _text = "";
+    std::string _oldText = "";
 };

@@ -1,0 +1,14 @@
+{
+    "Game": {
+        "Assets": {
+            "Images": {
+                "Border": "border.png",
+                "Player": "pong_player.png",
+                "Ball": "pong_ball.png"
+            }
+        },
+        "Data": {
+            "Levels": "./src/GameEngine/pong/assets/data/levels.json"
+        }
+    }
+}

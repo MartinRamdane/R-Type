@@ -86,7 +86,6 @@ void Enemy::shoot()
 {
     if (!canShoot())
         return;
-    std::cout << "Enemy shoot" << std::endl;
     auto pos = getPosition();
     EntityInfo info;
     info.x = std::get<0>(pos) - 33;
