@@ -17,7 +17,7 @@ Instance::Instance(int id, std::string gameName)
               << _onlyMultiplayer << std::endl;
     _udpServer = new UDPServer(_io_service, (int)(4210 + id));
     _udpServer->setNbPlayers(1);
-    _core = new Core();
+    _core = new Core(gameName);
     _udpServer->setInstance(this);
     _threadPool.enqueue([this]() { _io_service.run(); });
     // implement the main loop in thread
