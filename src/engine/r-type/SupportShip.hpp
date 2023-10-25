@@ -23,8 +23,6 @@ public:
 protected:
 private:
     int _relatedPlayerId;
-    int _playerOldX;
-    int _playerOldY;
     bool _launched = false;
     int _launchX = 0;
 };

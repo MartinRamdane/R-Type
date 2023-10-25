@@ -87,7 +87,6 @@ void Enemy::shoot()
 {
     if (!canShoot())
         return;
-    std::cout << "Enemy shoot" << std::endl;
     auto pos = getPosition();
     EntityInfo info;
     info.x = std::get<0>(pos) - 33;
@@ -100,7 +99,7 @@ void Enemy::shoot()
     info.spriteConfigJsonObjectName = getShootAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.direction = IEntity::LEFT;
-    Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::ENEMY);
+    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::ENEMY);
 }
 
 void Enemy::move(float x, float y)

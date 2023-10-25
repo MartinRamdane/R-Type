@@ -7,14 +7,15 @@
 
 #pragma once
 #include "Engine.hpp"
-#include "IGame.hpp"
 #include "Protocol.hpp"
 #include "../server/ThreadSafeQueue.hpp"
+#include "r-type/RType.hpp"
+#include "pong/Pong.hpp"
 
 class Core
 {
 public:
-    Core();
+    Core(std::string gameName);
     ~Core();
 
     std::vector<std::string> mainLoop(ThreadSafeQueue<Event> &events);

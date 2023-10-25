@@ -12,7 +12,7 @@ SupportShip::SupportShip(EntityInfo info, int relatedPlayerId)
     JsonParser parser;
     nlohmann::json json = parser.readFile("SupportShip.rType.json");
     setShootAsset(parser.get<std::string>(json, "ProjectileType"));
-    setSpeed(Game::instance->getPlayer(relatedPlayerId)->getSpeed() + 2);
+    setSpeed(RType::instance->getPlayer(relatedPlayerId)->getSpeed());
     setFireRate(parser.get<float>(json, "FireRate"));
     setProjectileSpeed(parser.get<float>(json, "ProjectileSpeed"));
     setDamage(parser.get<int>(json, "Damage"));
@@ -27,8 +27,7 @@ void SupportShip::update() {
         setOldPosition(_x, _y);
     }
 
-    int random = rand() % 2;
-    auto player = Game::instance->getPlayer(_relatedPlayerId);
+    auto player = RType::instance->getPlayer(_relatedPlayerId);
     auto pos = player->getPosition();
     int x = std::get<0>(pos);
     int y = std::get<1>(pos);
@@ -98,11 +97,11 @@ void SupportShip::shoot() {
     info.spriteConfigJsonObjectName = getShootAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.direction = _direction;
-    Game::instance->createProjectile(info,
+    RType::instance->createProjectile(info,
                                      _direction == IEntity::LEFT ? true : false,
                                      IGame::ProjectileGroup::SUPPORT);
     info.y = info.y + 4;
-    Game::instance->createProjectile(info,
+    RType::instance->createProjectile(info,
                                      _direction == IEntity::LEFT ? true : false,
                                      IGame::ProjectileGroup::SUPPORT);
 }

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
-** Game
+** RType
 */
 
 #pragma once
@@ -28,12 +28,12 @@ class Dropper;
 
 #define MAX_LEVEL 1
 
-class Game : public IGame
+class RType : public IGame
 {
 public:
-    Game(std::shared_ptr<Engine> &engine);
-    ~Game();
-    static Game *instance;
+    RType(std::shared_ptr<Engine> &engine);
+    ~RType();
+    static RType *instance;
 
     void update(ThreadSafeQueue<Event> &events);
     void createExplosion(int x, int y);

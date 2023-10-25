@@ -6,10 +6,11 @@
 */
 
 #include "LevelInitializer.hpp"
-#include "Game.hpp"
+#include "RType.hpp"
 
-LevelInitializer::LevelInitializer(IGame* game) {
-    _game = dynamic_cast<Game*>(game);
+LevelInitializer::LevelInitializer(IGame *game)
+{
+    _game = dynamic_cast<RType *>(game);
 }
 
 LevelInitializer::~LevelInitializer() {}
@@ -60,8 +61,8 @@ void LevelInitializer::createEnemy(int cout, nlohmann::json positions) {
     _info = {};
 }
 
-void LevelInitializer::createBackground() {
-    std::cout << "ID background: " << _game->getCurrentId() << std::endl;
+void LevelInitializer::createBackground()
+{
     _info.id = _game->getCurrentId();
     _info.name = "Background";
     _info.assetFile = _game->getAssets()["Background"]();

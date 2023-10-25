@@ -8,7 +8,7 @@
 #pragma once
 
 #include "AEntity.hpp"
-#include "r-type/Game.hpp"
+#include "r-type/RType.hpp"
 #include <chrono>
 #include <thread>
 #include <iostream>

@@ -11,7 +11,7 @@
 #include "../IEntity.hpp"
 #include "../../global/JsonParser.hpp"
 
-class Game;
+class RType;
 
 class LevelInitializer
 {
@@ -26,7 +26,7 @@ public:
 
 protected:
 private:
-    Game *_game;
+    RType *_game;
     IEntity::EntityInfo _info;
     int _currentLevel = 1;
 };
