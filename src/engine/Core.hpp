@@ -9,7 +9,7 @@
 #include "Engine.hpp"
 #include "Protocol.hpp"
 #include "../server/ThreadSafeQueue.hpp"
-#include "pong/Pong.hpp"
+#include "r-type/Game.hpp"
 
 class Core
 {
