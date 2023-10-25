@@ -13,7 +13,7 @@
 
 class InstanceButton {
    public:
-    InstanceButton(Instance instance, int x, int y);
+    InstanceButton(InstanceType instance, int x, int y);
     ~InstanceButton();
     std::string formatText(std::string toFormat);
     int getId() { return _instance.id; }
@@ -24,7 +24,7 @@ class InstanceButton {
 
    private:
     sf::Font _font;
-    Instance _instance;
+    InstanceType _instance;
     int _x;
     int _y;
     std::map<std::string, std::shared_ptr<Entity>> _entities;

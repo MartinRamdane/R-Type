@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-struct Instance {
+struct InstanceType {
     std::string name;
     std::string game;
     int nbPlayers;

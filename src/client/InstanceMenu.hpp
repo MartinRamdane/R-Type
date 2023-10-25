@@ -23,7 +23,6 @@ class InstanceMenu {
     ~InstanceMenu();
 
     void mainloop();
-    void createInstanceButton(Instance instance, int id);
 
    private:
     sf::RenderWindow _window;

@@ -73,5 +73,5 @@ class Game {
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     ProgressBar _progressBar;
     std::shared_ptr<IDisplay> _display;
-    std::vector<Instance> _instances;
+    std::vector<InstanceType> _instances;
 };

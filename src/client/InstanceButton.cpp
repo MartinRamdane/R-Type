@@ -6,7 +6,7 @@
 */
 #include "InstanceButton.hpp"
 
-InstanceButton::InstanceButton(Instance instance, int x, int y) {
+InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
     _instance = instance;
