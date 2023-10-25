@@ -30,9 +30,10 @@ InstanceMenu::InstanceMenu(std::shared_ptr<Game>& game) : _game(game) {
     _entities["listBackground"]->setSpritePosition(sf::Vector2f(425, 280));
 
     // gap between each instance button is 90 pixels in y
-    Instance mockInstance = {"mockInstance", "pong", 1, 2, 4210};
-    _instanceButtons[0] = std::make_unique<InstanceButton>(mockInstance, 0, 225, 200);
-    _instanceButtons[1] = std::make_unique<InstanceButton>(mockInstance, 0, 225, 290);
+    Instance mockInstance1 = {"mockInstance1", "pong", 1, 2, 4210, 0};
+    Instance mockInstance2 = {"mockInstance2", "rType", 1, 4, 4211, 1};
+    _instanceButtons[0] = std::make_unique<InstanceButton>(mockInstance1, 225, 200);
+    _instanceButtons[1] = std::make_unique<InstanceButton>(mockInstance2, 225, 290);
 }
 
 InstanceMenu::~InstanceMenu() {
@@ -53,10 +54,13 @@ void InstanceMenu::mainloop() {
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Left) {
                 for (auto& instanceButton : _instanceButtons) {
-                    std::map<std::string, std::shared_ptr<Entity>> entities =
-                        instanceButton.second->getEntities();
-                    std::shared_ptr<Entity> submitButton = entities["submitButton"];
-                    std::cout << "test " << submitButton.get()->getRect() << std::endl;
+                    std::string key =
+                        "submitButton" + std::to_string(instanceButton.second.get()->getId());
+                    Entity* submitButton = instanceButton.second.get()->getSubmitButton();
+                    if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
+                        std::cout << "join instance " << instanceButton.second.get()->getId()
+                                  << std::endl;
+                    }
                 }
                 std::cout << "handle mouse pressed" << std::endl;
             }

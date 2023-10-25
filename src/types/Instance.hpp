@@ -7,4 +7,5 @@ struct Instance {
     int nbPlayers;
     int maxPlayers;
     int port;
+    int id;
 };

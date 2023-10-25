@@ -6,11 +6,10 @@
 */
 #include "InstanceButton.hpp"
 
-InstanceButton::InstanceButton(Instance instance, int instanceId, int x, int y) {
+InstanceButton::InstanceButton(Instance instance, int x, int y) {
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
     _instance = instance;
-    _instanceId = instanceId;
     _x = x;
     _y = y;
     _entities[formatText("instanceBackground")] = std::make_shared<Entity>();
@@ -72,5 +71,9 @@ InstanceButton::InstanceButton(Instance instance, int instanceId, int x, int y) 
 InstanceButton::~InstanceButton() {}
 
 std::string InstanceButton::formatText(std::string toFormat) {
-    return toFormat + std::to_string(_instanceId);
+    return toFormat + std::to_string(_instance.id);
+}
+
+Entity* InstanceButton::getSubmitButton() {
+    return _entities[formatText("submitButton")].get();
 }
