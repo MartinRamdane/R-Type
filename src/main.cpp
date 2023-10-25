@@ -7,8 +7,8 @@ int main() {
         std::cerr << "Usage: ./server <game> (r-type or pong)" << std::endl;
         return 1;
     } else {
-        if (std::string(argv[1]) != "r-type" && std::string(argv[1]) != "pong") {
-            std::cerr << "Usage: ./server <game> (r-type or pong)" << std::endl;
+        if (std::string(argv[1]) != "rType" && std::string(argv[1]) != "pong") {
+            std::cerr << "Usage: ./server <game> (rType or pong)" << std::endl;
             return 1;
         }
     }*/

@@ -26,4 +26,6 @@ private:
     int _relatedPlayerId;
     bool _launched = false;
     int _launchX = 0;
+    int _playerOldX = 0;
+    int _playerOldY = 0;
 };
