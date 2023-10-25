@@ -124,6 +124,7 @@ void Character::hurtEnemy(IEntity& self, IEntity& you) {
 }
 
 void Character::alliesTouched(IEntity& self, IEntity& you) {
+  std::cout << "allies touched" << std::endl;
   self.setAlliesTouched(true);
   you.setAlliesTouched(true);
 }

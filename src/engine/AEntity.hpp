@@ -53,6 +53,8 @@ class AEntity : public IEntity {
     void setOldText(std::string text);
     void setAlliesTouched(bool alliesTouched);
     bool getAlliesTouched() const;
+    void setHasSupport(bool hasSupport);
+    bool getHasSupport() const;
 
    protected:
     float _x;
@@ -80,4 +82,5 @@ class AEntity : public IEntity {
     bool _alliesTouched = false;
     std::string _text = "";
     std::string _oldText = "";
+    bool _hasSupport = false;
 };

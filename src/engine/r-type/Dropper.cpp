@@ -11,7 +11,9 @@ Dropper::Dropper(EntityInfo info) : Character(info) {
     setLife(info.life);
 }
 
-Dropper::~Dropper() {}
+Dropper::~Dropper() {
+    RType::instance->createSupportShip(_x, _y);
+}
 
 void Dropper::update()
 {

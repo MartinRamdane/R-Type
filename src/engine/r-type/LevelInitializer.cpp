@@ -28,7 +28,7 @@ void LevelInitializer::loadLevel(int currentLevel) {
             if (config["Type"] == "Enemy") {
                 createEnemy(value["Count"], value["Positions"]);
             } else if (config["Type"] == "Dropper") {
-                createDropper();
+                createDropper(value["Count"], value["Positions"]);
             }
         } else {
             createBackground();
@@ -61,6 +61,17 @@ void LevelInitializer::createEnemy(int cout, nlohmann::json positions) {
     _info = {};
 }
 
+void LevelInitializer::createDropper(int cout, nlohmann::json positions) {
+    for (int i = 0; i < cout; i++) {
+        _info.id = _game->getCurrentId();
+        _info.x = positions[i]["X"];
+        _info.y = positions[i]["Y"];
+        _game->createDropper(_info);
+        _game->setCurrentId(_info.id + 1);
+    }
+    _info = {};
+}
+
 void LevelInitializer::createBackground()
 {
     _info.id = _game->getCurrentId();
@@ -71,19 +82,6 @@ void LevelInitializer::createBackground()
     _info.x = 425;
     _info.y = 239;
     _game->createBackground(_info);
-    _game->setCurrentId(_info.id + 1);
-    _info = {};
-}
-
-void LevelInitializer::createDropper() {
-    _info.id = _game->getCurrentId();
-    _info.name = "Dropper";
-    _info.assetFile = _game->getAssets()["Dropper"]();
-    _info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-    _info.spriteConfigJsonObjectName = "Dropper";
-    _info.x = 425;
-    _info.y = 239;
-    _game->createDropper(_info);
     _game->setCurrentId(_info.id + 1);
     _info = {};
 }

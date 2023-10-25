@@ -55,8 +55,10 @@ public:
     void createBackground(IEntity::EntityInfo info);
     void createDropper(IEntity::EntityInfo info);
     void clearLevel();
-    std::shared_ptr<AEntity> createSupportShip(int x, int y, int playerId);
+    std::shared_ptr<AEntity> createSupportShip(int x, int y);
     std::shared_ptr<AEntity> getPlayer(int id);
+    std::vector<std::shared_ptr<AEntity>> getPlayers();
+    void setPlayerHasSupport(int id, bool support);
 
 private:
     std::shared_ptr<Engine> _engine;

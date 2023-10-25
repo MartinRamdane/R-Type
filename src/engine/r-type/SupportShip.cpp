@@ -7,8 +7,7 @@
 
 #include "SupportShip.hpp"
 
-SupportShip::SupportShip(EntityInfo info, int relatedPlayerId)
-    : Character(info) {
+SupportShip::SupportShip(EntityInfo info, int relatedPlayerId) : Character(info) {
     JsonParser parser;
     nlohmann::json json = parser.readFile("SupportShip.rType.json");
     setShootAsset(parser.get<std::string>(json, "ProjectileType"));
@@ -20,9 +19,34 @@ SupportShip::SupportShip(EntityInfo info, int relatedPlayerId)
     _relatedPlayerId = relatedPlayerId;
 }
 
+SupportShip::SupportShip(EntityInfo info) : Character(info) {
+    JsonParser parser;
+    nlohmann::json json = parser.readFile("SupportShip.rType.json");
+    setShootAsset(parser.get<std::string>(json, "ProjectileType"));
+    setFireRate(parser.get<float>(json, "FireRate"));
+    setSpeed(6);
+    setProjectileSpeed(parser.get<float>(json, "ProjectileSpeed"));
+    setDamage(parser.get<int>(json, "Damage"));
+    setLife(parser.get<int>(json, "Life"));
+    _relatedPlayerId = -1;
+}
+
 SupportShip::~SupportShip() {}
 
 void SupportShip::update() {
+    if (_relatedPlayerId == -1) {
+        for (auto& it : RType::instance->getPlayers()) {
+            if (it->AEntity::getAlliesTouched() && !it->AEntity::getHasSupport() &&
+                AEntity::getAlliesTouched()) {
+                _relatedPlayerId = it->getId();
+                RType::instance->setPlayerHasSupport(_relatedPlayerId, true);
+                break;
+            }
+        }
+        if (_relatedPlayerId == -1)
+            return;
+    }
+
     if (_x != _oldX || _y != _oldY) {
         setOldPosition(_x, _y);
     }
@@ -31,14 +55,13 @@ void SupportShip::update() {
     auto pos = player->getPosition();
     int x = std::get<0>(pos);
     int y = std::get<1>(pos);
-    if (player->getAlliesTouched() == true &&
-        AEntity::getAlliesTouched() == false) {
+    if (player->getAlliesTouched() == true && AEntity::getAlliesTouched() == false) {
         player->setAlliesTouched(false);
         setAlliesTouched(false);
     }
 
     if (_launched) {
-        if (_launchX <= 100 && _x < 830) {
+        if (_launchX <= 100 && _x < 830 && x > 10) {
             _direction == IEntity::RIGHT ? move(1, 0) : move(-1, 0);
             _launchX++;
             return;
@@ -54,8 +77,7 @@ void SupportShip::update() {
 
     if (playerDirection == IEntity::LEFT && _direction == IEntity::RIGHT) {
         flip();
-    } else if (playerDirection == IEntity::RIGHT &&
-               _direction == IEntity::LEFT) {
+    } else if (playerDirection == IEntity::RIGHT && _direction == IEntity::LEFT) {
         flip();
     }
 
@@ -97,13 +119,11 @@ void SupportShip::shoot() {
     info.spriteConfigJsonObjectName = getShootAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.direction = _direction;
-    RType::instance->createProjectile(info,
-                                     _direction == IEntity::LEFT ? true : false,
-                                     IGame::ProjectileGroup::SUPPORT);
+    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
+                                      IGame::ProjectileGroup::SUPPORT);
     info.y = info.y + 4;
-    RType::instance->createProjectile(info,
-                                     _direction == IEntity::LEFT ? true : false,
-                                     IGame::ProjectileGroup::SUPPORT);
+    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
+                                      IGame::ProjectileGroup::SUPPORT);
 }
 
 int SupportShip::getRelatedPlayerId() const {
