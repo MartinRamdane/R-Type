@@ -11,6 +11,7 @@ InstanceMenu::InstanceMenu(std::shared_ptr<Game>& game) : _game(game) {
     _window.create(sf::VideoMode(1920, 1080), "Table Ronde Games");
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _window.setFramerateLimit(60);
+    _openInstanceModal = false;
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
@@ -51,6 +52,34 @@ InstanceMenu::InstanceMenu(std::shared_ptr<Game>& game) : _game(game) {
     _entities["pRefreshList"]->setSpritePosition(sf::Vector2f(380, 100));
     _entities["pRefreshList"]->setSpriteScale(sf::Vector2f(1.5, 1.5));
 
+    _entities["modalBackground"] = std::make_unique<Entity>();
+    _entities["modalBackground"]->setNbRect(1);
+    _entities["modalBackground"]->_texture = std::make_shared<sf::Texture>();
+    _entities["modalBackground"]->setTexture("assets/cenario/listMenu.png");
+    _entities["modalBackground"]->setSprite();
+    _entities["modalBackground"]->setSpriteOrigin();
+    _entities["modalBackground"]->setSpritePosition(sf::Vector2f(425, 280));
+
+    _texts["modalTitle"] = std::make_unique<sf::Text>();
+    _texts["modalTitle"]->setFont(_font);
+    _texts["modalTitle"]->setString("Create Instance");
+    _texts["modalTitle"]->setCharacterSize(20);
+    _texts["modalTitle"]->setPosition(sf::Vector2f(500, 300));
+
+    _entities["modalExitButton"] = std::make_unique<Entity>();
+    _entities["modalExitButton"]->setNbRect(1);
+    _entities["modalExitButton"]->_texture = std::make_shared<sf::Texture>();
+    _entities["modalExitButton"]->setTexture("assets/cenario/button.png");
+    _entities["modalExitButton"]->setSprite();
+    _entities["modalExitButton"]->setSpritePosition(sf::Vector2f(300, 300));
+    _entities["modalExitButton"]->setSpriteScale(sf::Vector2f(1.5, 1.5));
+
+    _texts["modalExitButtonText"] = std::make_unique<sf::Text>();
+    _texts["modalExitButtonText"]->setFont(_font);
+    _texts["modalExitButtonText"]->setString("Cancel");
+    _texts["modalExitButtonText"]->setCharacterSize(12);
+    _texts["modalExitButtonText"]->setPosition(sf::Vector2f(230, 108));
+
     // gap between each instance button is 90 pixels in y
     Instance mockInstance1 = {"mockInstance1", "pong", 1, 2, 4210, 0};
     Instance mockInstance2 = {"mockInstance2", "rType", 1, 4, 4211, 1};
@@ -82,7 +111,9 @@ void InstanceMenu::mainloop() {
                     if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
                         std::cout << "join instance " << instanceButton.second.get()->getId()
                                   << std::endl;
-                        // TODO: Join an instance here
+                        int port = instanceButton.second.get()->getPort();
+                        _game.get()->connectToUdpServer(_game->getHost(), port);
+                        return;
                     }
                 }
                 if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
@@ -94,28 +125,42 @@ void InstanceMenu::mainloop() {
                 if (_entities["pCreateInstanceButton"]->getSprite().getGlobalBounds().contains(
                         worldMousePosition)) {
                     std::cout << "can see the modal to create a new game instance" << std::endl;
-                    // TODO: Open a modal here
+                    _openInstanceModal = true;
+                }
+
+                if (_openInstanceModal &&
+                    _entities["modalExitButton"]->getSprite().getGlobalBounds().contains(
+                        worldMousePosition)) {
+                    std::cout << "close the modal " << std::endl;  // TODO: remove
+                    _openInstanceModal = false;
                 }
             }
         }
 
         _window.clear();
         _window.setView(_view);
-        for (auto& entity : _entities) {
-            _window.draw(entity.second->getSprite());
+        _window.draw(_entities["background"]->getSprite());
+        if (!_openInstanceModal) {
+            _window.draw(_entities["listBackground"]->getSprite());
+            _window.draw(_entities["pCreateInstanceButton"]->getSprite());
+            _window.draw(_entities["pRefreshList"]->getSprite());
+            _window.draw(*_texts["pCreateInstanceText"]);
+            for (auto& instanceButton : _instanceButtons) {
+                for (auto& entity : instanceButton.second->getEntities()) {
+                    _window.draw(entity.second->getSprite());
+                }
+                for (auto& text : instanceButton.second->getTexts())
+                    _window.draw(*text.second);
+            }
         }
-        for (auto& text : _texts) {
-            _window.draw(*text.second);
+        if (_openInstanceModal) {
+            _window.draw(_entities["modalBackground"]->getSprite());
+            _window.draw(*_texts["modalTitle"]);
+            _window.draw(_entities["modalExitButton"]->getSprite());
+            _window.draw(*_texts["modalExitButtonText"]);
         }
         if (!_errorConnect)
             _window.draw(*_texts["ErrorConnexion"]);
-        for (auto& instanceButton : _instanceButtons) {
-            for (auto& entity : instanceButton.second->getEntities()) {
-                _window.draw(entity.second->getSprite());
-            }
-            for (auto& text : instanceButton.second->getTexts())
-                _window.draw(*text.second);
-        }
         _window.display();
     }
 }

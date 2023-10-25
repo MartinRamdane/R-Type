@@ -33,6 +33,7 @@ class InstanceMenu {
     std::map<std::string, std::unique_ptr<sf::Text>> _texts;
     bool _errorConnect = true;
     std::shared_ptr<Game> _game;
+    bool _openInstanceModal = false;
     std::map<int, std::unique_ptr<InstanceButton>> _instanceButtons;
 };
 
