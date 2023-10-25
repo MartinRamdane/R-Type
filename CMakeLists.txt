@@ -12,6 +12,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
+find_package(SDL2 REQUIRED CONFIG)
+find_package(SDL2_image REQUIRED CONFIG)
 find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(GTest REQUIRED)
@@ -24,7 +26,9 @@ file(GLOB CLIENT_SRC_LIST src/client/*.cpp src/global/*.cpp)
 add_executable(r-type_client ${CLIENT_SRC_LIST})
 target_include_directories(r-type_client PRIVATE ${Boost_INCLUDE_DIR})
 target_include_directories(r-type_client PRIVATE ${SFML_INCLUDE_DIR})
-target_link_libraries(r-type_client sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost)
+target_include_directories(r-type_client PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(r-type_client PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS})
+target_link_libraries(r-type_client sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost SDL2::SDL2main SDL2::SDL2-static SDL2_image::SDL2_image-static)
 
 file(GLOB SERVER_SRC_LIST src/*.cpp src/server/*.cpp src/engine/*.cpp src/engine/r-type/*.cpp src/global/*.cpp)
 add_executable(r-type_server ${SERVER_SRC_LIST})
@@ -38,7 +42,7 @@ foreach(item ${TEST_SRC_LIST})
     endif()
 endforeach()
 add_executable(r-type_test ${TEST_SRC_LIST})
-target_link_libraries(r-type_test sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost gtest::gtest)
+target_link_libraries(r-type_test sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost gtest::gtest SDL2::SDL2main SDL2::SDL2-static SDL2_image::SDL2_image-static)
 
 set_target_properties(r-type_client r-type_server r-type_test PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../

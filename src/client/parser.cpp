@@ -15,7 +15,7 @@ Parser::~Parser()
 {
 }
 
-Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager)
+IEntity Parser::loadTexture(IEntity entity, std::string path, RessourceManager &ressourceManager)
 {
     std::map<std::string, std::shared_ptr<sf::Texture>> textures = ressourceManager.getTextures();
     std::map<std::string, std::shared_ptr<sf::Texture>>::iterator it = textures.begin();
@@ -23,8 +23,8 @@ Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &re
     {
         if (it->first == path)
         {
-            entity._texture = it->second;
-            entity._sprite.setTexture(*entity._texture);
+            entity = it->second;
+            entity.setTexture(*entity._texture);
             return entity;
         }
         it++;
@@ -32,7 +32,7 @@ Entity Parser::loadTexture(Entity entity, std::string path, RessourceManager &re
     return entity;
 }
 
-void Parser::getConfig(std::string path, std::string type, Entity *entity)
+void Parser::getConfig(std::string path, std::string type, IEntity *entity)
 {
     JsonParser jsonParser;
     nlohmann::json jsonfile = jsonParser.readFile(path);
@@ -43,7 +43,7 @@ void Parser::getConfig(std::string path, std::string type, Entity *entity)
     entity->setObjectType(type);
 }
 
-std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
+std::tuple<int, IEntity> Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
 {
     int id = std::stoi(value["id"]);
     Entity entity;
@@ -60,7 +60,7 @@ std::tuple<int, Entity> Parser::addEntity(std::map<std::string, std::string> val
     return std::make_tuple(id, entity);
 }
 
-std::tuple<int, Entity> Parser::addEntityText(std::map<std::string, std::string> value)
+std::tuple<int, IEntity> Parser::addEntityText(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
     Entity entity;
@@ -72,13 +72,13 @@ std::tuple<int, Entity> Parser::addEntityText(std::map<std::string, std::string>
     return std::make_tuple(id, entity);
 }
 
-std::tuple<int, Entity> Parser::removeEntity(std::map<std::string, std::string> value)
+std::tuple<int, IEntity> Parser::removeEntity(std::map<std::string, std::string> value)
 {
     int id = -std::stoi(value["id"]);
     return std::make_tuple(id, Entity());
 }
 
-std::tuple<int, Entity> Parser::modifyPosEntity(std::map<std::string, std::string> value)
+std::tuple<int, IEntity> Parser::modifyPosEntity(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
     Entity entity;
@@ -130,7 +130,7 @@ std::string Parser::setKeyText(std::string key, int i)
     return key;
 }
 
-std::tuple<int, Entity> Parser::hitEntity(std::map<std::string, std::string> value)
+std::tuple<int, IEntity> Parser::hitEntity(std::map<std::string, std::string> value)
 {
     int id = std::stoi(value["id"]);
     Entity entity;

@@ -6,10 +6,15 @@
 */
 
 #pragma once
-#include "IDisplay.hpp"
-#include "RessourceManager.hpp"
-#include "TCPClientImpl.hpp"
-#include "UDPClient.hpp"
+#include "../IDisplay.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+#include "../RessourceManager.hpp"
+#include "../TCPClientImpl.hpp"
+#include "../UDPClient.hpp"
 
 class DisplaySFML : public IDisplay {
  public:

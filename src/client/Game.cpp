@@ -7,7 +7,6 @@
 
 #include "Game.hpp"
 #include "TCPClientImpl.hpp"
-#include "DisplaySFML.hpp"
 
 Game::Game() : _threadPool(2)
 {
@@ -19,7 +18,6 @@ Game::Game() : _threadPool(2)
     _playerId = 0;
     closed = false;
     _progressBar = ProgressBar();
-    _display = std::make_shared<DisplaySFML>();
 }
 
 void Game::createWindow(std::string name, int x, int y)
@@ -31,6 +29,11 @@ void Game::createWindow(std::string name, int x, int y)
 
 void Game::run()
 {
+    if (_type == SDL)
+        _display = std::make_shared<DisplaySDL>();
+    else if (_type == SFML)
+        _display = std::make_shared<DisplaySFML>();
+
     while (_display->getClosed() == false)
     {
         if (_client->Incoming().empty() == false)
@@ -135,4 +138,12 @@ void Game::addEntity(int id, Entity entity)
 void Game::flipEntity(int id)
 {
     _entities[id].flip();
+}
+
+void Game::setType(int type)
+{
+    if (type == 1)
+        _type = SFML;
+    else if (type == 2)
+        _type = SDL;
 }
