@@ -12,7 +12,7 @@ SupportShip::SupportShip(EntityInfo info, int relatedPlayerId)
     JsonParser parser;
     nlohmann::json json = parser.readFile("SupportShip.rType.json");
     setShootAsset(parser.get<std::string>(json, "ProjectileType"));
-    setSpeed(Game::instance->getPlayer(relatedPlayerId)->getSpeed());
+    setSpeed(Game::instance->getPlayer(relatedPlayerId)->getSpeed() + 2);
     setFireRate(parser.get<float>(json, "FireRate"));
     setProjectileSpeed(parser.get<float>(json, "ProjectileSpeed"));
     setDamage(parser.get<int>(json, "Damage"));
@@ -39,7 +39,7 @@ void SupportShip::update() {
     }
 
     if (_launched) {
-        if (_launchX <= 100) {
+        if (_launchX <= 100 && _x < 830) {
             _direction == IEntity::RIGHT ? move(1, 0) : move(-1, 0);
             _launchX++;
             return;

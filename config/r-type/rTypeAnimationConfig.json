@@ -76,5 +76,11 @@
         "nb_rect": 6,
         "rect_init": 0,
         "form": "loop"
+    },
+    "Dropper":
+    {
+        "nb_rect": 12,
+        "rect_init": 0,
+        "form": "loop"
     }
 }

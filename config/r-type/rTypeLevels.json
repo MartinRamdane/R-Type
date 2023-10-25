@@ -10,6 +10,13 @@
                 {"X": 960, "Y": 331},
                 {"X": 980, "Y": 300}
               ]
+        },
+        "Dropper": {
+            "Config": "Dropper.rType.json",
+            "Count": 1,
+            "Positions": [
+                {"X": 400, "Y": 400}
+            ]
         }
     }
 }

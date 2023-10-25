@@ -22,6 +22,7 @@ public:
     void loadConfig(nlohmann::json spriteConfig);
     void createEnemy(int cout, nlohmann::json positions);
     void createBackground();
+    void createDropper();
 
 protected:
 private:

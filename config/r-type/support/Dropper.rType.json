@@ -1,0 +1,11 @@
+{
+    "Type": "Dropper",
+    "Name": "Dropper",
+    "MovementType": "Linear",
+    "ProjectileType": "Null",
+    "FireRate": 0,
+    "ProjectileSpeed": 0,
+    "Speed": 3,
+    "Damage": 0,
+    "Life": 10
+}

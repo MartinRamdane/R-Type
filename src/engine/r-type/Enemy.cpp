@@ -16,6 +16,7 @@ Enemy::Enemy(EntityInfo info)
     setProjectileSpeed(info.projectileSpeed);
     setDamage(info.damage);
     setLife(info.life);
+    setMovementType(info.movementType);
 }
 
 Enemy::~Enemy()

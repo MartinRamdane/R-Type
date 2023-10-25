@@ -13,6 +13,7 @@
 #include "Speed.hpp"
 #include "SupportShip.hpp"
 #include "Tank.hpp"
+#include "Dropper.hpp"
 
 Game* Game::instance = nullptr;
 
@@ -27,7 +28,8 @@ Game::Game(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
     _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
     _supportProjectilesGroups = std::make_shared<EntityType<IEntity>>(4);
-    _supportShipGroups = std::make_shared<EntityType<IEntity>>(30);
+    _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
+    _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
 
     // initializeLevel();
     _levelInitializer = std::make_shared<LevelInitializer>(this);
@@ -58,6 +60,8 @@ Game::Game(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_supportShipGroups, _orangeRobotGroups,
                          Character::hurtEnemy);
     _engine->setRelation(_supportShipGroups, _flyerGroups,
+                         Character::hurtEnemy);
+    _engine->setRelation(_projectilesGroups, _dropperGroups,
                          Character::hurtEnemy);
 }
 
@@ -151,7 +155,8 @@ void Game::update(ThreadSafeQueue<Event>& events) {
                 break;
             case ACTION::LAUNCH:
                 for (auto supportShip : _supportShips) {
-                    if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
+                    if (supportShip->getRelatedPlayerId() ==
+                        _players[getId(event) - 1]->getId()) {
                         supportShip->launch();
                         break;
                     }
@@ -232,6 +237,12 @@ std::shared_ptr<AEntity> Game::createShield(int x, int y) {
     _staticObjectsGroups->insert(_shield);
     _staticObjects.push_back(_shield);
     return (_shield);
+}
+
+void Game::createDropper(IEntity::EntityInfo info) {
+    std::shared_ptr<Dropper> dropper = std::make_shared<Dropper>(info);
+    _dropperGroups->insert(dropper);
+    _dropper.push_back(dropper);
 }
 
 std::shared_ptr<AEntity> Game::createSupportShip(int x, int y, int playerId) {
@@ -350,9 +361,7 @@ void Game::setCurrentId(int id) {
 }
 
 void Game::createEnemy(IEntity::EntityInfo info) {
-    std::cout << info.assetFile << std::endl;
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
-    enemy->setMovementType(info.movementType);
     _enemies.push_back(enemy);
     if (info.name == "OrangeRobot")
         _orangeRobotGroups->insert(enemy);
@@ -480,8 +489,17 @@ std::map<std::string, std::function<std::string()>> Game::_assets = {
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
                                         "Game.Assets.Images.Flyer");
      }},
-    {"SupportShip", []() {
+    {"SupportShip",
+     []() {
          JsonParser parser;
          return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
                                         "Game.Assets.Images.SupportShip");
-     }}};
+     }},
+    {"Dropper",
+     []() {
+         JsonParser parser;
+         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
+                                        "Game.Assets.Images.Dropper");
+     }},
+
+};

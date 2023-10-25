@@ -23,7 +23,8 @@
 class Character;
 class Enemy;
 class Projectile;
-class SupportShip ;
+class SupportShip;
+class Dropper;
 
 #define MAX_LEVEL 1
 
@@ -52,6 +53,7 @@ public:
     std::map<std::string, std::function<std::string()>> getAssets();
     void createEnemy(IEntity::EntityInfo info);
     void createBackground(IEntity::EntityInfo info);
+    void createDropper(IEntity::EntityInfo info);
     void clearLevel();
     std::shared_ptr<AEntity> createSupportShip(int x, int y, int playerId);
     std::shared_ptr<AEntity> getPlayer(int id);
@@ -67,11 +69,13 @@ private:
     std::shared_ptr<EntityType<IEntity>> _orangeRobotGroups;
     std::shared_ptr<EntityType<IEntity>> _enemie2Groups;
     std::shared_ptr<EntityType<IEntity>> _flyerGroups;
+    std::shared_ptr<EntityType<IEntity>> _dropperGroups;
     std::vector<std::shared_ptr<Character>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     std::vector<std::shared_ptr<AEntity>> _staticObjects;
     std::vector<std::shared_ptr<Enemy>> _enemies;
     std::vector<std::shared_ptr<SupportShip>> _supportShips;
+    std::vector<std::shared_ptr<Dropper>> _dropper;
     int _lastId = 0;
     static std::map<std::string, std::function<std::string()>> _assets;
     int _currentLevel = 1;
