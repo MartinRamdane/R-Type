@@ -38,8 +38,8 @@ std::string actionToString(ACTION action)
     return "UP";
   case ACTION::DOWN:
     return "DOWN";
-  case ACTION::SHOOT:
-    return "SHOOT";
+  case ACTION::SPACE:
+    return "SPACE";
   case ACTION::QUIT:
     return "QUIT";
   case ACTION::PING:
@@ -50,8 +50,8 @@ std::string actionToString(ACTION action)
     return "SPRITE";
   case ACTION::UNKNOWN:
     return "UNKNOWN";
-  case ACTION::SHIELD:
-    return "SHIELD";
+  case ACTION::KEY_S:
+    return "KEY_S";
   case ACTION::TEXT:
     return "TEXT";
   case ACTION::DEAD:
@@ -60,8 +60,8 @@ std::string actionToString(ACTION action)
     return "FLIP";
   case ACTION::RESET:
     return "RESET";
-  case ACTION::LAUNCH:
-    return "LAUNCH";
+  case ACTION::KEY_L:
+    return "KEY_L";
   }
   return "";
 }
