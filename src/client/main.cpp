@@ -26,7 +26,12 @@ int main(int ac, char **av)
 {
     struct Login login;
     std::shared_ptr<Game> game = std::make_shared<Game>();
-    int param = getParam(av);
+    int param = 0;
+    if (ac == 1) {
+        param = 1;
+    } else {
+        int param = getParam(av);
+    }
     // game->setType(param);
     Menu *menu = new Menu(game);
     menu->mainloop();
