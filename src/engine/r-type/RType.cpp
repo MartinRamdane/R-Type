@@ -7,13 +7,13 @@
 
 #include "RType.hpp"
 #include "Classic.hpp"
+#include "Dropper.hpp"
 #include "Enemy.hpp"
 #include "Shield.hpp"
 #include "Shooter.hpp"
 #include "Speed.hpp"
 #include "SupportShip.hpp"
 #include "Tank.hpp"
-#include "Dropper.hpp"
 
 RType* RType::instance = nullptr;
 
@@ -50,8 +50,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_playersGroups, _supportShipGroups, Character::alliesTouched);
     _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_supportShipGroups, _flyerGroups, Character::hurtEnemy);
-    _engine->setRelation(_projectilesGroups, _dropperGroups,
-                         Character::hurtEnemy);
+    _engine->setRelation(_projectilesGroups, _dropperGroups, Character::hurtEnemy);
 }
 
 RType::~RType() {
@@ -73,15 +72,16 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
     std::uniform_int_distribution<> distrib(0, 4);
     int random = distrib(gen);
     IEntity::EntityInfo info;
+
+    //TODO: make it random
     info.x = 50;
     info.y = 100;
+    //
+
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Spaceship";
     info.id = _lastId;
     _lastId++;
-
-    // !REMOVE THIS
-    random = 0;
 
     switch (random) {
         case 0:
@@ -111,40 +111,41 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::LEFT:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(-1, 0);
                 break;
             case ACTION::RIGHT:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(1, 0);
                 break;
             case ACTION::UP:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::SHOOT:
-                _players[getId(event) - 1]->shoot();
+                if (!_players.empty() && _players.size() >= getId(event))
+                    _players[getId(event) - 1]->shoot();
                 break;
             case ACTION::SHIELD:
-                _players[getId(event) - 1]->action();
+                if (!_players.empty() && _players.size() >= getId(event))
+                    _players[getId(event) - 1]->action();
                 break;
             case ACTION::FLIP:
-                _players[getId(event) - 1]->flip();
+                if (!_players.empty() && _players.size() >= getId(event))
+                    _players[getId(event) - 1]->flip();
                 break;
             case ACTION::READY:
                 _players.push_back(getRandomSpaceship());
                 _playersGroups->insert(_players[_players.size() - 1]);
-                createSupportShip(50, 331, _players[_players.size() - 1]->getId());
                 setAllEntitiesToCreated();
                 break;
             case ACTION::LAUNCH:
                 for (auto supportShip : _supportShips) {
-                    if (supportShip->getRelatedPlayerId() ==
-                        _players[getId(event) - 1]->getId()) {
+                    if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
                         supportShip->launch();
                         break;
                     }
@@ -228,7 +229,7 @@ void RType::createDropper(IEntity::EntityInfo info) {
     _dropper.push_back(dropper);
 }
 
-std::shared_ptr<AEntity> RType::createSupportShip(int x, int y, int playerId) {
+std::shared_ptr<AEntity> RType::createSupportShip(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -239,7 +240,7 @@ std::shared_ptr<AEntity> RType::createSupportShip(int x, int y, int playerId) {
     info.scaleY = 0.7;
     info.id = _lastId;
     _lastId++;
-    std::shared_ptr<SupportShip> support = std::make_shared<SupportShip>(info, playerId);
+    std::shared_ptr<SupportShip> support = std::make_shared<SupportShip>(info);
     _supportShipGroups->insert(support);
     _supportShips.push_back(support);
     return (support);
@@ -280,6 +281,18 @@ void RType::eraseDeadEntity() {
             break;
         }
     }
+    for (auto it = _supportShips.begin(); it != _supportShips.end(); it++) {
+        if ((*it)->isDead()) {
+            _supportShips.erase(it);
+            break;
+        }
+    }
+    for (auto it = _dropper.begin(); it != _dropper.end(); it++) {
+        if ((*it)->isDead()) {
+            _dropper.erase(it);
+            break;
+        }
+    }
 }
 
 void RType::setAllEntitiesToCreated() {
@@ -298,6 +311,9 @@ void RType::setAllEntitiesToCreated() {
     for (auto supportShip : _supportShips) {
         supportShip->setCreated(false);
     }
+    for (auto dropper : _dropper) {
+        dropper->setCreated(false);
+    }
 }
 
 void RType::deleteAllEntities() {
@@ -308,14 +324,24 @@ void RType::deleteAllEntities() {
         enemy->kill();
     for (auto projectile : _projectiles)
         projectile->kill();
+    for (auto supportShip : _supportShips)
+        supportShip->kill();
+    for (auto dropper : _dropper)
+        dropper->kill();
     _staticObjects.clear();
     _enemies.clear();
     _projectiles.clear();
+    _supportShips.clear();
+    _dropper.clear();
     _staticObjectsGroups->clear();
     _enemie2Groups->clear();
     _flyerGroups->clear();
     _orangeRobotGroups->clear();
     _projectilesGroups->clear();
+    _enemyProjectilesGroups->clear();
+    _supportProjectilesGroups->clear();
+    _supportShipGroups->clear();
+    _dropperGroups->clear();
 }
 
 bool RType::isReset() {
@@ -382,6 +408,22 @@ std::shared_ptr<AEntity> RType::getPlayer(int id) {
         if (player->getId() == id)
             return (player);
     return (nullptr);
+}
+
+std::vector<std::shared_ptr<AEntity>> RType::getPlayers() {
+    std::vector<std::shared_ptr<AEntity>> players;
+    for (auto player : _players)
+        players.push_back(player);
+    return (players);
+}
+
+void RType::setPlayerHasSupport(int id, bool support) {
+    for (auto player : _players) {
+        if (player->getId() == id) {
+            player->setHasSupport(support);
+            break;
+        }
+    }
 }
 
 std::map<std::string, std::function<std::string()>> RType::_assets = {

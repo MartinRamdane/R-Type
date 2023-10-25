@@ -200,3 +200,11 @@ std::string AEntity::getOldText() const {
 void AEntity::setOldText(std::string text) {
     _oldText = text;
 }
+
+void AEntity::setHasSupport(bool hasSupport) {
+    _hasSupport = hasSupport;
+}
+
+bool AEntity::getHasSupport() const {
+    return _hasSupport;
+}

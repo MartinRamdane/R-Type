@@ -14,6 +14,7 @@ class SupportShip : public Character
 {
 public:
     SupportShip(EntityInfo info, int relatedPlayerId);
+    SupportShip(EntityInfo info);
     ~SupportShip();
     void shoot() override;
     void update() override;
