@@ -65,9 +65,7 @@ void Entity::animateSprite(const int ei, const int framerate) {
     float size = _texture->getSize().x / _nbRect;
     sf::IntRect rect = _sprite.getTextureRect();
     if (_clock.getElapsedTime().asMilliseconds() > framerate) {
-        std::cout << "clmock: " << _clock.getElapsedTime().asMilliseconds() << std::endl;
         if (ei == 0) {
-            std::cout << "looop" << std::endl;
             if (rect.left == size * (_nbRect - 1))
                 rect.left = size * _initRect;
             else

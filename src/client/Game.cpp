@@ -51,19 +51,16 @@ void Game::run()
             _udpClient->sendEvent(evt);
             _threadPool.enqueue([this]
                                 { this->LoopUDPMessages(); });
+            _threadPool.enqueue([this]
+                                { this->loopEventQueue(); });
             while (_display->windowIsOpen() == true)
             {
-                if (_client->Incoming().empty() == false)
-                {
-                    auto msg = _client->Incoming().pop_front().msg;
-                    _client->HandleMessage(msg);
-                }
                 _display->handleEvent(_udpClient, _client);
                 _display->update(&_entities, _udpClient);
             }
+
         }
     }
-    exit(0);
 }
 
 void Game::LoopUDPMessages()
@@ -72,8 +69,21 @@ void Game::LoopUDPMessages()
     {
         if (_udpClient->Incoming().empty() == false)
         {
+            std::cout << "udp message received" << std::endl;
             auto msg = _udpClient->Incoming().pop_front();
             _udpClient->HandleMessage(msg);
+        }
+    }
+}
+
+void Game::loopEventQueue()
+{
+    while (1)
+    {
+        if (_udpClient->getEventQueue().empty() == false)
+        {
+            auto evt = _udpClient->getEventQueue().pop_front();
+            handleReceivedEvent(evt);
         }
     }
 }
@@ -96,7 +106,6 @@ bool Game::connectToServer(std::string host, int port)
 bool Game::connectToUdpServer(std::string host, int port)
 {
     _udpClient = new UDPClient();
-    _udpClient->setGameRef(this);
     _udpClient->connect_to(host, port);
     isUDPClientConnected = true;
     return true;
@@ -129,15 +138,74 @@ void Game::addEntity(IEntity::EntityInfos entityInfos)
         //     _progressBar.setProgress(percent - 10);
         // }
         // else
-        _entities[entityInfos.id]->setNextPos(entityInfos.nextX, entityInfos.nextY);
+        std::cout << "moving entity" << std::endl;
+        _entities.at(entityInfos.id)->setNextPos(entityInfos.nextX, entityInfos.nextY);
     }
-    else
-        _entities[entityInfos.id] = _display->createEntity(entityInfos);
+    else {
+        std::cout << "creating entity" << std::endl;
+        _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(entityInfos.id, _display->createEntity(entityInfos)));
+        std::cout << "entity created" << std::endl;
+    }
+
 }
 
-void Game::flipEntity(int id)
+void Game::flipEntity(Event evt)
 {
-    _entities[id]->flip();
+    std::stringstream ss(evt.body);
+    std::string tpm;
+    std::string id;
+    ss >> tpm;
+    ss >> id;
+    int entityId = std::stoi(id);
+    _entities[entityId]->flip();
+}
+
+void Game::updateSprite(Event evt)
+{
+    Parser parseRef;
+    IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
+    if (entityInfos.id < 0)
+        removeEntity(entityInfos.id);
+    else
+        addEntity(entityInfos);
+}
+
+void Game::updateText(Event evt)
+{
+    std::stringstream ss(evt.body);
+    std::string id;
+    std::string x;
+    std::string y;
+    std::string text;
+    std::string color;
+    std::string objectType;
+    ss >> id;
+    ss >> x;
+    ss >> y;
+    ss >> text;
+    ss >> color;
+    ss >> objectType;
+    Parser parseRef;
+    IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
+    if (entityInfos.id < 0)
+        removeEntity(entityInfos.id);
+    else
+        addEntity(entityInfos);
+}
+
+void Game::joinGame(Event evt)
+{
+    std::stringstream ss(evt.body);
+    std::string gameTitle;
+    std::string width;
+    std::string height;
+    ss >> gameTitle;
+    ss >> width;
+    ss >> height;
+    setUDPConnected(true);
+    setGameTitle(gameTitle);
+    setWidth(std::stoi(width));
+    setHeight(std::stoi(height));
 }
 
 void Game::setLib(int lib)
@@ -146,4 +214,31 @@ void Game::setLib(int lib)
         _lib = SFML;
     else if (lib == 2)
         _lib = SDL;
+}
+
+void Game::handleReceivedEvent(Event evt)
+{
+    std::cout << "received event" << std::endl;
+    std::cout << "body : " << evt.body << std::endl;
+    switch (evt.ACTION_NAME) {
+    case ACTION::PING:
+        _udpClient->sendEvent({ACTION::PONG, ""});
+        break;
+    case ACTION::JOINED:
+        joinGame(evt);
+        break;
+    case ACTION::SPRITE:
+        updateSprite(evt);
+        break;
+    case ACTION::TEXT:
+        updateText(evt);
+        break;
+    case ACTION::FLIP:
+        flipEntity(evt);
+        break;
+    case ACTION::RESET:
+        this->clearEntities();
+    default:
+        break;
+    }
 }

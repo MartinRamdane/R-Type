@@ -17,7 +17,8 @@
 #include "UDPClient.hpp"
 #include "../global/ThreadPool.hpp"
 #include "ProgressBar.hpp"
-
+#include <mutex>
+#include <concurrent_vector.h>
 class TCPClientImpl;
 class IDisplay;
 
@@ -47,11 +48,16 @@ public:
     void setPlayerId(int id);
     std::string getHost() { return _host; };
     TCPClientImpl *getClient() { return _client; };
-    void flipEntity(int id);
+    void flipEntity(Event evt);
     void clearEntities() { _entities.clear(); };
     Lib getLib() const { return _lib; };
     void setLib(int lib);
     void setLibToUse();
+    void handleReceivedEvent(Event evt);
+    void updateSprite(Event evt);
+    void updateText(Event evt);
+    void joinGame(Event evt);
+    void loopEventQueue();
 
 private:
     sf::RenderWindow _window;
