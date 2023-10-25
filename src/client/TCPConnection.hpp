@@ -62,7 +62,6 @@ public:
                     _game->setConnected(true);
                     Event evt;
                     evt.ACTION_NAME = ACTION::CREATE;
-                    evt.body_size = 0;
                     evt.body = "";
                     message<ACTION> msg;
                     std::vector<uint8_t> data = encodeEvent(evt);
@@ -93,7 +92,7 @@ public:
     std::vector<uint8_t> encodeEvent(Event event)
     {
         EventHandler evt;
-        evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+        evt.addEvent(event.ACTION_NAME, event.body);
         return evt.encodeMessage();
     }
     void SendAsync(const message<T> &msg)

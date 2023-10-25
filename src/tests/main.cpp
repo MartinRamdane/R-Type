@@ -9,7 +9,7 @@
 #include "../server/Server.hpp"
 
 int main(int argc, char **argv) {
-    ServerClass server;
+    ServerClass server("r-type");
     std::thread([&server]()
                 { server.loop(); }).detach();
     server.createInstance();

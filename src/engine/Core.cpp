@@ -7,12 +7,15 @@
 
 #include "Core.hpp"
 
-Core::Core()
+Core::Core(std::string gameName)
 {
     _engine = std::make_shared<Engine>();
     std::string protocol = Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
     // send protocol to client
-    _game = std::make_shared<Game>(_engine);
+    if (gameName == "pong")
+        _game = std::make_shared<Pong>(_engine);
+    else
+        _game = std::make_shared<RType>(_engine);
 }
 
 Core::~Core()

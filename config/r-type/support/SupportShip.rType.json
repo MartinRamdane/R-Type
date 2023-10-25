@@ -1,0 +1,11 @@
+{
+    "Type": "Support",
+    "Name": "SupportShip",
+    "MovementType": "Follow",
+    "ProjectileType": "PlayerProjectile",
+    "FireRate": 1,
+    "ProjectileSpeed": 8,
+    "Speed": 3,
+    "Damage": 10,
+    "Life": 100
+}

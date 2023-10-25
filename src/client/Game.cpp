@@ -47,7 +47,6 @@ void Game::run()
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
-            evt.body_size = 0;
             evt.body = "";
             _udpClient->sendEvent(evt);
             _threadPool.enqueue([this]
@@ -124,13 +123,16 @@ void Game::addEntity(IEntity::EntityInfos entityInfos)
 {
     if (findEntity(entityInfos.id) == true)
     {
-        // if (entity.getHit() == true && id == _playerId)
-        // {
-        //     float percent = _progressBar.getProgress();
-        //     _progressBar.setProgress(percent - 10);
-        // }
-        // else
-        _entities[entityInfos.id]->setNextPos(entityInfos.nextX, entityInfos.nextY);
+        if (entity.getHit() == true && id == _playerId)
+        {
+            float percent = _progressBar.getProgress();
+            _progressBar.setProgress(percent - 10);
+        }
+        else {
+            _entities[id].setNextPos(entity.getNextPos());
+            if (entity.getText().getString() != "")
+                _entities[id].setTextString(entity.getText().getString());
+        }
     }
     else
         _entities[entityInfos.id] = _display->createEntity(entityInfos);

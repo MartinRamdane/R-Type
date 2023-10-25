@@ -33,7 +33,7 @@ void Shield::activateShield()
     _shieldIsUp = true;
     _shieldStart = std::chrono::high_resolution_clock::now();
     auto pos = getPosition();
-    _shield = Game::instance->createShield(std::get<0>(pos), std::get<1>(pos));
+    _shield = RType::instance->createShield(std::get<0>(pos), std::get<1>(pos));
 }
 
 void Shield::deactivateShield()

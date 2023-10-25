@@ -17,6 +17,7 @@ JsonParser::~JsonParser()
 
 nlohmann::json JsonParser::readFile(std::string const &fileName)
 {
+    std::cout << "Reading file : " << fileName << std::endl;
     std::string directory = ".";
     for (const auto &entry : std::filesystem::recursive_directory_iterator(directory))
     {
@@ -59,4 +60,14 @@ std::vector<std::string> JsonParser::split(std::string const &str, char const de
         res.push_back(str.substr(start, end - start));
     }
     return res;
+}
+
+std::unordered_map<std::string, std::string> JsonParser::getJsonFile(std::string const &path) {
+    std::cout << "getting json file" << std::endl;
+    std::unordered_map<std::string, std::string> jsonFile;
+    nlohmann::json json = JsonParser::readFile(path);
+    for (auto &it : json.items()) {
+        jsonFile[it.key()] = it.value();
+    }
+    return jsonFile;
 }

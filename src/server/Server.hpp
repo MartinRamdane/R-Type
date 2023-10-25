@@ -23,7 +23,7 @@ struct InstanceInfos
 class ServerClass
 {
 public:
-  ServerClass();
+  ServerClass(std::string gameName);
   ~ServerClass();
   InstanceInfos createInstance();
   int getPortInstance(int instanceId);
@@ -42,4 +42,5 @@ private:
   MyServer *_server;
   std::vector<Instance *> _instances;
   int _playerIdToGive;
+  std::string _gameName;
 };

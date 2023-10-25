@@ -16,7 +16,6 @@ class TCPClientImpl;
 
 class IDisplay {
  public:
-  IDisplay() = default;
   virtual ~IDisplay() = default;
   virtual void createWindow(std::string name, int x, int y) = 0;
   virtual void animate(std::map<int, std::shared_ptr<IEntity>>* _entities) = 0;

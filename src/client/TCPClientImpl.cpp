@@ -71,7 +71,7 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
         {
         }
         break;
-        case ACTION::SHOOT:
+        case ACTION::SPACE:
         {
         }
         break;
@@ -100,7 +100,7 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
         case ACTION::UNKNOWN:
         {
         }
-        case ACTION::SHIELD:
+        case ACTION::KEY_S:
         {
         }
         break;
@@ -115,6 +115,9 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
         {
         }
         case ACTION::RESET:
+        {
+        }
+        case ACTION::KEY_L:
         {
         }
         break;

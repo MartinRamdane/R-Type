@@ -149,7 +149,7 @@ IEntity::EntityInfos Parser::parseMessage(Event evt)
             }
             return addEntity(valueMap);
         }
-        else if (commande == "ecreate" && evt.ACTION_NAME == ACTION::TEXT)
+        else if (commande == "etext" && evt.ACTION_NAME == ACTION::TEXT)
         {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;

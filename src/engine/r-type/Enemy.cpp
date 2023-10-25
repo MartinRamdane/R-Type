@@ -7,72 +7,55 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(EntityInfo info)
-    : Character(info)
-{
+Enemy::Enemy(EntityInfo info) : Character(info) {
     setShootAsset(info.projectileType);
     setSpeed(info.speed);
     setFireRate(info.fireRate);
     setProjectileSpeed(info.projectileSpeed);
     setDamage(info.damage);
     setLife(info.life);
+    setMovementType(info.movementType);
 }
 
-Enemy::~Enemy()
-{
-}
+Enemy::~Enemy() {}
 
-void Enemy::update()
-{
-    if (_x != _oldX || _y != _oldY)
-    {
+void Enemy::update() {
+    if (_x != _oldX || _y != _oldY) {
         setOldPosition(_x, _y);
     }
 
     std::string movementType = getMovementType();
 
-    if (movementType == "Linear")
-    {
+    if (movementType == "Linear") {
         move(-1, 0);
-    }
-    else if (movementType == "UpAndDown")
-    {
+    } else if (movementType == "UpAndDown") {
         const auto currentTime = std::chrono::high_resolution_clock::now();
-        const auto timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime).count();
+        const auto timeElapsed =
+            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+                .count();
         const bool needsDirectionChange = timeElapsed > 2000;
 
-        if (needsDirectionChange)
-        {
+        if (needsDirectionChange) {
             _lastMove = (_lastMove == NONE || _lastMove == UP) ? DOWN : UP;
             _lastMoveTime = currentTime;
         }
 
-        if (_lastMove == NONE || _lastMove == UP)
-        {
+        if (_lastMove == NONE || _lastMove == UP) {
             move(-1, 1);
-        }
-        else
-        {
+        } else {
             move(-1, -1);
         }
-    }
-    else if (movementType == "Random")
-    {
-        srand(time(NULL));
+    } else if (movementType == "Random") {
         int x = rand() % 3 - 1;
         int y = rand() % 3 - 1;
         auto pos = getPosition();
         int new_x = std::get<0>(pos) + x * getSpeed();
         int new_y = std::get<1>(pos) + y * getSpeed();
         int radius = getRadius();
-        if (new_x > 850)
-        {
+        if (new_x > 850) {
             move(-1, 0);
-        }
-        else
-        {
-            if (new_y - radius < 0 || new_y + radius > 478)
-            {
+        } else {
+            if (new_y - radius < 0 || new_y + radius > 478) {
                 y = -y;
                 new_y = std::get<1>(pos) + y * getSpeed();
             }
@@ -82,11 +65,9 @@ void Enemy::update()
     shoot();
 }
 
-void Enemy::shoot()
-{
+void Enemy::shoot() {
     if (!canShoot())
         return;
-    std::cout << "Enemy shoot" << std::endl;
     auto pos = getPosition();
     EntityInfo info;
     info.x = std::get<0>(pos) - 33;
@@ -99,13 +80,12 @@ void Enemy::shoot()
     info.spriteConfigJsonObjectName = getShootAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.direction = IEntity::LEFT;
-    Game::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false, IGame::ProjectileGroup::ENEMY);
+    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
+                                      IGame::ProjectileGroup::ENEMY);
 }
 
-void Enemy::move(float x, float y)
-{
-    if ((_x + x * getSpeed()) < 0 - _radius)
-    {
+void Enemy::move(float x, float y) {
+    if ((_x + x * getSpeed()) < 0 - _radius) {
         kill();
         return;
     }

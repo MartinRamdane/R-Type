@@ -8,7 +8,7 @@
 #include "Instance.hpp"
 
 Instance::Instance(int id, std::string gameName)
-    : _id(id), _port((int)(4210 + id)), _threadPool(3), _gameName(gameName) {
+    : _id(id), _port((int)(4210 + id)), _gameName(gameName), _threadPool(3) {
     std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
     nlohmann::json jsonFile = _jsonParser.readFile(gameConfigFilePathName);
     _nbPlayersMax = _jsonParser.get<int>(jsonFile, "nbPlayersMax");
@@ -17,7 +17,7 @@ Instance::Instance(int id, std::string gameName)
               << _onlyMultiplayer << std::endl;
     _udpServer = new UDPServer(_io_service, (int)(4210 + id));
     _udpServer->setNbPlayers(1);
-    _core = new Core();
+    _core = new Core(gameName);
     _udpServer->setInstance(this);
     _threadPool.enqueue([this]() { _io_service.run(); });
     // implement the main loop in thread
@@ -44,21 +44,23 @@ void Instance::EventLoop() {
             _core->setReset(false);
             Event evt;
             evt.ACTION_NAME = ACTION::RESET;
-            evt.body_size = 0;
             evt.body = "";
             _udpServer->sendEventToAllClients(evt);
         }
         for (auto message : protocol) {
-            if (message.substr(0, message.find(" ")) == "eflip") {
+            if (message.substr(0, message.find(" ")) == "etext") {
+                Event evt;
+                evt.ACTION_NAME = ACTION::TEXT;
+                evt.body = message;
+                _udpServer->sendEventToAllClients(evt);
+            } else if (message.substr(0, message.find(" ")) == "eflip") {
                 Event evt;
                 evt.ACTION_NAME = ACTION::FLIP;
-                evt.body_size = message.size();
                 evt.body = message;
                 _udpServer->sendEventToAllClients(evt);
             } else {
                 Event evt;
                 evt.ACTION_NAME = ACTION::SPRITE;
-                evt.body_size = message.size();
                 evt.body = message;
                 _udpServer->sendEventToAllClients(evt);
             }
