@@ -60,7 +60,7 @@ void Game::run()
                     _client->HandleMessage(msg);
                 }
                 _display->handleEvent(_udpClient, _client);
-                _display->update(_entities, _udpClient);
+                _display->update(&_entities, _udpClient);
             }
         }
     }

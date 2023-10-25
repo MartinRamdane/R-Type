@@ -218,12 +218,13 @@ IEntity::Type Entity::getType() const {
 void Entity::makePrediction() {
     if (_direction == "left" || _direction == "right")
     {
+        float speed = _speed;
         if (_direction == "left")
         {
-            _speed = _speed * -1;
+            speed = _speed * -1;
         }
         sf::Vector2f oldPos = _sprite.getPosition();
-        setNextPos(oldPos.x + _speed, oldPos.y);
+        setNextPos(oldPos.x + speed, oldPos.y);
     }
 }
 

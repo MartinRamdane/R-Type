@@ -19,10 +19,10 @@ class IDisplay {
   IDisplay() = default;
   virtual ~IDisplay() = default;
   virtual void createWindow(std::string name, int x, int y) = 0;
-  virtual void animate(std::map<int, std::shared_ptr<IEntity>>& _entities) = 0;
-  virtual void draw(std::map<int, std::shared_ptr<IEntity>>& _entities) = 0;
+  virtual void animate(std::map<int, std::shared_ptr<IEntity>>* _entities) = 0;
+  virtual void draw(std::map<int, std::shared_ptr<IEntity>>* _entities) = 0;
   virtual void handleEvent(UDPClient* _udpClient, TCPClientImpl* _client) = 0;
-  virtual void update(std::map<int, std::shared_ptr<IEntity>>& _entities,
+  virtual void update(std::map<int, std::shared_ptr<IEntity>>* _entities,
                       UDPClient* _udpClient) = 0;
   virtual void setPlayerId(int id) = 0;
   virtual int getPlayerId() const = 0;

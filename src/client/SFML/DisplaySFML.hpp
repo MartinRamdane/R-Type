@@ -21,10 +21,10 @@ class DisplaySFML : public IDisplay {
   DisplaySFML();
   ~DisplaySFML();
   void createWindow(std::string name, int x, int y);
-  void animate(std::map<int, std::shared_ptr<IEntity>> &_entities);
-  void draw(std::map<int, std::shared_ptr<IEntity>> &_entities);
+  void animate(std::map<int, std::shared_ptr<IEntity>> *_entities);
+  void draw(std::map<int, std::shared_ptr<IEntity>> *_entities);
   void handleEvent(UDPClient* _udpClient, TCPClientImpl* _client);
-  void update(std::map<int, std::shared_ptr<IEntity>> &_entities, UDPClient* _udpClient);
+  void update(std::map<int, std::shared_ptr<IEntity>> *_entities, UDPClient* _udpClient);
   bool getClosed() const { return closed; };
   void setPlayerId(int id) { _playerId = id; };
   int getPlayerId() const { return _playerId; };

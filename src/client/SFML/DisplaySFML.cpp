@@ -25,10 +25,10 @@ void DisplaySFML::createWindow(std::string name, int x, int y)
   _window.setView(_view);
 }
 
-void DisplaySFML::animate(std::map<int, std::shared_ptr<IEntity>> &_entities)
+void DisplaySFML::animate(std::map<int, std::shared_ptr<IEntity>> *_entities)
 {
-  std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities.begin();
-  while (it != _entities.end())
+  std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities->begin();
+  while (it != _entities->end())
   {
     if (it->second->getEventForm() == "loop")
       it->second->animateSprite(0, 100);
@@ -42,10 +42,10 @@ void DisplaySFML::animate(std::map<int, std::shared_ptr<IEntity>> &_entities)
   }
 }
 
-void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>> &_entities)
+void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>> *_entities)
 {
-  std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities.begin();
-  while (it != _entities.end())
+  std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities->begin();
+  while (it != _entities->end())
   {
     auto entity = std::dynamic_pointer_cast<Entity>(it->second);
     entity->draw(_window);
@@ -141,13 +141,13 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
     }
 }
 
-void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>> &_entities, UDPClient *_udpClient)
+void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>> *_entities, UDPClient *_udpClient)
 {
     _window.clear();
     draw(_entities);
     animate(_entities);
     _window.display();
-    for (auto it = _entities.begin(); it != _entities.end();)
+    for (auto it = _entities->begin(); it != _entities->end();)
     {
         (*it).second->update();
         if ((*it).second->isDead())
@@ -157,7 +157,7 @@ void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>> &_entities, UDP
             evt.body_size = std::to_string((*it).first).size();
             evt.body = std::to_string((*it).first);
             _udpClient->sendEvent(evt);
-            it = _entities.erase(it);
+            it = _entities->erase(it);
         }
         else
             it++;
