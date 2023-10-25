@@ -68,6 +68,7 @@ void SupportShip::update() {
         } else {
             _launchX = 0;
             _launched = false;
+            setAlliesTouched(false);
         }
     }
 
@@ -86,21 +87,20 @@ void SupportShip::update() {
     } else if (playerDirection == IEntity::RIGHT && touched) {
         setPosition(x + player->getRadius() + 10, y);
     } else {
-
-        // if (x == _playerOldX && y == _playerOldY) {
-        //     return;
-        // } else if (x != _playerOldX && y == _playerOldY) {
-        //     _playerOldX = x;
-        //     setPosition(x, _y);
-        // } else {
-        //     _playerOldX = x;
-        //     _playerOldY = y;
-        //     if (random == 0)
-        //         y = y - 50;
-        //     else
-        //         y = y + 50;
-        //     setPosition(x, y);
-        // }
+        if (x == _playerOldX && y == _playerOldY) {
+            return;
+        } else if (x != _playerOldX && y == _playerOldY) {
+            _playerOldX = x;
+            setPosition(x, _y);
+        } else {
+            _playerOldX = x;
+            _playerOldY = y;
+            if (random == 0)
+                y = y - 50;
+            else
+                y = y + 50;
+            setPosition(x, y);
+        }
     }
 }
 
