@@ -24,11 +24,15 @@ Menu::Menu(std::shared_ptr<Game> &game) : _game(game)
     _entities["logo"] = std::make_unique<Entity>(ressourceManager);
     _entities["logo"]->setTexture("Logo.png");
     _entities["logo"]->setPosition(425, 100);
+    _entities["logo"]->setRect(1, 0);
+    _entities["logo"]->setSpriteOriginToCenter();
 
     _entities["connectButton"] = std::make_unique<Entity>(ressourceManager);
     _entities["connectButton"]->setTexture("button.png");
     _entities["connectButton"]->setPosition(425, 380);
     _entities["connectButton"]->setSpriteScale(2.5, 2.5);
+    _entities["connectButton"]->setRect(1, 0);
+    _entities["connectButton"]->setSpriteOriginToCenter();
 
     _inputs["nameInput"] = std::make_unique<Input>("assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png", "Name");
     _inputs["nameInput"]->setSpritePosition(sf::Vector2f(300, 170));
