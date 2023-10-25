@@ -15,13 +15,13 @@ class DataCompress {
         DataCompress(const char *src){
             Compress(src);
         }
-        DataCompress(int compressed_size, int original_size) : compressed_size(compressed_size), original_size(original_size) {};
+        DataCompress(int compressed_size, int og_size) : compressed_size(compressed_size), original_size(og_size) {};
         ~DataCompress() = default;
         char *Compress(const char *src) {
             int src_size = static_cast<int>(strlen(src) + 1);
             original_size = src_size;
             int maxCompressedSize = LZ4_compressBound(src_size);
-            char *compressed = new char[maxCompressedSize];
+            compressed = new char[maxCompressedSize];
             if (compressed == NULL) {
                 // Not enough memory
                 throw std::runtime_error("Not enough memory");
@@ -31,11 +31,11 @@ class DataCompress {
                 // Compression failed
                 throw std::runtime_error("Compression failed");
             }
-            if (compressed_size > 0) {
-                std::cout << "compressed with a ratio : " << (float)src_size / compressed_size << std::endl;
-                std::cout << "compressed size : " << compressed_size << std::endl;
-                std::cout << "original size : " << src_size << std::endl;
-            }
+            // if (compressed_size > 0) {
+            //     std::cout << "compressed with a ratio : " << (float)src_size / compressed_size << std::endl;
+            //     std::cout << "compressed size : " << compressed_size << std::endl;
+            //     std::cout << "original size : " << src_size << std::endl;
+            // }
             char *new_compressed = new char[compressed_size];
             if (new_compressed == NULL) {
                 // Not enough memory

@@ -73,7 +73,7 @@ public:
      * @param host client's ip
      * @param port client's port
      */
-    void sendEvent(Event evt, const std::string &host, int port, bool compress);
+    void sendEvent(Event evt, const std::string &host, int port);
 
     /**
      * @brief Sends event to all the clients (adds to the send queue)

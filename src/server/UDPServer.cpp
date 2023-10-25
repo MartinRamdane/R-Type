@@ -85,7 +85,7 @@ void UDPServer::userJoined(Client client)
     evt.ACTION_NAME = ACTION::JOINED;
     evt.body = engineRef->getWindowTitle() + " " + std::to_string(engineRef->getWindowWidth()) + " " + std::to_string(engineRef->getWindowHeight());
     _instanceRef->addAction(evt);
-    sendEvent(evt, client.client.address().to_string(), client.client.port(), true);
+    sendEvent(evt, client.client.address().to_string(), client.client.port());
 }
 
 void UDPServer::handler(const std::error_code &error, std::size_t)
@@ -136,7 +136,7 @@ void UDPServer::sendPingToClient()
             }
             else
             {
-                sendEvent({ACTION::PING, ""}, it->client.address().to_string(), it->client.port(), false);
+                sendEvent({ACTION::PING, ""}, it->client.address().to_string(), it->client.port());
                 ++it;
             }
         }
@@ -173,14 +173,8 @@ void UDPServer::processSendQueue()
     });
 }
 
-void UDPServer::sendEvent(Event evt, const std::string &host, int port, bool compress)
+void UDPServer::sendEvent(Event evt, const std::string &host, int port)
 {
-    // if (compress) {
-    //     DataCompress compressor(evt.body.c_str());
-    //     evt.compressed_size = compressor.getCompressedSize();
-    //     evt.original_size = compressor.getOriginalSize();
-    //     evt.body = std::string(compressor.getCompressed());
-    // }
     message<ACTION> msg;
     std::vector<uint8_t> data = encodeEvent(evt);
     boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
@@ -191,7 +185,7 @@ void UDPServer::sendEventToAllClients(Event evt)
 {
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
-        sendEvent(evt, it->client.address().to_string(), it->client.port(), false);
+        sendEvent(evt, it->client.address().to_string(), it->client.port());
     }
 }
 
@@ -221,14 +215,14 @@ void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
         Event evt;
         evt.ACTION_NAME = ACTION::FLIP;
         evt.body = message;
-        sendEvent(evt, client->client.address().to_string(), client->client.port(), true);
+        sendEvent(evt, client->client.address().to_string(), client->client.port());
       }
       else
       {
         Event evt;
         evt.ACTION_NAME = ACTION::SPRITE;
         evt.body = message;
-        sendEvent(evt, client->client.address().to_string(), client->client.port(), true);
+        sendEvent(evt, client->client.address().to_string(), client->client.port());
       }
     }
 }

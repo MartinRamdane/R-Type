@@ -52,7 +52,8 @@ struct Event
 struct NetworkEvent
 {
   ACTION ACTION_NAME;
-  int body_size;
+  int original_size;
+  int compressed_size;
   char *body;
 };
 
@@ -71,6 +72,7 @@ public:
 protected:
 private:
   ACTION _ACTION_NAME;
+  int _body_size;
   std::string _body;
 };
 
