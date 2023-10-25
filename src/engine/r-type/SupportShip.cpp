@@ -88,17 +88,21 @@ void SupportShip::update() {
         setPosition(x + player->getRadius() + 10, y);
     } else {
         if (x == _playerOldX && y == _playerOldY) {
+            _playerOldX = x;
+            _playerOldY = y;
             return;
         } else if (x != _playerOldX && y == _playerOldY) {
             _playerOldX = x;
             setPosition(x, _y);
         } else {
-            _playerOldX = x;
-            _playerOldY = y;
-            if (random == 0)
+            if (y > _playerOldY) {
+                _playerOldY = y;
                 y = y - 50;
-            else
+            } else {
+                _playerOldY = y;
                 y = y + 50;
+            }
+            _playerOldX = x;
             setPosition(x, y);
         }
     }
