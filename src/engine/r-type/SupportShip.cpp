@@ -86,22 +86,23 @@ void SupportShip::update() {
         setPosition(x - player->getRadius() - 10, y);
     } else if (playerDirection == IEntity::RIGHT && touched) {
         setPosition(x + player->getRadius() + 10, y);
-    } else {
-        if (x == _playerOldX && y == _playerOldY) {
-            return;
-        } else if (x != _playerOldX && y == _playerOldY) {
-            _playerOldX = x;
-            setPosition(x, _y);
-        } else {
-            _playerOldX = x;
-            _playerOldY = y;
-            if (random == 0)
-                y = y - 50;
-            else
-                y = y + 50;
-            setPosition(x, y);
-        }
     }
+    // } else {
+    //     if (x == _playerOldX && y == _playerOldY) {
+    //         return;
+    //     } else if (x != _playerOldX && y == _playerOldY) {
+    //         _playerOldX = x;
+    //         setPosition(x, _y);
+    //     } else {
+    //         _playerOldX = x;
+    //         _playerOldY = y;
+    //         if (random == 0)
+    //             y = y - 50;
+    //         else
+    //             y = y + 50;
+    //         setPosition(x, y);
+    //     }
+    // }
 }
 
 void SupportShip::shoot() {
