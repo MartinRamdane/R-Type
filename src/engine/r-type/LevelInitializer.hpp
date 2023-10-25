@@ -11,7 +11,7 @@
 #include "../IEntity.hpp"
 #include "../../global/JsonParser.hpp"
 
-class Game;
+class RType;
 
 class LevelInitializer
 {
@@ -22,10 +22,11 @@ public:
     void loadConfig(nlohmann::json spriteConfig);
     void createEnemy(int cout, nlohmann::json positions);
     void createBackground();
+    void createDropper();
 
 protected:
 private:
-    Game *_game;
+    RType *_game;
     IEntity::EntityInfo _info;
     int _currentLevel = 1;
 };

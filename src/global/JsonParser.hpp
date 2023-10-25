@@ -27,6 +27,20 @@ public:
     template <typename T>
     T get(nlohmann::json const jsonData, std::string const key)
     {
+        //if there is no dot in the key, we return the value
+        if (key.find('.') == std::string::npos)
+        {
+            if (jsonData.contains(key))
+            {
+                return jsonData.at(key).get<T>();
+            }
+            else
+            {
+                std::cerr << "Key '" << key << "' not found!" << std::endl;
+                return T();
+            }
+        }
+
         int cou = count(key.begin(), key.end(), '.');
         std::vector<std::string> keys = JsonParser::split(key, '.');
 

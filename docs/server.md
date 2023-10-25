@@ -79,7 +79,7 @@ Event requests only concern the client; the server does not have to reply to the
 |Client|Server OK|Server KO|Info|
 |---|---|---|---|
 |CONNECT, playerNameSize, "playerName"|OK, 9,<br> "Connected"|KO, 18,<br> "Connection refused"| TCP Client try to connect to TCP Server |
-|CREATE, 0, ""|OK, size,<br> "instancePort instanceId"|KO, 21,<br> "Can't create instance"|Client try to create a lobby|
+|CREATE, size,<br> "gameName"|OK, size,<br> "instancePort instanceId"|KO, 21,<br> "Can't create instance"|Client try to create an instance game|
 |---|LIST, size,<br> "{instanceName, instanceId, nbPlayers}[]"|---|Send to Client all created Instances|
 
 ### UDP Requests

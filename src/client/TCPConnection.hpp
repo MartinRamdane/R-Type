@@ -92,7 +92,7 @@ public:
     std::vector<uint8_t> encodeEvent(Event event)
     {
         EventHandler evt;
-        evt.addEvent(event.ACTION_NAME, event.compressed_size, event.original_size, event.body);
+        evt.addEvent(event.ACTION_NAME, event.body);
         return evt.encodeMessage();
     }
     void SendAsync(const message<T> &msg)

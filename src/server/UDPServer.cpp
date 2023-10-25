@@ -15,7 +15,7 @@ UDPServer::UDPServer(boost::asio::io_service &io_service, int port) : socket_(io
     try
     {
         startReceive();
-        ping_thread_ = std::thread(&UDPServer::sendPingToClient, this);
+        // ping_thread_ = std::thread(&UDPServer::sendPingToClient, this);
     }
     catch (const std::exception &e)
     {
@@ -136,7 +136,7 @@ void UDPServer::sendPingToClient()
             }
             else
             {
-                sendEvent({ACTION::PING, 0, 0, ""}, it->client.address().to_string(), it->client.port(), true);
+                sendEvent({ACTION::PING, ""}, it->client.address().to_string(), it->client.port(), false);
                 ++it;
             }
         }
@@ -175,12 +175,12 @@ void UDPServer::processSendQueue()
 
 void UDPServer::sendEvent(Event evt, const std::string &host, int port, bool compress)
 {
-    if (compress) {
-        DataCompress compressor(evt.body.c_str());
-        evt.compressed_size = compressor.getCompressedSize();
-        evt.original_size = compressor.getOriginalSize();
-        evt.body = std::string(compressor.getCompressed());
-    }
+    // if (compress) {
+    //     DataCompress compressor(evt.body.c_str());
+    //     evt.compressed_size = compressor.getCompressedSize();
+    //     evt.original_size = compressor.getOriginalSize();
+    //     evt.body = std::string(compressor.getCompressed());
+    // }
     message<ACTION> msg;
     std::vector<uint8_t> data = encodeEvent(evt);
     boost::asio::ip::udp::endpoint remote_endpoint(boost::asio::ip::address::from_string(host), port);
@@ -189,10 +189,6 @@ void UDPServer::sendEvent(Event evt, const std::string &host, int port, bool com
 
 void UDPServer::sendEventToAllClients(Event evt)
 {
-    DataCompress compressor(evt.body.c_str());
-    evt.compressed_size = compressor.getCompressedSize();
-    evt.original_size = compressor.getOriginalSize();
-    evt.body = std::string(compressor.getCompressed());
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
         sendEvent(evt, it->client.address().to_string(), it->client.port(), false);
@@ -211,7 +207,7 @@ void UDPServer::handleEngineEvents(std::string request)
 std::vector<uint8_t> UDPServer::encodeEvent(Event event)
 {
     EventHandler evt;
-    evt.addEvent(event.ACTION_NAME, event.compressed_size, event.original_size, event.body);
+    evt.addEvent(event.ACTION_NAME, event.body);
     return evt.encodeMessage();
 }
 
@@ -243,22 +239,14 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint,
     switch (evt.ACTION_NAME)
     {
     case ACTION::LEFT:
-        std::cout << "Player go to left " << evt.body << std::endl;
         break;
     case ACTION::RIGHT:
-        std::cout << "Player go to right" << std::endl;
         break;
     case ACTION::UP:
-        std::cout << "Player go to up" << std::endl;
-        event.ACTION_NAME = ACTION::UP;
-        event.body = "ok";
-        sendEvent(event, endpoint.address().to_string(), endpoint.port(), true);
         break;
     case ACTION::DOWN:
-        std::cout << "Player go to down" << std::endl;
         break;
     case ACTION::SHOOT:
-        std::cout << "Player shoot" << std::endl;
         break;
     case ACTION::READY:
         std::cout << "The user is ready to receive sprites" << std::endl;

@@ -28,6 +28,7 @@ public:
         std::string spriteConfigJsonObjectName;
         std::string movementType;
         std::string projectileType;
+        std::string text;
         float x;
         float y;
         float oldX;
@@ -72,4 +73,14 @@ public:
     virtual void setFlip(bool flip) = 0;
     virtual Direction getDirection() const = 0;
     virtual void setLife(int life) = 0;
+    virtual void setAlliesTouched(bool alliesTouched) = 0;
+    virtual std::tuple<float, float> getDirectionVector() const = 0;
+    virtual void setDirectionVector(float x, float y) = 0;
+    virtual int getWidth() const = 0;
+    virtual int getHeight() const = 0;
+    virtual void setSize(int width, int height) = 0;
+    virtual std::string getText() const = 0;
+    virtual void setText(std::string text) = 0;
+    virtual std::string getOldText() const = 0;
+    virtual void setOldText(std::string text) = 0;
 };

@@ -1,0 +1,22 @@
+{
+    "Level-1": {
+        "Background": {
+            "Type": "Background"
+        },
+        "Enemy1": {
+            "Config": "OrangeRobot.rType.json",
+            "Count": 2,
+            "Positions": [
+                {"X": 960, "Y": 331},
+                {"X": 980, "Y": 300}
+              ]
+        },
+        "Dropper": {
+            "Config": "Dropper.rType.json",
+            "Count": 1,
+            "Positions": [
+                {"X": 400, "Y": 400}
+            ]
+        }
+    }
+}

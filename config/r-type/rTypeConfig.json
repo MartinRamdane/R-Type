@@ -70,5 +70,11 @@
         "nb_rect": 4,
         "rect_init": 0,
         "form": "loop"
+    },
+    "SupportShip":
+    {
+        "nb_rect": 6,
+        "rect_init": 0,
+        "form": "loop"
     }
 }

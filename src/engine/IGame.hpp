@@ -17,6 +17,7 @@ public:
     {
         PLAYER,
         ENEMY,
+        SUPPORT,
         BOSS
     };
 

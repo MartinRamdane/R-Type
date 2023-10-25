@@ -8,7 +8,7 @@
 #pragma once
 
 #include "AEntity.hpp"
-#include "r-type/Game.hpp"
+#include "r-type/RType.hpp"
 #include <chrono>
 #include <thread>
 #include <iostream>
@@ -35,6 +35,9 @@ public:
     void resetLife();
     void setId(int id);
     void setLifeValue(int lifeValue);
+    static void hurtEnemy(IEntity &self, IEntity &you);
+    static void alliesTouched(IEntity &self, IEntity &you);
+    bool getAlliesTouched() const;
 
 private:
     float _projectileSpeed = 5;

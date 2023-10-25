@@ -147,7 +147,6 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         std::string tmp = evt.body.substr(com);
         if (commande == "ecreate" && evt.ACTION_NAME == ACTION::SPRITE)
         {
-            std::cout << tmp << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
@@ -156,12 +155,11 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
             {
                 key = setKey(key, i);
                 valueMap[key] = token;
-                std::cout << key << " " << token << std::endl;
                 key.clear();
             }
             return addEntity(valueMap, ressourceManager);
         }
-        else if (commande == "ecreate" && evt.ACTION_NAME == ACTION::TEXT)
+        else if (commande == "etext" && evt.ACTION_NAME == ACTION::TEXT)
         {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
@@ -205,7 +203,6 @@ std::tuple<int, Entity> Parser::parseMessage(Event evt, RessourceManager &ressou
         }
         else if (commande == "etouch")
         {
-            std::cout << "hit" << std::endl;
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
