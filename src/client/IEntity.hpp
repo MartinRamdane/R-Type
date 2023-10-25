@@ -24,6 +24,7 @@ class IEntity {
     virtual void setSpritePosition(float x, float y) = 0;
     virtual std::tuple<float, float> getSpritePosition() const = 0;
     virtual void setSpriteRotation(const float angle) = 0;
+    virtual void setSpriteOriginToCenter() = 0;
     virtual void setRect(int nb, int initRect = 0) = 0;
     virtual void animateSprite(const int ei, const int framerate) = 0;
     virtual void setInitPos() = 0;
@@ -36,5 +37,5 @@ class IEntity {
     virtual void update() = 0;
     virtual void flip() = 0;
     virtual void setHit(bool touch) = 0;
-    virtual bool isDead() = 0;
+    virtual bool isDead() const = 0;
 };

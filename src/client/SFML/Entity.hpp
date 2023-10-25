@@ -26,6 +26,7 @@ public:
     void setSpritePosition(float x, float y);
     std::tuple<float, float> getSpritePosition() const;
     void setSpriteRotation(const float angle);
+    void setSpriteOriginToCenter();
     void setRect(int nb, int initRect = 0);
     void animateSprite(const int ei, const int framerate);
     void setInitPos();
@@ -38,7 +39,8 @@ public:
     void update();
     void flip();
     void setHit(bool touch);
-    bool isDead();
+    bool isDead() const;
+    sf::Color getColor(std::string color);
 
 public:
     sf::Sprite _sprite;
