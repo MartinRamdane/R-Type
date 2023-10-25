@@ -117,7 +117,7 @@ bool Game::findEntity(int id)
 
 void Game::removeEntity(int id)
 {
-    _entities.erase(id);
+    _entities.erase(id * -1);
 }
 
 void Game::addEntity(IEntity::EntityInfos entityInfos)
