@@ -51,7 +51,6 @@ void Instance::EventLoop() {
             if (message.substr(0, message.find(" ")) == "etext") {
                 Event evt;
                 evt.ACTION_NAME = ACTION::TEXT;
-                evt.body_size = message.size();
                 evt.body = message;
                 _udpServer->sendEventToAllClients(evt);
             } else if (message.substr(0, message.find(" ")) == "eflip") {
