@@ -30,6 +30,7 @@ class ServerClass {
     int getInstancesNb() { return _instances.size(); }
     int getPlayerIdToGive() { return _playerIdToGive; }
     void setPlayerIdToGive(int id) { _playerIdToGive = id; }
+    std::vector<Instance*> getInstances() { return _instances; }
     Instance* getInstance(int id) { return _instances[id]; }
     void loop();
 
@@ -40,5 +41,4 @@ class ServerClass {
     MyServer* _server;
     std::vector<Instance*> _instances;
     int _playerIdToGive;
-    std::string _gameName;
 };

@@ -42,9 +42,7 @@ class MyServer : public TCPServer<ACTION> {
             case ACTION::CREATE: {
                 EventHandler getEvt;
                 getEvt.decodeMessage(msg.body);
-                std::cout << "body of create requst: " << getEvt.getBody() << std::endl;
-                std::string gameName = "rType";
-                InstanceInfos infos = _server->createInstance(gameName);
+                InstanceInfos infos = _server->createInstance(getEvt.getBody());
                 Instance* instance = _server->getInstance(_server->getInstancesNb() - 1);
                 Event evt;
                 evt.ACTION_NAME = ACTION::CREATE;
@@ -57,7 +55,17 @@ class MyServer : public TCPServer<ACTION> {
                 SendEvent(client, evt);
             } break;
             case ACTION::LIST: {
-                std::cout << "[" << client->GetID() << "]: LIST" << std::endl;
+                std::cout << "client send LIST request" << std::endl;
+                for (auto& instance : _server->getInstances()) {
+                    Event evt;
+                    evt.ACTION_NAME = ACTION::LIST;
+                    evt.body = std::to_string(instance->getId()) + " " + instance->getGameName() +
+                               " " + instance->getName() + " " +
+                               std::to_string(instance->getNbPlayers()) + " " +
+                               std::to_string(instance->getMaxPlayers()) + " " +
+                               std::to_string(instance->getPort());
+                    SendEvent(client, evt);
+                }
             } break;
             case ACTION::JOIN: {
                 std::cout << "[" << client->GetID() << "]: JOIN" << std::endl;
