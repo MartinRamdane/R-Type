@@ -34,5 +34,6 @@ public:
     std::tuple<int, IEntity> parseMessage(Event evt, RessourceManager &ressourceManager);
     std::tuple<int, IEntity> hitEntity(std::map<std::string, std::string> value);
 
-public:
+    
+
 };

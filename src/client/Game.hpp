@@ -25,7 +25,7 @@ class IDisplay;
 class Game
 {
 public:
-    enum Type
+    enum Lib
     {
         SDL,
         SFML,
@@ -52,8 +52,9 @@ public:
     TCPClientImpl *getClient() { return _client; };
     void flipEntity(int id);
     void clearEntities() { _entities.clear(); };
-    Type getType() const { return _type; };
-    void setType(int type);
+    Type getLib() const { return _lib; };
+    void setLib(int lib);
+    void setLibToUse();
 
 private:
     sf::RenderWindow _window;
@@ -78,5 +79,5 @@ private:
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     ProgressBar _progressBar;
     std::shared_ptr<IDisplay> _display;
-    Type _type;
+    Lib _lib;
 };

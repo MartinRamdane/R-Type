@@ -11,6 +11,7 @@
 #include <string>
 #include <tuple>
 
+
 class IEntity {
    public:
    enum Type
@@ -38,4 +39,6 @@ class IEntity {
     virtual void flip() = 0;
     virtual void setHit(bool touch) = 0;
     virtual bool isDead() const = 0;
+    virtual void setEventForm(std::string form) = 0;
+    virtual void setObjectType(std::string type) = 0;
 };

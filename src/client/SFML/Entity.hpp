@@ -40,6 +40,8 @@ public:
     void flip();
     void setHit(bool touch);
     bool isDead() const;
+    void setEventForm(std::string form);
+    void setObjectType(std::string type);
     sf::Color getColor(std::string color);
 
 public:

@@ -168,6 +168,14 @@ bool Entity::isDead() const {
     return false;
 }
 
+void Entity::setEventForm(std::string form) {
+    _eventForm = form;
+}
+
+void Entity::setObjectType(std::string type) {
+    _objectType = type;
+}
+
 sf::Color Entity::getColor(std::string color) {
     if (color == "red")
         return sf::Color::Red;

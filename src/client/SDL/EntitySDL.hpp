@@ -6,62 +6,40 @@
 */
 
 #pragma once
-#include "../IEntity.hpp"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <string>
+#include "../IEntity.hpp"
 
-class EntitySDL: public IEntity
+class EntitySDL : public IEntity
 {
-public:
-    enum Type
-    {
-        SPRITE,
-        TEXT,
-    };
-
-    EntitySDL(SDL_Renderer* renderer);
+   public:
+    EntitySDL();
     ~EntitySDL();
-    void setTexture(const std::string &path) override;
-    void setSprite() override;
-    void setSpriteScale(const SDL_Rect &scale) override;
-    void setSpritePosition(const SDL_Rect &pos) override;
-    void setSpriteRotation(const double &rotation) override;
-    void setRect(int nb, int init_rect = 0) override;
-    void animateSprite(const int ei, const int framerate) override;
-    void setInitPos() override;
-    SDL_Texture* getTexture() const;
-    SDL_Rect getSpritePosition() const;
-    int getRect() const;
-    int getOldPosY() const { return _oldPosY; };
-    void setOldPosY(int pos) { _oldPosY = pos; };
-    std::string getEventForm() const { return _event_form; };
-    void setEventForm(std::string form) { _event_form = form; };
-    int getNbRect() const { return _nbRect; };
-    void setNbRect(int nbRect) { _nbRect = nbRect; };
-    std::string getObjectType() const { return _object_type; };
-    void setObjectType(std::string type) { _object_type = type; };
-    bool isDead() const;
-    Type getType() const { return _type; };
-    void setTextString(std::string str) override;
-    void setFont(const std::string &fontPath, int fontSize);
-    void setTextPosition(SDL_Rect pos);
-    SDL_Texture* getTextTexture() const;
-    void setType(Type type) override { _type = type; };
-    void setTextInfo(int size, std::string color);
-    void setSpeed(float speed) override { this->speed = speed; };
-    float getSpeed() const { return speed; };
-    void setNextPos(SDL_Rect pos) override { _nextPos = pos; };
-    SDL_Rect getNextPos() const { return _nextPos; };
-    void setDirection(std::string direction) override { _direction = direction; };
-    std::string getDirection() { return _direction; };
-    void update() override;
-    void flip() override;
-    void setHit(bool touch) override { _isHit = touch; };
-    bool getHit() const override { return _isHit; };
+    // void setTexture(const std::string& path);
+    // void setSpriteScale(float scaleX, float scaleY);
+    // void setSpritePosition(float x, float y);
+    // std::tuple<float, float> getSpritePosition() const;
+    // void setSpriteRotation(const float angle);
+    // void setSpriteOriginToCenter();
+    // void setRect(int nb, int initRect = 0);
+    // void animateSprite(const int ei, const int framerate);
+    // void setInitPos();
+    // void setTextString(std::string str);
+    // void setType(int type);
+    // void setTextInfo(int size, std::string color);
+    // void setSpeed(float speed);
+    // void setNextPos(float x, float y);
+    // void setDirection(std::string direction);
+    // void update();
+    // void flip();
+    // void setHit(bool touch);
+    // bool isDead() const;
+    // void setEventForm(std::string form);
+    // void setObjectType(std::string type);
 
-private:
+   private:
     SDL_Renderer* _renderer;
     SDL_Texture* _texture;
     SDL_Rect _sprite;

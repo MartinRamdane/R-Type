@@ -27,13 +27,18 @@ void Game::createWindow(std::string name, int x, int y)
     _view = sf::View(sf::FloatRect(0, 0, x, y));
 }
 
+void Game::setLibToUse()
+{
+    if (_type == SDL) {
+        _display = std::make_shared<DisplaySDL>();
+    } else if (_type == SFML) {
+        _display = std::make_shared<DisplaySFML>();
+    }
+}
+
 void Game::run()
 {
-    if (_type == SDL)
-        _display = std::make_shared<DisplaySDL>();
-    else if (_type == SFML)
-        _display = std::make_shared<DisplaySFML>();
-
+    setLib();
     while (_display->getClosed() == false)
     {
         if (_client->Incoming().empty() == false)
@@ -140,10 +145,10 @@ void Game::flipEntity(int id)
     _entities[id].flip();
 }
 
-void Game::setType(int type)
+void Game::setLib(int lib)
 {
-    if (type == 1)
-        _type = SFML;
-    else if (type == 2)
-        _type = SDL;
+    if (lib == 1)
+        _lib = SFML;
+    else if (lib == 2)
+        _lib = SDL;
 }

@@ -46,14 +46,14 @@ void Parser::getConfig(std::string path, std::string type, IEntity *entity)
 std::tuple<int, IEntity> Parser::addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager)
 {
     int id = std::stoi(value["id"]);
-    Entity entity;
+    IEntity entity;
     entity.setType(Entity::Type::SPRITE);
     entity = loadTexture(entity, value["path"], ressourceManager);
     getConfig(value["config_path"], value["object_type"], &entity);
-    entity.setSpriteScale(sf::Vector2f(std::stof(value["scale.x"]), std::stof(value["scale.y"])));
-    entity.setSpriteOrigin();
-    entity.setNextPos(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
-    entity.setSpritePosition(sf::Vector2f(std::stof(value["x"]), std::stof(value["y"])));
+    entity.setSpriteScale(std::stof(value["scale.x"]), std::stof(value["scale.y"]));
+    entity.setSpriteOriginToCenter();
+    entity.setNextPos(std::stof(value["x"]), std::stof(value["y"]));
+    entity.setSpritePosition(std::stof(value["x"]), std::stof(value["y"]));
     entity.setOldPosY(std::stoi(value["y"]));
     entity.setSpeed(std::stof(value["speed"]));
     entity.setDirection(value["direction"]);
