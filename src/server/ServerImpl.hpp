@@ -31,7 +31,7 @@ public:
     std::vector<uint8_t> encodeEvent(Event event)
     {
         EventHandler evt;
-        evt.addEvent(event.ACTION_NAME, event.body_size, event.body);
+        evt.addEvent(event.ACTION_NAME, event.body);
         return evt.encodeMessage();
     }
 
@@ -57,7 +57,6 @@ protected:
                 std::string playerEntityId = "p" + std::to_string(playerId);
                 instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
                 _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
-                evt.body_size = evt.body.size();
                 SendEvent(client, evt);
                 return;
             }
@@ -70,7 +69,6 @@ protected:
             std::string playerEntityId = "p" + std::to_string(playerId);
             instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
             _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
-            evt.body_size = evt.body.size();
             SendEvent(client, evt);
         }
         break;

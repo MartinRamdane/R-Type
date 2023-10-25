@@ -43,7 +43,6 @@ void Game::run()
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
-            evt.body_size = 0;
             evt.body = "";
             _udpClient->sendEvent(evt);
             _threadPool.enqueue([this]
