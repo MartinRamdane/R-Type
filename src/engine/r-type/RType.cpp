@@ -111,34 +111,36 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::LEFT:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(-1, 0);
                 break;
             case ACTION::RIGHT:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(1, 0);
                 break;
             case ACTION::UP:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (_players.size() > 0)
+                if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::SHOOT:
-                _players[getId(event) - 1]->shoot();
+                if (!_players.empty() && _players.size() >= getId(event))
+                    _players[getId(event) - 1]->shoot();
                 break;
             case ACTION::SHIELD:
-                _players[getId(event) - 1]->action();
+                if (!_players.empty() && _players.size() >= getId(event))
+                    _players[getId(event) - 1]->action();
                 break;
             case ACTION::FLIP:
-                _players[getId(event) - 1]->flip();
+                if (!_players.empty() && _players.size() >= getId(event))
+                    _players[getId(event) - 1]->flip();
                 break;
             case ACTION::READY:
                 _players.push_back(getRandomSpaceship());
                 _playersGroups->insert(_players[_players.size() - 1]);
-                // createSupportShip(50, 331);
                 setAllEntitiesToCreated();
                 break;
             case ACTION::LAUNCH:
