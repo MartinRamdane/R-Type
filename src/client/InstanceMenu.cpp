@@ -29,11 +29,33 @@ InstanceMenu::InstanceMenu(std::shared_ptr<Game>& game) : _game(game) {
     _entities["listBackground"]->setSpriteOrigin();
     _entities["listBackground"]->setSpritePosition(sf::Vector2f(425, 280));
 
+    _entities["pCreateInstanceButton"] = std::make_unique<Entity>();
+    _entities["pCreateInstanceButton"]->setNbRect(1);
+    _entities["pCreateInstanceButton"]->_texture = std::make_shared<sf::Texture>();
+    _entities["pCreateInstanceButton"]->setTexture("assets/cenario/button.png");
+    _entities["pCreateInstanceButton"]->setSprite();
+    _entities["pCreateInstanceButton"]->setSpritePosition(sf::Vector2f(220, 100));
+    _entities["pCreateInstanceButton"]->setSpriteScale(sf::Vector2f(1.5, 1.5));
+
+    _texts["pCreateInstanceText"] = std::make_unique<sf::Text>();
+    _texts["pCreateInstanceText"]->setFont(_font);
+    _texts["pCreateInstanceText"]->setString("Create Instance");
+    _texts["pCreateInstanceText"]->setCharacterSize(12);
+    _texts["pCreateInstanceText"]->setPosition(sf::Vector2f(230, 108));
+
+    _entities["pRefreshList"] = std::make_unique<Entity>();
+    _entities["pRefreshList"]->setNbRect(1);
+    _entities["pRefreshList"]->_texture = std::make_shared<sf::Texture>();
+    _entities["pRefreshList"]->setTexture("assets/cenario/refreshButton.png");
+    _entities["pRefreshList"]->setSprite();
+    _entities["pRefreshList"]->setSpritePosition(sf::Vector2f(380, 100));
+    _entities["pRefreshList"]->setSpriteScale(sf::Vector2f(1.5, 1.5));
+
     // gap between each instance button is 90 pixels in y
     Instance mockInstance1 = {"mockInstance1", "pong", 1, 2, 4210, 0};
     Instance mockInstance2 = {"mockInstance2", "rType", 1, 4, 4211, 1};
-    _instanceButtons[0] = std::make_unique<InstanceButton>(mockInstance1, 225, 200);
-    _instanceButtons[1] = std::make_unique<InstanceButton>(mockInstance2, 225, 290);
+    _instanceButtons[0] = std::make_unique<InstanceButton>(mockInstance1, 225, 140);
+    _instanceButtons[1] = std::make_unique<InstanceButton>(mockInstance2, 225, 230);
 }
 
 InstanceMenu::~InstanceMenu() {
@@ -60,16 +82,31 @@ void InstanceMenu::mainloop() {
                     if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
                         std::cout << "join instance " << instanceButton.second.get()->getId()
                                   << std::endl;
+                        // TODO: Join an instance here
                     }
                 }
-                std::cout << "handle mouse pressed" << std::endl;
+                if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
+                        worldMousePosition)) {
+                    std::cout << "refresh list" << std::endl;
+                    // TODO: Send a request to get new list of instances
+                }
+
+                if (_entities["pCreateInstanceButton"]->getSprite().getGlobalBounds().contains(
+                        worldMousePosition)) {
+                    std::cout << "can see the modal to create a new game instance" << std::endl;
+                    // TODO: Open a modal here
+                }
             }
         }
 
         _window.clear();
         _window.setView(_view);
-        _window.draw(_entities["background"]->getSprite());
-        _window.draw(_entities["listBackground"]->getSprite());
+        for (auto& entity : _entities) {
+            _window.draw(entity.second->getSprite());
+        }
+        for (auto& text : _texts) {
+            _window.draw(*text.second);
+        }
         if (!_errorConnect)
             _window.draw(*_texts["ErrorConnexion"]);
         for (auto& instanceButton : _instanceButtons) {
