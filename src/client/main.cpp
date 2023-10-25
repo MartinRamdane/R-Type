@@ -5,20 +5,23 @@
 ** main.cpp
 */
 
-#include "Game.hpp"
-#include "Login.hpp"
-#include "Parser.hpp"
-#include <thread>
 #include <memory>
+#include <thread>
+#include "Game.hpp"
+#include "InstanceMenu.hpp"
+#include "Login.hpp"
 #include "Menu.hpp"
+#include "Parser.hpp"
 
-int main()
-{
+int main() {
     struct Login login;
     std::shared_ptr<Game> game = std::make_shared<Game>();
-    Menu *menu = new Menu(game);
+    Menu* menu = new Menu(game);
     menu->mainloop();
     delete menu;
+    InstanceMenu* instanceMenu = new InstanceMenu(game);
+    instanceMenu->mainloop();
+    delete instanceMenu;
     game->run();
     return 0;
 }

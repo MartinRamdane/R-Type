@@ -7,24 +7,25 @@
 
 #pragma once
 #include <map>
-#include <sstream>
-#include "Entity.hpp"
-#include "RessourceManager.hpp"
-#include "Parser.hpp"
-#include "../global/JsonParser.hpp"
-#include "../global/EventHandler.hpp"
-#include <thread>
 #include <queue>
-#include "UDPClient.hpp"
+#include <sstream>
+#include <thread>
+#include <vector>
+#include "../global/EventHandler.hpp"
+#include "../global/JsonParser.hpp"
 #include "../global/ThreadPool.hpp"
+#include "../types/Instance.hpp"
+#include "Entity.hpp"
+#include "Parser.hpp"
 #include "ProgressBar.hpp"
+#include "RessourceManager.hpp"
+#include "UDPClient.hpp"
 
 class TCPClientImpl;
 class IDisplay;
 
-class Game
-{
-public:
+class Game {
+   public:
     Game();
     ~Game(){};
     void run();
@@ -44,18 +45,18 @@ public:
     void LoopUDPMessages();
     void setPlayerId(int id);
     std::string getHost() { return _host; }
-    TCPClientImpl *getClient() { return _client; }
+    TCPClientImpl* getClient() { return _client; }
     void flipEntity(int id);
     void clearEntities() { _entities.clear(); }
 
-private:
+   private:
     sf::RenderWindow _window;
     sf::View _view;
     sf::Event _event;
     sf::Clock _clock;
     RessourceManager _ressourceManager;
-    TCPClientImpl *_client;
-    UDPClient *_udpClient;
+    TCPClientImpl* _client;
+    UDPClient* _udpClient;
     int _event_indicator;
     std::queue<std::vector<uint8_t>> _queue;
     ThreadPool _threadPool;
@@ -72,4 +73,5 @@ private:
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     ProgressBar _progressBar;
     std::shared_ptr<IDisplay> _display;
+    std::vector<Instance> _instances;
 };
