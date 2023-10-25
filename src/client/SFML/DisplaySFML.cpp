@@ -178,8 +178,12 @@ std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityIn
   entity->setEventForm(entityInfos.eventForm);
   entity->setObjectType(entityInfos.objectType);
   entity->setType(entityInfos.type);
+  entity->setSpriteOriginToCenter();
   return entity;
 }
+
+std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfos)
+{
   std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
   entity->setFont();
   entity->setTextString(entityInfos.text);
