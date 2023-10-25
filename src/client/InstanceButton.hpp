@@ -13,16 +13,17 @@
 
 class InstanceButton {
    public:
-    InstanceButton(Instance instance, int instanceId, int x, int y);
+    InstanceButton(Instance instance, int x, int y);
     ~InstanceButton();
     std::string formatText(std::string toFormat);
+    int getId() { return _instance.id; }
     std::map<std::string, std::shared_ptr<Entity>> getEntities() { return _entities; }
+    Entity* getSubmitButton();
     std::map<std::string, std::shared_ptr<sf::Text>> getTexts() { return _texts; }
 
    private:
     sf::Font _font;
     Instance _instance;
-    int _instanceId;
     int _x;
     int _y;
     std::map<std::string, std::shared_ptr<Entity>> _entities;
