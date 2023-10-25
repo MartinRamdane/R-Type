@@ -79,7 +79,7 @@ private:
     std::vector<std::shared_ptr<SupportShip>> _supportShips;
     std::vector<std::shared_ptr<Dropper>> _dropper;
     int _lastId = 0;
-    static std::map<std::string, std::function<std::string()>> _assets;
+    std::map<std::string, std::function<std::string()>> _assets;
     int _currentLevel = 1;
     bool _reset = false;
     std::shared_ptr<LevelInitializer> _levelInitializer;

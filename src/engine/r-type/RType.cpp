@@ -51,6 +51,8 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_supportShipGroups, _flyerGroups, Character::hurtEnemy);
     _engine->setRelation(_projectilesGroups, _dropperGroups, Character::hurtEnemy);
+    std::unordered_map<std::string, std::string> assets = JsonParser::getJsonFile("rTypeSetup.json");
+
 }
 
 RType::~RType() {
