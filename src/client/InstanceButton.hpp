@@ -17,6 +17,7 @@ class InstanceButton {
     ~InstanceButton();
     std::string formatText(std::string toFormat);
     int getId() { return _instance.id; }
+    int getPort() { return _instance.port; }
     std::map<std::string, std::shared_ptr<Entity>> getEntities() { return _entities; }
     Entity* getSubmitButton();
     std::map<std::string, std::shared_ptr<sf::Text>> getTexts() { return _texts; }
