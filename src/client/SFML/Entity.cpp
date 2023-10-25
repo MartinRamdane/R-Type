@@ -233,7 +233,7 @@ std::string Entity::getEventForm() const {
 }
 
 void Entity::setFont() {
-    _font.loadFromFile("../../../font/pixel.ttf");
+    _font.loadFromFile("font/pixel.ttf");
     _text.setFont(_font);
 }
 
