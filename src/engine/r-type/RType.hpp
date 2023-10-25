@@ -50,7 +50,7 @@ public:
     int getCurrentId();
     int getCurrentLevel();
     void setCurrentId(int id);
-    std::map<std::string, std::function<std::string()>> getAssets();
+    std::map<std::string, std::string>  getAssets();
     void createEnemy(IEntity::EntityInfo info);
     void createBackground(IEntity::EntityInfo info);
     void createDropper(IEntity::EntityInfo info);
@@ -59,6 +59,7 @@ public:
     std::shared_ptr<AEntity> getPlayer(int id);
     std::vector<std::shared_ptr<AEntity>> getPlayers();
     void setPlayerHasSupport(int id, bool support);
+    void createAssetList();
 
 private:
     std::shared_ptr<Engine> _engine;
@@ -79,7 +80,7 @@ private:
     std::vector<std::shared_ptr<SupportShip>> _supportShips;
     std::vector<std::shared_ptr<Dropper>> _dropper;
     int _lastId = 0;
-    static std::map<std::string, std::function<std::string()>> _assets;
+    std::map<std::string, std::string> _assets;
     int _currentLevel = 1;
     bool _reset = false;
     std::shared_ptr<LevelInitializer> _levelInitializer;
