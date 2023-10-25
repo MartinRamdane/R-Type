@@ -88,8 +88,6 @@ void SupportShip::update() {
         setPosition(x + player->getRadius() + 10, y);
     } else {
         if (x == _playerOldX && y == _playerOldY) {
-            _playerOldX = x;
-            _playerOldY = y;
             return;
         } else if (x != _playerOldX && y == _playerOldY) {
             _playerOldX = x;
@@ -97,10 +95,10 @@ void SupportShip::update() {
         } else {
             if (y > _playerOldY) {
                 _playerOldY = y;
-                y = y - 50;
+                y = y - 40;
             } else {
                 _playerOldY = y;
-                y = y + 50;
+                y = y + 40;
             }
             _playerOldX = x;
             setPosition(x, y);
