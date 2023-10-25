@@ -1,8 +1,9 @@
 #include "engine/Core.hpp"
 #include "server/Server.hpp"
 
-int main(int argc, char* argv[]) {
-    if (argc != 2) {
+int main() {
+    // TODO: Deprecated
+    /*if (argc != 2) {
         std::cerr << "Usage: ./server <game> (r-type or pong)" << std::endl;
         return 1;
     } else {
@@ -10,9 +11,9 @@ int main(int argc, char* argv[]) {
             std::cerr << "Usage: ./server <game> (r-type or pong)" << std::endl;
             return 1;
         }
-    }
+    }*/
     try {
-        ServerClass server(argv[1]);
+        ServerClass server;
         server.loop();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;

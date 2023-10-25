@@ -8,20 +8,19 @@
 #include "Server.hpp"
 #include "ServerImpl.hpp"
 
-ServerClass::ServerClass(std::string gameName) : _threadPool(1) {
+ServerClass::ServerClass() : _threadPool(1) {
     MyServer* server = new MyServer(4244, this);
     _server = server;
     _server->StartServer();
     _playerIdToGive = 1;
-    _gameName = gameName;
 }
 
 ServerClass::~ServerClass() {
     _server->StopServer();
 }
 
-InstanceInfos ServerClass::createInstance() {
-    Instance* instance = new Instance(_instances.size(), _gameName);
+InstanceInfos ServerClass::createInstance(std::string gameName) {
+    Instance* instance = new Instance(_instances.size(), gameName);
     instance->setServer(this);
     _instances.push_back(instance);
     InstanceInfos instanceinfos;
