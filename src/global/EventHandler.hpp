@@ -12,6 +12,7 @@
 #include <vector>
 #include <cstring>
 #include <memory>
+#include "DataCompress.hpp"
 
 enum class ACTION : uint8_t
 {
@@ -52,7 +53,8 @@ struct Event
 struct NetworkEvent
 {
   ACTION ACTION_NAME;
-  int body_size;
+  int original_size;
+  int compressed_size;
   char *body;
 };
 
@@ -71,6 +73,7 @@ public:
 protected:
 private:
   ACTION _ACTION_NAME;
+  int _body_size;
   std::string _body;
 };
 

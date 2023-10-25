@@ -15,6 +15,7 @@ find_package(SFML 2.6 COMPONENTS graphics audio window system REQUIRED)
 find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(GTest REQUIRED)
+find_package(lz4 REQUIRED)
 
 if (UNIX)
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
@@ -24,11 +25,12 @@ file(GLOB CLIENT_SRC_LIST src/client/*.cpp src/global/*.cpp)
 add_executable(r-type_client ${CLIENT_SRC_LIST})
 target_include_directories(r-type_client PRIVATE ${Boost_INCLUDE_DIR})
 target_include_directories(r-type_client PRIVATE ${SFML_INCLUDE_DIR})
-target_link_libraries(r-type_client sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost)
+target_include_directories(r-type_client PRIVATE ${LZ4_INCLUDE_DIR})
+target_link_libraries(r-type_client sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost LZ4::lz4_static)
 
 file(GLOB SERVER_SRC_LIST src/*.cpp src/server/*.cpp src/engine/*.cpp src/engine/r-type/*.cpp src/global/*.cpp src/engine/pong/*.cpp)
 add_executable(r-type_server ${SERVER_SRC_LIST})
-target_link_libraries(r-type_server PRIVATE nlohmann_json::nlohmann_json boost::boost)
+target_link_libraries(r-type_server PRIVATE nlohmann_json::nlohmann_json boost::boost LZ4::lz4_static)
 
 file(GLOB TEST_SRC_LIST src/tests/*.cpp src/engine/*.cpp src/engine/r-type/*.cpp src/global/*.cpp src/client/*.cpp src/server/*.cpp src/engine/pong/*.cpp)
 list(REMOVE_ITEM TEST_SRC_LIST src/client/main.cpp)
@@ -38,7 +40,7 @@ foreach(item ${TEST_SRC_LIST})
     endif()
 endforeach()
 add_executable(r-type_test ${TEST_SRC_LIST})
-target_link_libraries(r-type_test sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost gtest::gtest)
+target_link_libraries(r-type_test sfml-graphics sfml-audio sfml-window sfml-system nlohmann_json::nlohmann_json boost::boost gtest::gtest LZ4::lz4_static)
 
 set_target_properties(r-type_client r-type_server r-type_test PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../

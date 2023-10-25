@@ -9,3 +9,5 @@ r-type_test
 vg*
 .DS_Store
 */.DS_Store
+Debug/
+Release/

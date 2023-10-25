@@ -18,14 +18,18 @@ EventHandler::~EventHandler()
 
 std::vector<uint8_t> EventHandler::encodeMessage()
 {
+  DataCompress compressor;
+  char *compressed = compressor.Compress(_body.c_str());
   NetworkEvent event;
   event.ACTION_NAME = _ACTION_NAME;
-  event.body_size = _body.size();
-  event.body = const_cast<char *>(_body.c_str());
-  std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + event.body_size);
+  event.original_size = compressor.getOriginalSize();
+  event.compressed_size = compressor.getCompressedSize();
+  event.body = compressed;
+  std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size);
   std::memcpy(data.data(), &event.ACTION_NAME, sizeof(ACTION));
-  std::memcpy(data.data() + sizeof(ACTION), &event.body_size, sizeof(int));
-  std::memcpy(data.data() + sizeof(ACTION) + sizeof(int), event.body, event.body_size);
+  std::memcpy(data.data() + sizeof(ACTION), &event.original_size, sizeof(int));
+  std::memcpy(data.data() + sizeof(ACTION) + sizeof(int), &event.compressed_size, sizeof(int));
+  std::memcpy(data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int), event.body, event.compressed_size);
   return data;
 }
 
@@ -33,16 +37,29 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
 {
   NetworkEvent netevt;
   std::memcpy(&netevt.ACTION_NAME, data.data(), sizeof(ACTION));
-  std::memcpy(&netevt.body_size, data.data() + sizeof(ACTION), sizeof(int));
-  std::string body = std::string(reinterpret_cast<const char *>(data.data() + sizeof(ACTION) + sizeof(int)),
-  data.size() - sizeof(ACTION) - sizeof(int));
-  body.resize(netevt.body_size);
-  netevt.body = const_cast<char *>(body.c_str());
+  std::memcpy(&netevt.original_size, data.data() + sizeof(ACTION), sizeof(int));
+  std::memcpy(&netevt.compressed_size, data.data() + sizeof(ACTION) + sizeof(int), sizeof(int));
+  netevt.body = new char[netevt.compressed_size];
+  std::memcpy(netevt.body, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int), netevt.compressed_size);
+  if (netevt.compressed_size == 0)
+  {
+    Event event;
+    event.ACTION_NAME = netevt.ACTION_NAME;
+    event.body = "";
+    _body = "";
+    _ACTION_NAME = netevt.ACTION_NAME;
+    return event;
+  }
+  DataCompress decompressor(netevt.compressed_size, netevt.original_size);
+  char *decompressed = decompressor.Decompress(netevt.body);
+  decompressed[decompressor.getOriginalSize()] = '\0';
   Event event;
   event.ACTION_NAME = netevt.ACTION_NAME;
-  event.body = body;
-  _body = body;
+  event.body = std::string(decompressed);
+  _body = std::string(decompressed);
   _ACTION_NAME = netevt.ACTION_NAME;
+  _body_size = netevt.original_size;
+  delete[] netevt.body;
   return event;
 }
 
