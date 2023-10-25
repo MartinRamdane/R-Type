@@ -117,9 +117,9 @@ protected:
             std::cout << "[" << client->GetID() << "]: DOWN" << std::endl;
         }
         break;
-        case ACTION::SHOOT:
+        case ACTION::SPACE:
         {
-            std::cout << "[" << client->GetID() << "]: SHOOT" << std::endl;
+            std::cout << "[" << client->GetID() << "]: SPACE" << std::endl;
         }
         break;
         case ACTION::QUIT:
@@ -157,9 +157,9 @@ protected:
             std::cout << "[" << client->GetID() << "]: SPRITE" << std::endl;
         }
         break;
-        case ACTION::SHIELD:
+        case ACTION::KEY_S:
         {
-            std::cout << "[" << client->GetID() << "]: SHIELD" << std::endl;
+            std::cout << "[" << client->GetID() << "]: KEY_S" << std::endl;
         }
         break;
         case ACTION::DEAD:
@@ -178,9 +178,9 @@ protected:
         {
             std::cout << "[" << client->GetID() << "]: RESET" << std::endl;
         }
-        case ACTION::LAUNCH:
+        case ACTION::KEY_L:
         {
-            std::cout << "[" << client->GetID() << "]: LAUNCH" << std::endl;
+            std::cout << "[" << client->GetID() << "]: KEY_L" << std::endl;
         }
         break;
         }

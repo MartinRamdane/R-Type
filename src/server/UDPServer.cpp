@@ -240,7 +240,7 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint,
         break;
     case ACTION::DOWN:
         break;
-    case ACTION::SHOOT:
+    case ACTION::SPACE:
         break;
     case ACTION::READY:
         std::cout << "The user is ready to receive sprites" << std::endl;

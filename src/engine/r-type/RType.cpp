@@ -42,6 +42,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
@@ -126,11 +127,11 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, 1);
                 break;
-            case ACTION::SHOOT:
+            case ACTION::SPACE:
                 if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->shoot();
                 break;
-            case ACTION::SHIELD:
+            case ACTION::KEY_S:
                 if (!_players.empty() && _players.size() >= getId(event))
                     _players[getId(event) - 1]->action();
                 break;
@@ -143,10 +144,19 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 _playersGroups->insert(_players[_players.size() - 1]);
                 setAllEntitiesToCreated();
                 break;
-            case ACTION::LAUNCH:
+            case ACTION::KEY_L:
                 for (auto supportShip : _supportShips) {
                     if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
                         supportShip->launch();
+                        break;
+                    }
+                }
+                break;
+            case ACTION::KEY_C:
+                for (auto supportShip : _supportShips) {
+                    if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
+                        supportShip->setAlliesTouched(true);
+                        _players[getId(event) - 1]->setAlliesTouched(true);
                         break;
                     }
                 }
