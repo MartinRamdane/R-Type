@@ -155,7 +155,6 @@ void DisplaySFML::handleEvent(UDPClient *_udpClient, TCPClientImpl *_client)
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
             evt.ACTION_NAME = ACTION::LAUNCH;
-            evt.body_size = playerId.size();
             evt.body = playerId;
             _udpClient->sendEvent(evt);
         }
