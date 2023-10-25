@@ -9,7 +9,7 @@
 #include "Engine.hpp"
 #include "Protocol.hpp"
 #include "../server/ThreadSafeQueue.hpp"
-#include "r-type/Game.hpp"
+#include "r-type/RType.hpp"
 
 class Core
 {

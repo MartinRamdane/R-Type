@@ -8,7 +8,7 @@
 #pragma once
 
 #include "../AEntity.hpp"
-#include "Game.hpp"
+#include "RType.hpp"
 
 class Projectile : public AEntity
 {

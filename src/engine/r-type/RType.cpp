@@ -2,10 +2,10 @@
 ** EPITECH PROJECT, 2023
 ** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
-** Game
+** RType
 */
 
-#include "Game.hpp"
+#include "RType.hpp"
 #include "Classic.hpp"
 #include "Enemy.hpp"
 #include "Shield.hpp"
@@ -14,9 +14,9 @@
 #include "SupportShip.hpp"
 #include "Tank.hpp"
 
-Game* Game::instance = nullptr;
+RType* RType::instance = nullptr;
 
-Game::Game(std::shared_ptr<Engine>& engine) : _engine(engine) {
+RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     instance = this;
     // Create all entities groups
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
@@ -50,12 +50,12 @@ Game::Game(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_supportShipGroups, _flyerGroups, Character::hurtEnemy);
 }
 
-Game::~Game() {
+RType::~RType() {
     // Destroy all entities
     _players.clear();
 }
 
-int Game::getId(Event event) {
+int RType::getId(Event event) {
     std::stringstream ss(event.body);
     std::string playerId;
     ss >> playerId;
@@ -63,7 +63,7 @@ int Game::getId(Event event) {
     return (id);
 }
 
-std::shared_ptr<Character> Game::getRandomSpaceship() {
+std::shared_ptr<Character> RType::getRandomSpaceship() {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 4);
@@ -101,7 +101,7 @@ std::shared_ptr<Character> Game::getRandomSpaceship() {
     }
 }
 
-void Game::update(ThreadSafeQueue<Event>& events) {
+void RType::update(ThreadSafeQueue<Event>& events) {
     eraseDeadEntity();
     while (!events.empty()) {
         auto event = events.pop_front();
@@ -159,7 +159,6 @@ void Game::update(ThreadSafeQueue<Event>& events) {
         deleteAllEntities();
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
-        std::cout << "Last1 id: " << _lastId << std::endl;
         for (auto player : _players) {
             for (auto player : _players)
                 player->resetLife();
@@ -168,7 +167,7 @@ void Game::update(ThreadSafeQueue<Event>& events) {
     }
 }
 
-void Game::createExplosion(int x, int y) {
+void RType::createExplosion(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -184,7 +183,7 @@ void Game::createExplosion(int x, int y) {
     _staticObjects.push_back(explosion);
 }
 
-void Game::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group) {
+void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group) {
     info.assetFile = _assets[info.name]();
     info.id = _lastId;
     _lastId++;
@@ -203,7 +202,7 @@ void Game::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Projecti
         projectile->setFlip(flip);
 }
 
-std::shared_ptr<AEntity> Game::createShield(int x, int y) {
+std::shared_ptr<AEntity> RType::createShield(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -218,7 +217,7 @@ std::shared_ptr<AEntity> Game::createShield(int x, int y) {
     return (_shield);
 }
 
-std::shared_ptr<AEntity> Game::createSupportShip(int x, int y, int playerId) {
+std::shared_ptr<AEntity> RType::createSupportShip(int x, int y, int playerId) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -235,7 +234,7 @@ std::shared_ptr<AEntity> Game::createSupportShip(int x, int y, int playerId) {
     return (support);
 }
 
-void Game::eraseDeadEntity(int id) {
+void RType::eraseDeadEntity(int id) {
     for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
         if ((*it)->getId() == id) {
             (*it)->kill();
@@ -245,7 +244,7 @@ void Game::eraseDeadEntity(int id) {
     }
 }
 
-void Game::eraseDeadEntity() {
+void RType::eraseDeadEntity() {
     for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
         if ((*it)->isDead()) {
             _staticObjects.erase(it);
@@ -272,7 +271,7 @@ void Game::eraseDeadEntity() {
     }
 }
 
-void Game::setAllEntitiesToCreated() {
+void RType::setAllEntitiesToCreated() {
     for (auto staticObject : _staticObjects) {
         staticObject->setCreated(false);
     }
@@ -290,7 +289,7 @@ void Game::setAllEntitiesToCreated() {
     }
 }
 
-void Game::deleteAllEntities() {
+void RType::deleteAllEntities() {
     _lastId = 0;
     for (auto staticObject : _staticObjects)
         staticObject->kill();
@@ -308,31 +307,31 @@ void Game::deleteAllEntities() {
     _projectilesGroups->clear();
 }
 
-bool Game::isReset() {
+bool RType::isReset() {
     return (_reset);
 }
 
-void Game::setReset(bool reset) {
+void RType::setReset(bool reset) {
     _reset = reset;
 }
 
-int Game::getCurrentId() {
+int RType::getCurrentId() {
     return (_lastId);
 }
 
-int Game::getCurrentLevel() {
+int RType::getCurrentLevel() {
     return (_currentLevel);
 }
 
-std::map<std::string, std::function<std::string()>> Game::getAssets() {
+std::map<std::string, std::function<std::string()>> RType::getAssets() {
     return (_assets);
 }
 
-void Game::setCurrentId(int id) {
+void RType::setCurrentId(int id) {
     _lastId = id;
 }
 
-void Game::createEnemy(IEntity::EntityInfo info) {
+void RType::createEnemy(IEntity::EntityInfo info) {
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
     enemy->setMovementType(info.movementType);
     _enemies.push_back(enemy);
@@ -344,13 +343,13 @@ void Game::createEnemy(IEntity::EntityInfo info) {
         _enemie2Groups->insert(enemy);
 }
 
-void Game::createBackground(IEntity::EntityInfo info) {
+void RType::createBackground(IEntity::EntityInfo info) {
     std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info);
     _staticObjects.push_back(background);
     _staticObjectsGroups->insert(background);
 }
 
-void Game::clearLevel() {
+void RType::clearLevel() {
     _lastId = 0;
     for (auto player : _players) {
         player->setId(_lastId++);
@@ -368,14 +367,14 @@ void Game::clearLevel() {
     _staticObjects.clear();
 }
 
-std::shared_ptr<AEntity> Game::getPlayer(int id) {
+std::shared_ptr<AEntity> RType::getPlayer(int id) {
     for (auto player : _players)
         if (player->getId() == id)
             return (player);
     return (nullptr);
 }
 
-std::map<std::string, std::function<std::string()>> Game::_assets = {
+std::map<std::string, std::function<std::string()>> RType::_assets = {
 
     {"Classic",
      []() {

@@ -6,11 +6,11 @@
 */
 
 #include "LevelInitializer.hpp"
-#include "Game.hpp"
+#include "RType.hpp"
 
 LevelInitializer::LevelInitializer(IGame *game)
 {
-    _game = dynamic_cast<Game *>(game);
+    _game = dynamic_cast<RType *>(game);
 }
 
 LevelInitializer::~LevelInitializer()

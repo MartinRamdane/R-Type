@@ -64,7 +64,7 @@ void Character::shoot() {
   info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
   info.spriteConfigJsonObjectName = getShootAsset();
   info.direction = _direction;
-  Game::instance->createProjectile(info,
+  RType::instance->createProjectile(info,
                                    _direction == IEntity::LEFT ? true : false,
                                    IGame::ProjectileGroup::PLAYER);
 }
@@ -120,7 +120,7 @@ void Character::hurtEnemy(IEntity& self, IEntity& you) {
   self.takeDamage(you.getDamage());
   you.kill();
   auto pos = you.getPosition();
-  Game::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+  RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
 }
 
 void Character::alliesTouched(IEntity& self, IEntity& you) {
