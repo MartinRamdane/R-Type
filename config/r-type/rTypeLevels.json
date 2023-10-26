@@ -4,7 +4,7 @@
             "Type": "Background"
         },
         "Enemy1": {
-            "Config": "Worm.rType.json",
+            "Config": "Flyer.rType.json",
             "Count": 2,
             "Positions": [
                 {"X": 960, "Y": 331},

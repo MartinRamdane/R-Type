@@ -31,7 +31,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _supportProjectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
-    _wormGroups = std::make_shared<EntityType<IEntity>>(50);
+    _wormGroups = std::make_shared<EntityType<IEntity>>(16);
 
     // initializeLevel();
     _levelInitializer = std::make_shared<LevelInitializer>(this);

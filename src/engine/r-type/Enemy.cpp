@@ -29,7 +29,6 @@ void Enemy::update() {
     if (movementType == "Linear") {
         move(-1, 0);
     } else if (movementType == "UpAndDown") {
-        //TODO: use sinus to move up and down in a smooth way
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed =
             std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
@@ -41,11 +40,12 @@ void Enemy::update() {
             _lastMoveTime = currentTime;
         }
 
-        if (_lastMove == NONE || _lastMove == UP) {
-            move(-1, 1);
-        } else {
-            move(-1, -1);
-        }
+        double verticalDisplacement =
+            std::sin(2 * M_PI * timeElapsed / 4000.0);    // Adjust the period (4000) as needed
+        int verticalDirection = (_lastMove == UP) ? 1 : -1;
+        int horizontalDirection = -1;
+
+        move(horizontalDirection, verticalDirection * verticalDisplacement);
     } else if (movementType == "Random") {
         int x = rand() % 3 - 1;
         int y = rand() % 3 - 1;
