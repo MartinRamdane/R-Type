@@ -32,6 +32,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
     _wormGroups = std::make_shared<EntityType<IEntity>>(16);
+    _bossGroups = std::make_shared<EntityType<IEntity>>(80);
 
     // initializeLevel();
     _levelInitializer = std::make_shared<LevelInitializer>(this);
@@ -51,11 +52,15 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEnemy);
+    _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEnemy);
 
     _engine->setRelation(_playersGroups, _supportShipGroups, Character::alliesTouched);
     _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_supportShipGroups, _flyerGroups, Character::hurtEnemy);
     _engine->setRelation(_projectilesGroups, _dropperGroups, Character::hurtEnemy);
+    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Character::hurtEnemy);
+    _engine->setRelation(_projectilesGroups, _bossGroups, Character::hurtEnemy);
+    _engine->setRelation(_supportProjectilesGroups, _bossGroups, Character::hurtEnemy);
 }
 
 RType::~RType() {
@@ -84,6 +89,7 @@ void RType::createAssetList()
     _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
     _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
     _assets["Worm"] = parser.get<std::string>(val, "Game.Assets.Images.Worm");
+    _assets["Boss1"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1");
 }
 
 int RType::getId(Event event) {
@@ -380,6 +386,7 @@ void RType::deleteAllEntities() {
     _supportShipGroups->clear();
     _dropperGroups->clear();
     _wormGroups->clear();
+    _bossGroups->clear();
 }
 
 bool RType::isReset() {
@@ -417,6 +424,8 @@ void RType::createEnemy(IEntity::EntityInfo info) {
         _enemie2Groups->insert(enemy);
     else if (info.name == "Worm")
         _wormGroups->insert(enemy);
+    else if (info.name == "Boss1")
+        _bossGroups->insert(enemy);
 }
 
 void RType::createBackground(IEntity::EntityInfo info) {

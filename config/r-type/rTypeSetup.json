@@ -19,7 +19,8 @@
                 "Flyer": "flyer.png",
                 "ExplosionEnemy": "explosion_type3.png",
                 "SupportShip": "support_ship.png",
-                "Worm": "worm3.png"
+                "Worm": "worm3.png",
+                "Boss1": "boss1.png"
             },
             "Sounds": {
                 "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",

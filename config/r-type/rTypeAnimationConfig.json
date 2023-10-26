@@ -88,5 +88,11 @@
         "nb_rect": 2,
         "rect_init": 0,
         "form": "loop"
+    },
+    "Boss1":
+    {
+        "nb_rect": 7,
+        "rect_init": 0,
+        "form": "loop"
     }
 }

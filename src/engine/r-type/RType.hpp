@@ -74,6 +74,7 @@ private:
     std::shared_ptr<EntityType<IEntity>> _wormGroups;
     std::shared_ptr<EntityType<IEntity>> _flyerGroups;
     std::shared_ptr<EntityType<IEntity>> _dropperGroups;
+    std::shared_ptr<EntityType<IEntity>> _bossGroups;
     std::vector<std::shared_ptr<Character>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     std::vector<std::shared_ptr<AEntity>> _staticObjects;

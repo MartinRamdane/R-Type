@@ -62,6 +62,31 @@ void Enemy::update() {
             }
         }
         move(x, y);
+    } else if (movementType == "Boss1") {
+        //make it go upper while it is out of the screen
+        auto pos = getPosition();
+        if (std::get<1>(pos) > 468 - getRadius()) {
+            move(0, -1);
+        } else {
+            //make it go left and right
+            const auto currentTime = std::chrono::high_resolution_clock::now();
+            const auto timeElapsed =
+                std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+                    .count();
+            const bool needsDirectionChange = timeElapsed > 2000;
+
+            if (needsDirectionChange) {
+                _lastMove = (_lastMove == NONE || _lastMove == LEFT) ? RIGHT : LEFT;
+                _lastMoveTime = currentTime;
+            }
+
+            double horizontalDisplacement =
+                std::sin(2 * M_PI * timeElapsed / 4000.0);    // Adjust the period (4000) as needed
+            int horizontalDirection = (_lastMove == LEFT) ? 1 : -1;
+            int verticalDirection = 0;
+
+            move(horizontalDirection * horizontalDisplacement, verticalDirection);
+        }
     }
     shoot();
 }

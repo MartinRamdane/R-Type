@@ -17,6 +17,7 @@ class Enemy : public Character {
     ~Enemy();
     void update() override;
     void shoot() override;
+    void shoot(int x, int y);
     void move(float x, float y) override;
 
    protected:

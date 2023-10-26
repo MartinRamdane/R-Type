@@ -48,6 +48,10 @@ void LevelInitializer::loadConfig(nlohmann::json spriteConfig) {
     _info.life = spriteConfig["Life"];
     _info.damage = spriteConfig["Damage"];
     _info.speed = spriteConfig["Speed"];
+    if (spriteConfig.contains("ScaleX") && spriteConfig.contains("ScaleY")) {
+        _info.scaleX = spriteConfig["ScaleX"];
+        _info.scaleY = spriteConfig["ScaleY"];
+    }
 }
 
 void LevelInitializer::createEnemy(int cout, nlohmann::json positions) {

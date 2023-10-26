@@ -1,0 +1,13 @@
+{
+    "Type": "Enemy",
+    "Name": "Boss1",
+    "MovementType": "Boss1",
+    "ProjectileType": "DiskProjectile",
+    "FireRate": 1,
+    "ProjectileSpeed": 8,
+    "Speed": 2,
+    "Damage": 60,
+    "Life": 500,
+    "ScaleX": 2.5,
+    "ScaleY": 2.5
+}
