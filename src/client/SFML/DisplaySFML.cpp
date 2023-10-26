@@ -142,7 +142,7 @@ void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>> *_entities, UDP
     draw(_entities);
     animate(_entities);
     _window.display();
-    for (auto it = _entities->begin(); it != _entities->end();)
+    for (auto it = _entities->begin(); it != _entities->end();it++)
     {
         (*it).second->update();
         if ((*it).second->isDead())
@@ -151,10 +151,8 @@ void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>> *_entities, UDP
             evt.ACTION_NAME = ACTION::DEAD;
             evt.body = std::to_string((*it).first);
             _udpClient->sendEvent(evt);
-            it = _entities->erase(it);
+            _udpClient->getEventQueue().push_back(evt);
         }
-        else
-            it++;
     }
 }
 

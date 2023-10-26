@@ -56,7 +56,25 @@ void Game::run()
             while (_display->windowIsOpen() == true)
             {
                 _display->handleEvent(_udpClient, _client);
-                _display->update(&_entities, _udpClient);
+                if (_entitiesToRemove.empty() == false)
+                {
+                    std::lock_guard<std::mutex> lock(entityMutex);
+                    {
+                        for (auto it = _entitiesToRemove.begin(); it != _entitiesToRemove.end(); it++)
+                        {
+                            _entities.erase((*it) * -1);
+                        }
+                        _entitiesToRemove.clear();
+                    }
+                }
+                std::map<int, std::shared_ptr<IEntity>> entitiesCopy;
+                {
+                    std::lock_guard<std::mutex> lock(entityMutex);
+                    std::cout << "copied" << std::endl;
+                    std::cout << _entities.size() << std::endl;
+                    entitiesCopy = _entities;
+                }
+                _display->update(&entitiesCopy, _udpClient);
             }
 
         }
@@ -125,7 +143,7 @@ bool Game::findEntity(int id)
 
 void Game::removeEntity(int id)
 {
-    _entities.erase(id * -1);
+    _entitiesToRemove.push_back(id);
 }
 
 void Game::addEntity(IEntity::EntityInfos entityInfos)
@@ -228,16 +246,28 @@ void Game::handleReceivedEvent(Event evt)
         joinGame(evt);
         break;
     case ACTION::SPRITE:
-        updateSprite(evt);
+        {
+            std::lock_guard<std::mutex> lock(entityMutex);
+            updateSprite(evt);
+        }
         break;
     case ACTION::TEXT:
-        updateText(evt);
+        {
+            std::lock_guard<std::mutex> lock(entityMutex);
+            updateText(evt);
+        }
         break;
     case ACTION::FLIP:
-        flipEntity(evt);
+        {
+            std::lock_guard<std::mutex> lock(entityMutex);
+            flipEntity(evt);
+        }
         break;
     case ACTION::RESET:
-        this->clearEntities();
+        {
+            std::lock_guard<std::mutex> lock(entityMutex);
+            _entities.clear();
+        }
     default:
         break;
     }

@@ -81,4 +81,6 @@ private:
     ProgressBar _progressBar;
     std::shared_ptr<IDisplay> _display;
     Lib _lib;
+    std::mutex entityMutex;
+    std::vector<int> _entitiesToRemove;
 };
