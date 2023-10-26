@@ -29,6 +29,7 @@ void Enemy::update() {
     if (movementType == "Linear") {
         move(-1, 0);
     } else if (movementType == "UpAndDown") {
+        //TODO: use sinus to move up and down in a smooth way
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed =
             std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)

@@ -82,5 +82,11 @@
         "nb_rect": 12,
         "rect_init": 0,
         "form": "loop"
+    },
+    "Worm":
+    {
+        "nb_rect": 2,
+        "rect_init": 0,
+        "form": "loop"
     }
 }

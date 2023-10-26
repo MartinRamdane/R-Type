@@ -31,6 +31,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _supportProjectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
+    _wormGroups = std::make_shared<EntityType<IEntity>>(50);
 
     // initializeLevel();
     _levelInitializer = std::make_shared<LevelInitializer>(this);
@@ -41,6 +42,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _wormGroups, Projectile::hurtEntity);
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _playersGroups, Projectile::hurtEntity);
@@ -48,6 +50,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEnemy);
+    _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEnemy);
 
     _engine->setRelation(_playersGroups, _supportShipGroups, Character::alliesTouched);
     _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
@@ -80,6 +83,7 @@ void RType::createAssetList()
     _assets["Flyer"] = parser.get<std::string>(val, "Game.Assets.Images.Flyer");
     _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
     _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
+    _assets["Worm"] = parser.get<std::string>(val, "Game.Assets.Images.Worm");
 }
 
 int RType::getId(Event event) {
@@ -375,6 +379,7 @@ void RType::deleteAllEntities() {
     _supportProjectilesGroups->clear();
     _supportShipGroups->clear();
     _dropperGroups->clear();
+    _wormGroups->clear();
 }
 
 bool RType::isReset() {
@@ -410,6 +415,8 @@ void RType::createEnemy(IEntity::EntityInfo info) {
         _flyerGroups->insert(enemy);
     else if (info.name == "Enemy2")
         _enemie2Groups->insert(enemy);
+    else if (info.name == "Worm")
+        _wormGroups->insert(enemy);
 }
 
 void RType::createBackground(IEntity::EntityInfo info) {
@@ -431,9 +438,15 @@ void RType::clearLevel() {
     _projectilesGroups->clear();
     _enemyProjectilesGroups->clear();
     _staticObjectsGroups->clear();
+    _supportProjectilesGroups->clear();
+    _supportShipGroups->clear();
+    _dropperGroups->clear();
+    _wormGroups->clear();
     _enemies.clear();
     _projectiles.clear();
     _staticObjects.clear();
+    _supportShips.clear();
+    _dropper.clear();
 }
 
 std::shared_ptr<AEntity> RType::getPlayer(int id) {
