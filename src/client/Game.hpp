@@ -83,4 +83,5 @@ private:
     Lib _lib;
     std::mutex entityMutex;
     std::vector<int> _entitiesToRemove;
+    Parser parseRef;
 };

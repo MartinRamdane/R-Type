@@ -19,12 +19,13 @@ Parser::~Parser()
 void Parser::getConfig(std::string configpath, std::string type, IEntity::EntityInfos &entityInfos)
 {
     JsonParser jsonParser;
-    nlohmann::json jsonfile = jsonParser.readFile(configpath);
-    int nbRect = jsonParser.get<int>(jsonfile, type + ".nb_rect");
-    int initRect = jsonParser.get<int>(jsonfile, type + ".rect_init");
+    if (_jsons.find(configpath) == _jsons.end())
+        _jsons[configpath] = jsonParser.readFile(configpath);
+    int nbRect = jsonParser.get<int>(_jsons[configpath], type + ".nb_rect");
+    int initRect = jsonParser.get<int>(_jsons[configpath], type + ".rect_init");
     entityInfos.nbRect = nbRect;
     entityInfos.initRect = initRect;
-    entityInfos.eventForm = jsonParser.get<std::string>(jsonfile, type + ".form");
+    entityInfos.eventForm = jsonParser.get<std::string>(_jsons[configpath], type + ".form");
     entityInfos.objectType = type;
 }
 

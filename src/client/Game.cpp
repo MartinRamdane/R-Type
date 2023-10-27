@@ -180,7 +180,6 @@ void Game::flipEntity(Event evt)
 
 void Game::updateSprite(Event evt)
 {
-    Parser parseRef;
     IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
     if (entityInfos.id < 0)
         removeEntity(entityInfos.id);

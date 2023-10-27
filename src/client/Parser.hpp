@@ -31,6 +31,7 @@ public:
     std::string setKeyText(std::string key, int i);
     IEntity::EntityInfos parseMessage(Event evt);
     IEntity::EntityInfos hitEntity(std::map<std::string, std::string> value);
-
+private:
+    std::map<std::string, nlohmann::json> _jsons;
 
 };
