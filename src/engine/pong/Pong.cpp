@@ -123,6 +123,7 @@ void Pong::setAllEntitiesToCreated() {
 void Pong::createEntity(IEntity::EntityInfo info) {
     info.id = _lastId++;
     std::shared_ptr<AEntity> entity = std::make_shared<AEntity>(info);
+    entity->setSpeed(0);
     _staticObjects.push_back(entity);
     _staticObjectsGroups->insert(entity);
 }

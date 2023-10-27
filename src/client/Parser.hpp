@@ -11,8 +11,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
-#include "Entity.hpp"
-#include "RessourceManager.hpp"
+#include "IEntity.hpp"
 #include "../global/JsonParser.hpp"
 #include "../global/EventHandler.hpp"
 
@@ -22,17 +21,16 @@ public:
     Parser();
     ~Parser();
     bool findEntity(int id);
-    Entity loadTexture(Entity entity, std::string path, RessourceManager &ressourceManager);
-    std::tuple<int, Entity> addEntity(std::map<std::string, std::string> value, RessourceManager &ressourceManager);
-    std::tuple<int, Entity> addEntityText(std::map<std::string, std::string> value);
-    std::tuple<int, Entity> removeEntity(std::map<std::string, std::string> value);
+    IEntity::EntityInfos addEntity(std::map<std::string, std::string> value);
+    IEntity::EntityInfos addEntityText(std::map<std::string, std::string> value);
+    IEntity::EntityInfos removeEntity(std::map<std::string, std::string> value);
     void updateEntity(std::map<std::string, std::string> value);
-    std::tuple<int, Entity> modifyPosEntity(std::map<std::string, std::string> value);
-    void getConfig(std::string path, std::string type, Entity *entity);
+    IEntity::EntityInfos modifyPosEntity(std::map<std::string, std::string> value);
+    void getConfig(std::string configpath, std::string type, IEntity::EntityInfos &entityInfos);
     std::string setKey(std::string key, int i);
     std::string setKeyText(std::string key, int i);
-    std::tuple<int, Entity> parseMessage(Event evt, RessourceManager &ressourceManager);
-    std::tuple<int, Entity> hitEntity(std::map<std::string, std::string> value);
+    IEntity::EntityInfos parseMessage(Event evt);
+    IEntity::EntityInfos hitEntity(std::map<std::string, std::string> value);
 
-public:
+
 };

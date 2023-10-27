@@ -88,11 +88,6 @@ void UDPClient::connect_to(const std::string &host, int port)
   _thread = std::thread([this]() { io_context_.run(); });
 }
 
-void UDPClient::setGameRef(Game *gameRef)
-{
-  _gameRef = gameRef;
-}
-
 void UDPClient::start_receive()
 {
   try
@@ -115,7 +110,7 @@ void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
 {
   EventHandler evt;
   Event event = evt.decodeMessage(msg);
-  handleEvents(event);
+  _eventQueue.push_back(event);
 }
 
 void UDPClient::sendEvent(Event evt)
@@ -129,91 +124,6 @@ std::vector<uint8_t> UDPClient::encodeEvent(Event event)
   EventHandler evt;
   evt.addEvent(event.ACTION_NAME, event.body);
   return evt.encodeMessage();
-}
-
-void UDPClient::joinGame(Event evt)
-{
-  std::stringstream ss(evt.body);
-  std::string gameTitle;
-  std::string width;
-  std::string height;
-  ss >> gameTitle;
-  ss >> width;
-  ss >> height;
-  _gameRef->setUDPConnected(true);
-  _gameRef->setGameTitle(gameTitle);
-  _gameRef->setWidth(std::stoi(width));
-  _gameRef->setHeight(std::stoi(height));
-}
-
-void UDPClient::updateSprite(Event evt)
-{
-  Parser *parseRef = new Parser();
-  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
-  if (std::get<0>(res) < 0)
-    _gameRef->removeEntity(-std::get<0>(res));
-  else
-    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
-}
-
-void UDPClient::updateText(Event evt)
-{
-  std::stringstream ss(evt.body);
-  std::string id;
-  std::string x;
-  std::string y;
-  std::string text;
-  std::string color;
-  std::string objectType;
-  ss >> id;
-  ss >> x;
-  ss >> y;
-  ss >> text;
-  ss >> color;
-  ss >> objectType;
-  Parser *parseRef = new Parser();
-  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
-  if (std::get<0>(res) < 0)
-    _gameRef->removeEntity(-std::get<0>(res));
-  else
-    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
-}
-
-void UDPClient::flipEntity(Event evt)
-{
-  std::stringstream ss(evt.body);
-  std::string tpm;
-  std::string id;
-  ss >> tpm;
-  ss >> id;
-  _gameRef->flipEntity(std::stoi(id));
-}
-
-void UDPClient::handleEvents(Event evt)
-{
-    switch (evt.ACTION_NAME) {
-    case ACTION::PING:
-        sendEvent({ACTION::PONG, ""});
-        break;
-    case ACTION::JOINED:
-        joinGame(evt);
-        break;
-    case ACTION::SPRITE:
-        updateSprite(evt);
-        break;
-    case ACTION::TEXT:
-        updateText(evt);
-        break;
-    case ACTION::FLIP:
-        flipEntity(evt);
-        break;
-    case ACTION::RESET:
-        _gameRef->clearEntities();
-    default:
-        break;
-    }
 }
 
 void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
