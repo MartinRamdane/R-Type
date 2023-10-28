@@ -55,6 +55,7 @@ class AEntity : public IEntity {
     bool getEntityHasCollided() const;
     void setHasSupport(bool hasSupport);
     bool getHasSupport() const;
+    int getLife() const;
 
    protected:
     float _x;

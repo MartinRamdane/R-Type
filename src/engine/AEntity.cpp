@@ -208,3 +208,7 @@ void AEntity::setHasSupport(bool hasSupport) {
 bool AEntity::getHasSupport() const {
     return _hasSupport;
 }
+
+int AEntity::getLife() const {
+    return _life;
+}

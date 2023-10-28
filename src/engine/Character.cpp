@@ -115,11 +115,26 @@ void Character::takeDamage(int damage) {
         _isDead = true;
 }
 
-void Character::hurtEnemy(IEntity& self, IEntity& you) {
+void Character::hurtEntities(IEntity& self, IEntity& you) {
     self.takeDamage(you.getDamage());
-    you.kill();
-    auto pos = you.getPosition();
-    RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+    you.takeDamage(self.getDamage());
+
+    if (self.getLife() <= 0) {
+        auto pos = self.getPosition();
+        RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+    }
+    if (you.getLife() <= 0) {
+        auto pos = you.getPosition();
+        RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+    }
+}
+
+void Character::hurtFirstEntity(IEntity& self, IEntity& you) {
+    self.takeDamage(you.getDamage());
+    if (self.getLife() <= 0) {
+        auto pos = self.getPosition();
+        RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+    }
 }
 
 void Character::entitiesCollision(IEntity& self, IEntity& you) {

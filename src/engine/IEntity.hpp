@@ -83,4 +83,5 @@ public:
     virtual void setText(std::string text) = 0;
     virtual std::string getOldText() const = 0;
     virtual void setOldText(std::string text) = 0;
+    virtual int getLife() const = 0;
 };

@@ -32,9 +32,9 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
     _wormGroups = std::make_shared<EntityType<IEntity>>(16);
-    _bossGroups = std::make_shared<EntityType<IEntity>>(80);
+    _bossGroups = std::make_shared<EntityType<IEntity>>(150);
 
-    // initializeLevel();
+    // initializeLevel
     _levelInitializer = std::make_unique<LevelInitializer>(this);
     _levelInitializer->loadLevel(_currentLevel);
 
@@ -43,24 +43,29 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _dropperGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _wormGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bossGroups, Projectile::hurtEntity);
+
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
-    _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEnemy);
-    _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
-    _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEnemy);
-    _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEnemy);
-    _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEnemy);
+    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bossGroups, Projectile::hurtEntity);
+
+    _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEntities);
 
     _engine->setRelation(_playersGroups, _supportShipGroups, Character::entitiesCollision);
-    _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
-    _engine->setRelation(_supportShipGroups, _flyerGroups, Character::hurtEnemy);
-    _engine->setRelation(_projectilesGroups, _dropperGroups, Character::hurtEnemy);
-    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Character::hurtEnemy);
-    _engine->setRelation(_projectilesGroups, _bossGroups, Character::hurtEnemy);
-    _engine->setRelation(_supportProjectilesGroups, _bossGroups, Character::hurtEnemy);
+    _engine->setRelation(_orangeRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_flyerGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_wormGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_bossGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_enemie2Groups, _supportShipGroups, Character::hurtFirstEntity);
 }
 
 RType::~RType() {
@@ -74,8 +79,7 @@ RType::~RType() {
     _assets.clear();
 }
 
-void RType::createAssetList()
-{
+void RType::createAssetList() {
     JsonParser parser;
     auto val = JsonParser::readFile("rTypeSetup.json");
     _assets["Classic"] = parser.get<std::string>(val, "Game.Assets.Images.Classic");
@@ -86,11 +90,14 @@ void RType::createAssetList()
     _assets["OrangeRobot"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeRobot");
     _assets["Enemy2"] = parser.get<std::string>(val, "Game.Assets.Images.Enemy2");
     _assets["Background"] = parser.get<std::string>(val, "Game.Assets.Images.Background");
-    _assets["ExplosionSpaceship"] = parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
+    _assets["ExplosionSpaceship"] =
+        parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
     _assets["Shield"] = parser.get<std::string>(val, "Game.Assets.Images.Shield");
-    _assets["PlayerProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
+    _assets["PlayerProjectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
     _assets["DiskProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.DiskProjectile");
-    _assets["OrangeProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
+    _assets["OrangeProjectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
     _assets["Flyer"] = parser.get<std::string>(val, "Game.Assets.Images.Flyer");
     _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
     _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
@@ -113,10 +120,8 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
     int random = distrib(gen);
     IEntity::EntityInfo info;
 
-    //TODO: make it random
     info.x = 50;
-    info.y = 100;
-    //
+    info.y = distrib(gen) * 100 + 50;
 
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Spaceship";
