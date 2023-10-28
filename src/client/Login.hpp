@@ -9,8 +9,7 @@
 #include <iostream>
 #include <string>
 
-typedef struct Login
-{
+typedef struct Login {
     std::string name;
     std::string port;
     std::string ip;

@@ -7,13 +7,10 @@
 
 #include "RessourceManager.hpp"
 
-RessourceManager::RessourceManager()
-{
+RessourceManager::RessourceManager() {
     std::string directory = "assets";
-    for (const auto &entry : std::filesystem::recursive_directory_iterator(directory))
-    {
-        if (entry.is_regular_file())
-        {
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
+        if (entry.is_regular_file()) {
             std::string filePath = entry.path().string();
             std::string key = entry.path().stem().string();
             key = key + ".png";
@@ -26,7 +23,6 @@ RessourceManager::RessourceManager()
     }
 }
 
-std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManager::getTextures() const
-{
+std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManager::getTextures() const {
     return _textures;
 }

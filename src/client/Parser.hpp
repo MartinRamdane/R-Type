@@ -6,18 +6,17 @@
 */
 
 #pragma once
-#include <string>
-#include <memory>
-#include <vector>
 #include <map>
+#include <memory>
 #include <sstream>
-#include "IEntity.hpp"
-#include "../global/JsonParser.hpp"
+#include <string>
+#include <vector>
 #include "../global/EventHandler.hpp"
+#include "../global/JsonParser.hpp"
+#include "IEntity.hpp"
 
-class Parser
-{
-public:
+class Parser {
+   public:
     Parser();
     ~Parser();
     bool findEntity(int id);
@@ -26,12 +25,12 @@ public:
     IEntity::EntityInfos removeEntity(std::map<std::string, std::string> value);
     void updateEntity(std::map<std::string, std::string> value);
     IEntity::EntityInfos modifyPosEntity(std::map<std::string, std::string> value);
-    void getConfig(std::string configpath, std::string type, IEntity::EntityInfos &entityInfos);
+    void getConfig(std::string configpath, std::string type, IEntity::EntityInfos& entityInfos);
     std::string setKey(std::string key, int i);
     std::string setKeyText(std::string key, int i);
     IEntity::EntityInfos parseMessage(Event evt);
     IEntity::EntityInfos hitEntity(std::map<std::string, std::string> value);
-private:
-    std::map<std::string, nlohmann::json> _jsons;
 
+   private:
+    std::map<std::string, nlohmann::json> _jsons;
 };

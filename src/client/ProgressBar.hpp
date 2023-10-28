@@ -6,30 +6,27 @@
 */
 
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include <memory>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <iostream>
+#include <memory>
 #include <string>
 
-class ProgressBar
-{
-    public:
+class ProgressBar {
+   public:
     ProgressBar();
     ~ProgressBar(){};
     void update();
     void setProgress(float progress);
     void setMaxProgress(float maxProgress);
-    void draw(sf::RenderWindow &window);
+    void draw(sf::RenderWindow& window);
     float getProgress() { return _progress; }
     float getMaxProgress() { return _maxProgress; }
 
-
-
-    private:
+   private:
     sf::RectangleShape _progressBar;
     sf::RectangleShape _progressBarBack;
     sf::Vector2f _pos;

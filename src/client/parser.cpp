@@ -7,17 +7,12 @@
 
 #include "Parser.hpp"
 
-Parser::Parser()
-{
-}
+Parser::Parser() {}
 
-Parser::~Parser()
-{
-}
+Parser::~Parser() {}
 
-
-void Parser::getConfig(std::string configpath, std::string type, IEntity::EntityInfos &entityInfos)
-{
+void Parser::getConfig(std::string configpath, std::string type,
+                       IEntity::EntityInfos& entityInfos) {
     JsonParser jsonParser;
     if (_jsons.find(configpath) == _jsons.end())
         _jsons[configpath] = jsonParser.readFile(configpath);
@@ -29,8 +24,7 @@ void Parser::getConfig(std::string configpath, std::string type, IEntity::Entity
     entityInfos.objectType = type;
 }
 
-IEntity::EntityInfos Parser::addEntity(std::map<std::string, std::string> value)
-{
+IEntity::EntityInfos Parser::addEntity(std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.type = IEntity::Type::SPRITE;
@@ -48,8 +42,7 @@ IEntity::EntityInfos Parser::addEntity(std::map<std::string, std::string> value)
     return entityInfos;
 }
 
-IEntity::EntityInfos Parser::addEntityText(std::map<std::string, std::string> value)
-{
+IEntity::EntityInfos Parser::addEntityText(std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.type = IEntity::Type::TEXT;
@@ -61,15 +54,13 @@ IEntity::EntityInfos Parser::addEntityText(std::map<std::string, std::string> va
     return entityInfos;
 }
 
-IEntity::EntityInfos Parser::removeEntity(std::map<std::string, std::string> value)
-{
+IEntity::EntityInfos Parser::removeEntity(std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = -std::stoi(value["id"]);
     return entityInfos;
 }
 
-IEntity::EntityInfos Parser::modifyPosEntity(std::map<std::string, std::string> value)
-{
+IEntity::EntityInfos Parser::modifyPosEntity(std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.nextX = std::stof(value["x"]);
@@ -77,8 +68,7 @@ IEntity::EntityInfos Parser::modifyPosEntity(std::map<std::string, std::string> 
     return entityInfos;
 }
 
-std::string Parser::setKey(std::string key, int i)
-{
+std::string Parser::setKey(std::string key, int i) {
     if (i == 0)
         key = "id";
     else if (i == 1)
@@ -104,8 +94,7 @@ std::string Parser::setKey(std::string key, int i)
     return key;
 }
 
-std::string Parser::setKeyText(std::string key, int i)
-{
+std::string Parser::setKeyText(std::string key, int i) {
     if (i == 0)
         key = "id";
     else if (i == 1)
@@ -121,85 +110,68 @@ std::string Parser::setKeyText(std::string key, int i)
     return key;
 }
 
-IEntity::EntityInfos Parser::hitEntity(std::map<std::string, std::string> value)
-{
+IEntity::EntityInfos Parser::hitEntity(std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.hit = true;
     return entityInfos;
 }
 
-IEntity::EntityInfos Parser::parseMessage(Event evt)
-{
+IEntity::EntityInfos Parser::parseMessage(Event evt) {
     std::size_t com = evt.body.find(' ');
-    if (com != std::string::npos)
-    {
+    if (com != std::string::npos) {
         std::string commande = evt.body.substr(0, com);
         std::string tmp = evt.body.substr(com);
-        if (commande == "ecreate" && evt.ACTION_NAME == ACTION::SPRITE)
-        {
+        if (commande == "ecreate" && evt.ACTION_NAME == ACTION::SPRITE) {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
             std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
+            for (int i = 0; iss >> token; i++) {
                 key = setKey(key, i);
                 valueMap[key] = token;
                 key.clear();
             }
             return addEntity(valueMap);
-        }
-        else if (commande == "etext" && evt.ACTION_NAME == ACTION::TEXT)
-        {
+        } else if (commande == "etext" && evt.ACTION_NAME == ACTION::TEXT) {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
             std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
+            for (int i = 0; iss >> token; i++) {
                 key = setKeyText(key, i);
                 valueMap[key] = token;
                 key.clear();
             }
             return addEntityText(valueMap);
-        }
-        else if (commande == "pmove" || commande == "emove")
-        {
+        } else if (commande == "pmove" || commande == "emove") {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
             std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
+            for (int i = 0; iss >> token; i++) {
                 key = setKey(key, i);
                 valueMap[key] = token;
                 key.clear();
             }
             return modifyPosEntity(valueMap);
-        }
-        else if (commande == "dead" || commande == "edead")
-        {
+        } else if (commande == "dead" || commande == "edead") {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
             std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
+            for (int i = 0; iss >> token; i++) {
                 key = setKey(key, i);
                 valueMap[key] = token;
                 key.clear();
             }
             return removeEntity(valueMap);
-        }
-        else if (commande == "etouch")
-        {
+        } else if (commande == "etouch") {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
             std::string key;
             std::string token;
-            for (int i = 0; iss >> token; i++)
-            {
+            for (int i = 0; iss >> token; i++) {
                 key = setKey(key, i);
                 valueMap[key] = token;
                 key.clear();

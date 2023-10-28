@@ -8,13 +8,12 @@
 #ifndef INPUT_HEADER_GUARD
 #define INPUT_HEADER_GUARD
 #include <SFML/Graphics.hpp>
-#include <map>
 #include <iostream>
+#include <map>
 #include <memory>
 
-class Input
-{
-public:
+class Input {
+   public:
     Input(std::string texture, std::string textureHover, std::string textValue);
     ~Input(){};
     void createSprite();
@@ -23,17 +22,17 @@ public:
     void setSpriteScale(sf::Vector2f scale);
     void setSpriteOrigin();
     void setSpriteRotation(float angle);
-    void setSpriteTexture(std::shared_ptr<sf::Texture> &texture);
-    void draw(sf::RenderWindow &window);
-    void eventHandler(sf::Event event, sf::RenderWindow &window);
+    void setSpriteTexture(std::shared_ptr<sf::Texture>& texture);
+    void draw(sf::RenderWindow& window);
+    void eventHandler(sf::Event event, sf::RenderWindow& window);
     void update();
     std::string getText() { return _value; };
     sf::Vector2f getSpritePosition();
     bool getActive() const { return _isActive; };
     void setActive(bool active) { _isActive = active; };
 
-protected:
-private:
+   protected:
+   private:
     std::string _value;
     std::string _textureFile;
     std::string _textureFileHover;

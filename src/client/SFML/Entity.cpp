@@ -7,7 +7,8 @@
 
 #include "Entity.hpp"
 
-Entity::Entity(std::shared_ptr<RessourceManager> ressourceManager) : _ressourceManager(ressourceManager) {
+Entity::Entity(std::shared_ptr<RessourceManager> ressourceManager)
+    : _ressourceManager(ressourceManager) {
     _clock.restart();
 }
 
@@ -16,10 +17,8 @@ Entity::~Entity() {}
 void Entity::setTexture(const std::string& path) {
     std::map<std::string, std::shared_ptr<sf::Texture>> textures = _ressourceManager->getTextures();
     std::map<std::string, std::shared_ptr<sf::Texture>>::iterator it = textures.begin();
-    while (it != textures.end())
-    {
-        if (it->first == path)
-        {
+    while (it != textures.end()) {
+        if (it->first == path) {
             _texture = it->second;
             _sprite.setTexture(*_texture);
             break;
@@ -47,8 +46,7 @@ void Entity::setSpriteRotation(const float angle) {
 }
 
 void Entity::setSpriteOriginToCenter() {
-    sf::Vector2f size =
-        sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
+    sf::Vector2f size = sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
     _sprite.setOrigin(sf::Vector2f(size.x / 2, size.y / 2));
 }
 
@@ -79,8 +77,7 @@ void Entity::animateSprite(const int ei, const int framerate) {
             if (rect.left != 0)
                 rect.left -= size;
         } else if (ei == 3) {
-            if (rect.left == size * (_nbRect - 1) ||
-                rect.left < size * _initRect)
+            if (rect.left == size * (_nbRect - 1) || rect.left < size * _initRect)
                 rect.left = size * _initRect - size;
             else
                 rect.left += size;
@@ -218,11 +215,9 @@ IEntity::Type Entity::getType() const {
 }
 
 void Entity::makePrediction() {
-    if (_direction == "left" || _direction == "right")
-    {
+    if (_direction == "left" || _direction == "right") {
         float speed = _speed;
-        if (_direction == "left")
-        {
+        if (_direction == "left") {
             speed = _speed * -1;
         }
         sf::Vector2f oldPos = _sprite.getPosition();

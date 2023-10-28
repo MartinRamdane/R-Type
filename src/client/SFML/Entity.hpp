@@ -6,20 +6,19 @@
 */
 
 #pragma once
-#include "../IEntity.hpp"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include <memory>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <iostream>
+#include <memory>
 #include <string>
+#include "../IEntity.hpp"
 #include "RessourceManager.hpp"
 
-class Entity: public IEntity
-{
-public:
+class Entity : public IEntity {
+   public:
     Entity(std::shared_ptr<RessourceManager> ressourceManager);
     ~Entity();
     void setTexture(const std::string& path);
@@ -52,7 +51,7 @@ public:
     sf::Text getText() const;
     sf::Sprite getSprite() const;
 
-public:
+   public:
     sf::Sprite _sprite;
     std::shared_ptr<sf::Texture> _texture;
     int _nbRect;

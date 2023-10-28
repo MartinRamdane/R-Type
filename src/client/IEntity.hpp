@@ -11,16 +11,13 @@
 #include <string>
 #include <tuple>
 
-
 class IEntity {
    public:
-    enum Type
-    {
+    enum Type {
         SPRITE,
         TEXT,
     };
-    typedef struct EntityInfos
-    {
+    typedef struct EntityInfos {
         int id;
         std::string path;
         float scaleX;
