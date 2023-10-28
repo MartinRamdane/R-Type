@@ -8,12 +8,12 @@
 #pragma once
 
 #include "../Character.hpp"
-#include "../IEntity.hpp"
 #include "../Engine.hpp"
+#include "../IEntity.hpp"
 
 class Player : public Character {
- public:
-  Player(EntityInfo info);
-  ~Player();
-  void move(float x, float y) override;
+   public:
+    Player(EntityInfo info);
+    ~Player();
+    void move(float x, float y) override;
 };

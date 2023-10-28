@@ -7,21 +7,20 @@
 
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include <iostream>
-#include <string>
-#include <memory>
+#include <SFML/Window.hpp>
 #include <filesystem>
+#include <iostream>
 #include <map>
+#include <memory>
+#include <string>
 
-class RessourceManager
-{
-public:
+class RessourceManager {
+   public:
     RessourceManager();
     ~RessourceManager(){};
     std::map<std::string, std::shared_ptr<sf::Texture>> getTextures() const;
 
-public:
+   public:
     std::map<std::string, std::shared_ptr<sf::Texture>> _textures;
 };

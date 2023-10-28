@@ -8,22 +8,21 @@
 #ifndef MENU_HPP_
 #define MENU_HPP_
 
-#include "Login.hpp"
 #include <map>
 #include <memory>
-#include "Input.hpp"
-#include "Entity.hpp"
 #include "Game.hpp"
+#include "Input.hpp"
+#include "Login.hpp"
+#include "SFML/Entity.hpp"
 
-class Menu
-{
-public:
-    Menu(std::shared_ptr<Game> &game);
+class Menu {
+   public:
+    Menu(std::shared_ptr<Game>& game);
     ~Menu();
 
     void mainloop();
 
-private:
+   private:
     struct Login _login;
     sf::RenderWindow _window;
     sf::View _view;

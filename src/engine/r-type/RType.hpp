@@ -6,19 +6,19 @@
 */
 
 #pragma once
+#include <iostream>
+#include <map>
+#include <random>
+#include <sstream>
+#include <tuple>
+#include <vector>
+#include "../../global/JsonParser.hpp"
+#include "../AEntity.hpp"
 #include "../Engine.hpp"
 #include "../IEntity.hpp"
-#include "Projectile.hpp"
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <map>
-#include "../AEntity.hpp"
-#include "../../global/JsonParser.hpp"
 #include "../IGame.hpp"
-#include <random>
-#include <tuple>
 #include "LevelInitializer.hpp"
+#include "Projectile.hpp"
 
 class Character;
 class Enemy;
@@ -28,14 +28,13 @@ class Dropper;
 
 #define MAX_LEVEL 1
 
-class RType : public IGame
-{
-public:
-    RType(std::shared_ptr<Engine> &engine);
+class RType : public IGame {
+   public:
+    RType(std::shared_ptr<Engine>& engine);
     ~RType();
-    static RType *instance;
+    static RType* instance;
 
-    void update(ThreadSafeQueue<Event> &events);
+    void update(ThreadSafeQueue<Event>& events);
     void createExplosion(int x, int y);
     void createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group);
     std::shared_ptr<AEntity> createShield(int x, int y);
@@ -50,7 +49,7 @@ public:
     int getCurrentId();
     int getCurrentLevel();
     void setCurrentId(int id);
-    std::map<std::string, std::string>  getAssets();
+    std::map<std::string, std::string> getAssets();
     void createEnemy(IEntity::EntityInfo info);
     void createBackground(IEntity::EntityInfo info);
     void createDropper(IEntity::EntityInfo info);
@@ -62,7 +61,7 @@ public:
     void createAssetList();
     std::vector<std::shared_ptr<AEntity>> getEnemies();
 
-private:
+   private:
     std::shared_ptr<Engine> _engine;
     std::shared_ptr<EntityType<IEntity>> _playersGroups;
     std::shared_ptr<EntityType<IEntity>> _supportShipGroups;
@@ -86,5 +85,5 @@ private:
     std::map<std::string, std::string> _assets;
     int _currentLevel = 1;
     bool _reset = false;
-    std::shared_ptr<LevelInitializer> _levelInitializer;
+    std::unique_ptr<LevelInitializer> _levelInitializer;
 };

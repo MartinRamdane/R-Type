@@ -7,15 +7,14 @@
 
 #pragma once
 
-#include "../Character.hpp"
 #include <chrono>
+#include "../Character.hpp"
 
-class Tank : public Character
-{
-public:
+class Tank : public Character {
+   public:
     Tank(EntityInfo info);
     ~Tank();
 
-protected:
-private:
+   protected:
+   private:
 };

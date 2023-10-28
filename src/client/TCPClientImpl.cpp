@@ -8,18 +8,13 @@
 #include "TCPClientImpl.hpp"
 #include "Game.hpp"
 
-void TCPClientImpl::HandleMessage(message<ACTION> &msg)
-{
-    switch (msg.header.id)
-    {
-        case ACTION::CONNECT:
-        {
+void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
+    switch (msg.header.id) {
+        case ACTION::CONNECT: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
-        }
-        break;
-        case ACTION::CREATE:
-        {
+        } break;
+        case ACTION::CREATE: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
             std::stringstream ss(evt.getBody());
@@ -33,93 +28,52 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg)
             _game->connectToUdpServer(_game->getHost(), port);
             _game->setPlayerId(std::stoi(playerId));
             // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
+        } break;
+        case ACTION::LIST: {
+        } break;
+        case ACTION::JOIN: {
+        } break;
+        case ACTION::JOINED: {
+        } break;
+        case ACTION::READY: {
+        } break;
+        case ACTION::START: {
+        } break;
+        case ACTION::LEFT: {
+        } break;
+        case ACTION::RIGHT: {
+        } break;
+        case ACTION::UP: {
+        } break;
+        case ACTION::DOWN: {
+        } break;
+        case ACTION::SPACE: {
+        } break;
+        case ACTION::QUIT: {
+        } break;
+        case ACTION::PING: {
+        } break;
+        case ACTION::PONG: {
+        } break;
+        case ACTION::OK: {
+        } break;
+        case ACTION::KO: {
         }
-        break;
-        case ACTION::LIST:
-        {
+        case ACTION::SPRITE: {
         }
-        break;
-        case ACTION::JOIN:
-        {
+        case ACTION::UNKNOWN: {
         }
-        break;
-        case ACTION::JOINED:
-        {
+        case ACTION::KEY_S: {
+        } break;
+        case ACTION::TEXT: {
+        } break;
+        case ACTION::DEAD: {
         }
-        break;
-        case ACTION::READY:
-        {
+        case ACTION::FLIP: {
         }
-        break;
-        case ACTION::START:
-        {
+        case ACTION::RESET: {
         }
-        break;
-        case ACTION::LEFT:
-        {
-        }
-        break;
-        case ACTION::RIGHT:
-        {
-        }
-        break;
-        case ACTION::UP:
-        {
-        }
-        break;
-        case ACTION::DOWN:
-        {
-        }
-        break;
-        case ACTION::SPACE:
-        {
-        }
-        break;
-        case ACTION::QUIT:
-        {
-        }
-        break;
-        case ACTION::PING:
-        {
-        }
-        break;
-        case ACTION::PONG:
-        {
-        }
-        break;
-        case ACTION::OK:
-        {
-        }
-        break;
-        case ACTION::KO:
-        {
-        }
-        case ACTION::SPRITE:
-        {
-        }
-        case ACTION::UNKNOWN:
-        {
-        }
-        case ACTION::KEY_S:
-        {
-        }
-        break;
-        case ACTION::TEXT:
-        {
-        }
-        break;
-        case ACTION::DEAD:
-        {
-        }
-        case ACTION::FLIP:
-        {
-        }
-        case ACTION::RESET:
-        {
-        }
-        case ACTION::KEY_L:
-        {
-        }
-        break;
+        case ACTION::KEY_L: {
+        } break;
     }
 }

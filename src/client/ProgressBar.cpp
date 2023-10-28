@@ -7,8 +7,7 @@
 
 #include "ProgressBar.hpp"
 
-ProgressBar::ProgressBar()
-{
+ProgressBar::ProgressBar() {
     _progressBarBack.setSize(sf::Vector2f(500, 15));
     _progressBarBack.setFillColor(sf::Color::White);
     _progressBarBack.setPosition(sf::Vector2f(0, 468));
@@ -19,23 +18,19 @@ ProgressBar::ProgressBar()
     _progress = _maxProgress;
 }
 
-void ProgressBar::update()
-{
+void ProgressBar::update() {
     _progressBar.setSize(sf::Vector2f(500 * (_progress / _maxProgress), 10));
 }
 
-void ProgressBar::setProgress(float progress)
-{
+void ProgressBar::setProgress(float progress) {
     _progress = progress;
 }
 
-void ProgressBar::setMaxProgress(float maxProgress)
-{
+void ProgressBar::setMaxProgress(float maxProgress) {
     _maxProgress = maxProgress;
 }
 
-void ProgressBar::draw(sf::RenderWindow &window)
-{
+void ProgressBar::draw(sf::RenderWindow& window) {
     window.draw(_progressBarBack);
     window.draw(_progressBar);
 }

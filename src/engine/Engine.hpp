@@ -6,47 +6,46 @@
 */
 
 #pragma once
-#include <string>
-#include <list>
-#include <vector>
 #include <chrono>
+#include <list>
+#include <string>
 #include <thread>
-#include "IEntity.hpp"
-#include "EntityType.hpp"
+#include <vector>
 #include "../global/JsonParser.hpp"
+#include "EntityType.hpp"
+#include "IEntity.hpp"
 
-class Engine
-{
-public:
+class Engine {
+   public:
     Engine();
     ~Engine();
-    static Engine *instance;
+    static Engine* instance;
     template <class E1, class E2>
-    void setRelation(std::shared_ptr<EntityType<E1>> &type1, std::shared_ptr<EntityType<E2>> &type2, void (*func)(E1 &self, E2 &target))
-    {
+    void setRelation(std::shared_ptr<EntityType<E1>>& type1, std::shared_ptr<EntityType<E2>>& type2,
+                     void (*func)(E1& self, E2& target)) {
         const float radius = type1->getRadius() + type2->getRadius();
-        colliders.push_back({type1, type2, radius * radius, reinterpret_cast<void (*)(IEntity &, IEntity &)>(func)});
+        colliders.push_back(
+            {type1, type2, radius * radius, reinterpret_cast<void (*)(IEntity&, IEntity&)>(func)});
     }
 
     void update();
-    void addEntityType(EntityType<IEntity> *type);
-    void removeEntityType(EntityType<IEntity> *type);
+    void addEntityType(EntityType<IEntity>* type);
+    void removeEntityType(EntityType<IEntity>* type);
     bool isRunning() const;
-    std::list<EntityType<IEntity> *> &getEntities() { return entities; }
+    std::list<EntityType<IEntity>*>& getEntities() { return entities; }
     bool frameRateControl();
     void openWindow();
     std::string getWindowTitle() const;
     int getWindowWidth() const;
     int getWindowHeight() const;
 
-private:
-    std::list<EntityType<IEntity> *> entities;
-    struct Collider
-    {
+   private:
+    std::list<EntityType<IEntity>*> entities;
+    struct Collider {
         std::shared_ptr<EntityType<IEntity>> type1;
         std::shared_ptr<EntityType<IEntity>> type2;
         float squaredRadius;
-        void (*func)(IEntity &self, IEntity &target);
+        void (*func)(IEntity& self, IEntity& target);
     };
     std::vector<Collider> colliders;
     bool _isRunning;

@@ -10,12 +10,11 @@
 #include "../AEntity.hpp"
 #include "RType.hpp"
 
-class Projectile : public AEntity
-{
-public:
+class Projectile : public AEntity {
+   public:
     Projectile(EntityInfo info);
     ~Projectile();
     void move(float x, float y);
     virtual void update() override;
-    static void hurtEntity(IEntity &self, IEntity &you);
+    static void hurtEntity(IEntity& self, IEntity& you);
 };

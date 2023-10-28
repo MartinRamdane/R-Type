@@ -7,9 +7,7 @@
 
 #include "Tank.hpp"
 
-Tank::Tank(EntityInfo info)
-    : Character(info)
-{
+Tank::Tank(EntityInfo info) : Character(info) {
     // set special attributes
     setLife(200);
     setLifeValue(200);
@@ -18,6 +16,4 @@ Tank::Tank(EntityInfo info)
     setDamage(20);
 }
 
-Tank::~Tank()
-{
-}
+Tank::~Tank() {}

@@ -7,15 +7,14 @@
 
 #pragma once
 
-#include "../Character.hpp"
 #include <chrono>
+#include "../Character.hpp"
 
-class Shooter : public Character
-{
-public:
+class Shooter : public Character {
+   public:
     Shooter(EntityInfo info);
     ~Shooter();
 
-protected:
-private:
+   protected:
+   private:
 };
