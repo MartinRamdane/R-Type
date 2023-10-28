@@ -158,6 +158,8 @@ void Game::addEntity(IEntity::EntityInfos entityInfos)
         // else
         std::cout << "moving entity" << std::endl;
         _entities.at(entityInfos.id)->setNextPos(entityInfos.nextX, entityInfos.nextY);
+        if (entityInfos.type == IEntity::Type::TEXT)
+            _entities.at(entityInfos.id)->setTextString(entityInfos.text);
     }
     else {
         std::cout << "creating entity" << std::endl;

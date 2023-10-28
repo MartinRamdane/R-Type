@@ -62,6 +62,8 @@ void Entity::setRect(int nb, int initRect) {
 }
 
 void Entity::animateSprite(const int ei, const int framerate) {
+    if (_type != IEntity::Type::SPRITE)
+        return;
     float size = _texture->getSize().x / _nbRect;
     sf::IntRect rect = _sprite.getTextureRect();
     if (_clock.getElapsedTime().asMilliseconds() > framerate) {
