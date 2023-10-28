@@ -182,6 +182,10 @@ protected:
         {
             std::cout << "[" << client->GetID() << "]: KEY_L" << std::endl;
         }
+        case ACTION::KEY_C:
+        {
+            std::cout << "[" << client->GetID() << "]: KEY_C" << std::endl;
+        }
         break;
         }
     }

@@ -60,6 +60,8 @@ std::string actionToString(ACTION action) {
             return "RESET";
         case ACTION::KEY_L:
             return "KEY_L";
+        case ACTION::KEY_C:
+            return "KEY_C";
     }
     return "";
 }

@@ -28,7 +28,7 @@ int main(int ac, char** av) {
     if (ac == 1) {
         param = 1;
     } else {
-        int param = getParam(av);
+        param = getParam(av);
     }
     // game->setType(param);
     Menu* menu = new Menu(game);
