@@ -114,6 +114,7 @@ int RType::getId(Event event) {
 }
 
 std::shared_ptr<Character> RType::getRandomSpaceship() {
+    srand(time(NULL));
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 4);
@@ -121,7 +122,8 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
     IEntity::EntityInfo info;
 
     info.x = 50;
-    info.y = distrib(gen) * 100 + 50;
+    int randomY = rand() % 4;
+    info.y = 100 + randomY * 100;
 
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Spaceship";

@@ -87,7 +87,33 @@ void Enemy::update() {
             move(horizontalDirection * horizontalDisplacement, verticalDirection);
         }
     }
-    shoot();
+    if (movementType == "Boss1") {
+        bossShoot();
+    } else {
+        shoot();
+    }
+}
+
+void Enemy::bossShoot() {
+    if (!canShoot())
+        return;
+    auto players = RType::instance->getPlayers();
+    for (auto player : players) {
+        auto pos = getPosition();
+        EntityInfo info;
+        info.x = std::get<0>(pos) - 33;
+        info.y = std::get<1>(pos) - 2;
+        info.name = getShootAsset();
+        info.scaleX = 0.25;
+        info.scaleY = 0.25;
+        info.speed = getProjectileSpeed();
+        info.damage = getDamage();
+        info.spriteConfigJsonObjectName = getShootAsset();
+        info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
+        info.direction = IEntity::UP;
+        RType::instance->createProjectile(info, false,
+                                          IGame::ProjectileGroup::ENEMY);
+    }
 }
 
 void Enemy::shoot() {
