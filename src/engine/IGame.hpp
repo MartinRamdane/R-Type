@@ -10,25 +10,17 @@
 
 #include "../global/EventHandler.hpp"
 #include "../server/ThreadSafeQueue.hpp"
-class IGame
-{
-public:
-    enum ProjectileGroup
-    {
-        PLAYER,
-        ENEMY,
-        SUPPORT,
-        BOSS
-    };
-
+class IGame {
+   public:
+    enum ProjectileGroup { PLAYER, ENEMY, SUPPORT, BOSS };
 
     virtual ~IGame() = default;
-    virtual void update(ThreadSafeQueue<Event> &events) = 0;
+    virtual void update(ThreadSafeQueue<Event>& events) = 0;
     virtual bool isReset() = 0;
     virtual void setReset(bool reset) = 0;
 
-protected:
-private:
+   protected:
+   private:
 };
 
 #endif /* !IGAME_HPP_ */

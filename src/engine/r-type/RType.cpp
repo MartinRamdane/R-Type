@@ -33,7 +33,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
 
     // initializeLevel();
-    _levelInitializer = std::make_shared<LevelInitializer>(this);
+    _levelInitializer = std::make_unique<LevelInitializer>(this);
     _levelInitializer->loadLevel(_currentLevel);
 
     // Add collision between entities groups
@@ -58,6 +58,12 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
 RType::~RType() {
     // Destroy all entities
     _players.clear();
+    _enemies.clear();
+    _projectiles.clear();
+    _staticObjects.clear();
+    _supportShips.clear();
+    _dropper.clear();
+    _assets.clear();
 }
 
 void RType::createAssetList()
@@ -135,31 +141,31 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::LEFT:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(-1, 0);
                 break;
             case ACTION::RIGHT:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(1, 0);
                 break;
             case ACTION::UP:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::SPACE:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->shoot();
                 break;
             case ACTION::KEY_S:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->action();
                 break;
             case ACTION::FLIP:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->flip();
                 break;
             case ACTION::READY:

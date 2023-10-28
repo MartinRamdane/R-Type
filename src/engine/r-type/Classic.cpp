@@ -7,12 +7,8 @@
 
 #include "Classic.hpp"
 
-Classic::Classic(EntityInfo info)
-    : Character(info)
-{
+Classic::Classic(EntityInfo info) : Character(info) {
     setSpeed(3);
 }
 
-Classic::~Classic()
-{
-}
+Classic::~Classic() {}

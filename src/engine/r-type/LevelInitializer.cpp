@@ -8,9 +8,8 @@
 #include "LevelInitializer.hpp"
 #include "RType.hpp"
 
-LevelInitializer::LevelInitializer(IGame *game)
-{
-    _game = dynamic_cast<RType *>(game);
+LevelInitializer::LevelInitializer(IGame* game) {
+    _game = dynamic_cast<RType*>(game);
 }
 
 LevelInitializer::~LevelInitializer() {}
@@ -72,8 +71,7 @@ void LevelInitializer::createDropper(int cout, nlohmann::json positions) {
     _info = {};
 }
 
-void LevelInitializer::createBackground()
-{
+void LevelInitializer::createBackground() {
     _info.id = _game->getCurrentId();
     _info.name = "Background";
     _info.assetFile = _game->getAssets()["Background"];

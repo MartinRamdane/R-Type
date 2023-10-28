@@ -6,27 +6,25 @@
 */
 
 #pragma once
+#include "../server/ThreadSafeQueue.hpp"
 #include "Engine.hpp"
 #include "Protocol.hpp"
-#include "../server/ThreadSafeQueue.hpp"
-#include "r-type/RType.hpp"
 #include "pong/Pong.hpp"
+#include "r-type/RType.hpp"
 
-class Core
-{
-public:
+class Core {
+   public:
     Core(std::string gameName);
     ~Core();
 
-    std::vector<std::string> mainLoop(ThreadSafeQueue<Event> &events);
+    std::vector<std::string> mainLoop(ThreadSafeQueue<Event>& events);
     std::shared_ptr<Engine> getEngine() { return _engine; }
-    std::shared_ptr<IGame> getGame() { return _game; }
     std::vector<std::string> getAllEntitiesToCreate();
     bool isReset() { return _game->isReset(); }
     void setReset(bool reset) { _game->setReset(reset); }
 
-private:
+   private:
     std::shared_ptr<Engine> _engine;
-    std::shared_ptr<IGame> _game;
+    std::unique_ptr<IGame> _game;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
 };

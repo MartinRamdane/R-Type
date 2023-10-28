@@ -7,13 +7,12 @@
 
 #pragma once
 
-#include "../Character.hpp"
 #include <chrono>
 #include <memory>
+#include "../Character.hpp"
 
-class Shield : public Character
-{
-public:
+class Shield : public Character {
+   public:
     Shield(EntityInfo info);
     ~Shield();
 
@@ -25,8 +24,8 @@ public:
     void action() override;
     void takeDamage(int damage) override;
 
-protected:
-private:
+   protected:
+   private:
     bool _shieldIsUp = false;
     bool _canActivateShield = true;
 

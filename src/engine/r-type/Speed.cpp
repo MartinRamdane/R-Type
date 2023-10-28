@@ -7,15 +7,11 @@
 
 #include "Speed.hpp"
 
-Speed::Speed(EntityInfo info)
-    : Character(info)
-{
+Speed::Speed(EntityInfo info) : Character(info) {
     // set special attributes
     setLife(70);
     setLifeValue(70);
     setSpeed(6);
 }
 
-Speed::~Speed()
-{
-}
+Speed::~Speed() {}
