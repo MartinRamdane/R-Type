@@ -480,3 +480,10 @@ void RType::setPlayerHasSupport(int id, bool support) {
         }
     }
 }
+
+std::vector<std::shared_ptr<AEntity>> RType::getEnemies() {
+    std::vector<std::shared_ptr<AEntity>> enemies;
+    for (auto enemy : _enemies)
+        enemies.push_back(enemy);
+    return (enemies);
+}

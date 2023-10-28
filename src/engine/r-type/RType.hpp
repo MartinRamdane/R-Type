@@ -60,6 +60,7 @@ public:
     std::vector<std::shared_ptr<AEntity>> getPlayers();
     void setPlayerHasSupport(int id, bool support);
     void createAssetList();
+    std::vector<std::shared_ptr<AEntity>> getEnemies();
 
 private:
     std::shared_ptr<Engine> _engine;

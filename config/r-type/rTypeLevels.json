@@ -4,6 +4,15 @@
             "Type": "Background"
         },
         "Enemy1": {
+            "Config": "Flyer.rType.json",
+            "Count": 3,
+            "Positions": [
+                {"X": 500, "Y": 300},
+                {"X": 700, "Y": 300},
+                {"X": 900, "Y": 300}
+              ]
+        },
+        "Enemy2": {
             "Config": "Boss1.rType.json",
             "Count": 1,
             "Positions": [

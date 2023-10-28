@@ -7,7 +7,7 @@
     "ProjectileSpeed": 8,
     "Speed": 2,
     "Damage": 60,
-    "Life": 500,
+    "Life": 1000,
     "ScaleX": 2.5,
     "ScaleY": 2.5
 }

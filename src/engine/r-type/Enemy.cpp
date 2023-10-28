@@ -62,13 +62,12 @@ void Enemy::update() {
             }
         }
         move(x, y);
-    } else if (movementType == "Boss1") {
+    } else if (movementType == "Boss1" && RType::instance->getEnemies().size() == 1) {
         //make it go upper while it is out of the screen
         auto pos = getPosition();
         if (std::get<1>(pos) > 468 - getRadius()) {
             move(0, -1);
         } else {
-            //make it go left and right
             const auto currentTime = std::chrono::high_resolution_clock::now();
             const auto timeElapsed =
                 std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
