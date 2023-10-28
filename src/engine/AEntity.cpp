@@ -155,12 +155,12 @@ void AEntity::setLife(int life) {
     _life = life;
 }
 
-void AEntity::setAlliesTouched(bool alliesTouched) {
-    _alliesTouched = alliesTouched;
+void AEntity::setEntitiesHasCollided(bool entitiesCollision) {
+    _entitiesCollision = entitiesCollision;
 }
 
-bool AEntity::getAlliesTouched() const {
-    return _alliesTouched;
+bool AEntity::getEntityHasCollided() const {
+    return _entitiesCollision;
 }
 
 std::tuple<float, float> AEntity::getDirectionVector() const {

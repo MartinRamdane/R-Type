@@ -122,7 +122,7 @@ void Character::hurtEnemy(IEntity& self, IEntity& you) {
     RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
 }
 
-void Character::alliesTouched(IEntity& self, IEntity& you) {
-    self.setAlliesTouched(true);
-    you.setAlliesTouched(true);
+void Character::entitiesCollision(IEntity& self, IEntity& you) {
+    self.setEntitiesHasCollided(true);
+    you.setEntitiesHasCollided(true);
 }

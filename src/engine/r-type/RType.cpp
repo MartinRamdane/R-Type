@@ -54,7 +54,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEnemy);
 
-    _engine->setRelation(_playersGroups, _supportShipGroups, Character::alliesTouched);
+    _engine->setRelation(_playersGroups, _supportShipGroups, Character::entitiesCollision);
     _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_supportShipGroups, _flyerGroups, Character::hurtEnemy);
     _engine->setRelation(_projectilesGroups, _dropperGroups, Character::hurtEnemy);
@@ -194,8 +194,8 @@ void RType::update(ThreadSafeQueue<Event>& events) {
             case ACTION::KEY_C:
                 for (auto supportShip : _supportShips) {
                     if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
-                        supportShip->setAlliesTouched(true);
-                        _players[getId(event) - 1]->setAlliesTouched(true);
+                        supportShip->setEntitiesHasCollided(true);
+                        _players[getId(event) - 1]->setEntitiesHasCollided(true);
                         break;
                     }
                 }

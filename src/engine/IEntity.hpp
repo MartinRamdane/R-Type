@@ -73,7 +73,7 @@ public:
     virtual void setFlip(bool flip) = 0;
     virtual Direction getDirection() const = 0;
     virtual void setLife(int life) = 0;
-    virtual void setAlliesTouched(bool alliesTouched) = 0;
+    virtual void setEntitiesHasCollided(bool entitiesCollision) = 0;
     virtual std::tuple<float, float> getDirectionVector() const = 0;
     virtual void setDirectionVector(float x, float y) = 0;
     virtual int getWidth() const = 0;
