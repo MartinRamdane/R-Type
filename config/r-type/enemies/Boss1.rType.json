@@ -3,11 +3,11 @@
     "Name": "Boss1",
     "MovementType": "Boss1",
     "ProjectileType": "Boss1Projectile",
-    "FireRate": 3,
-    "ProjectileSpeed": 3,
+    "FireRate": 1,
+    "ProjectileSpeed": 2,
     "Speed": 2,
     "Damage": 30,
     "Life": 500,
-    "ScaleX": 2,
-    "ScaleY": 2
+    "ScaleX": 1.3,
+    "ScaleY": 1.3
 }

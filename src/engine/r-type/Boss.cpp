@@ -28,7 +28,7 @@ void Boss::update() {
 
     if (movementType == "Boss1" && RType::instance->getEnemies().size() == 1) {
         auto pos = getPosition();
-        if (std::get<1>(pos) > 468 - getRadius()) {
+        if (std::get<1>(pos) > 440) {
             move(0, -1);
         } else {
             const auto currentTime = std::chrono::high_resolution_clock::now();
@@ -60,8 +60,10 @@ void Boss::shoot() {
     for (auto player : players) {
         auto pos = getPosition();
         EntityInfo info;
-        info.x = std::get<0>(pos) - 33;
-        info.y = std::get<1>(pos) - 2;
+        int random = rand() % 2;
+        random == 0 ? info.x = std::get<0>(pos) + getRadius() / 2 + 55
+                    : info.x = std::get<0>(pos) - getRadius() / 2 - 55;
+        info.y = std::get<1>(pos) - getRadius();
         info.name = getShootAsset();
         info.scaleX = 1.7;
         info.scaleY = 1.7;

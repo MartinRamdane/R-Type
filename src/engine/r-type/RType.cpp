@@ -33,7 +33,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
     _wormGroups = std::make_shared<EntityType<IEntity>>(16);
-    _bossGroups = std::make_shared<EntityType<IEntity>>(150);
+    _bossGroups = std::make_shared<EntityType<IEntity>>(94);
     _bombermanGroups = std::make_shared<EntityType<IEntity>>(10);
     _bombGroups = std::make_shared<EntityType<IEntity>>(4);
 

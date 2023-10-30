@@ -33,49 +33,40 @@ void Projectile::move(float x, float y) {
 void Projectile::trackPlayer() {
     auto player = RType::instance->getPlayer(_relatedPlayerId);
     if (player == nullptr) {
-        //make it move in the direction of the player but not track it
         directionalMove();
         return;
     }
+
     auto pos = player->getPosition();
-    int x = std::get<0>(pos);
-    int y = std::get<1>(pos);
-    int xDiff = x - _x;
-    int yDiff = y - _y;
-    int xAbs = std::abs(xDiff);
-    int yAbs = std::abs(yDiff);
-    if (x < _x && y < _y) {
-        if (xAbs > yAbs)
-            move(-1, 0);
-        else
-            move(0, -1);
-    } else if (x > _x && y < _y) {
-        if (xAbs > yAbs)
-            move(1, 0);
-        else
-            move(0, -1);
-    } else if (x < _x && y > _y) {
-        if (xAbs > yAbs)
-            move(-1, 0);
-        else
-            move(0, 1);
-    } else if (x > _x && y > _y) {
-        if (xAbs > yAbs)
-            move(1, 0);
-        else
-            move(0, 1);
-    } else if (x < _x)
-        move(-1, 0);
-    else if (x > _x)
-        move(1, 0);
-    else if (y < _y)
-        move(0, -1);
-    else if (y > _y)
-        move(0, 1);
+    int targetX = std::get<0>(pos);
+    int targetY = std::get<1>(pos);
+
+    int minDistanceToStop = 80;
+    int xDiff = targetX - _x;
+    int yDiff = targetY - _y;
+    int distance = std::sqrt(xDiff * xDiff + yDiff * yDiff);
+    std::cout << "distance: " << distance << std::endl;
+
+    if (distance > minDistanceToStop && !_directionalMove) {
+        // Calculate the angle between the projectile and the player
+        double angle = std::atan2(yDiff, xDiff);
+
+        // Calculate the direction using sin and cos
+        double moveX = std::cos(angle);
+        double moveY = std::sin(angle);
+
+        // Adjust the speed if needed
+        double speed = 1.0;    // You can adjust this as necessary
+
+        // Move the projectile smoothly
+        move(speed * moveX, speed * moveY);
+    } else {
+        directionalMove();
+        _directionalMove = true;
+    }
 }
 
-void Projectile::directionalMove()
-{
+void Projectile::directionalMove() {
     if (_oldX == 0 && _oldY == 0) {
         _oldX = _x;
         _oldY = _y;
