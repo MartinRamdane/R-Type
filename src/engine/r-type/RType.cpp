@@ -48,6 +48,7 @@ RType::RType(std::shared_ptr <Engine> &engine) : _engine(engine) {
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEnemy);
+    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_playersGroups, _supportShipGroups, Character::alliesTouched);
     _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
@@ -78,13 +79,13 @@ void RType::createAssetList() {
     _assets["Enemy2"] = parser.get<std::string>(val, "Game.Assets.Images.Enemy2");
     _assets["Background"] = parser.get<std::string>(val, "Game.Assets.Images.Background");
     _assets["ExplosionSpaceship"] =
-        parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
+            parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
     _assets["Shield"] = parser.get<std::string>(val, "Game.Assets.Images.Shield");
     _assets["PlayerProjectile"] =
-        parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
+            parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
     _assets["DiskProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.DiskProjectile");
     _assets["OrangeProjectile"] =
-        parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
+            parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
     _assets["Flyer"] = parser.get<std::string>(val, "Game.Assets.Images.Flyer");
     _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
     _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
@@ -475,7 +476,7 @@ void RType::createSoundShoot(std::string path) {
     info.assetFile = path;
     info.x = 425;
     info.y = 239;
-    std::shared_ptr<AEntity> sound = std::make_shared<AEntity>(info);
+    std::shared_ptr <AEntity> sound = std::make_shared<AEntity>(info);
     sound->setSound(true);
     sound->setPath(path);
     _staticObjects.push_back(sound);
