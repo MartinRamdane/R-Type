@@ -58,6 +58,7 @@ class AEntity : public IEntity {
     void setRelatedPlayer(int relatedPlayer);
     int getRelatedPlayer() const;
     int getLife() const;
+    void setLastMove(bool lastMove);
 
    protected:
     float _x;
@@ -87,4 +88,5 @@ class AEntity : public IEntity {
     std::string _oldText = "";
     bool _hasSupport = false;
     int _relatedPlayerId = -1;
+    bool _lastMove = false;
 };

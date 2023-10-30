@@ -37,10 +37,11 @@ void AEntity::setPosition(float x, float y) {
 }
 
 void AEntity::update() {
-    if (_x != _oldX || _y != _oldY)
+    if ((_x != _oldX || _y != _oldY) && !_lastMove)
         setOldPosition(_x, _y);
     if (_text != _oldText)
         setOldText(_text);
+    _lastMove = false;
 }
 
 std::tuple<float, float> AEntity::getPosition() const {
@@ -219,4 +220,8 @@ void AEntity::setRelatedPlayer(int relatedPlayer) {
 
 int AEntity::getRelatedPlayer() const {
     return _relatedPlayerId;
+}
+
+void AEntity::setLastMove(bool lastMove) {
+    _lastMove = lastMove;
 }
