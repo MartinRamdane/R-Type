@@ -125,7 +125,8 @@ void InstanceMenu::mainloop() {
                         int port = instanceButton.second.get()->getPort();
                         std::string serverToJoinInfos = std::to_string(port);
                         Event evt = {ACTION::JOIN, serverToJoinInfos};
-                        return;
+                        _client->SendEvent(evt);
+                        _window.close();
                     }
                 }
                 if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
