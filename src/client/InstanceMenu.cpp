@@ -188,5 +188,6 @@ void InstanceMenu::mainloop() {
 }
 
 void InstanceMenu::addInstanceButton(InstanceType instance, int x, int y) {
+    std::cout << "add instance button" << std::endl;
     _instanceButtons[instance.id] = std::make_unique<InstanceButton>(instance, x, y);
 }

@@ -7,6 +7,7 @@
 #include "InstanceButton.hpp"
 
 InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
+
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
     std::shared_ptr <RessourceManager> ressourceManager = std::make_shared<RessourceManager>();
@@ -14,10 +15,10 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     _x = x;
     _y = y;
     _entities[formatText("instanceBackground")] = std::make_shared<Entity>(ressourceManager);
-    _entities[formatText("instanceBackground")]->setRect(1, 0);
     _entities[formatText("instanceBackground")]->setTexture(
             "instanceBackground.png");
     _entities[formatText("instanceBackground")]->setPosition(_x, _y);
+    _entities[formatText("instanceBackground")]->setRect(1, 0);
     _entities[formatText("instanceBackground")]->setSpriteScale(1, 1);
 
     _texts[formatText("instanceName")] = std::make_shared<sf::Text>();
@@ -35,10 +36,10 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     _texts[formatText("instanceGame")]->setPosition(sf::Vector2f(_x + 10, _y + 25));
 
     _entities[formatText("userIcon")] = std::make_shared<Entity>(ressourceManager);
-    _entities[formatText("userIcon")]->setRect(1, 0);
     _entities[formatText("userIcon")]->setTexture("userIcon.png");
     _entities[formatText("userIcon")]->setPosition(_x + 10, _y + 55);
     _entities[formatText("userIcon")]->setSpriteScale(1.5, 1.5);
+    _entities[formatText("userIcon")]->setRect(1, 0);
 
     std::string playersText =
             std::to_string(_instance.nbPlayers) + " / " + std::to_string(_instance.maxPlayers);
