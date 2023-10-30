@@ -4,7 +4,7 @@
     "MovementType": "Boss1",
     "ProjectileType": "Boss1Projectile",
     "FireRate": 6,
-    "ProjectileSpeed": 8,
+    "ProjectileSpeed": 3,
     "Speed": 2,
     "Damage": 60,
     "Life": 500,
