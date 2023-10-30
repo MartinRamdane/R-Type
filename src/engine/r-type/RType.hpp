@@ -59,6 +59,7 @@ class RType : public IGame {
     std::vector<std::shared_ptr<AEntity>> getPlayers();
     void setPlayerHasSupport(int id, bool support);
     void createAssetList();
+    void createSoundShoot(std::string path);
 
    private:
     std::shared_ptr<Engine> _engine;

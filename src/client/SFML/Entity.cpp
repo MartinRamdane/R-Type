@@ -181,6 +181,8 @@ bool Entity::isDead() const {
         if (rect.left == size * (_nbRect - 1) || rect.left < size * _initRect)
             return true;
     }
+    if (_type == IEntity::Type::SOUND && _sound.getStatus() == sf::Sound::Stopped)
+        return true;
     return false;
 }
 
@@ -249,4 +251,17 @@ sf::Text Entity::getText() const {
 
 sf::Sprite Entity::getSprite() const {
     return _sprite;
+}
+
+void Entity::setSound(const std::string& path) {
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds = _ressourceManager->getSounds();
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>>::iterator it = sounds.begin();
+    while (it != sounds.end()) {
+        if (it->first == path) {
+            _sound.setBuffer(*it->second);
+            _sound.play();
+            break;
+        }
+        it++;
+    }
 }

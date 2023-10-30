@@ -77,6 +77,12 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(
     std::vector<std::string> protocol;
     for (auto entityType : entities) {
         for (auto entity : entityType->getEntities()) {
+            if (entity->isSound()) {
+                protocol.push_back("esound " + std::to_string(entity->getId()) + " " +
+                                   entity->getPath());
+                entity->kill();
+                continue;
+            }
             if (entity->getText() != "") {
                 std::string text = transformTextCreateToProtocol(entity);
                 if (text != "")
@@ -113,7 +119,10 @@ std::vector<std::string> Protocol::transformAllEntitiesToCreate(
     std::vector<std::string> protocol;
     for (auto entityType : entities) {
         for (auto entity : entityType->getEntities()) {
-            if (entity->getText() != "") {
+            if (entity->isSound()) {
+                protocol.push_back("esound " + entity->getPath());
+                entity->kill();
+            } else if (entity->getText() != "") {
                 std::string text = transformTextCreateToProtocol(entity);
                 if (text != "")
                     protocol.push_back(text);

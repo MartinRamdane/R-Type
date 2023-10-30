@@ -77,11 +77,14 @@ void RType::createAssetList() {
     _assets["OrangeRobot"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeRobot");
     _assets["Enemy2"] = parser.get<std::string>(val, "Game.Assets.Images.Enemy2");
     _assets["Background"] = parser.get<std::string>(val, "Game.Assets.Images.Background");
-    _assets["ExplosionSpaceship"] = parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
+    _assets["ExplosionSpaceship"] =
+        parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
     _assets["Shield"] = parser.get<std::string>(val, "Game.Assets.Images.Shield");
-    _assets["PlayerProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
+    _assets["PlayerProjectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
     _assets["DiskProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.DiskProjectile");
-    _assets["OrangeProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
+    _assets["OrangeProjectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
     _assets["Flyer"] = parser.get<std::string>(val, "Game.Assets.Images.Flyer");
     _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
     _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
@@ -462,4 +465,19 @@ void RType::setPlayerHasSupport(int id, bool support) {
             break;
         }
     }
+}
+
+void RType::createSoundShoot(std::string path) {
+    IEntity::EntityInfo info;
+    info.assetFile = path;
+    info.id = _lastId++;
+    info.name = "shootSpaceship";
+    info.assetFile = path;
+    info.x = 425;
+    info.y = 239;
+    std::shared_ptr<AEntity> sound = std::make_shared<AEntity>(info);
+    sound->setSound(true);
+    sound->setPath(path);
+    _staticObjects.push_back(sound);
+    _staticObjectsGroups->insert(sound);
 }

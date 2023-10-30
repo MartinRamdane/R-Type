@@ -24,8 +24,6 @@ public:
 
     virtual void draw(std::map<int, std::shared_ptr<IEntity>> *_entities) = 0;
 
-    virtual void drawEntity(std::shared_ptr <IEntity> entity) = 0;
-
     virtual void handleEvent() = 0;
 
     virtual bool getClosed() const = 0;

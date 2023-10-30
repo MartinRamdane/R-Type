@@ -74,6 +74,7 @@ public:
     void updateSprite(Event evt);
 
     void updateText(Event evt);
+    void updateSound(Event evt);
 
     void joinGame(Event evt);
 
