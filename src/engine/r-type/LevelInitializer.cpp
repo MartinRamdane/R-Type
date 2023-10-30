@@ -14,6 +14,8 @@ LevelInitializer::LevelInitializer(IGame* game) {
 
 LevelInitializer::~LevelInitializer() {}
 
+//TODO: refactor this...
+
 #include <typeinfo>
 
 void LevelInitializer::loadLevel(int currentLevel) {
@@ -28,6 +30,8 @@ void LevelInitializer::loadLevel(int currentLevel) {
                 createEnemy(value["Count"], value["Positions"]);
             } else if (config["Type"] == "Dropper") {
                 createDropper(value["Count"], value["Positions"]);
+            } else if (config["Type"] == "Boss") {
+                createBoss(value["Count"], value["Positions"]);
             }
         } else {
             createBackground();
@@ -51,6 +55,17 @@ void LevelInitializer::loadConfig(nlohmann::json spriteConfig) {
         _info.scaleX = spriteConfig["ScaleX"];
         _info.scaleY = spriteConfig["ScaleY"];
     }
+}
+
+void LevelInitializer::createBoss(int cout, nlohmann::json positions) {
+    for (int i = 0; i < cout; i++) {
+        _info.id = _game->getCurrentId();
+        _info.x = positions[i]["X"];
+        _info.y = positions[i]["Y"];
+        _game->createBoss(_info);
+        _game->setCurrentId(_info.id + 1);
+    }
+    _info = {};
 }
 
 void LevelInitializer::createEnemy(int cout, nlohmann::json positions) {

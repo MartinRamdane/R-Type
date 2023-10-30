@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** r-type
 ** File description:
-** Enemy
+** Boss
 */
 
 #pragma once
@@ -10,11 +10,12 @@
 #include <cstdlib>
 #include <ctime>
 #include "../Character.hpp"
-class Enemy : public Character {
+
+class Boss : public Character {
    public:
     enum LastMove { UP, DOWN, LEFT, RIGHT, NONE };
-    Enemy(EntityInfo info);
-    ~Enemy();
+    Boss(EntityInfo info);
+    ~Boss();
     void update() override;
     void shoot() override;
     void move(float x, float y) override;

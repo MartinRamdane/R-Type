@@ -14,6 +14,7 @@
 #include "Speed.hpp"
 #include "SupportShip.hpp"
 #include "Tank.hpp"
+#include "Boss.hpp"
 
 RType* RType::instance = nullptr;
 
@@ -431,6 +432,12 @@ void RType::setCurrentId(int id) {
     _lastId = id;
 }
 
+void RType::createBoss(IEntity::EntityInfo info) {
+    std::shared_ptr<Boss> enemy = std::make_shared<Boss>(info);
+    _enemies.push_back(enemy);
+    _bossGroups->insert(enemy);
+}
+
 void RType::createEnemy(IEntity::EntityInfo info) {
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
     _enemies.push_back(enemy);
@@ -442,8 +449,6 @@ void RType::createEnemy(IEntity::EntityInfo info) {
         _enemie2Groups->insert(enemy);
     else if (info.name == "Worm")
         _wormGroups->insert(enemy);
-    else if (info.name == "Boss1")
-        _bossGroups->insert(enemy);
 }
 
 void RType::createBackground(IEntity::EntityInfo info) {

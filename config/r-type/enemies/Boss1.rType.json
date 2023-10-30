@@ -1,5 +1,5 @@
 {
-    "Type": "Enemy",
+    "Type": "Boss",
     "Name": "Boss1",
     "MovementType": "Boss1",
     "ProjectileType": "Boss1Projectile",
