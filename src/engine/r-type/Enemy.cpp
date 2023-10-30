@@ -61,6 +61,21 @@ void Enemy::update() {
             }
         }
         move(x, y);
+    } else if (movementType == "UpAndDown") {
+        const auto currentTime = std::chrono::high_resolution_clock::now();
+        const auto timeElapsed =
+            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+                .count();
+        const bool needsDirectionChange = timeElapsed > 2000;
+
+        if (needsDirectionChange) {
+            _lastMove = (_lastMove == NONE || _lastMove == UP) ? DOWN : UP;
+            _lastMoveTime = currentTime;
+        }
+
+        int verticalDirection = (_lastMove == UP) ? 1 : -1;
+
+        move(-1, verticalDirection);
     }
     shoot();
 }
@@ -79,7 +94,13 @@ void Enemy::shoot() {
     info.damage = getDamage();
     info.spriteConfigJsonObjectName = getShootAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-    info.direction = IEntity::LEFT;
+    if (getShootAsset() == "Bomb") {
+        info.scaleX = 0.75;
+        info.scaleY = 0.75;
+        info.direction = IEntity::STATIC;
+    } else {
+        info.direction = IEntity::LEFT;
+    }
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::ENEMY);
 }

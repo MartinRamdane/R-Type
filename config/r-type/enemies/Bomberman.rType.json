@@ -1,0 +1,11 @@
+{
+    "Type": "Enemy",
+    "Name": "Bomberman",
+    "MovementType": "UpAndDown",
+    "ProjectileType": "Bomb",
+    "FireRate": 6,
+    "ProjectileSpeed": 8,
+    "Speed": 2,
+    "Damage": 60,
+    "Life": 30
+}

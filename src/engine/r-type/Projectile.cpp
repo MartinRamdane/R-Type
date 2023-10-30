@@ -129,6 +129,9 @@ void Projectile::update() {
         case TRACKING:
             trackPlayer();
             break;
+        case STATIC:
+            move(0, 0);
+            break;
         default:
             break;
     }

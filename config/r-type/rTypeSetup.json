@@ -21,7 +21,9 @@
                 "SupportShip": "support_ship.png",
                 "Worm": "worm3.png",
                 "Boss1": "boss1.png",
-                "Boss1Projectile": "Boss1Projectile.png"
+                "Boss1Projectile": "Boss1Projectile.png",
+                "Bomberman": "bomberman.png",
+                "Bomb": "bomb.png"
             },
             "Sounds": {
                 "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",
