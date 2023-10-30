@@ -33,6 +33,8 @@ class UDPClient {
     ThreadSafeQueue<std::vector<uint8_t>>& Incoming() { return _queue; }
     ThreadSafeQueue<Event>& getEventQueue() { return _eventQueue; }
     void processSendQueue();
+    void addUnknownEntity(int id);
+    void sendUnknownEntities();
 
    private:
     boost::asio::io_context io_context_;
@@ -41,10 +43,12 @@ class UDPClient {
     ThreadSafeQueue<std::vector<uint8_t>> _queue;
     ThreadSafeQueue<UDPMessage> _outQueue;
     ThreadSafeQueue<Event> _eventQueue;
+    std::vector<int> unknownEntities = std::vector<int>();
     std::vector<uint8_t> temp_buffer = std::vector<uint8_t>(1024);
     boost::asio::ip::udp::endpoint remote_endpoint_;
     boost::asio::ip::udp::endpoint sender_endpoint;
     int _port;
+    std::chrono::high_resolution_clock::time_point _lastSentUnknownEntities;
     std::thread _thread;
 };
 

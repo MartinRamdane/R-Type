@@ -72,9 +72,13 @@ std::vector<std::string> DisplaySFML::getEvents() {
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityInfos) {
-    if (entityInfos.type == IEntity::Type::SPRITE)
+    if (entityInfos.type == IEntity::Type::SPRITE) {
         return createSprite(entityInfos);
-    return createText(entityInfos);
+    } else if (entityInfos.type == IEntity::Type::TEXT) {
+        return createText(entityInfos);
+    } else {
+        return nullptr;
+    }
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityInfos) {
