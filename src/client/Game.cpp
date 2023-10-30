@@ -56,25 +56,81 @@ void Game::run() {
             _threadPool.enqueue([this] { this->LoopUDPMessages(); });
             _threadPool.enqueue([this] { this->loopEventQueue(); });
             while (_display->windowIsOpen() == true) {
-                _display->handleEvent(_udpClient, _client);
-                if (_entitiesToRemove.empty() == false) {
-                    std::lock_guard<std::mutex> lock(entityMutex);
-                    {
-                        for (auto it = _entitiesToRemove.begin(); it != _entitiesToRemove.end();
-                             it++) {
-                            _entities.erase((*it) * -1);
-                        }
-                        _entitiesToRemove.clear();
-                    }
-                }
+                _display->handleEvent();
                 std::map<int, std::shared_ptr<IEntity>> entitiesCopy;
                 {
                     std::lock_guard<std::mutex> lock(entityMutex);
                     entitiesCopy = _entities;
                 }
-                _display->update(&entitiesCopy, _udpClient);
+                update(&entitiesCopy);
+                _display->draw(&entitiesCopy);
             }
         }
+    }
+}
+
+void Game::update(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
+    if (_entitiesToRemove.empty() == false) {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        {
+            for (auto it = _entitiesToRemove.begin(); it != _entitiesToRemove.end(); it++) {
+                _entities.erase((*it) * -1);
+            }
+            _entitiesToRemove.clear();
+        }
+    }
+    handleEvent();
+    for (auto it = entitiesCopy->begin(); it != entitiesCopy->end(); it++) {
+        (*it).second->update();
+        if ((*it).second->isDead()) {
+            Event evt;
+            evt.ACTION_NAME = ACTION::DEAD;
+            evt.body = std::to_string((*it).first);
+            _udpClient->sendEvent(evt);
+            _udpClient->getEventQueue().push_back(evt);
+        }
+    }
+    animate(entitiesCopy);
+}
+
+void Game::animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
+    std::map<int, std::shared_ptr<IEntity>>::iterator it = entitiesCopy->begin();
+    while (it != entitiesCopy->end()) {
+        if (it->second->getEventForm() == "loop")
+            it->second->animateSprite(0, 60);
+        if (it->second->getEventForm() == "once")
+            it->second->animateSprite(3, 60);
+        if (it->second->getEventForm() == "event")
+            it->second->setInitPos();
+        if (it->second->getEventForm() == "paralaxe")
+            it->second->animateSprite(4, 1);
+        it++;
+    }
+}
+
+void Game::handleEvent() {
+    std::vector<std::string> events = _display->getEvents();
+    Event evt;
+    std::string playerId = "p" + std::to_string(_playerId);
+    for (auto event : events) {
+        if (event == "close")
+            _client->Disconnect();
+        if (event == "r")
+            evt.ACTION_NAME = ACTION::FLIP;
+        if (event == "left")
+            evt.ACTION_NAME = ACTION::LEFT;
+        if (event == "right")
+            evt.ACTION_NAME = ACTION::RIGHT;
+        if (event == "up")
+            evt.ACTION_NAME = ACTION::UP;
+        if (event == "down")
+            evt.ACTION_NAME = ACTION::DOWN;
+        if (event == "space")
+            evt.ACTION_NAME = ACTION::SPACE;
+        if (event == "s")
+            evt.ACTION_NAME = ACTION::KEY_S;
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
     }
 }
 
@@ -98,7 +154,6 @@ void Game::loopEventQueue() {
 
 void Game::setPlayerId(int id) {
     _playerId = id;
-    _display->setPlayerId(id);
 }
 
 bool Game::connectToServer(std::string host, int port) {
