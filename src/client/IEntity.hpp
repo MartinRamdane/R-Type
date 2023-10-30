@@ -43,7 +43,6 @@ class IEntity {
     virtual void setSpriteScale(float scaleX, float scaleY) = 0;
     virtual void setPosition(float x, float y) = 0;
     virtual std::tuple<float, float> getSpritePosition() const = 0;
-    virtual void setSpriteRotation(const float angle) = 0;
     virtual void setSpriteOriginToCenter() = 0;
     virtual void setRect(int nb, int initRect = 0) = 0;
     virtual void animateSprite(const int ei, const int framerate) = 0;

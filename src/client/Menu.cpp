@@ -14,19 +14,19 @@ Menu::Menu(std::shared_ptr<Game>& game) : _game(game) {
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
-    std::shared_ptr<RessourceManager> ressourceManager = std::make_shared<RessourceManager>();
+    std::shared_ptr<RessourceManagerSFML> _ressourceManagerSFML = std::make_shared<RessourceManagerSFML>();
 
-    _entities["background"] = std::make_unique<Entity>(ressourceManager);
+    _entities["background"] = std::make_unique<EntitySFML>(_ressourceManagerSFML);
     _entities["background"]->setTexture("background.png");
     _entities["background"]->setPosition(0, 0);
 
-    _entities["logo"] = std::make_unique<Entity>(ressourceManager);
+    _entities["logo"] = std::make_unique<EntitySFML>(_ressourceManagerSFML);
     _entities["logo"]->setTexture("Logo.png");
     _entities["logo"]->setPosition(425, 100);
     _entities["logo"]->setRect(1, 0);
     _entities["logo"]->setSpriteOriginToCenter();
 
-    _entities["connectButton"] = std::make_unique<Entity>(ressourceManager);
+    _entities["connectButton"] = std::make_unique<EntitySFML>(_ressourceManagerSFML);
     _entities["connectButton"]->setTexture("button.png");
     _entities["connectButton"]->setPosition(425, 380);
     _entities["connectButton"]->setSpriteScale(2.5, 2.5);

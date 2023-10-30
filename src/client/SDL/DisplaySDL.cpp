@@ -2,45 +2,44 @@
 ** EPITECH PROJECT, 2023
 ** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
-** DisplaySFML.cpp
+** DisplaySDL.cpp
 */
 
-#include "DisplaySFML.hpp"
-#include "EntitySFML.hpp"
+#include "DisplaySDL.hpp"
+#include "EntitySDL.hpp"
 
-DisplaySFML::DisplaySFML() {
-    _ressourceManager = std::make_shared<RessourceManagerSFML>();
+DisplaySDL::DisplaySDL() {
+    _ressourceManager = std::make_shared<RessourceManagerSDL>();
 }
 
-DisplaySFML::~DisplaySFML() {}
+DisplaySDL::~DisplaySDL() {}
 
-void DisplaySFML::createWindow(std::string name, int x, int y) {
-    _window.create(sf::VideoMode(1920, 1080), name);
-    _window.setFramerateLimit(60);
-    _view = sf::View(sf::FloatRect(0, 0, x, y));
-    _window.setView(_view);
+void DisplaySDL::createWindow(std::string name, int x, int y) {
+    _window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920, 10,
+                               SDL_WINDOW_SHOWN);
+    _renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    _camera = {0, 0, x, y};
 }
 
-void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
+void DisplaySDL::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
     _window.clear();
     std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities->begin();
     while (it != _entities->end()) {
-        auto entity = std::dynamic_pointer_cast<EntitySFML>(it->second);
-        entity->draw(_window);
+        auto entity = std::dynamic_pointer_cast<EntitySDL>(it->second);
+        entity->draw(_renderer, _camera);
         it++;
     }
     _window.display();
 }
 
-void DisplaySFML::handleEvent() {
-    while (_window.pollEvent(_event)) {
-        if (_event.type == sf::Event::Closed) {
+void DisplaySDL::handleEvent() {
+    while (SDL_PollEvent(&_event) != 0) {
+        if (_event.type == SDL_QUIT) {
             _events.push_back("close");
-            _window.close();
             closed = true;
         }
-        if (_event.type == (sf::Event::KeyPressed)) {
-            if (_event.key.code == sf::Keyboard::R)
+        if (_event.type == SDL_KEYDOWN) {
+            if (_event.key.keysym.sym == SDLK_r)
                 _events.push_back("r");
         }
     }
@@ -50,35 +49,37 @@ void DisplaySFML::handleEvent() {
             std::chrono::high_resolution_clock::now() - _lastFrameTime)
             .count() > 10) {
         _lastFrameTime = std::chrono::high_resolution_clock::now();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+
+        const Uint8* state = SDL_GetKeyboardState(NULL);
+        if (state[SDL_SCANCODE_LEFT])
             _events.push_back("left");
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        if (state[SDL_SCANCODE_RIGHT])
             _events.push_back("right");
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        if (state[SDL_SCANCODE_UP])
             _events.push_back("up");
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        if (state[SDL_SCANCODE_DOWN])
             _events.push_back("down");
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        if (state[SDL_SCANCODE_SPACE])
             _events.push_back("space");
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        if (state[SDL_SCANCODE_S])
             _events.push_back("s");
     }
 }
 
-std::vector<std::string> DisplaySFML::getEvents() {
+std::vector<std::string> DisplaySDL::getEvents() {
     std::vector<std::string> events = _events;
     _events.clear();
     return events;
 }
 
-std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityInfos) {
+std::shared_ptr<IEntity> DisplaySDL::createEntity(IEntity::EntityInfos entityInfos) {
     if (entityInfos.type == IEntity::Type::SPRITE)
         return createSprite(entityInfos);
     return createText(entityInfos);
 }
 
-std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
+std::shared_ptr<IEntity> DisplaySDL::createSprite(IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<EntitySDL> entity = std::make_shared<EntitySDL>(_ressourceManager);
     entity->setTexture(entityInfos.path);
     entity->setPosition(entityInfos.x, entityInfos.y);
     entity->setSpriteScale(entityInfos.scaleX, entityInfos.scaleY);
@@ -93,8 +94,8 @@ std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityIn
     return entity;
 }
 
-std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
+std::shared_ptr<IEntity> DisplaySDL::createText(IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<EntitySDL> entity = std::make_shared<EntitySDL>(_ressourceManager);
     entity->setFont();
     entity->setTextString(entityInfos.text);
     entity->setTextInfo(entityInfos.size, entityInfos.color);

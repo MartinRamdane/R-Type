@@ -8,6 +8,8 @@ class MyConanFile(ConanFile):
         "nlohmann_json/3.11.2",
         "boost/1.83.0",
         "gtest/1.14.0",
+        "sdl/2.26.5",
+        "sdl_image/2.0.5",
         "lz4/1.9.4"
     ]
     generators = "CMakeDeps", "CMakeToolchain"

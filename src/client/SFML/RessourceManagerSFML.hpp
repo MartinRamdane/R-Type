@@ -15,10 +15,10 @@
 #include <memory>
 #include <string>
 
-class RessourceManager {
+class RessourceManagerSFML {
    public:
-    RessourceManager();
-    ~RessourceManager(){};
+    RessourceManagerSFML();
+    ~RessourceManagerSFML();
     std::map<std::string, std::shared_ptr<sf::Texture>> getTextures() const;
 
    public:
