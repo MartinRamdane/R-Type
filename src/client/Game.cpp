@@ -47,8 +47,10 @@ void Game::run() {
             _client->HandleMessage(msg);
         }
         if (isTCPClientConnected && !isUDPClientConnected) {
+            if (!sendListEvent) {
                 Event evt = {ACTION::LIST, ""};
                 _client->SendEvent(evt);
+            }
             std::cout << "connected but not to a instance" << std::endl;
             _instanceMenu->mainloop();
             sendListEvent = true;

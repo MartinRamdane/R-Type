@@ -44,20 +44,26 @@ protected:
                 break;
             case ACTION::CREATE: {
                 std::cout << "create event" << std::endl;
-                if (_server->getInstancesNb() >= 1) {
-                    Instance *instance = _server->getInstance(0);
-                    Event evt;
-                    evt.ACTION_NAME = ACTION::CREATE;
-                    int playerId = _server->getPlayerIdToGive();
-                    evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(instance->getId()) +
-                               " " + std::to_string(instance->getPort());
-                    std::string playerEntityId = "p" + std::to_string(playerId);
-                    instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
-                    _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
-                    SendEvent(client, evt);
-                    return;
-                }
-                InstanceInfos infos = _server->createInstance("rType");
+//                if (_server->getInstancesNb() >= 1) {
+//                    Instance *instance = _server->getInstance(0);
+//                    Event evt;
+//                    evt.ACTION_NAME = ACTION::CREATE;
+//                    int playerId = _server->getPlayerIdToGive();
+//                    evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(instance->getId()) +
+//                               " " + std::to_string(instance->getPort());
+//                    std::string playerEntityId = "p" + std::to_string(playerId);
+//                    instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
+//                    _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
+//                    SendEvent(client, evt);
+//                    return;
+//                }
+                EventHandler handler;
+                handler.decodeMessage(msg.body);
+                std::stringstream ss(handler.getBody());
+                std::string gameName;
+                ss >> gameName;
+                std::cout << "game name: " << gameName << std::endl;
+                InstanceInfos infos = _server->createInstance(gameName);
                 Instance *instance = _server->getInstance(_server->getInstancesNb() - 1);
                 Event evt;
                 evt.ACTION_NAME = ACTION::CREATE;
