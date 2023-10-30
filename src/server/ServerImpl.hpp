@@ -23,9 +23,9 @@ public:
         message<ACTION> msg;
         std::vector<uint8_t> data = encodeEvent(evt);
         msg.header.id = evt.ACTION_NAME;
-        msg.header.size = sizeof(data);
-        msg.body.resize(sizeof(data));
-        std::memcpy(msg.body.data(), data.data(), sizeof(data));
+        msg.header.size = data.size();
+        msg.body.resize(data.size());
+        std::memcpy(msg.body.data(), data.data(), data.size());
         SendMessageAsync(client, msg);
     }
     std::vector<uint8_t> encodeEvent(Event event)
