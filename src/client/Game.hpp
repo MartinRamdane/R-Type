@@ -48,6 +48,7 @@ class Game {
     void handleReceivedEvent(Event evt);
     void updateSprite(Event evt);
     void updateText(Event evt);
+    void updateSound(Event evt);
     void joinGame(Event evt);
     void loopEventQueue();
     int getEntitiesNumber();

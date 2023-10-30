@@ -66,6 +66,7 @@ void Character::shoot() {
     info.direction = _direction;
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::PLAYER);
+    RType::instance->createSoundShoot("shootSpaceship.ogg");
 }
 
 void Character::update() {

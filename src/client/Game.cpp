@@ -224,25 +224,18 @@ void Game::updateSprite(Event evt) {
 }
 
 void Game::updateText(Event evt) {
-    std::stringstream ss(evt.body);
-    std::string id;
-    std::string x;
-    std::string y;
-    std::string text;
-    std::string color;
-    std::string objectType;
-    ss >> id;
-    ss >> x;
-    ss >> y;
-    ss >> text;
-    ss >> color;
-    ss >> objectType;
     Parser parseRef;
     IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
     if (entityInfos.id < 0)
         removeEntity(entityInfos.id);
     else
         addEntity(entityInfos);
+}
+
+void Game::updateSound(Event evt) {
+    IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
+    _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
+        entityInfos.id, _display->createEntity(entityInfos)));
 }
 
 void Game::joinGame(Event evt) {
@@ -297,6 +290,11 @@ void Game::handleReceivedEvent(Event evt) {
         case ACTION::CHECK: {
             int entities = std::stoi(evt.body);
             checkEntities(entities);
+            break;
+        }
+        case ACTION::SOUND: {
+            std::lock_guard<std::mutex> lock(entityMutex);
+            updateSound(evt);
             break;
         }
         default:

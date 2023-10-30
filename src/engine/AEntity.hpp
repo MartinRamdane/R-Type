@@ -56,6 +56,8 @@ class AEntity : public IEntity {
     void setHasSupport(bool hasSupport);
     bool getHasSupport() const;
     void setLastMove(bool lastMove);
+    bool isSound() const;
+    void setSound(bool sound);
 
    protected:
     float _x;
@@ -85,4 +87,5 @@ class AEntity : public IEntity {
     std::string _oldText = "";
     bool _hasSupport = false;
     bool _lastMove = false;
+    bool _sound = false;
 };

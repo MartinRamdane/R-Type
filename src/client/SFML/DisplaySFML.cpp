@@ -79,6 +79,8 @@ std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityIn
         return value;
     } else if (entityInfos.type == IEntity::Type::TEXT) {
         return createText(entityInfos);
+    } else if (entityInfos.type == IEntity::Type::SOUND) {
+        return createSound(entityInfos);
     } else {
         return nullptr;
     }
@@ -108,6 +110,13 @@ std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfo
     entity->setTextString(entityInfos.text);
     entity->setTextInfo(entityInfos.size, entityInfos.color);
     entity->setPosition(entityInfos.x, entityInfos.y);
+    entity->setType(entityInfos.type);
+    return entity;
+}
+
+std::shared_ptr<IEntity> DisplaySFML::createSound(IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
+    entity->setSound(entityInfos.path);
     entity->setType(entityInfos.type);
     return entity;
 }

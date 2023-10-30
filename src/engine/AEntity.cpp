@@ -213,3 +213,11 @@ bool AEntity::getHasSupport() const {
 void AEntity::setLastMove(bool lastMove) {
     _lastMove = lastMove;
 }
+
+bool AEntity::isSound() const {
+    return _sound;
+}
+
+void AEntity::setSound(bool sound) {
+    _sound = sound;
+}

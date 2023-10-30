@@ -42,7 +42,8 @@ enum class ACTION : uint8_t
   KEY_L,
   KEY_C,
   UNKNOWN,
-  CHECK
+  CHECK,
+  SOUND
 };
 
 struct Event

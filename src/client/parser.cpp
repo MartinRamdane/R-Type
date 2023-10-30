@@ -144,6 +144,17 @@ IEntity::EntityInfos Parser::parseMessage(Event evt) {
                 key.clear();
             }
             return addEntityText(valueMap);
+        } else if (commande == "esound" && evt.ACTION_NAME == ACTION::SOUND) {
+            IEntity::EntityInfos entityInfos;
+            std::istringstream iss(tmp);
+            std::string id;
+            std::string path;
+            iss >> id;
+            iss >> path;
+            entityInfos.path = path;
+            entityInfos.id = std::stoi(id);
+            entityInfos.type = IEntity::Type::SOUND;
+            return entityInfos;
         } else if (commande == "pmove" || commande == "emove") {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;
