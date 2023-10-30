@@ -9,7 +9,7 @@
 #include "ServerImpl.hpp"
 
 ServerClass::ServerClass() : _threadPool(1) {
-    MyServer* server = new MyServer(4244, this);
+    MyServer *server = new MyServer(4244, this);
     _server = server;
     _server->StartServer();
     _playerIdToGive = 1;
@@ -20,7 +20,7 @@ ServerClass::~ServerClass() {
 }
 
 InstanceInfos ServerClass::createInstance(std::string gameName) {
-    Instance* instance = new Instance(_instances.size(), gameName);
+    Instance *instance = new Instance(_instances.size(), gameName);
     instance->setServer(this);
     _instances.push_back(instance);
     InstanceInfos instanceinfos;
@@ -29,7 +29,7 @@ InstanceInfos ServerClass::createInstance(std::string gameName) {
     return instanceinfos;
 }
 
-void ServerClass::interpretEvent(Event& event) {
+void ServerClass::interpretEvent(Event &event) {
     if (event.ACTION_NAME == ACTION::CREATE) {
         std::cout << "CREATE" << std::endl;
     }

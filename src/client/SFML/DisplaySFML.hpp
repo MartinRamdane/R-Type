@@ -6,6 +6,7 @@
 */
 
 #pragma once
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
@@ -17,25 +18,37 @@
 #include "RessourceManager.hpp"
 
 class DisplaySFML : public IDisplay {
-   public:
+public:
     DisplaySFML();
-    ~DisplaySFML();
-    void createWindow(std::string name, int x, int y);
-    void draw(std::map<int, std::shared_ptr<IEntity>>* _entities);
-    void handleEvent();
-    bool getClosed() const { return closed; };
-    bool windowIsOpen() const { return _window.isOpen(); };
-    std::vector<std::string> getEvents();
-    std::shared_ptr<IEntity> createEntity(IEntity::EntityInfos entityInfos);
-    std::shared_ptr<IEntity> createSprite(IEntity::EntityInfos entityInfos);
-    std::shared_ptr<IEntity> createText(IEntity::EntityInfos entityInfos);
 
-   private:
+    ~DisplaySFML();
+
+    void createWindow(std::string name, int x, int y);
+
+    void draw(std::map<int, std::shared_ptr<IEntity>> *_entities);
+
+    void drawEntity(std::shared_ptr <IEntity> entity);
+
+    void handleEvent();
+
+    bool getClosed() const { return closed; };
+
+    bool windowIsOpen() const { return _window.isOpen(); };
+
+    std::vector <std::string> getEvents();
+
+    std::shared_ptr <IEntity> createEntity(IEntity::EntityInfos entityInfos);
+
+    std::shared_ptr <IEntity> createSprite(IEntity::EntityInfos entityInfos);
+
+    std::shared_ptr <IEntity> createText(IEntity::EntityInfos entityInfos);
+
+private:
     sf::RenderWindow _window;
     sf::View _view;
     sf::Event _event;
-    std::shared_ptr<RessourceManager> _ressourceManager;
+    std::shared_ptr <RessourceManager> _ressourceManager;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     bool closed = false;
-    std::vector<std::string> _events;
+    std::vector <std::string> _events;
 };

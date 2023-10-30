@@ -8,13 +8,15 @@
 #include "TCPClientImpl.hpp"
 #include "Game.hpp"
 
-void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
+void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
     switch (msg.header.id) {
         case ACTION::CONNECT: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
-        } break;
+        }
+            break;
         case ACTION::CREATE: {
+            std::cout << "handle create event" << std::endl;
             EventHandler evt;
             evt.decodeMessage(msg.body);
             std::stringstream ss(evt.getBody());
@@ -28,35 +30,50 @@ void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
             _game->connectToUdpServer(_game->getHost(), port);
             _game->setPlayerId(std::stoi(playerId));
             // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
-        } break;
+        }
+            break;
         case ACTION::LIST: {
-        } break;
+        }
+            break;
         case ACTION::JOIN: {
-        } break;
+        }
+            break;
         case ACTION::JOINED: {
-        } break;
+        }
+            break;
         case ACTION::READY: {
-        } break;
+        }
+            break;
         case ACTION::START: {
-        } break;
+        }
+            break;
         case ACTION::LEFT: {
-        } break;
+        }
+            break;
         case ACTION::RIGHT: {
-        } break;
+        }
+            break;
         case ACTION::UP: {
-        } break;
+        }
+            break;
         case ACTION::DOWN: {
-        } break;
+        }
+            break;
         case ACTION::SPACE: {
-        } break;
+        }
+            break;
         case ACTION::QUIT: {
-        } break;
+        }
+            break;
         case ACTION::PING: {
-        } break;
+        }
+            break;
         case ACTION::PONG: {
-        } break;
+        }
+            break;
         case ACTION::OK: {
-        } break;
+        }
+            break;
         case ACTION::KO: {
         }
         case ACTION::SPRITE: {
@@ -64,9 +81,11 @@ void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
         case ACTION::UNKNOWN: {
         }
         case ACTION::KEY_S: {
-        } break;
+        }
+            break;
         case ACTION::TEXT: {
-        } break;
+        }
+            break;
         case ACTION::DEAD: {
         }
         case ACTION::FLIP: {
@@ -74,8 +93,10 @@ void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
         case ACTION::RESET: {
         }
         case ACTION::KEY_L: {
-        } break;
+        }
+            break;
         case ACTION::KEY_C: {
-        } break;
+        }
+            break;
     }
 }

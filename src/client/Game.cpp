@@ -8,6 +8,7 @@
 #include "Game.hpp"
 #include "SFML/DisplaySFML.hpp"
 #include "TCPClientImpl.hpp"
+#include "InstanceMenu.hpp"
 
 Game::Game() : _threadPool(2) {
     _event_indicator = 0;
@@ -17,6 +18,8 @@ Game::Game() : _threadPool(2) {
     _playerId = 0;
     closed = false;
     _progressBar = ProgressBar();
+    _instanceMenu = new InstanceMenu(this);
+    std::cout << "end to constructor" << std::endl;
 }
 
 Game::~Game() {
@@ -37,12 +40,16 @@ void Game::setLibToUse() {
 void Game::run() {
     setLib(1);
     setLibToUse();
-    while (_display->getClosed() == false) {
-        if (_client->Incoming().empty() == false) {
+    while (!_display->getClosed()) {
+        if (!_client->Incoming().empty()) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
-        if (isUDPClientConnected == true) {
+        if (isTCPClientConnected && !isUDPClientConnected) {
+            std::cout << "connected but not to a instance" << std::endl;
+            _instanceMenu->mainloop();
+        }
+        if (isUDPClientConnected) {
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
@@ -160,6 +167,7 @@ bool Game::connectToServer(std::string host, int port) {
 }
 
 bool Game::connectToUdpServer(std::string host, int port) {
+    std::cout << "connect to udp server" << std::endl;
     _udpClient = std::make_shared<UDPClient>();
     _udpClient->connect_to(host, port);
     isUDPClientConnected = true;

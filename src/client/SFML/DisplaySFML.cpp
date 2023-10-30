@@ -32,6 +32,13 @@ void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
     _window.display();
 }
 
+void DisplaySFML::drawEntity(std::shared_ptr <IEntity> entity) {
+    _window.clear();
+    auto entitySFML = std::dynamic_pointer_cast<Entity>(entity);
+    entitySFML->draw(_window);
+    _window.display();
+}
+
 void DisplaySFML::handleEvent() {
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
