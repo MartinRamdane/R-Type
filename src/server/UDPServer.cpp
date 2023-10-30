@@ -288,7 +288,6 @@ void UDPServer::handleUnknownEntities(std::vector<Client>::iterator client, Even
 {
     std::vector<std::string> createData = _instanceRef->getCore()->getCreateEntities();
     for (std::string data : createData) {
-        std::cout << "data: " << data << std::endl;
         sendEvent({ACTION::SPRITE, data}, client->client.address().to_string(), client->client.port());
     }
 }

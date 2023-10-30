@@ -14,7 +14,6 @@ Protocol::~Protocol() {}
 std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity) {
     auto pos = entity->getPosition();
     auto scale = entity->getScale();
-    std::cout << "wants to create entity with ID : " << entity->getId() << std::endl;
     if (auto test = std::dynamic_pointer_cast<Projectile>(entity)) {
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
         std::string entityDirection;
