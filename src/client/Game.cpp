@@ -7,6 +7,7 @@
 
 #include "Game.hpp"
 #include "SFML/DisplaySFML.hpp"
+#include "SDL/DisplaySDL.hpp"
 #include "TCPClientImpl.hpp"
 
 Game::Game() : _threadPool(2) {
@@ -25,17 +26,15 @@ Game::~Game() {
 }
 
 void Game::setLibToUse() {
-    // if (_lib == Lib::SDL) {
-    //     _display = std::make_unique<DisplaySDL>();
-    // }
-    // else
-    if (_lib == Lib::SFML) {
+    if (_lib == Lib::SDL) {
+        _display = std::make_unique<DisplaySDL>();
+    }
+    else if (_lib == Lib::SFML) {
         _display = std::make_unique<DisplaySFML>();
     }
 }
 
 void Game::run() {
-    setLib(1);
     setLibToUse();
     while (_display->getClosed() == false) {
         if (_client->Incoming().empty() == false) {

@@ -15,8 +15,8 @@ EntitySDL::EntitySDL(std::shared_ptr<RessourceManagerSDL> ressourceManager)
 EntitySDL::~EntitySDL() {}
 
 void EntitySDL::setTexture(const std::string& path) {
-    std::map<std::string, std::shared_ptr<SDL_Texture>> textures = _ressourceManager->getTextures();
-    std::map<std::string, std::shared_ptr<SDL_Texture>>::iterator it = textures.begin();
+    std::map<std::string, SDL_Texture*> textures = _ressourceManager->getTextures();
+    std::map<std::string, SDL_Texture*>::iterator it = textures.begin();
     while (it != textures.end()) {
         if (it->first == path) {
             _texture = it->second;
@@ -28,8 +28,12 @@ void EntitySDL::setTexture(const std::string& path) {
 
 void EntitySDL::setSpriteScale(float scaleX, float scaleY) {
     SDL_QueryTexture(_texture, NULL, NULL, &_textureWidth, &_textureHeight);
-    _destRect.w = width * scaleX;
-    _destRect.h = height * scaleY;
+    _textureWidth = (_textureWidth / _nbRect) * scaleX;
+    _textureHeight = _textureHeight * scaleY;
+    std::cout << "width: " << _textureWidth << std::endl;
+    std::cout << "height: " << _textureHeight << std::endl;
+    _destRect.w = _textureWidth;
+    _destRect.h = _textureHeight;
 }
 
 void EntitySDL::setPosition(float x, float y) {
@@ -44,22 +48,25 @@ std::tuple<float, float> EntitySDL::getSpritePosition() const {
 }
 
 void EntitySDL::setSpriteOriginToCenter() {
-    _center = {_textureWidth / 2, _textureHeight / 2};
+    _centerX = (_textureWidth / 2);
+    _centerY = (_textureHeight / 2);
+    _destRect.x -= _centerX;
+    _destRect.y -= _centerY;
 }
 
 void EntitySDL::setRect(int nb, int initRect) {
     _nbRect = nb;
     _initRect = initRect;
-    _animRect.w = _textureWidth / nb;
-    _animRect.h = _textureHeight;
-    _animRect.x = _animRect.w * initRect;
+    _animRect.w = _destRect.w;
+    _animRect.h = _destRect.h;
+    _animRect.x = _animRect.w * _initRect;
     _animRect.y = 0;
 }
 
 void EntitySDL::animateSprite(const int ei, const int framerate) {
     if (_type != IEntity::Type::SPRITE)
         return;
-    float size = _textureWidth / _nbRect;
+    float size = _textureWidth;
     Uint64 end = SDL_GetPerformanceCounter();
     double elapsed = (end - _clock) / (double)SDL_GetPerformanceFrequency();
     if (elapsed > framerate) {
@@ -90,7 +97,7 @@ void EntitySDL::animateSprite(const int ei, const int framerate) {
 }
 
 void EntitySDL::setInitPos() {
-    float size = _textureWidth / _nbRect;
+    float size = _textureWidth;
     Uint64 end = SDL_GetPerformanceCounter();
     double elapsed = (end - _clock) / (double)SDL_GetPerformanceFrequency();
     if (elapsed > 100) {
@@ -155,11 +162,10 @@ void EntitySDL::update() {
         _destRect.x = nextX;
     if (_destRect.y + _speed > nextY && _destRect.y - _speed < nextY)
         _destRect.y = nextY;
-    if (_sprite.getPosition().y > _oldPosY)
+    if (_destRect.y > _oldPosY)
         animateSprite(2, 100);
-    else if (_sprite.getPosition().y < _oldPosY)
+    else if (_destRect.y < _oldPosY)
         animateSprite(1, 100);
-    _sprite.setPosition(_destRect);
 }
 
 void EntitySDL::flip() {
@@ -172,7 +178,7 @@ void EntitySDL::setHit(bool touch) {
 
 bool EntitySDL::isDead() const {
     if (_eventForm == "once") {
-        float size = _textureWidth / _nbRect;
+        float size = _textureWidth;
         if (_animRect.x == size * (_nbRect - 1) || _animRect.x < size * _initRect)
             return true;
     }
@@ -217,7 +223,7 @@ void EntitySDL::makePrediction() {
         if (_direction == "left") {
             speed = _speed * -1;
         }
-        _nextPos = std::make_tuple(oldPos.x + speed, oldPos.y);
+        _nextPos = std::make_tuple(_destRect.x + speed, _destRect.y);
     }
 }
 
@@ -230,14 +236,21 @@ void EntitySDL::setFont() {
     // _text.setFont(_font);
 }
 
-void EntitySDL::draw(SDL_Renderer* renderer, Camera camera) {
+void EntitySDL::draw(SDL_Renderer* renderer, std::shared_ptr<Camera> camera) {
     if (_type == IEntity::Type::SPRITE) {
-        SDL_Rect destRectView;
-        destRectView.x = (_destRect.x - camera->x) * (camera->width / 1920);
-        destRectView.y = (_destRect.y - camera->y) * (camera->height / 1080);
-        destRectView.w = _destRect.w * (camera->width / 1920);
-        destRectView.h = _destRect.h * (camera->height / 1080);
-        SDL_RenderCopy(renderer, *_texture, &_animRect, &_destRect);
+        // SDL_Rect destRectView;
+        // destRectView.x = (_destRect.x - camera.x) * (camera.width / 1920);
+        // destRectView.y = (_destRect.y - camera.y) * (camera.height / 1080);
+        // destRectView.w = _destRect.w * (camera.width / 1920);
+        // destRectView.h = _destRect.h * (camera.height / 1080);
+        // SDL_Rect cameraRect = camera->apply(_destRect);
+        // SDL_Rect cameraRectAnim = camera->apply(_animRect);
+        std::cout << "_destRect.x: " << _destRect.x << std::endl;
+        std::cout << "_destRect.y: " << _destRect.y << std::endl;
+        std::cout << "_destRect.w: " << _destRect.w << std::endl;
+        std::cout << "_destRect.h: " << _destRect.h << std::endl;
+        SDL_RenderCopy(renderer, _texture, NULL, &_destRect);
+        // exit(0);
     }
     // else if (_type == IEntity::Type::TEXT)
     //     window.draw(_text);

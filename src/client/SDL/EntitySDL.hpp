@@ -6,18 +6,15 @@
 */
 
 #pragma once
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 #include <memory>
 #include <string>
 #include "../IEntity.hpp"
 #include "RessourceManagerSDL.hpp"
+#include "Camera.hpp"
 
-typedef struct {
-    float x, y;
-    float width, height;
-} Camera;
 
 class EntitySDL : public IEntity {
    public:
@@ -48,13 +45,15 @@ class EntitySDL : public IEntity {
     void makePrediction();
     std::string getEventForm() const;
     void setFont();
-    void draw(SDL_Renderer* renderer, Camera camera);
+    void draw(SDL_Renderer* renderer, std::shared_ptr<Camera> camera);
 
    public:
-    std::shared_ptr<SDL_Texture> _texture;
+    SDL_Texture* _texture;
     SDL_Rect _destRect;
     SDL_Rect _animRect;
     SDL_Point _center;
+    int _centerX;
+    int _centerY;
     int _nbRect;
     int _initRect;
     int _textureWidth;

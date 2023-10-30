@@ -26,11 +26,13 @@ int main(int ac, char** av) {
     std::shared_ptr<Game> game = std::make_shared<Game>();
     int param = 0;
     if (ac == 1) {
-        param = 1;
+        std::cout << "Usage: ./client [lib]" << std::endl;
+        std::cout << "Lib: -sfml or -sdl" << std::endl;
+        return 84;
     } else {
         param = getParam(av);
     }
-    // game->setType(param);
+    game->setLib(param);
     Menu* menu = new Menu(game);
     menu->mainloop();
     delete menu;

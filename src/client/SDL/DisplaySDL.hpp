@@ -6,10 +6,13 @@
 */
 
 #pragma once
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "../UDPClient.hpp"
-#include "RessourceManagerSFML.hpp"
+#include "RessourceManagerSDL.hpp"
+#include "EntitySDL.hpp"
+#include "../IDisplay.hpp"
+#include "Camera.hpp"
 
 class DisplaySDL : public IDisplay {
    public:
@@ -19,7 +22,7 @@ class DisplaySDL : public IDisplay {
     void draw(std::map<int, std::shared_ptr<IEntity>>* _entities);
     void handleEvent();
     bool getClosed() const { return closed; };
-    bool windowIsOpen() const { return _window.isOpen(); };
+    bool windowIsOpen() const { return _windowClosed; };
     std::vector<std::string> getEvents();
     std::shared_ptr<IEntity> createEntity(IEntity::EntityInfos entityInfos);
     std::shared_ptr<IEntity> createSprite(IEntity::EntityInfos entityInfos);
@@ -28,10 +31,11 @@ class DisplaySDL : public IDisplay {
    private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
-    Camera _camera;
+    std::shared_ptr<Camera> _camera;
     SDL_Event _event;
     std::shared_ptr<RessourceManagerSDL> _ressourceManager;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     bool closed = false;
+    bool _windowClosed = true;
     std::vector<std::string> _events;
 };
