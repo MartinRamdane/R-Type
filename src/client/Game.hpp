@@ -78,8 +78,9 @@ public:
     void joinGame(Event evt);
 
     void loopEventQueue();
-
-    void animate(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
+    int getEntitiesNumber();
+    void checkEntities(int nb);
+    void animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy);
 
     InstanceMenu *getInstanceMenu() { return _instanceMenu; };
 

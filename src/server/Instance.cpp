@@ -40,7 +40,16 @@ void Instance::EventLoop() {
         if (nbPlayers == 0) {
             continue;    // TODO: destroy the instance
         }
-        std::vector <std::string> protocol = _core->mainLoop(_events);
+        if (_lastCheck.time_since_epoch().count() == 0) {
+            _lastCheck = std::chrono::high_resolution_clock::now();
+        }
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::high_resolution_clock::now() - _lastCheck)
+                .count() > 500) {
+            _lastCheck = std::chrono::high_resolution_clock::now();
+            checkEntitiesInClients();
+        }
+        std::vector<std::string> protocol = _core->mainLoop(_events);
         if (_core->isReset()) {
             _core->setReset(false);
             Event evt;
@@ -67,4 +76,15 @@ void Instance::EventLoop() {
             }
         }
     }
+}
+
+void Instance::checkEntitiesInClients()
+{
+    int entitiesNb = 0;
+    for (auto entityType : _core->getEngine()->getEntities()) {
+        for (auto entity : entityType->getEntities()) {
+                entitiesNb++;
+        }
+    }
+    _udpServer->sendEventToAllClients({ACTION::CHECK, std::to_string(entitiesNb)});
 }

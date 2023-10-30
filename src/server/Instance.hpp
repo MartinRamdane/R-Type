@@ -54,6 +54,8 @@ public:
         _events.push_back(event);
     }
 
+    void checkEntitiesInClients();
+
 protected:
 private:
     int _id;
@@ -69,6 +71,7 @@ private:
     Core *_core;
     ThreadSafeQueue<Event> _events;
     JsonParser _jsonParser;
+    std::chrono::high_resolution_clock::time_point _lastCheck;
 };
 
 #endif /* !HEADER_INSTANCE */

@@ -37,6 +37,11 @@ void Game::setLibToUse() {
     }
 }
 
+int Game::getEntitiesNumber() {
+    std::lock_guard<std::mutex> lock(entityMutex);
+    return _entities.size();
+}
+
 void Game::run() {
     setLib(1);
     setLibToUse();
@@ -66,13 +71,13 @@ void Game::run() {
             _threadPool.enqueue([this] { this->loopEventQueue(); });
             while (_display->windowIsOpen()) {
                 _display->handleEvent();
-                std::map<int, std::shared_ptr<IEntity>>* entitiesCopy;
+                std::map<int, std::shared_ptr<IEntity>> entitiesCopy;
                 {
                     std::lock_guard<std::mutex> lock(entityMutex);
-                    entitiesCopy = &_entities;
+                    entitiesCopy = _entities;
                 }
-                update(entitiesCopy);
-                _display->draw(entitiesCopy);
+                update(&entitiesCopy);
+                _display->draw(&entitiesCopy);
             }
         }
     }
@@ -206,9 +211,13 @@ void Game::addEntity(IEntity::EntityInfos entityInfos) {
         _entities.at(entityInfos.id)->setNextPos(entityInfos.nextX, entityInfos.nextY);
         if (entityInfos.type == IEntity::Type::TEXT)
             _entities.at(entityInfos.id)->setTextString(entityInfos.text);
-    } else
-        _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
-            entityInfos.id, _display->createEntity(entityInfos)));
+    } else {
+        auto entity = _display->createEntity(entityInfos);
+        if (entity != nullptr) {
+            _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
+                entityInfos.id, _display->createEntity(entityInfos)));
+        }
+    }
 }
 
 void Game::flipEntity(Event evt) {
@@ -283,20 +292,40 @@ void Game::handleReceivedEvent(Event evt) {
         case ACTION::SPRITE: {
             std::lock_guard<std::mutex> lock(entityMutex);
             updateSprite(evt);
-        } break;
+            break;
+        }
         case ACTION::TEXT: {
             std::lock_guard<std::mutex> lock(entityMutex);
             updateText(evt);
-        } break;
+            break;
+        }
         case ACTION::FLIP: {
             std::lock_guard<std::mutex> lock(entityMutex);
             flipEntity(evt);
-        } break;
+            break;
+        }
         case ACTION::RESET: {
             std::lock_guard<std::mutex> lock(entityMutex);
             _entities.clear();
+            break;
+        }
+        case ACTION::CHECK: {
+            int entities = std::stoi(evt.body);
+            checkEntities(entities);
+            break;
         }
         default:
             break;
+    }
+}
+
+void Game::checkEntities(int nb)
+{
+    int currentNb = getEntitiesNumber();
+    if (currentNb < nb) {
+        std::cout << "current nb : " << currentNb << std::endl;
+        std::cout << "nb : " << nb << std::endl;
+        std::cout << "missing entities" << std::endl;
+        _udpClient->sendEvent({ACTION::CHECK, ""});
     }
 }

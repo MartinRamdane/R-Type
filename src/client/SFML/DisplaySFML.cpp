@@ -79,14 +79,23 @@ std::vector<std::string> DisplaySFML::getEvents() {
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityInfos) {
-    if (entityInfos.type == IEntity::Type::SPRITE)
-        return createSprite(entityInfos);
-    return createText(entityInfos);
+    if (entityInfos.type == IEntity::Type::SPRITE) {
+        auto value = createSprite(entityInfos);
+        if (value == nullptr)
+            return nullptr;
+        return value;
+    } else if (entityInfos.type == IEntity::Type::TEXT) {
+        return createText(entityInfos);
+    } else {
+        return nullptr;
+    }
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityInfos) {
     std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
     entity->setTexture(entityInfos.path);
+    if (entity->_texture == nullptr)
+        return nullptr;
     entity->setPosition(entityInfos.x, entityInfos.y);
     entity->setSpriteScale(entityInfos.scaleX, entityInfos.scaleY);
     entity->setRect(entityInfos.nbRect, entityInfos.initRect);

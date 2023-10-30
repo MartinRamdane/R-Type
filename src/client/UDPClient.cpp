@@ -137,3 +137,28 @@ void UDPClient::processSendQueue() {
                               }
                           });
 }
+
+void UDPClient::addUnknownEntity(int id) {
+    std::vector<int> unknownEntitiesCopy = unknownEntities;
+    if (std::find(unknownEntitiesCopy.begin(), unknownEntitiesCopy.end(), id) ==
+        unknownEntitiesCopy.end()) {
+        std::cout << "Adding unknown entity " << id << std::endl;
+        unknownEntities.push_back(id);
+    }
+}
+
+void UDPClient::sendUnknownEntities() {
+    if (_lastSentUnknownEntities.time_since_epoch().count() == 0) {
+        _lastSentUnknownEntities = std::chrono::high_resolution_clock::now();
+    }
+    if (std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::high_resolution_clock::now() - _lastSentUnknownEntities)
+            .count() < 1000) {
+        return;
+    }
+    for (auto it = unknownEntities.begin(); it != unknownEntities.end(); ++it) {
+        std::cout << "sent unknown entity " << *it << std::endl;
+        sendEvent({ACTION::UNKNOWN, std::to_string(*it)});
+    }
+    unknownEntities.clear();
+}

@@ -27,7 +27,6 @@ class Protocol {
     static std::string transformWindowCreateToProtocol(std::string title, int width, int height);
     static std::vector<std::string> transformAllEntitiesToCreate(
         std::list<EntityType<IEntity>*> entities);
-
    protected:
    private:
 };

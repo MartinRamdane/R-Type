@@ -19,10 +19,10 @@ class Core {
 
     std::vector<std::string> mainLoop(ThreadSafeQueue<Event>& events);
     std::shared_ptr<Engine> getEngine() { return _engine; }
+    std::vector<std::string> getCreateEntities();
     std::vector<std::string> getAllEntitiesToCreate();
     bool isReset() { return _game->isReset(); }
     void setReset(bool reset) { _game->setReset(reset); }
-
    private:
     std::shared_ptr<Engine> _engine;
     std::unique_ptr<IGame> _game;
