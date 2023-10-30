@@ -84,6 +84,7 @@ void Game::LoopUDPMessages() {
 
 void Game::loopEventQueue() {
     while (1) {
+        _udpClient->sendUnknownEntities();
         if (_udpClient->getEventQueue().empty() == false) {
             auto evt = _udpClient->getEventQueue().pop_front();
             handleReceivedEvent(evt);
@@ -118,6 +119,7 @@ bool Game::findEntity(int id) {
             return true;
         it++;
     }
+    _udpClient->addUnknownEntity(id);
     return false;
 }
 
@@ -136,9 +138,14 @@ void Game::addEntity(IEntity::EntityInfos entityInfos) {
         _entities.at(entityInfos.id)->setNextPos(entityInfos.nextX, entityInfos.nextY);
         if (entityInfos.type == IEntity::Type::TEXT)
             _entities.at(entityInfos.id)->setTextString(entityInfos.text);
-    } else
-        _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
-            entityInfos.id, _display->createEntity(entityInfos)));
+    } else {
+        std::cout << "going here " << std::endl;
+        auto entity = _display->createEntity(entityInfos);
+        if (entity != nullptr) {
+            _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
+                entityInfos.id, _display->createEntity(entityInfos)));
+        }
+    }
 }
 
 void Game::flipEntity(Event evt) {
@@ -153,6 +160,8 @@ void Game::flipEntity(Event evt) {
 
 void Game::updateSprite(Event evt) {
     IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
+    std::cout << "entity path : " << entityInfos.path << std::endl;
+    std::cout << "entity id : " << entityInfos.id << std::endl;
     if (entityInfos.id < 0)
         removeEntity(entityInfos.id);
     else
@@ -213,18 +222,22 @@ void Game::handleReceivedEvent(Event evt) {
         case ACTION::SPRITE: {
             std::lock_guard<std::mutex> lock(entityMutex);
             updateSprite(evt);
-        } break;
+            break;
+        }
         case ACTION::TEXT: {
             std::lock_guard<std::mutex> lock(entityMutex);
             updateText(evt);
-        } break;
+            break;
+        }
         case ACTION::FLIP: {
             std::lock_guard<std::mutex> lock(entityMutex);
             flipEntity(evt);
-        } break;
+            break;
+        }
         case ACTION::RESET: {
             std::lock_guard<std::mutex> lock(entityMutex);
             _entities.clear();
+            break;
         }
         default:
             break;

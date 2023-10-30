@@ -138,12 +138,19 @@ void DisplaySFML::update(std::map<int, std::shared_ptr<IEntity>>* _entities,
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityInfos) {
-    if (entityInfos.type == IEntity::Type::SPRITE)
+    if (entityInfos.type == IEntity::Type::SPRITE) {
+        std::cout << "sprite type" << std::endl;
         return createSprite(entityInfos);
-    return createText(entityInfos);
+    } else if (entityInfos.type == IEntity::Type::TEXT) {
+        return createText(entityInfos);
+    } else {
+        std::cout << "unknown type" << std::endl;
+        return nullptr;
+    }
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityInfos) {
+    std::cout << "entity texture path : " << entityInfos.path << std::endl;
     std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
     entity->setTexture(entityInfos.path);
     entity->setPosition(entityInfos.x, entityInfos.y);

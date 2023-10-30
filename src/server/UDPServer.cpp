@@ -246,6 +246,9 @@ void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint, std::vec
         std::cout << "The user is ready to receive sprites" << std::endl;
         sendSpriteToReadyClient(client);
         break;
+    case ACTION::UNKNOWN:
+        handleUnknownEntities(client, evt);
+        break;
     default:
         break;
     }
@@ -279,4 +282,18 @@ void UDPServer::handleMessages(size_t maxMessages, bool bWait)
 void UDPServer::addPlayerEntity(int id, std::string entity)
 {
     _playerEntities[id] = entity;
+}
+
+void UDPServer::handleUnknownEntities(std::vector<Client>::iterator client, Event event)
+{
+    int id = std::stoi(event.body);
+    std::string createval = _instanceRef->getCore()->getCreateEntity(id);
+    std::cout << "createval: " << createval << std::endl;
+    if (createval != "")
+    {
+        Event evt;
+        evt.ACTION_NAME = ACTION::SPRITE;
+        evt.body = createval;
+        sendEvent(evt, client->client.address().to_string(), client->client.port());
+    }
 }
