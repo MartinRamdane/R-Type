@@ -42,6 +42,7 @@ private:
     bool _openInstanceModal = false;
     std::map<int, std::unique_ptr<InstanceButton>> _instanceButtons;
     std::shared_ptr <TCPClientImpl> _client;
+    bool _windowCreated = false;
 };
 
 #endif /* !INSTANCE_MENU_HPP_ */

@@ -66,10 +66,9 @@ protected:
                 InstanceInfos infos = _server->createInstance(gameName);
                 Instance *instance = _server->getInstance(_server->getInstancesNb() - 1);
                 Event evt;
-                evt.ACTION_NAME = ACTION::CREATE;
+                evt.ACTION_NAME = ACTION::JOINED;
                 int playerId = _server->getPlayerIdToGive();
-                evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(infos.id) + " " +
-                           std::to_string(infos.port);
+                evt.body = std::to_string(_server->getPlayerIdToGive()) + std::to_string(infos.port);
                 std::string playerEntityId = "p" + std::to_string(playerId);
                 instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
                 _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
@@ -97,6 +96,24 @@ protected:
                 break;
             case ACTION::JOIN: {
                 std::cout << "[" << client->GetID() << "]: JOIN" << std::endl;
+                EventHandler handler;
+                handler.decodeMessage(msg.body);
+                std::stringstream ss(handler.getBody());
+                std::string port;
+                ss >> port;
+                Instance *instance = _server->getInstanceByPort(std::stoi(port));
+                if (instance == nullptr) {
+                    std::cerr << "[ERROR]: Bad instance to join" << std::endl;
+                    return;
+                }
+                Event evt;
+                evt.ACTION_NAME = ACTION::JOINED;
+                int playerId = _server->getPlayerIdToGive();
+                evt.body = std::to_string(_server->getPlayerIdToGive()) + port;
+                std::string playerEntityId = "p" + std::to_string(playerId);
+                instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
+                _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
+                SendEvent(client, evt);
             }
                 break;
             case ACTION::JOINED: {

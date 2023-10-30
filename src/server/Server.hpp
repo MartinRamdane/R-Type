@@ -32,6 +32,7 @@ class ServerClass {
     void setPlayerIdToGive(int id) { _playerIdToGive = id; }
     std::vector<Instance*> getInstances() { return _instances; }
     Instance* getInstance(int id) { return _instances[id]; }
+    Instance* getInstanceByPort(int port);
     void loop();
 
    protected:

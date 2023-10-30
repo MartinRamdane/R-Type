@@ -9,8 +9,7 @@
 #include "TCPClientImpl.hpp"
 
 InstanceMenu::InstanceMenu(Game *game) : _game(game) {
-    _window.create(sf::VideoMode(1920, 1080), "My _window");
-    _window.setFramerateLimit(60);
+
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _openInstanceModal = false;
     std::shared_ptr <RessourceManager> ressourceManager = std::make_shared<RessourceManager>();
@@ -95,10 +94,16 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
 }
 
 InstanceMenu::~InstanceMenu() {
-    _window.close();
+    if (_windowCreated)
+        _window.close();
 }
 
 void InstanceMenu::mainloop() {
+    if (!_windowCreated) {
+        _window.create(sf::VideoMode(1920, 1080), "Instance Window");
+        _window.setFramerateLimit(60);
+        _windowCreated = true;
+    }
     _client = _game->getClient();
     while (_window.isOpen()) {
         sf::Event event;
@@ -118,7 +123,8 @@ void InstanceMenu::mainloop() {
                     Entity *submitButton = instanceButton.second.get()->getSubmitButton();
                     if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
                         int port = instanceButton.second.get()->getPort();
-                        _game->connectToUdpServer(_game->getHost(), port);
+                        std::string serverToJoinInfos = std::to_string(port);
+                        Event evt = {ACTION::JOIN, serverToJoinInfos};
                         return;
                     }
                 }
@@ -148,7 +154,7 @@ void InstanceMenu::mainloop() {
                             std::string body = gameSelector.first;
                             evt.body = body;
                             _game.get()->getClient()->SendEvent(evt);
-                            return;
+                            _window.close();
                         }
                     }
                 }

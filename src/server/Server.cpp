@@ -44,3 +44,11 @@ void ServerClass::loop() {
         _server->HandleMessages(-1, true);
     }
 }
+
+Instance *ServerClass::getInstanceByPort(int port) {
+    for (auto instance : _instances) {
+        if (instance->getPort() == port)
+            return instance;
+    }
+    return nullptr;
+}

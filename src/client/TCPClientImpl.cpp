@@ -26,10 +26,12 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
             ss >> playerId;
             ss >> getPort;
             ss >> getPort;
-            // add get windows infos
+            std::cout << "player id recu lors du create: " << playerId << std::endl;
+            // add get windows
             int port = std::stoi(getPort);
-            _game->connectToUdpServer(_game->getHost(), port);
-            _game->setPlayerId(std::stoi(playerId));
+            std::string serverToJoinInfos = std::to_string(port);
+            Event evtToSend = {ACTION::JOIN, serverToJoinInfos};
+            _game->getClient().get()->SendEvent(evtToSend);
             // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
         }
             break;
@@ -64,6 +66,15 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
         }
             break;
         case ACTION::JOINED: {
+            EventHandler evt;
+            evt.decodeMessage(msg.body);
+            std::stringstream ss(evt.getBody());
+            std::string playerId;
+            std::string getPort;
+            ss >> playerId;
+            ss >> getPort;
+            _game->setPlayerId(std::stoi(playerId));
+            _game->connectToUdpServer(_game->getHost(), std::stoi(getPort));
         }
             break;
         case ACTION::READY: {

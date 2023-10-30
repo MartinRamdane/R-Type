@@ -93,6 +93,7 @@ int RType::getId(Event event) {
     std::string playerId;
     ss >> playerId;
     int id = std::stoi(playerId.substr(1));
+    std::cout << "player id: " << id << std::endl;
     return (id);
 }
 
