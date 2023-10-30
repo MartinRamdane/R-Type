@@ -66,6 +66,7 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
         }
             break;
         case ACTION::JOINED: {
+            std::cout << "handle joined event" << std::endl;
             EventHandler evt;
             evt.decodeMessage(msg.body);
             std::stringstream ss(evt.getBody());

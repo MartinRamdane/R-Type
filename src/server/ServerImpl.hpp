@@ -68,11 +68,12 @@ protected:
                 Event evt;
                 evt.ACTION_NAME = ACTION::JOINED;
                 int playerId = _server->getPlayerIdToGive();
-                evt.body = std::to_string(_server->getPlayerIdToGive()) + std::to_string(infos.port);
+                evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(infos.port);
                 std::string playerEntityId = "p" + std::to_string(playerId);
                 instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
                 _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
                 SendEvent(client, evt);
+                std::cout << "try to send Joined event" << std::endl;
             }
                 break;
             case ACTION::LIST: {
@@ -109,7 +110,7 @@ protected:
                 Event evt;
                 evt.ACTION_NAME = ACTION::JOINED;
                 int playerId = _server->getPlayerIdToGive();
-                evt.body = std::to_string(_server->getPlayerIdToGive()) + port;
+                evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + port;
                 std::string playerEntityId = "p" + std::to_string(playerId);
                 instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
                 _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
