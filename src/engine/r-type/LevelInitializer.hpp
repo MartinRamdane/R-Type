@@ -20,6 +20,7 @@ class LevelInitializer {
     void loadLevel(int currentLevel);
     void loadConfig(nlohmann::json spriteConfig);
     void createEnemy(int cout, nlohmann::json positions);
+    void createBoss(int cout, nlohmann::json positions);
     void createBackground();
     void createDropper(int cout, nlohmann::json positions);
 

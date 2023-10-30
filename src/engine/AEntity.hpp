@@ -51,10 +51,13 @@ class AEntity : public IEntity {
     void setText(std::string text);
     std::string getOldText() const;
     void setOldText(std::string text);
-    void setAlliesTouched(bool alliesTouched);
-    bool getAlliesTouched() const;
+    void setEntitiesHasCollided(bool entitiesCollision);
+    bool getEntityHasCollided() const;
     void setHasSupport(bool hasSupport);
     bool getHasSupport() const;
+    void setRelatedPlayer(int relatedPlayer);
+    int getRelatedPlayer() const;
+    int getLife() const;
     void setLastMove(bool lastMove);
 
    protected:
@@ -80,9 +83,10 @@ class AEntity : public IEntity {
     float dirY;
     int _width;
     int _height;
-    bool _alliesTouched = false;
+    bool _entitiesCollision = false;
     std::string _text = "";
     std::string _oldText = "";
     bool _hasSupport = false;
+    int _relatedPlayerId = -1;
     bool _lastMove = false;
 };

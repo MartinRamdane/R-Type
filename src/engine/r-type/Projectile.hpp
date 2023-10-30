@@ -17,4 +17,9 @@ class Projectile : public AEntity {
     void move(float x, float y);
     virtual void update() override;
     static void hurtEntity(IEntity& self, IEntity& you);
+    void trackPlayer();
+    void directionalMove();
+
+   private:
+    bool _directionalMove = false;
 };

@@ -6,6 +6,7 @@
 */
 
 #include "RType.hpp"
+#include "Boss.hpp"
 #include "Classic.hpp"
 #include "Dropper.hpp"
 #include "Enemy.hpp"
@@ -31,8 +32,12 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _supportProjectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
+    _wormGroups = std::make_shared<EntityType<IEntity>>(16);
+    _bossGroups = std::make_shared<EntityType<IEntity>>(94);
+    _bombermanGroups = std::make_shared<EntityType<IEntity>>(10);
+    _bombGroups = std::make_shared<EntityType<IEntity>>(4);
 
-    // initializeLevel();
+    // initializeLevel
     _levelInitializer = std::make_unique<LevelInitializer>(this);
     _levelInitializer->loadLevel(_currentLevel);
 
@@ -41,18 +46,37 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _dropperGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _wormGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bossGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bombermanGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bombGroups, Projectile::hurtEntity);
+
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
-    _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEnemy);
-    _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
-    _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEnemy);
+    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bossGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bombermanGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bombGroups, Projectile::hurtEntity);
 
-    _engine->setRelation(_playersGroups, _supportShipGroups, Character::alliesTouched);
-    _engine->setRelation(_supportShipGroups, _orangeRobotGroups, Character::hurtEnemy);
-    _engine->setRelation(_supportShipGroups, _flyerGroups, Character::hurtEnemy);
-    _engine->setRelation(_projectilesGroups, _dropperGroups, Character::hurtEnemy);
+    _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _bombermanGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _bombGroups, Character::hurtEntities);
+
+    _engine->setRelation(_playersGroups, _supportShipGroups, Character::entitiesCollision);
+    _engine->setRelation(_orangeRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_flyerGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_wormGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_bossGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_enemie2Groups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_bombermanGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_bombGroups, _supportShipGroups, Character::hurtFirstEntity);
 }
 
 RType::~RType() {
@@ -66,8 +90,7 @@ RType::~RType() {
     _assets.clear();
 }
 
-void RType::createAssetList()
-{
+void RType::createAssetList() {
     JsonParser parser;
     auto val = JsonParser::readFile("rTypeSetup.json");
     _assets["Classic"] = parser.get<std::string>(val, "Game.Assets.Images.Classic");
@@ -78,14 +101,22 @@ void RType::createAssetList()
     _assets["OrangeRobot"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeRobot");
     _assets["Enemy2"] = parser.get<std::string>(val, "Game.Assets.Images.Enemy2");
     _assets["Background"] = parser.get<std::string>(val, "Game.Assets.Images.Background");
-    _assets["ExplosionSpaceship"] = parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
+    _assets["ExplosionSpaceship"] =
+        parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
     _assets["Shield"] = parser.get<std::string>(val, "Game.Assets.Images.Shield");
-    _assets["PlayerProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
+    _assets["PlayerProjectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
     _assets["DiskProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.DiskProjectile");
-    _assets["OrangeProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
+    _assets["OrangeProjectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
     _assets["Flyer"] = parser.get<std::string>(val, "Game.Assets.Images.Flyer");
     _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
     _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
+    _assets["Worm"] = parser.get<std::string>(val, "Game.Assets.Images.Worm");
+    _assets["Boss1"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1");
+    _assets["Boss1Projectile"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1Projectile");
+    _assets["Bomberman"] = parser.get<std::string>(val, "Game.Assets.Images.Bomberman");
+    _assets["Bomb"] = parser.get<std::string>(val, "Game.Assets.Images.Bomb");
 }
 
 int RType::getId(Event event) {
@@ -97,16 +128,16 @@ int RType::getId(Event event) {
 }
 
 std::shared_ptr<Character> RType::getRandomSpaceship() {
+    srand(time(NULL));
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 4);
     int random = distrib(gen);
     IEntity::EntityInfo info;
 
-    //TODO: make it random
     info.x = 50;
-    info.y = 100;
-    //
+    int randomY = rand() % 4;
+    info.y = 100 + randomY * 100;
 
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Spaceship";
@@ -184,8 +215,8 @@ void RType::update(ThreadSafeQueue<Event>& events) {
             case ACTION::KEY_C:
                 for (auto supportShip : _supportShips) {
                     if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
-                        supportShip->setAlliesTouched(true);
-                        _players[getId(event) - 1]->setAlliesTouched(true);
+                        supportShip->setEntitiesHasCollided(true);
+                        _players[getId(event) - 1]->setEntitiesHasCollided(true);
                         break;
                     }
                 }
@@ -236,8 +267,11 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
     if (group == ProjectileGroup::PLAYER) {
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
-    } else if (group == ProjectileGroup::ENEMY) {
-        _enemyProjectilesGroups->insert(projectile);
+    } else if (group == ProjectileGroup::ENEMY || group == ProjectileGroup::BOSS) {
+        if (info.name == "Bomb")
+            _bombGroups->insert(projectile);
+        else
+            _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     } else if (group == ProjectileGroup::SUPPORT) {
         _supportProjectilesGroups->insert(projectile);
@@ -381,6 +415,9 @@ void RType::deleteAllEntities() {
     _supportProjectilesGroups->clear();
     _supportShipGroups->clear();
     _dropperGroups->clear();
+    _wormGroups->clear();
+    _bossGroups->clear();
+    _bombermanGroups->clear();
 }
 
 bool RType::isReset() {
@@ -407,6 +444,12 @@ void RType::setCurrentId(int id) {
     _lastId = id;
 }
 
+void RType::createBoss(IEntity::EntityInfo info) {
+    std::shared_ptr<Boss> enemy = std::make_shared<Boss>(info);
+    _enemies.push_back(enemy);
+    _bossGroups->insert(enemy);
+}
+
 void RType::createEnemy(IEntity::EntityInfo info) {
     std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
     _enemies.push_back(enemy);
@@ -416,6 +459,10 @@ void RType::createEnemy(IEntity::EntityInfo info) {
         _flyerGroups->insert(enemy);
     else if (info.name == "Enemy2")
         _enemie2Groups->insert(enemy);
+    else if (info.name == "Worm")
+        _wormGroups->insert(enemy);
+    else if (info.name == "Bomberman")
+        _bombermanGroups->insert(enemy);
 }
 
 void RType::createBackground(IEntity::EntityInfo info) {
@@ -437,16 +484,24 @@ void RType::clearLevel() {
     _projectilesGroups->clear();
     _enemyProjectilesGroups->clear();
     _staticObjectsGroups->clear();
+    _supportProjectilesGroups->clear();
+    _supportShipGroups->clear();
+    _dropperGroups->clear();
+    _bossGroups->clear();
+    _bombermanGroups->clear();
+    _wormGroups->clear();
     _enemies.clear();
     _projectiles.clear();
     _staticObjects.clear();
+    _supportShips.clear();
+    _dropper.clear();
 }
 
 std::shared_ptr<AEntity> RType::getPlayer(int id) {
     for (auto player : _players)
         if (player->getId() == id)
             return (player);
-    return (nullptr);
+    return (NULL);
 }
 
 std::vector<std::shared_ptr<AEntity>> RType::getPlayers() {
@@ -463,4 +518,11 @@ void RType::setPlayerHasSupport(int id, bool support) {
             break;
         }
     }
+}
+
+std::vector<std::shared_ptr<AEntity>> RType::getEnemies() {
+    std::vector<std::shared_ptr<AEntity>> enemies;
+    for (auto enemy : _enemies)
+        enemies.push_back(enemy);
+    return (enemies);
 }

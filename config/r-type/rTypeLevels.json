@@ -3,21 +3,12 @@
         "Background": {
             "Type": "Background"
         },
-        "Enemy1": {
-            "Config": "OrangeRobot.rType.json",
-            "Count": 2,
+        "Enemy2": {
+            "Config": "Boss1.rType.json",
+            "Count": 1,
             "Positions": [
-                {"X": 960, "Y": 331},
-                {"X": 980, "Y": 300}
+                {"X": 500, "Y": 1100}
               ]
-        },
-        "Dropper": {
-            "Config": "Dropper.rType.json",
-            "Count": 2,
-            "Positions": [
-                {"X": 700, "Y": 200},
-                {"X": 700, "Y": 400}
-            ]
         }
     }
 }
