@@ -52,13 +52,13 @@ void Game::run() {
             _threadPool.enqueue([this] { this->loopEventQueue(); });
             while (_display->windowIsOpen() == true) {
                 _display->handleEvent();
-                std::map<int, std::shared_ptr<IEntity>>* entitiesCopy;
+                std::map<int, std::shared_ptr<IEntity>> entitiesCopy;
                 {
                     std::lock_guard<std::mutex> lock(entityMutex);
-                    entitiesCopy = &_entities;
+                    entitiesCopy = _entities;
                 }
-                update(entitiesCopy);
-                _display->draw(entitiesCopy);
+                update(&entitiesCopy);
+                _display->draw(&entitiesCopy);
             }
         }
     }
