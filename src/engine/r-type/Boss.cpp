@@ -69,7 +69,7 @@ void Boss::shoot() {
         info.damage = getDamage();
         info.spriteConfigJsonObjectName = getShootAsset();
         info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-        info.direction = TRACKING;
+        info.direction = IEntity::Direction::TRACKING;
         info.relatedPlayerId = player->getId();
         RType::instance->createProjectile(info, false, IGame::ProjectileGroup::BOSS);
     }

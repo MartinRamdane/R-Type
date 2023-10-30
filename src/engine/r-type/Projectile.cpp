@@ -76,7 +76,6 @@ void Projectile::trackPlayer() {
 
 void Projectile::directionalMove()
 {
-    //make it move in the direction of the player but not track it
     if (_oldX == 0 && _oldY == 0) {
         _oldX = _x;
         _oldY = _y;

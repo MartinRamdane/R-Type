@@ -3,6 +3,13 @@
         "Background": {
             "Type": "Background"
         },
+        "Enemy1": {
+            "Config": "Bomberman.rType.json",
+            "Count": 1,
+            "Positions": [
+                {"X": 800, "Y": 300}
+              ]
+        },
         "Enemy2": {
             "Config": "Boss1.rType.json",
             "Count": 1,
