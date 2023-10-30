@@ -8,20 +8,19 @@
 #include "Server.hpp"
 #include "ServerImpl.hpp"
 
-ServerClass::ServerClass(std::string gameName) : _threadPool(1) {
-    MyServer* server = new MyServer(4244, this);
+ServerClass::ServerClass() : _threadPool(1) {
+    MyServer *server = new MyServer(4244, this);
     _server = server;
     _server->StartServer();
     _playerIdToGive = 1;
-    _gameName = gameName;
 }
 
 ServerClass::~ServerClass() {
     _server->StopServer();
 }
 
-InstanceInfos ServerClass::createInstance() {
-    Instance* instance = new Instance(_instances.size(), _gameName);
+InstanceInfos ServerClass::createInstance(std::string gameName) {
+    Instance *instance = new Instance(_instances.size(), gameName);
     instance->setServer(this);
     _instances.push_back(instance);
     InstanceInfos instanceinfos;
@@ -30,7 +29,7 @@ InstanceInfos ServerClass::createInstance() {
     return instanceinfos;
 }
 
-void ServerClass::interpretEvent(Event& event) {
+void ServerClass::interpretEvent(Event &event) {
     if (event.ACTION_NAME == ACTION::CREATE) {
         std::cout << "CREATE" << std::endl;
     }
@@ -44,4 +43,12 @@ void ServerClass::loop() {
     while (1) {
         _server->HandleMessages(-1, true);
     }
+}
+
+Instance *ServerClass::getInstanceByPort(int port) {
+    for (auto instance : _instances) {
+        if (instance->getPort() == port)
+            return instance;
+    }
+    return nullptr;
 }
