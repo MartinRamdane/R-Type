@@ -59,13 +59,12 @@ void Boss::shoot() {
     auto players = RType::instance->getPlayers();
     for (auto player : players) {
         auto pos = getPosition();
-        auto playerPos = player->getPosition();
         EntityInfo info;
         info.x = std::get<0>(pos) - 33;
         info.y = std::get<1>(pos) - 2;
         info.name = getShootAsset();
-        info.scaleX = 2;
-        info.scaleY = 2;
+        info.scaleX = 1.7;
+        info.scaleY = 1.7;
         info.speed = getProjectileSpeed();
         info.damage = getDamage();
         info.spriteConfigJsonObjectName = getShootAsset();

@@ -78,6 +78,7 @@ class RType : public IGame {
     std::shared_ptr<EntityType<IEntity>> _dropperGroups;
     std::shared_ptr<EntityType<IEntity>> _bombermanGroups;
     std::shared_ptr<EntityType<IEntity>> _bossGroups;
+    std::shared_ptr<EntityType<IEntity>> _bombGroups;
     std::vector<std::shared_ptr<Character>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     std::vector<std::shared_ptr<AEntity>> _staticObjects;

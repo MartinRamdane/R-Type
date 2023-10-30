@@ -97,10 +97,11 @@ void Enemy::shoot() {
     if (getShootAsset() == "Bomb") {
         info.scaleX = 0.75;
         info.scaleY = 0.75;
-        info.direction = IEntity::STATIC;
-    } else {
-        info.direction = IEntity::LEFT;
+        info.x = std::get<0>(pos) + 10;
+        info.y = std::get<1>(pos) + 5;
     }
+    info.direction = IEntity::LEFT;
+    
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::ENEMY);
 }

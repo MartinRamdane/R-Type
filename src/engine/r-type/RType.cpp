@@ -35,6 +35,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _wormGroups = std::make_shared<EntityType<IEntity>>(16);
     _bossGroups = std::make_shared<EntityType<IEntity>>(150);
     _bombermanGroups = std::make_shared<EntityType<IEntity>>(10);
+    _bombGroups = std::make_shared<EntityType<IEntity>>(4);
 
     // initializeLevel
     _levelInitializer = std::make_unique<LevelInitializer>(this);
@@ -49,6 +50,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _wormGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _bossGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _bombermanGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bombGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
@@ -57,6 +59,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _bossGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _bombermanGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bombGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
@@ -64,6 +67,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bombermanGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _bombGroups, Character::hurtEntities);
 
     _engine->setRelation(_playersGroups, _supportShipGroups, Character::entitiesCollision);
     _engine->setRelation(_orangeRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
@@ -72,6 +76,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_bossGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_enemie2Groups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_bombermanGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_bombGroups, _supportShipGroups, Character::hurtFirstEntity);
 }
 
 RType::~RType() {
@@ -263,7 +268,10 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     } else if (group == ProjectileGroup::ENEMY || group == ProjectileGroup::BOSS) {
-        _enemyProjectilesGroups->insert(projectile);
+        if (info.name == "Bomb")
+            _bombGroups->insert(projectile);
+        else
+            _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     } else if (group == ProjectileGroup::SUPPORT) {
         _supportProjectilesGroups->insert(projectile);

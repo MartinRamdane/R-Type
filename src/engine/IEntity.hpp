@@ -26,7 +26,6 @@ public:
         DOWN_RIGHT,
         TRACKING,
         DIRECTIONAL,
-        STATIC
     };
     typedef struct EntityInfo {
         std::string name;

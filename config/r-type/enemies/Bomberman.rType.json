@@ -3,8 +3,8 @@
     "Name": "Bomberman",
     "MovementType": "UpAndDown",
     "ProjectileType": "Bomb",
-    "FireRate": 6,
-    "ProjectileSpeed": 8,
+    "FireRate": 15,
+    "ProjectileSpeed": 1,
     "Speed": 2,
     "Damage": 60,
     "Life": 30
