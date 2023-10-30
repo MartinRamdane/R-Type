@@ -34,6 +34,11 @@ void Game::setLibToUse() {
     }
 }
 
+int Game::getEntitiesNumber() {
+    std::lock_guard<std::mutex> lock(entityMutex);
+    return _entities.size();
+}
+
 void Game::run() {
     setLib(1);
     setLibToUse();
@@ -84,7 +89,6 @@ void Game::LoopUDPMessages() {
 
 void Game::loopEventQueue() {
     while (1) {
-        _udpClient->sendUnknownEntities();
         if (_udpClient->getEventQueue().empty() == false) {
             auto evt = _udpClient->getEventQueue().pop_front();
             handleReceivedEvent(evt);
@@ -119,7 +123,6 @@ bool Game::findEntity(int id) {
             return true;
         it++;
     }
-    _udpClient->addUnknownEntity(id);
     return false;
 }
 
@@ -139,7 +142,6 @@ void Game::addEntity(IEntity::EntityInfos entityInfos) {
         if (entityInfos.type == IEntity::Type::TEXT)
             _entities.at(entityInfos.id)->setTextString(entityInfos.text);
     } else {
-        std::cout << "going here " << std::endl;
         auto entity = _display->createEntity(entityInfos);
         if (entity != nullptr) {
             _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
@@ -160,8 +162,6 @@ void Game::flipEntity(Event evt) {
 
 void Game::updateSprite(Event evt) {
     IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
-    std::cout << "entity path : " << entityInfos.path << std::endl;
-    std::cout << "entity id : " << entityInfos.id << std::endl;
     if (entityInfos.id < 0)
         removeEntity(entityInfos.id);
     else
@@ -239,7 +239,23 @@ void Game::handleReceivedEvent(Event evt) {
             _entities.clear();
             break;
         }
+        case ACTION::CHECK: {
+            int entities = std::stoi(evt.body);
+            checkEntities(entities);
+            break;
+        }
         default:
             break;
+    }
+}
+
+void Game::checkEntities(int nb)
+{
+    int currentNb = getEntitiesNumber();
+    if (currentNb < nb) {
+        std::cout << "current nb : " << currentNb << std::endl;
+        std::cout << "nb : " << nb << std::endl;
+        std::cout << "missing entities" << std::endl;
+        _udpClient->sendEvent({ACTION::CHECK, ""});
     }
 }

@@ -45,13 +45,13 @@ std::vector<std::string> Core::getAllEntitiesToCreate() {
     return protocol;
 }
 
-std::string Core::getCreateEntity(int id) {
+std::vector<std::string> Core::getCreateEntities() {
+    std::vector<std::string> entitiesList;
     auto entities = _engine->getEntities();
     for (auto entityType : entities) {
         for (auto entity: entityType->getEntities()) {
-            if (entity->getId() == id) {
-                return Protocol::resendEntityCreation(entity);
-            }
+            entitiesList.push_back(Protocol::transformEntityCreateToProtocol(entity));
         }
     }
+    return entitiesList;
 }

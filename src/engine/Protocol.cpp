@@ -14,40 +14,37 @@ Protocol::~Protocol() {}
 std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity) {
     auto pos = entity->getPosition();
     auto scale = entity->getScale();
-    std::cout << "wants to create entity " << std::endl;
+    std::cout << "wants to create entity with ID : " << entity->getId() << std::endl;
     if (auto test = std::dynamic_pointer_cast<Projectile>(entity)) {
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
         std::string entityDirection;
         projectile->getDirection() == IEntity::Direction::LEFT ? entityDirection = "left"
                                                                : entityDirection = "right";
-        // return "ecreate " + std::to_string(entity->getId()) + " " +
-        //        std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
-        //        entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
-        //        std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() +
-        //        " " + entity->getSpriteConfigJsonObjectName() + " " +
-        //        std::to_string(entity->getSpeed()) + " " + entityDirection + " " +
-        //        std::to_string(projectile->getDamage());
-        return "";
+        return "ecreate " + std::to_string(entity->getId()) + " " +
+               std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
+               entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
+               std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() +
+               " " + entity->getSpriteConfigJsonObjectName() + " " +
+               std::to_string(entity->getSpeed()) + " " + entityDirection + " " +
+               std::to_string(projectile->getDamage());
     }
     if (std::dynamic_pointer_cast<Enemy>(entity)) {
         auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
         if (enemy->getMovementType() == "Linear") {
-            // return "ecreate " + std::to_string(entity->getId()) + " " +
-            //        std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
-            //        entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
-            //        std::to_string(std::get<1>(scale)) + " " +
-            //        entity->getspriteConfigJsonFileName() + " " +
-            //        entity->getSpriteConfigJsonObjectName() + " " +
-            //        std::to_string(entity->getSpeed()) + " " + "left";
-            return "";
+            return "ecreate " + std::to_string(entity->getId()) + " " +
+                   std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
+                   entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
+                   std::to_string(std::get<1>(scale)) + " " +
+                   entity->getspriteConfigJsonFileName() + " " +
+                   entity->getSpriteConfigJsonObjectName() + " " +
+                   std::to_string(entity->getSpeed()) + " " + "left";
         }
     }
-    // return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) +
-    //        " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " +
-    //        std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " +
-    //        entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() +
-    //        " " + std::to_string(entity->getSpeed()) + " " + "none";
-    return "";
+    return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) +
+           " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " +
+           std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " +
+           entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() +
+           " " + std::to_string(entity->getSpeed()) + " " + "none";
 }
 
 std::string Protocol::transformTextCreateToProtocol(std::shared_ptr<IEntity> entity) {
@@ -130,42 +127,4 @@ std::vector<std::string> Protocol::transformAllEntitiesToCreate(
         }
     }
     return protocol;
-}
-
-std::string Protocol::resendEntityCreation(std::shared_ptr<IEntity> entity)
-{
-    auto pos = entity->getPosition();
-    auto scale = entity->getScale();
-    if (auto test = std::dynamic_pointer_cast<Projectile>(entity)) {
-        auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
-        std::string entityDirection;
-        projectile->getDirection() == IEntity::Direction::LEFT ? entityDirection = "left"
-                                                               : entityDirection = "right";
-        return "ecreate " + std::to_string(entity->getId()) + " " +
-               std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
-               entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
-               std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() +
-               " " + entity->getSpriteConfigJsonObjectName() + " " +
-               std::to_string(entity->getSpeed()) + " " + entityDirection + " " +
-               std::to_string(projectile->getDamage());
-    }
-    if (std::dynamic_pointer_cast<Enemy>(entity)) {
-        auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
-        if (enemy->getMovementType() == "Linear") {
-            return "ecreate " + std::to_string(entity->getId()) + " " +
-                   std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
-                   entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
-                   std::to_string(std::get<1>(scale)) + " " +
-                   entity->getspriteConfigJsonFileName() + " " +
-                   entity->getSpriteConfigJsonObjectName() + " " +
-                   std::to_string(entity->getSpeed()) + " " + "left";
-            return "";
-        }
-    }
-    return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) +
-           " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " +
-           std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " +
-           entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() +
-           " " + std::to_string(entity->getSpeed()) + " " + "none";
-    return "";
 }

@@ -30,6 +30,7 @@ class Instance {
   void MessagesLoop();
   void EventLoop();
   void addAction(Event event) { _events.push_back(event); }
+  void checkEntitiesInClients();
 
  protected:
  private:
@@ -45,6 +46,7 @@ class Instance {
   Core* _core;
   ThreadSafeQueue<Event> _events;
   JsonParser _jsonParser;
+  std::chrono::high_resolution_clock::time_point _lastCheck;
 };
 
 #endif /* !HEADER_INSTANCE */

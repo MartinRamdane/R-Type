@@ -48,6 +48,8 @@ class Game {
     void updateText(Event evt);
     void joinGame(Event evt);
     void loopEventQueue();
+    int getEntitiesNumber();
+    void checkEntities(int nb);
 
    private:
     sf::RenderWindow _window;
