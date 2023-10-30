@@ -21,15 +21,11 @@ class DisplaySFML : public IDisplay {
     DisplaySFML();
     ~DisplaySFML();
     void createWindow(std::string name, int x, int y);
-    void animate(std::map<int, std::shared_ptr<IEntity>>* _entities);
     void draw(std::map<int, std::shared_ptr<IEntity>>* _entities);
-    void handleEvent(std::shared_ptr<UDPClient> _udpClient, std::shared_ptr<TCPClientImpl> _client);
-    void update(std::map<int, std::shared_ptr<IEntity>>* _entities,
-                std::shared_ptr<UDPClient> _udpClient);
+    void handleEvent();
     bool getClosed() const { return closed; };
-    void setPlayerId(int id) { _playerId = id; };
-    int getPlayerId() const { return _playerId; };
     bool windowIsOpen() const { return _window.isOpen(); };
+    std::vector<std::string> getEvents();
     std::shared_ptr<IEntity> createEntity(IEntity::EntityInfos entityInfos);
     std::shared_ptr<IEntity> createSprite(IEntity::EntityInfos entityInfos);
     std::shared_ptr<IEntity> createText(IEntity::EntityInfos entityInfos);
@@ -39,8 +35,7 @@ class DisplaySFML : public IDisplay {
     sf::View _view;
     sf::Event _event;
     std::shared_ptr<RessourceManager> _ressourceManager;
-    int _eventIndicator;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     bool closed = false;
-    int _playerId;
+    std::vector<std::string> _events;
 };

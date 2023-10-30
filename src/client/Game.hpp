@@ -31,6 +31,8 @@ class Game {
     Game();
     ~Game();
     void run();
+    void update(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
+    void handleEvent();
     bool connectToServer(std::string host, int port);
     bool connectToUdpServer(std::string host, int port);
     void setConnected(bool state) { isTCPClientConnected = state; };
@@ -48,6 +50,7 @@ class Game {
     void updateText(Event evt);
     void joinGame(Event evt);
     void loopEventQueue();
+    void animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy);
 
    private:
     sf::RenderWindow _window;

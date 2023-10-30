@@ -132,6 +132,8 @@ void Entity::setDirection(std::string direction) {
 }
 
 void Entity::update() {
+    if (_type == IEntity::Type::SPRITE)
+        makePrediction();
     sf::Vector2f pos = _sprite.getPosition();
     if (pos.x == _nextPos.x && pos.y == _nextPos.y) {
         if (_eventForm == "event")
