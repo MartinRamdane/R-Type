@@ -81,6 +81,8 @@ public:
 
     void animate(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
 
+    InstanceMenu *getInstanceMenu() { return _instanceMenu; };
+
     std::shared_ptr <TCPClientImpl> getClient() { return _client; };
 
 private:

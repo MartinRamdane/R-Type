@@ -99,8 +99,13 @@ InstanceMenu::~InstanceMenu() {
 }
 
 void InstanceMenu::mainloop() {
+    _client = _game->getClient();
     while (_window.isOpen()) {
         sf::Event event;
+        if (!_client->Incoming().empty()) {
+            auto msg = _client->Incoming().pop_front().msg;
+            _client->HandleMessage(msg);
+        }
         while (_window.pollEvent(event)) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
             sf::Vector2f worldMousePosition = _window.mapPixelToCoords(mousePosition);
@@ -120,7 +125,7 @@ void InstanceMenu::mainloop() {
                 if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
                         worldMousePosition)) {
                     std::cout << "refresh list" << std::endl;
-                    // TODO: Send a request to get new list of instances
+                    _client->SendEvent({ACTION::LIST, ""});
                 }
 
                 if (_entities["pCreateInstanceButton"]->getSprite().getGlobalBounds().contains(
@@ -180,4 +185,8 @@ void InstanceMenu::mainloop() {
             _window.draw(*_texts["ErrorConnexion"]);
         _window.display();
     }
+}
+
+void InstanceMenu::addInstanceButton(InstanceType instance, int x, int y) {
+    _instanceButtons[instance.id] = std::make_unique<InstanceButton>(instance, x, y);
 }

@@ -22,9 +22,9 @@ public:
         message<ACTION> msg;
         std::vector <uint8_t> data = encodeEvent(evt);
         msg.header.id = evt.ACTION_NAME;
-        msg.header.size = sizeof(data);
-        msg.body.resize(sizeof(data));
-        std::memcpy(msg.body.data(), data.data(), sizeof(data));
+        msg.header.size = data.size();
+        msg.body.resize(data.size());
+        std::memcpy(msg.body.data(), data.data(), data.size());
         SendMessageAsync(client, msg);
     }
 
@@ -72,6 +72,21 @@ protected:
                 break;
             case ACTION::LIST: {
                 std::cout << "[" << client->GetID() << "]: LIST" << std::endl;
+                Event evt = {ACTION::LIST, ""};
+                for (auto instance: _server->getInstances()) {
+                    std::cout << "instance: " << instance->getName() << std::endl;
+                    std::cout << "instance game: " << instance->getGameName() << std::endl;
+                    std::cout << "instance nb players: " << instance->getNbPlayers() << std::endl;
+                    std::cout << "instance max players: " << instance->getMaxPlayers() << std::endl;
+                    std::cout << "instance port: " << instance->getPort() << std::endl;
+                    std::cout << "instance id: " << instance->getId() << std::endl;
+                    evt.body = instance->getName() + " " + instance->getGameName() + " " +
+                               std::to_string(instance->getNbPlayers()) + " " +
+                               std::to_string(instance->getMaxPlayers()) + " " + std::to_string(instance->getPort()) +
+                               " " + std::to_string(instance->getId());
+                    std::cout << "evt body: " << evt.body << std::endl;
+                    SendEvent(client, evt);
+                }
             }
                 break;
             case ACTION::JOIN: {

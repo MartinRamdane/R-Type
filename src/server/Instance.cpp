@@ -8,15 +8,15 @@
 #include "Instance.hpp"
 
 Instance::Instance(int id, std::string gameName)
-    : _id(id), _port((int)(4210 + id)), _gameName(gameName), _threadPool(3) {
+        : _id(id), _port((int) (4210 + id)), _gameName(gameName), _threadPool(3) {
     std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
-    _name = "to change";
+    _name = "toChange";
     nlohmann::json jsonFile = _jsonParser.readFile(gameConfigFilePathName);
     _nbPlayersMax = _jsonParser.get<int>(jsonFile, "nbPlayersMax");
     _onlyMultiplayer = _jsonParser.get<bool>(jsonFile, "onlyMultiplayer");
     std::cout << "nbplayersmax: " << _nbPlayersMax << " only multiplayer " << _onlyMultiplayer
               << std::endl;
-    _udpServer = new UDPServer(_io_service, (int)(4210 + id));
+    _udpServer = new UDPServer(_io_service, (int) (4210 + id));
     _udpServer->setNbPlayers(1);
     _core = new Core(gameName);
     _udpServer->setInstance(this);
@@ -40,7 +40,7 @@ void Instance::EventLoop() {
         if (nbPlayers == 0) {
             continue;    // TODO: destroy the instance
         }
-        std::vector<std::string> protocol = _core->mainLoop(_events);
+        std::vector <std::string> protocol = _core->mainLoop(_events);
         if (_core->isReset()) {
             _core->setReset(false);
             Event evt;
@@ -48,7 +48,7 @@ void Instance::EventLoop() {
             evt.body = "";
             _udpServer->sendEventToAllClients(evt);
         }
-        for (auto message : protocol) {
+        for (auto message: protocol) {
             if (message.substr(0, message.find(" ")) == "etext") {
                 Event evt;
                 evt.ACTION_NAME = ACTION::TEXT;

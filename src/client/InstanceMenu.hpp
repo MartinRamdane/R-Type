@@ -27,6 +27,9 @@ public:
 
     void mainloop();
 
+    void addInstanceButton(InstanceType instance, int x,
+                           int y);
+
 private:
     sf::RenderWindow _window;
     sf::View _view;
@@ -38,6 +41,7 @@ private:
     std::shared_ptr <Game> _game;
     bool _openInstanceModal = false;
     std::map<int, std::unique_ptr<InstanceButton>> _instanceButtons;
+    std::shared_ptr <TCPClientImpl> _client;
 };
 
 #endif /* !INSTANCE_MENU_HPP_ */

@@ -10,7 +10,7 @@
 #include "TCPClientImpl.hpp"
 #include "InstanceMenu.hpp"
 
-Game::Game() : _threadPool(2) {
+Game::Game() : _threadPool(3) {
     _event_indicator = 0;
     _gameTitle = "game";
     _width = 850;
@@ -40,15 +40,22 @@ void Game::setLibToUse() {
 void Game::run() {
     setLib(1);
     setLibToUse();
+    bool sendListEvent = false;
     while (!_display->getClosed()) {
         if (!_client->Incoming().empty()) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
         if (isTCPClientConnected && !isUDPClientConnected) {
+            if (!sendListEvent) {
+                Event evt = {ACTION::LIST, ""};
+                _client->SendEvent(evt);
+            }
             std::cout << "connected but not to a instance" << std::endl;
             _instanceMenu->mainloop();
+            sendListEvent = true;
         }
+        std::cout << "end of instance menu" << std::endl;
         if (isUDPClientConnected) {
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
@@ -57,7 +64,7 @@ void Game::run() {
             _udpClient->sendEvent(evt);
             _threadPool.enqueue([this] { this->LoopUDPMessages(); });
             _threadPool.enqueue([this] { this->loopEventQueue(); });
-            while (_display->windowIsOpen() == true) {
+            while (_display->windowIsOpen()) {
                 _display->handleEvent();
                 std::map<int, std::shared_ptr<IEntity>>* entitiesCopy;
                 {
