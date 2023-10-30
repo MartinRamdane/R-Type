@@ -10,11 +10,11 @@
 #include "../Character.hpp"
 
 class Dropper : public Character {
-    public:
-        Dropper(EntityInfo info);
-        ~Dropper();
-        void update() override;
+   public:
+    Dropper(EntityInfo info);
+    ~Dropper();
+    void update() override;
 
-    protected:
-    private:
+   protected:
+   private:
 };

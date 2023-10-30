@@ -7,15 +7,14 @@
 
 #pragma once
 
+#include <chrono>
+#include <iostream>
+#include <thread>
 #include "AEntity.hpp"
 #include "r-type/RType.hpp"
-#include <chrono>
-#include <thread>
-#include <iostream>
 
-class Character : public AEntity
-{
-public:
+class Character : public AEntity {
+   public:
     Character(EntityInfo info);
     ~Character();
     virtual void move(float x, float y);
@@ -35,11 +34,11 @@ public:
     void resetLife();
     void setId(int id);
     void setLifeValue(int lifeValue);
-    static void hurtEnemy(IEntity &self, IEntity &you);
-    static void alliesTouched(IEntity &self, IEntity &you);
+    static void hurtEnemy(IEntity& self, IEntity& you);
+    static void alliesTouched(IEntity& self, IEntity& you);
     bool getAlliesTouched() const;
 
-private:
+   private:
     float _projectileSpeed = 5;
     std::chrono::duration<double> _targetFrameDuration;
     std::chrono::high_resolution_clock::time_point _lastShootTime;

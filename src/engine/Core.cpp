@@ -7,32 +7,29 @@
 
 #include "Core.hpp"
 
-Core::Core(std::string gameName)
-{
+Core::Core(std::string gameName) {
     _engine = std::make_shared<Engine>();
-    std::string protocol = Protocol::transformWindowCreateToProtocol(_engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
+    std::string protocol = Protocol::transformWindowCreateToProtocol(
+        _engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
     // send protocol to client
     if (gameName == "pong")
-        _game = std::make_shared<Pong>(_engine);
+        _game = std::make_unique<Pong>(_engine);
     else
-        _game = std::make_shared<RType>(_engine);
+        _game = std::make_unique<RType>(_engine);
 }
 
-Core::~Core()
-{
-}
+Core::~Core() {}
 
-std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
-{
-    if (_engine->frameRateControl())
-    {
+std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event>& events) {
+    if (_engine->frameRateControl()) {
         // get events
         _engine->update();
         _game->update(events);
         if (_lastFrameTime.time_since_epoch().count() == 0)
             _lastFrameTime = std::chrono::high_resolution_clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - _lastFrameTime).count() > 10)
-        {
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::high_resolution_clock::now() - _lastFrameTime)
+                .count() > 10) {
             _lastFrameTime = std::chrono::high_resolution_clock::now();
             auto entities = _engine->getEntities();
             std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
@@ -42,8 +39,7 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event> &events)
     return {};
 }
 
-std::vector<std::string> Core::getAllEntitiesToCreate()
-{
+std::vector<std::string> Core::getAllEntitiesToCreate() {
     auto entities = _engine->getEntities();
     std::vector<std::string> protocol = Protocol::transformAllEntitiesToCreate(entities);
     return protocol;

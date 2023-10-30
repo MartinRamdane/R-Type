@@ -8,21 +8,9 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <memory>
-#include <vector>
-#include <map>
-#include <sstream>
-#include "Entity.hpp"
-#include "RessourceManager.hpp"
 
-#ifndef structure
-#define structure
-
-struct Login
-{
+typedef struct Login {
     std::string name;
     std::string port;
     std::string ip;
-};
-
-#endif
+} Login;

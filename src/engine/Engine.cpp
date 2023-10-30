@@ -7,10 +7,9 @@
 
 #include "Engine.hpp"
 
-Engine *Engine::instance = nullptr;
+Engine* Engine::instance = nullptr;
 
-Engine::Engine()
-{
+Engine::Engine() {
     instance = this;
     _isRunning = true;
     openWindow();
@@ -21,43 +20,36 @@ Engine::Engine()
     _currentTime = _lastFrameTime;
 }
 
-Engine::~Engine()
-{
+Engine::~Engine() {
     instance = nullptr;
     _isRunning = false;
 }
 
-void Engine::update()
-{
-    for (auto &collider : colliders)
+void Engine::update() {
+    for (auto& collider : colliders)
         collider.type1->collideAll(collider.type2, collider.squaredRadius, collider.func);
-    for (auto &entity : entities)
+    for (auto& entity : entities)
         entity->updateAll();
 }
 
-void Engine::addEntityType(EntityType<IEntity> *type)
-{
+void Engine::addEntityType(EntityType<IEntity>* type) {
     entities.push_back(type);
 }
 
-void Engine::removeEntityType(EntityType<IEntity> *type)
-{
+void Engine::removeEntityType(EntityType<IEntity>* type) {
     entities.remove(type);
 }
 
-bool Engine::isRunning() const
-{
+bool Engine::isRunning() const {
     return _isRunning;
 }
 
-bool Engine::frameRateControl()
-{
+bool Engine::frameRateControl() {
     // Calculate delta time
     _currentTime = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsedTime = _currentTime - _lastFrameTime;
 
-    if (elapsedTime >= _targetFrameDuration)
-    {
+    if (elapsedTime >= _targetFrameDuration) {
         // Update last frame time
         _lastFrameTime = _currentTime;
 
@@ -66,8 +58,7 @@ bool Engine::frameRateControl()
     return false;
 }
 
-void Engine::openWindow()
-{
+void Engine::openWindow() {
     JsonParser parser;
     nlohmann::json windowConfig = JsonParser::readFile("WindowConfig.json");
     _width = parser.get<int>(windowConfig, "Window.Width");
@@ -75,17 +66,14 @@ void Engine::openWindow()
     _title = parser.get<std::string>(windowConfig, "Window.Title");
 }
 
-std::string Engine::getWindowTitle() const
-{
+std::string Engine::getWindowTitle() const {
     return _title;
 }
 
-int Engine::getWindowWidth() const
-{
+int Engine::getWindowWidth() const {
     return _width;
 }
 
-int Engine::getWindowHeight() const
-{
+int Engine::getWindowHeight() const {
     return _height;
 }

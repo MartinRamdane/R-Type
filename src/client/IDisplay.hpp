@@ -6,31 +6,22 @@
 */
 
 #pragma once
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
 #include <iostream>
 #include <map>
 #include <memory>
+#include "IEntity.hpp"
 
 class UDPClient;
 class TCPClientImpl;
-class Entity;
 
 class IDisplay {
- public:
-  virtual ~IDisplay() = default;
-  virtual void createWindow(std::string name, int x, int y) = 0;
-  virtual void animate(std::map<int, Entity>* _entities) = 0;
-  virtual void draw(std::map<int, Entity>* _entities) = 0;
-  virtual void handleEvent(UDPClient* _udpClient, TCPClientImpl* _client) = 0;
-  virtual void update(std::map<int, Entity>* _entities,
-                      UDPClient* _udpClient) = 0;
-  virtual void run(std::map<int, Entity>* _entities, UDPClient* _udpClient,
-                   TCPClientImpl* _client) = 0;
-  virtual void setPlayerId(int id) = 0;
-  virtual int getPlayerId() const = 0;
-  virtual bool getClosed() const = 0;
-  virtual bool windowIsOpen() const = 0;
+   public:
+    virtual ~IDisplay() = default;
+    virtual void createWindow(std::string name, int x, int y) = 0;
+    virtual void draw(std::map<int, std::shared_ptr<IEntity>>* _entities) = 0;
+    virtual void handleEvent() = 0;
+    virtual bool getClosed() const = 0;
+    virtual bool windowIsOpen() const = 0;
+    virtual std::shared_ptr<IEntity> createEntity(IEntity::EntityInfos entityInfos) = 0;
+    virtual std::vector<std::string> getEvents() = 0;
 };

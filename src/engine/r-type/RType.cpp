@@ -18,6 +18,7 @@
 RType* RType::instance = nullptr;
 
 RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
+    createAssetList();
     instance = this;
     // Create all entities groups
     _playersGroups = std::make_shared<EntityType<IEntity>>(16);
@@ -32,7 +33,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
 
     // initializeLevel();
-    _levelInitializer = std::make_shared<LevelInitializer>(this);
+    _levelInitializer = std::make_unique<LevelInitializer>(this);
     _levelInitializer->loadLevel(_currentLevel);
 
     // Add collision between entities groups
@@ -42,6 +43,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEnemy);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEnemy);
@@ -56,6 +58,34 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
 RType::~RType() {
     // Destroy all entities
     _players.clear();
+    _enemies.clear();
+    _projectiles.clear();
+    _staticObjects.clear();
+    _supportShips.clear();
+    _dropper.clear();
+    _assets.clear();
+}
+
+void RType::createAssetList()
+{
+    JsonParser parser;
+    auto val = JsonParser::readFile("rTypeSetup.json");
+    _assets["Classic"] = parser.get<std::string>(val, "Game.Assets.Images.Classic");
+    _assets["Speed"] = parser.get<std::string>(val, "Game.Assets.Images.Speed");
+    _assets["Shooter"] = parser.get<std::string>(val, "Game.Assets.Images.Shooter");
+    _assets["Tank"] = parser.get<std::string>(val, "Game.Assets.Images.Tank");
+    _assets["ShieldSpaceship"] = parser.get<std::string>(val, "Game.Assets.Images.ShieldSpaceship");
+    _assets["OrangeRobot"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeRobot");
+    _assets["Enemy2"] = parser.get<std::string>(val, "Game.Assets.Images.Enemy2");
+    _assets["Background"] = parser.get<std::string>(val, "Game.Assets.Images.Background");
+    _assets["ExplosionSpaceship"] = parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
+    _assets["Shield"] = parser.get<std::string>(val, "Game.Assets.Images.Shield");
+    _assets["PlayerProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
+    _assets["DiskProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.DiskProjectile");
+    _assets["OrangeProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
+    _assets["Flyer"] = parser.get<std::string>(val, "Game.Assets.Images.Flyer");
+    _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
+    _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
 }
 
 int RType::getId(Event event) {
@@ -85,22 +115,22 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
 
     switch (random) {
         case 0:
-            info.assetFile = _assets["Classic"]();
+            info.assetFile = _assets["Classic"];
             return (std::make_shared<Classic>(info));
         case 1:
-            info.assetFile = _assets["Speed"]();
+            info.assetFile = _assets["Speed"];
             return (std::make_shared<Speed>(info));
         case 2:
-            info.assetFile = _assets["Shooter"]();
+            info.assetFile = _assets["Shooter"];
             return (std::make_shared<Shooter>(info));
         case 3:
-            info.assetFile = _assets["Tank"]();
+            info.assetFile = _assets["Tank"];
             return (std::make_shared<Tank>(info));
         case 4:
-            info.assetFile = _assets["ShieldSpaceship"]();
+            info.assetFile = _assets["ShieldSpaceship"];
             return (std::make_shared<Shield>(info));
         default:
-            info.assetFile = _assets["Classic"]();
+            info.assetFile = _assets["Classic"];
             return (std::make_shared<Classic>(info));
     }
 }
@@ -111,31 +141,31 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::LEFT:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(-1, 0);
                 break;
             case ACTION::RIGHT:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(1, 0);
                 break;
             case ACTION::UP:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, 1);
                 break;
-            case ACTION::SHOOT:
-                if (!_players.empty() && _players.size() >= getId(event))
+            case ACTION::SPACE:
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->shoot();
                 break;
-            case ACTION::SHIELD:
-                if (!_players.empty() && _players.size() >= getId(event))
+            case ACTION::KEY_S:
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->action();
                 break;
             case ACTION::FLIP:
-                if (!_players.empty() && _players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->flip();
                 break;
             case ACTION::READY:
@@ -143,10 +173,19 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 _playersGroups->insert(_players[_players.size() - 1]);
                 setAllEntitiesToCreated();
                 break;
-            case ACTION::LAUNCH:
+            case ACTION::KEY_L:
                 for (auto supportShip : _supportShips) {
                     if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
                         supportShip->launch();
+                        break;
+                    }
+                }
+                break;
+            case ACTION::KEY_C:
+                for (auto supportShip : _supportShips) {
+                    if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
+                        supportShip->setAlliesTouched(true);
+                        _players[getId(event) - 1]->setAlliesTouched(true);
                         break;
                     }
                 }
@@ -177,7 +216,7 @@ void RType::createExplosion(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
-    info.assetFile = _assets["ExplosionSpaceship"]();
+    info.assetFile = _assets["ExplosionSpaceship"];
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "ExplosionSpaceship";
     info.scaleX = 2;
@@ -190,7 +229,7 @@ void RType::createExplosion(int x, int y) {
 }
 
 void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group) {
-    info.assetFile = _assets[info.name]();
+    info.assetFile = _assets[info.name];
     info.id = _lastId;
     _lastId++;
     std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(info);
@@ -212,7 +251,7 @@ std::shared_ptr<AEntity> RType::createShield(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
-    info.assetFile = _assets["Shield"]();
+    info.assetFile = _assets["Shield"];
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Shield";
     info.id = _lastId;
@@ -233,7 +272,7 @@ std::shared_ptr<AEntity> RType::createSupportShip(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
-    info.assetFile = _assets["SupportShip"]();
+    info.assetFile = _assets["SupportShip"];
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "SupportShip";
     info.scaleX = 0.7;
@@ -360,7 +399,7 @@ int RType::getCurrentLevel() {
     return (_currentLevel);
 }
 
-std::map<std::string, std::function<std::string()>> RType::getAssets() {
+std::map<std::string, std::string> RType::getAssets() {
     return (_assets);
 }
 
@@ -425,104 +464,3 @@ void RType::setPlayerHasSupport(int id, bool support) {
         }
     }
 }
-
-std::map<std::string, std::function<std::string()>> RType::_assets = {
-
-    {"Classic",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Classic");
-     }},
-    {"Speed",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Speed");
-     }},
-    {"Shooter",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Shooter");
-     }},
-    {"Tank",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Tank");
-     }},
-    {"ShieldSpaceship",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.ShieldSpaceship");
-     }},
-    {"OrangeRobot",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.OrangeRobot");
-     }},
-    {"Enemy2",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Enemy2");
-     }},
-    {"Background",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Background");
-     }},
-    {"ExplosionSpaceship",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.ExplosionSpaceShip");
-     }},
-    {"Shield",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Shield");
-     }},
-    {"PlayerProjectile",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.PlayerProjectile");
-     }},
-    {"DiskProjectile",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.DiskProjectile");
-     }},
-    {"OrangeProjectile",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.OrangeProjectile");
-     }},
-    {"Flyer",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Flyer");
-     }},
-    {"SupportShip",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.SupportShip");
-     }},
-    {"Dropper",
-     []() {
-         JsonParser parser;
-         return parser.get<std::string>(JsonParser::readFile("rTypeSetup.json"),
-                                        "Game.Assets.Images.Dropper");
-     }},
-
-};

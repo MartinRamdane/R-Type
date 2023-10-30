@@ -7,9 +7,7 @@
 
 #include "Shield.hpp"
 
-Shield::Shield(EntityInfo info)
-    : Character(info)
-{
+Shield::Shield(EntityInfo info) : Character(info) {
     // set special attributes
     setLife(70);
     setLifeValue(70);
@@ -22,12 +20,9 @@ Shield::Shield(EntityInfo info)
     setSpeed(3);
 }
 
-Shield::~Shield()
-{
-}
+Shield::~Shield() {}
 
-void Shield::activateShield()
-{
+void Shield::activateShield() {
     if (!_canActivateShield || _shieldIsUp)
         return;
     _shieldIsUp = true;
@@ -36,63 +31,51 @@ void Shield::activateShield()
     _shield = RType::instance->createShield(std::get<0>(pos), std::get<1>(pos));
 }
 
-void Shield::deactivateShield()
-{
+void Shield::deactivateShield() {
     _shieldIsUp = false;
     _canActivateShield = false;
     _shield->kill();
 }
 
-bool Shield::isShieldUp() const
-{
+bool Shield::isShieldUp() const {
     return _shieldIsUp;
 }
 
-bool Shield::canActivateShield() const
-{
+bool Shield::canActivateShield() const {
     return _canActivateShield;
 }
 
-void Shield::takeDamage(int damage)
-{
+void Shield::takeDamage(int damage) {
     if (_shieldIsUp)
         return;
     AEntity::takeDamage(damage);
 }
 
-void Shield::update()
-{
+void Shield::update() {
     std::tuple<float, float> pos = getPosition();
     std::tuple<float, float> oldPos = getOldPosition();
-    if (std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos))
-    {
+    if (std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) {
         setOldPosition(std::get<0>(pos), std::get<1>(pos));
     }
-    if (_shieldIsUp)
-    {
+    if (_shieldIsUp) {
         auto pos = getPosition();
         _shield->setPosition(std::get<0>(pos), std::get<1>(pos));
         auto _curentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsedTime = _curentTime - _shieldStart;
-        if (elapsedTime >= _targetShieldDuration)
-        {
+        if (elapsedTime >= _targetShieldDuration) {
             deactivateShield();
             _shieldStart = _curentTime;
         }
-    }
-    else
-    {
+    } else {
         auto _curentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsedTime = _curentTime - _shieldStart;
-        if (elapsedTime >= _reloadShieldDuration)
-        {
+        if (elapsedTime >= _reloadShieldDuration) {
             _canActivateShield = true;
             _shieldStart = _curentTime;
         }
     }
 }
 
-void Shield::action()
-{
+void Shield::action() {
     activateShield();
 }

@@ -43,25 +43,25 @@ class TCPConnection : public std::enable_shared_from_this<TCPConnection<T>> {
     }
     void ConnectToServer(const tcp::resolver::results_type& endpoints) {
         if (m_ownerType == owner::client) {
-            boost::asio::async_connect(m_socket, endpoints,
-                                       [this](const boost::system::error_code& ec, tcp::endpoint) {
-                                           if (!ec) {
-                                               _game->setConnected(true);
-                                               /*Event evt;
-                    evt.ACTION_NAME = ACTION::CREATE;
-                    evt.body = "";
-                    message<ACTION> msg;
-                    std::vector<uint8_t> data = encodeEvent(evt);
-                    msg.header.id = evt.ACTION_NAME;
-                    msg.header.size = sizeof(data);
-                    msg.body.resize(sizeof(data));
-                    std::memcpy(msg.body.data(), data.data(), sizeof(data));
-                    SendAsync(msg);*/
-                                               ReadHeader();
-                                           } else {
-                                               _game->setConnected(true);
-                                           }
-                                       });
+            boost::asio::async_connect(
+                m_socket, endpoints, [this](const boost::system::error_code& ec, tcp::endpoint) {
+                    if (!ec) {
+                        _game->setConnected(true);
+                        Event evt;
+                        evt.ACTION_NAME = ACTION::CREATE;
+                        evt.body = "";
+                        message<ACTION> msg;
+                        std::vector<uint8_t> data = encodeEvent(evt);
+                        msg.header.id = evt.ACTION_NAME;
+                        msg.header.size = sizeof(data);
+                        msg.body.resize(sizeof(data));
+                        std::memcpy(msg.body.data(), data.data(), sizeof(data));
+                        SendAsync(msg);
+                        ReadHeader();
+                    } else {
+                        _game->setConnected(true);
+                    }
+                });
         }
     }
     void Disconnect() {

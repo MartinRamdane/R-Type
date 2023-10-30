@@ -7,9 +7,7 @@
 
 #include "Shooter.hpp"
 
-Shooter::Shooter(EntityInfo info)
-    : Character(info)
-{
+Shooter::Shooter(EntityInfo info) : Character(info) {
     // set special attributes
     setDamage(15);
     setLife(90);
@@ -18,6 +16,4 @@ Shooter::Shooter(EntityInfo info)
     setFireRate(4.5);
 }
 
-Shooter::~Shooter()
-{
-}
+Shooter::~Shooter() {}

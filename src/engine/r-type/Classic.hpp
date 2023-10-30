@@ -7,16 +7,15 @@
 
 #pragma once
 
-#include "../Character.hpp"
 #include <iostream>
+#include "../Character.hpp"
 #include "RType.hpp"
 
-class Classic : public Character
-{
-public:
+class Classic : public Character {
+   public:
     Classic(EntityInfo info);
     ~Classic();
 
-protected:
-private:
+   protected:
+   private:
 };

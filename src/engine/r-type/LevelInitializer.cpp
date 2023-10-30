@@ -8,9 +8,8 @@
 #include "LevelInitializer.hpp"
 #include "RType.hpp"
 
-LevelInitializer::LevelInitializer(IGame *game)
-{
-    _game = dynamic_cast<RType *>(game);
+LevelInitializer::LevelInitializer(IGame* game) {
+    _game = dynamic_cast<RType*>(game);
 }
 
 LevelInitializer::~LevelInitializer() {}
@@ -38,7 +37,7 @@ void LevelInitializer::loadLevel(int currentLevel) {
 
 void LevelInitializer::loadConfig(nlohmann::json spriteConfig) {
     _info.name = spriteConfig["Name"];
-    _info.assetFile = _game->getAssets()[spriteConfig["Name"]]();
+    _info.assetFile = _game->getAssets()[spriteConfig["Name"]];
     _info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     _info.spriteConfigJsonObjectName = spriteConfig["Name"];
     _info.projectileSpeed = spriteConfig["ProjectileSpeed"];
@@ -72,11 +71,10 @@ void LevelInitializer::createDropper(int cout, nlohmann::json positions) {
     _info = {};
 }
 
-void LevelInitializer::createBackground()
-{
+void LevelInitializer::createBackground() {
     _info.id = _game->getCurrentId();
     _info.name = "Background";
-    _info.assetFile = _game->getAssets()["Background"]();
+    _info.assetFile = _game->getAssets()["Background"];
     _info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     _info.spriteConfigJsonObjectName = "Background";
     _info.x = 425;

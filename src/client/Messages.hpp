@@ -10,26 +10,20 @@
 #include "TCPConnection.hpp"
 
 template <typename T>
-struct message_header
-{
+struct message_header {
     T id{};
     uint32_t size = 0;
 };
 template <typename T>
-struct message
-{
+struct message {
     message_header<T> header{};
     std::vector<uint8_t> body;
-    size_t size() const
-    {
-        return body.size();
-    }
+    size_t size() const { return body.size(); }
 };
 template <typename T>
 class TCPConnection;
 template <typename T>
-struct owned_message
-{
+struct owned_message {
     std::shared_ptr<TCPConnection<T>> remote = nullptr;
     message<T> msg;
 };

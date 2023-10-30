@@ -10,10 +10,10 @@
 
 #include <map>
 #include <memory>
-#include "Entity.hpp"
 #include "Game.hpp"
 #include "Input.hpp"
 #include "Login.hpp"
+#include "SFML/Entity.hpp"
 
 class Menu {
    public:

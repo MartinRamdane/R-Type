@@ -7,12 +7,11 @@
 
 #pragma once
 
-#include "../Character.hpp"
 #include <chrono>
+#include "../Character.hpp"
 
-class SupportShip : public Character
-{
-public:
+class SupportShip : public Character {
+   public:
     SupportShip(EntityInfo info, int relatedPlayerId);
     SupportShip(EntityInfo info);
     ~SupportShip();
@@ -21,8 +20,8 @@ public:
     int getRelatedPlayerId() const;
     void launch();
 
-protected:
-private:
+   protected:
+   private:
     int _relatedPlayerId;
     bool _launched = false;
     int _launchX = 0;

@@ -8,237 +8,132 @@
 #include "UDPClient.hpp"
 #include "Game.hpp"
 
-std::string actionToString(ACTION action)
-{
-  switch (action)
-  {
-  case ACTION::OK:
-    return "OK";
-  case ACTION::KO:
-    return "KO";
-  case ACTION::CONNECT:
-    return "CONNECT";
-  case ACTION::CREATE:
-    return "CREATE";
-  case ACTION::LIST:
-    return "LIST";
-  case ACTION::JOIN:
-    return "JOIN";
-  case ACTION::JOINED:
-    return "JOINED";
-  case ACTION::READY:
-    return "READY";
-  case ACTION::START:
-    return "START";
-  case ACTION::LEFT:
-    return "LEFT";
-  case ACTION::RIGHT:
-    return "RIGHT";
-  case ACTION::UP:
-    return "UP";
-  case ACTION::DOWN:
-    return "DOWN";
-  case ACTION::SHOOT:
-    return "SHOOT";
-  case ACTION::QUIT:
-    return "QUIT";
-  case ACTION::PING:
-    return "PING";
-  case ACTION::PONG:
-    return "PONG";
-  case ACTION::SPRITE:
-    return "SPRITE";
-  case ACTION::UNKNOWN:
-    return "UNKNOWN";
-  case ACTION::SHIELD:
-    return "SHIELD";
-  case ACTION::TEXT:
-    return "TEXT";
-  case ACTION::DEAD:
-    return "DEAD";
-  case ACTION::FLIP:
-    return "FLIP";
-  case ACTION::RESET:
-    return "RESET";
-  case ACTION::LAUNCH:
-    return "LAUNCH";
-  }
-  return "";
+std::string actionToString(ACTION action) {
+    switch (action) {
+        case ACTION::OK:
+            return "OK";
+        case ACTION::KO:
+            return "KO";
+        case ACTION::CONNECT:
+            return "CONNECT";
+        case ACTION::CREATE:
+            return "CREATE";
+        case ACTION::LIST:
+            return "LIST";
+        case ACTION::JOIN:
+            return "JOIN";
+        case ACTION::JOINED:
+            return "JOINED";
+        case ACTION::READY:
+            return "READY";
+        case ACTION::START:
+            return "START";
+        case ACTION::LEFT:
+            return "LEFT";
+        case ACTION::RIGHT:
+            return "RIGHT";
+        case ACTION::UP:
+            return "UP";
+        case ACTION::DOWN:
+            return "DOWN";
+        case ACTION::SPACE:
+            return "SPACE";
+        case ACTION::QUIT:
+            return "QUIT";
+        case ACTION::PING:
+            return "PING";
+        case ACTION::PONG:
+            return "PONG";
+        case ACTION::SPRITE:
+            return "SPRITE";
+        case ACTION::UNKNOWN:
+            return "UNKNOWN";
+        case ACTION::KEY_S:
+            return "KEY_S";
+        case ACTION::TEXT:
+            return "TEXT";
+        case ACTION::DEAD:
+            return "DEAD";
+        case ACTION::FLIP:
+            return "FLIP";
+        case ACTION::RESET:
+            return "RESET";
+        case ACTION::KEY_L:
+            return "KEY_L";
+        case ACTION::KEY_C:
+            return "KEY_C";
+    }
+    return "";
 }
 
-UDPClient::UDPClient() : io_context_(), socket_(io_context_)
-{
-  socket_.open(boost::asio::ip::udp::v4());
-  _host = "";
-  _port = 0;
+UDPClient::UDPClient() : io_context_(), socket_(io_context_) {
+    socket_.open(boost::asio::ip::udp::v4());
+    _host = "";
+    _port = 0;
 }
 
-UDPClient::~UDPClient()
-{
-  socket_.close();
+UDPClient::~UDPClient() {
+    socket_.close();
 }
 
-void UDPClient::connect_to(const std::string &host, int port)
-{
-  remote_endpoint_ = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(host), port);
-  sendEvent({ACTION::JOIN, "ok"});
-  _port = port;
-  _host = host;
-  start_receive();
-  _thread = std::thread([this]() { io_context_.run(); });
+void UDPClient::connect_to(const std::string& host, int port) {
+    remote_endpoint_ =
+        boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(host), port);
+    sendEvent({ACTION::JOIN, "ok"});
+    _port = port;
+    _host = host;
+    start_receive();
+    _thread = std::thread([this]() { io_context_.run(); });
 }
 
-void UDPClient::setGameRef(Game *gameRef)
-{
-  _gameRef = gameRef;
-}
-
-void UDPClient::start_receive()
-{
-  try
-  {
-    socket_.async_receive_from(
-        boost::asio::buffer(temp_buffer), sender_endpoint,
-        [this](const std::error_code, std::size_t)
-        {
-          _queue.push_back(temp_buffer);
-          start_receive();
-        });
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error starting receive: " << e.what() << std::endl;
-  }
-}
-
-void UDPClient::HandleMessage(std::vector<uint8_t> &msg)
-{
-  EventHandler evt;
-  Event event = evt.decodeMessage(msg);
-  handleEvents(event);
-}
-
-void UDPClient::sendEvent(Event evt)
-{
-  std::vector<uint8_t> data = encodeEvent(evt);
-  SendAsync(data, remote_endpoint_);
-}
-
-std::vector<uint8_t> UDPClient::encodeEvent(Event event)
-{
-  EventHandler evt;
-  evt.addEvent(event.ACTION_NAME, event.body);
-  return evt.encodeMessage();
-}
-
-void UDPClient::joinGame(Event evt)
-{
-  std::stringstream ss(evt.body);
-  std::string gameTitle;
-  std::string width;
-  std::string height;
-  ss >> gameTitle;
-  ss >> width;
-  ss >> height;
-  _gameRef->setUDPConnected(true);
-  _gameRef->setGameTitle(gameTitle);
-  _gameRef->setWidth(std::stoi(width));
-  _gameRef->setHeight(std::stoi(height));
-}
-
-void UDPClient::updateSprite(Event evt)
-{
-  Parser *parseRef = new Parser();
-  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
-  if (std::get<0>(res) < 0)
-    _gameRef->removeEntity(-std::get<0>(res));
-  else
-    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
-}
-
-void UDPClient::updateText(Event evt)
-{
-  std::stringstream ss(evt.body);
-  std::string id;
-  std::string x;
-  std::string y;
-  std::string text;
-  std::string color;
-  std::string objectType;
-  ss >> id;
-  ss >> x;
-  ss >> y;
-  ss >> text;
-  ss >> color;
-  ss >> objectType;
-  Parser *parseRef = new Parser();
-  RessourceManager ressourceManagerRef = _gameRef->getRessourceManager();
-  std::tuple<int, Entity> res = parseRef->parseMessage(evt, ressourceManagerRef);
-  if (std::get<0>(res) < 0)
-    _gameRef->removeEntity(-std::get<0>(res));
-  else
-    _gameRef->addEntity(std::get<0>(res), std::get<1>(res));
-}
-
-void UDPClient::flipEntity(Event evt)
-{
-  std::stringstream ss(evt.body);
-  std::string tpm;
-  std::string id;
-  ss >> tpm;
-  ss >> id;
-  _gameRef->flipEntity(std::stoi(id));
-}
-
-void UDPClient::handleEvents(Event evt)
-{
-    switch (evt.ACTION_NAME) {
-    case ACTION::PING:
-        sendEvent({ACTION::PONG, ""});
-        break;
-    case ACTION::JOINED:
-        joinGame(evt);
-        break;
-    case ACTION::SPRITE:
-        updateSprite(evt);
-        break;
-    case ACTION::TEXT:
-        updateText(evt);
-        break;
-    case ACTION::FLIP:
-        flipEntity(evt);
-        break;
-    case ACTION::RESET:
-        _gameRef->clearEntities();
-    default:
-        break;
+void UDPClient::start_receive() {
+    try {
+        socket_.async_receive_from(boost::asio::buffer(temp_buffer), sender_endpoint,
+                                   [this](const std::error_code, std::size_t) {
+                                       _queue.push_back(temp_buffer);
+                                       start_receive();
+                                   });
+    } catch (const std::exception& e) {
+        std::cerr << "Error starting receive: " << e.what() << std::endl;
     }
 }
 
-void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint)
-{
+void UDPClient::HandleMessage(std::vector<uint8_t>& msg) {
+    EventHandler evt;
+    Event event = evt.decodeMessage(msg);
+    _eventQueue.push_back(event);
+}
+
+void UDPClient::sendEvent(Event evt) {
+    std::vector<uint8_t> data = encodeEvent(evt);
+    SendAsync(data, remote_endpoint_);
+}
+
+std::vector<uint8_t> UDPClient::encodeEvent(Event event) {
+    EventHandler evt;
+    evt.addEvent(event.ACTION_NAME, event.body);
+    return evt.encodeMessage();
+}
+
+void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint) {
     boost::asio::post(socket_.get_executor(), [this, data, endpoint]() {
         bool bWritingMessage = !_outQueue.empty();
         _outQueue.push_back({data, endpoint});
-        if (!bWritingMessage)
-        {
+        if (!bWritingMessage) {
             processSendQueue();
-        } });
+        }
+    });
 }
 
-void UDPClient::processSendQueue()
-{
-  socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint, [this](const std::error_code &error, std::size_t)
-    {
-      if (!error)
-      {
-          _outQueue.pop_front();
-          if (!_outQueue.empty())
-              processSendQueue();
-      }
-      else
-      {
-          std::cout << "[ERROR] sending data" << std::endl;
-      } });
+void UDPClient::processSendQueue() {
+    socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint,
+                          [this](const std::error_code& error, std::size_t) {
+                              if (!error) {
+                                  _outQueue.pop_front();
+                                  if (!_outQueue.empty())
+                                      processSendQueue();
+                              } else {
+                                  std::cout << "[ERROR] sending data" << std::endl;
+                              }
+                          });
 }
