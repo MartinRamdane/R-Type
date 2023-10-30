@@ -75,5 +75,7 @@ void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
         }
         case ACTION::KEY_L: {
         } break;
+        case ACTION::KEY_C: {
+        } break;
     }
 }

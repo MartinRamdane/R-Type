@@ -227,7 +227,7 @@ void UDPServer::sendSpriteToReadyClient(std::vector<Client>::iterator client)
     }
 }
 
-void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::vector<Client>::iterator client)
+void UDPServer::handleEvents(Event evt, boost::asio::ip::udp::endpoint, std::vector<Client>::iterator client)
 {
     Event event;
     switch (evt.ACTION_NAME)
