@@ -215,9 +215,9 @@ IEntity::Type Entity::getType() const {
 }
 
 void Entity::makePrediction() {
-    if (_direction == "left" || _direction == "right") {
+    if (_direction == "left" || _direction == "right" || _direction == "up" || _direction == "down") {
         float speed = _speed;
-        if (_direction == "left") {
+        if (_direction == "left" || _direction == "up") {
             speed = _speed * -1;
         }
         sf::Vector2f oldPos = _sprite.getPosition();

@@ -212,3 +212,11 @@ bool AEntity::getHasSupport() const {
 int AEntity::getLife() const {
     return _life;
 }
+
+void AEntity::setRelatedPlayer(int relatedPlayer) {
+    _relatedPlayerId = relatedPlayer;
+}
+
+int AEntity::getRelatedPlayer() const {
+    return _relatedPlayerId;
+}

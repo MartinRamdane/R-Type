@@ -23,7 +23,9 @@ public:
         UP_LEFT,
         UP_RIGHT,
         DOWN_LEFT,
-        DOWN_RIGHT
+        DOWN_RIGHT,
+        TRACKING,
+        DIRECTIONAL
     };
     typedef struct EntityInfo {
         std::string name;
@@ -35,8 +37,8 @@ public:
         std::string text;
         float x;
         float y;
-        float oldX;
-        float oldY;
+        float oldX = 0;
+        float oldY = 0;
         float speed;
         float radius;
         float scaleX = 1;
@@ -46,6 +48,7 @@ public:
         int damage;
         int life;
         int id;
+        int relatedPlayerId;
         Direction direction;
     } EntityInfo;
     virtual ~IEntity() = default;
@@ -88,4 +91,8 @@ public:
     virtual std::string getOldText() const = 0;
     virtual void setOldText(std::string text) = 0;
     virtual int getLife() const = 0;
+    virtual void setHasSupport(bool hasSupport) = 0;
+    virtual bool getHasSupport() const = 0;
+    virtual void setRelatedPlayer(int relatedPlayer) = 0;
+    virtual int getRelatedPlayer() const = 0;
 };

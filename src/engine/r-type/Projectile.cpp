@@ -12,6 +12,7 @@ Projectile::Projectile(EntityInfo info) : AEntity(info) {
     _speed = info.speed;
     _direction = info.direction;
     _life = 1;
+    _relatedPlayerId = info.relatedPlayerId;
 }
 
 Projectile::~Projectile() {}
@@ -27,6 +28,73 @@ void Projectile::move(float x, float y) {
     setOldPosition(_x, _y);
     _x += x * _speed;
     _y += y * _speed;
+}
+
+void Projectile::trackPlayer() {
+    auto player = RType::instance->getPlayer(_relatedPlayerId);
+    if (player == nullptr)
+        return;
+    auto pos = player->getPosition();
+    int x = std::get<0>(pos);
+    int y = std::get<1>(pos);
+    int xDiff = x - _x;
+    int yDiff = y - _y;
+    int xAbs = std::abs(xDiff);
+    int yAbs = std::abs(yDiff);
+    if (x < _x && y < _y) {
+        if (xAbs > yAbs)
+            move(-1, 0);
+        else
+            move(0, -1);
+    } else if (x > _x && y < _y) {
+        if (xAbs > yAbs)
+            move(1, 0);
+        else
+            move(0, -1);
+    } else if (x < _x && y > _y) {
+        if (xAbs > yAbs)
+            move(-1, 0);
+        else
+            move(0, 1);
+    } else if (x > _x && y > _y) {
+        if (xAbs > yAbs)
+            move(1, 0);
+        else
+            move(0, 1);
+    } else if (x < _x)
+        move(-1, 0);
+    else if (x > _x)
+        move(1, 0);
+    else if (y < _y)
+        move(0, -1);
+    else if (y > _y)
+        move(0, 1);
+}
+
+void Projectile::directionalMove()
+{
+    //make it move in the direction of the player but not track it
+    if (_oldX == 0 && _oldY == 0) {
+        _oldX = _x;
+        _oldY = _y;
+    }
+    if (_oldX < _x && _oldY < _y) {
+        move(1, 1);
+    } else if (_oldX > _x && _oldY < _y) {
+        move(-1, 1);
+    } else if (_oldX < _x && _oldY > _y) {
+        move(1, -1);
+    } else if (_oldX > _x && _oldY > _y) {
+        move(-1, -1);
+    } else if (_oldX < _x) {
+        move(1, 0);
+    } else if (_oldX > _x) {
+        move(-1, 0);
+    } else if (_oldY < _y) {
+        move(0, 1);
+    } else if (_oldY > _y) {
+        move(0, -1);
+    }
 }
 
 void Projectile::update() {
@@ -54,6 +122,12 @@ void Projectile::update() {
             break;
         case DOWN_RIGHT:
             move(1, 1);
+            break;
+        case DIRECTIONAL:
+            directionalMove();
+            break;
+        case TRACKING:
+            trackPlayer();
             break;
         default:
             break;

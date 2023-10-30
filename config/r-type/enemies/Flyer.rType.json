@@ -1,7 +1,7 @@
 {
     "Type": "Enemy",
     "Name": "Flyer",
-    "MovementType": "UpAndDown",
+    "MovementType": "Wave",
     "ProjectileType": "DiskProjectile",
     "FireRate": 1,
     "ProjectileSpeed": 8,

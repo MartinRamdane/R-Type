@@ -55,6 +55,8 @@ class AEntity : public IEntity {
     bool getEntityHasCollided() const;
     void setHasSupport(bool hasSupport);
     bool getHasSupport() const;
+    void setRelatedPlayer(int relatedPlayer);
+    int getRelatedPlayer() const;
     int getLife() const;
 
    protected:
@@ -84,4 +86,5 @@ class AEntity : public IEntity {
     std::string _text = "";
     std::string _oldText = "";
     bool _hasSupport = false;
+    int _relatedPlayerId = -1;
 };

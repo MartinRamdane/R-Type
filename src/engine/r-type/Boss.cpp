@@ -64,18 +64,14 @@ void Boss::shoot() {
         info.x = std::get<0>(pos) - 33;
         info.y = std::get<1>(pos) - 2;
         info.name = getShootAsset();
-        info.scaleX = 0.25;
-        info.scaleY = 0.25;
+        info.scaleX = 2;
+        info.scaleY = 2;
         info.speed = getProjectileSpeed();
         info.damage = getDamage();
         info.spriteConfigJsonObjectName = getShootAsset();
         info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-        if (std::get<1>(pos) < std::get<1>(playerPos))
-            info.direction = IEntity::UP_LEFT;
-        else if (std::get<0>(pos) > std::get<0>(playerPos))
-            info.direction = IEntity::UP_LEFT;
-        else if (std::get<0>(pos) < std::get<0>(playerPos))
-            info.direction = IEntity::UP_LEFT;
+        info.direction = TRACKING;
+        info.relatedPlayerId = player->getId();
         RType::instance->createProjectile(info, false, IGame::ProjectileGroup::BOSS);
     }
 }

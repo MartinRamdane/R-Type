@@ -6,6 +6,7 @@
 */
 
 #include "RType.hpp"
+#include "Boss.hpp"
 #include "Classic.hpp"
 #include "Dropper.hpp"
 #include "Enemy.hpp"
@@ -14,7 +15,6 @@
 #include "Speed.hpp"
 #include "SupportShip.hpp"
 #include "Tank.hpp"
-#include "Boss.hpp"
 
 RType* RType::instance = nullptr;
 
@@ -255,15 +255,11 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
     if (group == ProjectileGroup::PLAYER) {
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
-    } else if (group == ProjectileGroup::ENEMY) {
+    } else if (group == ProjectileGroup::ENEMY || group == ProjectileGroup::BOSS) {
         _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     } else if (group == ProjectileGroup::SUPPORT) {
         _supportProjectilesGroups->insert(projectile);
-        _projectiles.push_back(projectile);
-    } else if (group == ProjectileGroup::BOSS) {
-        projectile->setScale(3, 3);
-        _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     }
     if (flip)
@@ -485,7 +481,7 @@ std::shared_ptr<AEntity> RType::getPlayer(int id) {
     for (auto player : _players)
         if (player->getId() == id)
             return (player);
-    return (nullptr);
+    return (NULL);
 }
 
 std::vector<std::shared_ptr<AEntity>> RType::getPlayers() {
