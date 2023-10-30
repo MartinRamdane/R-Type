@@ -103,6 +103,7 @@ void RType::createAssetList() {
     _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
     _assets["Worm"] = parser.get<std::string>(val, "Game.Assets.Images.Worm");
     _assets["Boss1"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1");
+    _assets["Boss1Projectile"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1Projectile");
 }
 
 int RType::getId(Event event) {
@@ -258,6 +259,10 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
         _projectiles.push_back(projectile);
     } else if (group == ProjectileGroup::SUPPORT) {
         _supportProjectilesGroups->insert(projectile);
+        _projectiles.push_back(projectile);
+    } else if (group == ProjectileGroup::BOSS) {
+        projectile->setScale(3, 3);
+        _enemyProjectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
     }
     if (flip)

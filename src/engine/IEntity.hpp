@@ -19,7 +19,11 @@ public:
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
+        UP_LEFT,
+        UP_RIGHT,
+        DOWN_LEFT,
+        DOWN_RIGHT
     };
     typedef struct EntityInfo {
         std::string name;

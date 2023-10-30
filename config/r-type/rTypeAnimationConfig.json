@@ -94,5 +94,11 @@
         "nb_rect": 7,
         "rect_init": 0,
         "form": "loop"
+    },
+    "Boss1Projectile":
+    {
+        "nb_rect": 4,
+        "rect_init": 0,
+        "form": "once"
     }
 }

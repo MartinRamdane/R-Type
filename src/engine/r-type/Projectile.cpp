@@ -43,6 +43,18 @@ void Projectile::update() {
         case RIGHT:
             move(1, 0);
             break;
+        case UP_LEFT:
+            move(-1, -1);
+            break;
+        case UP_RIGHT:
+            move(1, -1);
+            break;
+        case DOWN_LEFT:
+            move(-1, 1);
+            break;
+        case DOWN_RIGHT:
+            move(1, 1);
+            break;
         default:
             break;
     }
