@@ -17,8 +17,44 @@ std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> e
     if (auto test = std::dynamic_pointer_cast<Projectile>(entity)) {
         auto projectile = std::dynamic_pointer_cast<Projectile>(entity);
         std::string entityDirection;
-        projectile->getDirection() == IEntity::Direction::LEFT ? entityDirection = "left"
-                                                               : entityDirection = "right";
+        switch (projectile->getDirection()) {
+            case IEntity::Direction::NONE:
+                entityDirection = "none";
+                break;
+            case IEntity::Direction::UP:
+                entityDirection = "up";
+                break;
+            case IEntity::Direction::DOWN:
+                entityDirection = "down";
+                break;
+            case IEntity::Direction::LEFT:
+                entityDirection = "left";
+                break;
+            case IEntity::Direction::RIGHT:
+                entityDirection = "right";
+                break;
+            case IEntity::Direction::UP_LEFT:
+                entityDirection = "up_left";
+                break;
+            case IEntity::Direction::UP_RIGHT:
+                entityDirection = "up_right";
+                break;
+            case IEntity::Direction::DOWN_LEFT:
+                entityDirection = "down_left";
+                break;
+            case IEntity::Direction::DOWN_RIGHT:
+                entityDirection = "down_right";
+                break;
+            case IEntity::Direction::TRACKING:
+                entityDirection = "tracking";
+                break;
+            case IEntity::Direction::DIRECTIONAL:
+                entityDirection = "directional";
+                break;
+            default:
+                entityDirection = "none";
+                break;
+        }
         return "ecreate " + std::to_string(entity->getId()) + " " +
                std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
                entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
