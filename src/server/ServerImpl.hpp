@@ -43,7 +43,6 @@ protected:
             }
                 break;
             case ACTION::CREATE: {
-                std::cout << "create event" << std::endl;
 //                if (_server->getInstancesNb() >= 1) {
 //                    Instance *instance = _server->getInstance(0);
 //                    Event evt;
@@ -62,7 +61,6 @@ protected:
                 std::stringstream ss(handler.getBody());
                 std::string gameName;
                 ss >> gameName;
-                std::cout << "game name: " << gameName << std::endl;
                 InstanceInfos infos = _server->createInstance(gameName);
                 Instance *instance = _server->getInstance(_server->getInstancesNb() - 1);
                 Event evt;
@@ -73,24 +71,16 @@ protected:
                 instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
                 _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
                 SendEvent(client, evt);
-                std::cout << "try to send Joined event" << std::endl;
             }
                 break;
             case ACTION::LIST: {
                 std::cout << "[" << client->GetID() << "]: LIST" << std::endl;
                 Event evt = {ACTION::LIST, ""};
                 for (auto instance: _server->getInstances()) {
-                    std::cout << "instance: " << instance->getName() << std::endl;
-                    std::cout << "instance game: " << instance->getGameName() << std::endl;
-                    std::cout << "instance nb players: " << instance->getNbPlayers() << std::endl;
-                    std::cout << "instance max players: " << instance->getMaxPlayers() << std::endl;
-                    std::cout << "instance port: " << instance->getPort() << std::endl;
-                    std::cout << "instance id: " << instance->getId() << std::endl;
                     evt.body = instance->getName() + " " + instance->getGameName() + " " +
                                std::to_string(instance->getNbPlayers()) + " " +
                                std::to_string(instance->getMaxPlayers()) + " " + std::to_string(instance->getPort()) +
                                " " + std::to_string(instance->getId());
-                    std::cout << "evt body: " << evt.body << std::endl;
                     SendEvent(client, evt);
                 }
             }

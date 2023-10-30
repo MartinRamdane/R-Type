@@ -35,7 +35,6 @@ int main(int ac, char **av) {
     Menu *menu = new Menu(game);
     menu->mainloop();
     delete menu;
-    std::cout << "test" << std::endl;
     game->run();
     return 0;
 }

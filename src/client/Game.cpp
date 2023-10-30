@@ -19,7 +19,6 @@ Game::Game() : _threadPool(3) {
     closed = false;
     _progressBar = ProgressBar();
     _instanceMenu = new InstanceMenu(this);
-    std::cout << "end to constructor" << std::endl;
 }
 
 Game::~Game() {
@@ -56,11 +55,9 @@ void Game::run() {
                 Event evt = {ACTION::LIST, ""};
                 _client->SendEvent(evt);
             }
-            std::cout << "connected but not to a instance" << std::endl;
             _instanceMenu->mainloop();
             sendListEvent = true;
         }
-        std::cout << "end of instance menu" << std::endl;
         if (isUDPClientConnected) {
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
@@ -179,7 +176,6 @@ bool Game::connectToServer(std::string host, int port) {
 }
 
 bool Game::connectToUdpServer(std::string host, int port) {
-    std::cout << "connect to udp server" << std::endl;
     _udpClient = std::make_shared<UDPClient>();
     _udpClient->connect_to(host, port);
     isUDPClientConnected = true;
@@ -323,9 +319,6 @@ void Game::checkEntities(int nb)
 {
     int currentNb = getEntitiesNumber();
     if (currentNb < nb) {
-        std::cout << "current nb : " << currentNb << std::endl;
-        std::cout << "nb : " << nb << std::endl;
-        std::cout << "missing entities" << std::endl;
         _udpClient->sendEvent({ACTION::CHECK, ""});
     }
 }

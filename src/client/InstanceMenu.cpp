@@ -131,7 +131,6 @@ void InstanceMenu::mainloop() {
                 }
                 if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
                         worldMousePosition)) {
-                    std::cout << "refresh list" << std::endl;
                     _client->SendEvent({ACTION::LIST, ""});
                 }
 
@@ -149,7 +148,6 @@ void InstanceMenu::mainloop() {
                     for (auto &gameSelector: _gameSelector) {
                         if (gameSelector.second->getSprite().getGlobalBounds().contains(
                                 worldMousePosition)) {
-                            std::cout << "select game " << gameSelector.first << std::endl;
                             Event evt;
                             evt.ACTION_NAME = ACTION::CREATE;
                             std::string body = gameSelector.first;
@@ -200,6 +198,5 @@ void InstanceMenu::mainloop() {
 }
 
 void InstanceMenu::addInstanceButton(InstanceType instance, int x, int y) {
-    std::cout << "add instance button" << std::endl;
     _instanceButtons[instance.id] = std::make_unique<InstanceButton>(instance, x, y);
 }

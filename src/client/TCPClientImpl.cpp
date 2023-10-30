@@ -17,7 +17,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
         }
             break;
         case ACTION::CREATE: {
-            std::cout << "handle create event" << std::endl;
             EventHandler evt;
             evt.decodeMessage(msg.body);
             std::stringstream ss(evt.getBody());
@@ -26,7 +25,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
             ss >> playerId;
             ss >> getPort;
             ss >> getPort;
-            std::cout << "player id recu lors du create: " << playerId << std::endl;
             // add get windows
             int port = std::stoi(getPort);
             std::string serverToJoinInfos = std::to_string(port);
@@ -36,7 +34,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
         }
             break;
         case ACTION::LIST: {
-            std::cout << "handle list event" << std::endl;
             EventHandler evt;
             evt.decodeMessage(msg.body);
             std::stringstream ss(evt.getBody());
@@ -59,14 +56,12 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
             InstanceType instance = {instanceName, instanceGameName, nbPlayers,
                                      maxPlayers, port, id};
             _game->getInstanceMenu()->addInstanceButton(instance, 0, 0);
-            std::cout << "on arrive a rajouter l'instance dans le vector du menu" << std::endl;
         }
             break;
         case ACTION::JOIN: {
         }
             break;
         case ACTION::JOINED: {
-            std::cout << "handle joined event" << std::endl;
             EventHandler evt;
             evt.decodeMessage(msg.body);
             std::stringstream ss(evt.getBody());

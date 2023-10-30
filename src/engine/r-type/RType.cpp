@@ -15,9 +15,9 @@
 #include "SupportShip.hpp"
 #include "Tank.hpp"
 
-RType* RType::instance = nullptr;
+RType *RType::instance = nullptr;
 
-RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
+RType::RType(std::shared_ptr <Engine> &engine) : _engine(engine) {
     createAssetList();
     instance = this;
     // Create all entities groups
@@ -66,8 +66,7 @@ RType::~RType() {
     _assets.clear();
 }
 
-void RType::createAssetList()
-{
+void RType::createAssetList() {
     JsonParser parser;
     auto val = JsonParser::readFile("rTypeSetup.json");
     _assets["Classic"] = parser.get<std::string>(val, "Game.Assets.Images.Classic");
@@ -93,11 +92,10 @@ int RType::getId(Event event) {
     std::string playerId;
     ss >> playerId;
     int id = std::stoi(playerId.substr(1));
-    std::cout << "player id: " << id << std::endl;
     return (id);
 }
 
-std::shared_ptr<Character> RType::getRandomSpaceship() {
+std::shared_ptr <Character> RType::getRandomSpaceship() {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, 4);
@@ -136,37 +134,37 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
     }
 }
 
-void RType::update(ThreadSafeQueue<Event>& events) {
+void RType::update(ThreadSafeQueue<Event> &events) {
     eraseDeadEntity();
     while (!events.empty()) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::LEFT:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int) _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(-1, 0);
                 break;
             case ACTION::RIGHT:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int) _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(1, 0);
                 break;
             case ACTION::UP:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int) _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int) _players.size() >= getId(event))
                     _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::SPACE:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int) _players.size() >= getId(event))
                     _players[getId(event) - 1]->shoot();
                 break;
             case ACTION::KEY_S:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int) _players.size() >= getId(event))
                     _players[getId(event) - 1]->action();
                 break;
             case ACTION::FLIP:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int) _players.size() >= getId(event))
                     _players[getId(event) - 1]->flip();
                 break;
             case ACTION::READY:
@@ -175,7 +173,7 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 setAllEntitiesToCreated();
                 break;
             case ACTION::KEY_L:
-                for (auto supportShip : _supportShips) {
+                for (auto supportShip: _supportShips) {
                     if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
                         supportShip->launch();
                         break;
@@ -183,7 +181,7 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 }
                 break;
             case ACTION::KEY_C:
-                for (auto supportShip : _supportShips) {
+                for (auto supportShip: _supportShips) {
                     if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
                         supportShip->setAlliesTouched(true);
                         _players[getId(event) - 1]->setAlliesTouched(true);
@@ -205,8 +203,8 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         deleteAllEntities();
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
-        for (auto player : _players) {
-            for (auto player : _players)
+        for (auto player: _players) {
+            for (auto player: _players)
                 player->resetLife();
             _lastId++;
         }
@@ -224,7 +222,7 @@ void RType::createExplosion(int x, int y) {
     info.scaleY = 2;
     info.id = _lastId;
     _lastId++;
-    std::shared_ptr<AEntity> explosion = std::make_shared<AEntity>(info);
+    std::shared_ptr <AEntity> explosion = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(explosion);
     _staticObjects.push_back(explosion);
 }
@@ -233,7 +231,7 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
     info.assetFile = _assets[info.name];
     info.id = _lastId;
     _lastId++;
-    std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>(info);
+    std::shared_ptr <Projectile> projectile = std::make_shared<Projectile>(info);
     if (group == ProjectileGroup::PLAYER) {
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
@@ -248,7 +246,7 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
         projectile->setFlip(flip);
 }
 
-std::shared_ptr<AEntity> RType::createShield(int x, int y) {
+std::shared_ptr <AEntity> RType::createShield(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -257,19 +255,19 @@ std::shared_ptr<AEntity> RType::createShield(int x, int y) {
     info.spriteConfigJsonObjectName = "Shield";
     info.id = _lastId;
     _lastId++;
-    std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(info);
+    std::shared_ptr <AEntity> _shield = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(_shield);
     _staticObjects.push_back(_shield);
     return (_shield);
 }
 
 void RType::createDropper(IEntity::EntityInfo info) {
-    std::shared_ptr<Dropper> dropper = std::make_shared<Dropper>(info);
+    std::shared_ptr <Dropper> dropper = std::make_shared<Dropper>(info);
     _dropperGroups->insert(dropper);
     _dropper.push_back(dropper);
 }
 
-std::shared_ptr<AEntity> RType::createSupportShip(int x, int y) {
+std::shared_ptr <AEntity> RType::createSupportShip(int x, int y) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -280,7 +278,7 @@ std::shared_ptr<AEntity> RType::createSupportShip(int x, int y) {
     info.scaleY = 0.7;
     info.id = _lastId;
     _lastId++;
-    std::shared_ptr<SupportShip> support = std::make_shared<SupportShip>(info);
+    std::shared_ptr <SupportShip> support = std::make_shared<SupportShip>(info);
     _supportShipGroups->insert(support);
     _supportShips.push_back(support);
     return (support);
@@ -336,37 +334,37 @@ void RType::eraseDeadEntity() {
 }
 
 void RType::setAllEntitiesToCreated() {
-    for (auto staticObject : _staticObjects) {
+    for (auto staticObject: _staticObjects) {
         staticObject->setCreated(false);
     }
-    for (auto enemy : _enemies) {
+    for (auto enemy: _enemies) {
         enemy->setCreated(false);
     }
-    for (auto player : _players) {
+    for (auto player: _players) {
         player->setCreated(false);
     }
-    for (auto projectile : _projectiles) {
+    for (auto projectile: _projectiles) {
         projectile->setCreated(false);
     }
-    for (auto supportShip : _supportShips) {
+    for (auto supportShip: _supportShips) {
         supportShip->setCreated(false);
     }
-    for (auto dropper : _dropper) {
+    for (auto dropper: _dropper) {
         dropper->setCreated(false);
     }
 }
 
 void RType::deleteAllEntities() {
     _lastId = 0;
-    for (auto staticObject : _staticObjects)
+    for (auto staticObject: _staticObjects)
         staticObject->kill();
-    for (auto enemy : _enemies)
+    for (auto enemy: _enemies)
         enemy->kill();
-    for (auto projectile : _projectiles)
+    for (auto projectile: _projectiles)
         projectile->kill();
-    for (auto supportShip : _supportShips)
+    for (auto supportShip: _supportShips)
         supportShip->kill();
-    for (auto dropper : _dropper)
+    for (auto dropper: _dropper)
         dropper->kill();
     _staticObjects.clear();
     _enemies.clear();
@@ -400,7 +398,7 @@ int RType::getCurrentLevel() {
     return (_currentLevel);
 }
 
-std::map<std::string, std::string> RType::getAssets() {
+std::map <std::string, std::string> RType::getAssets() {
     return (_assets);
 }
 
@@ -409,7 +407,7 @@ void RType::setCurrentId(int id) {
 }
 
 void RType::createEnemy(IEntity::EntityInfo info) {
-    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(info);
+    std::shared_ptr <Enemy> enemy = std::make_shared<Enemy>(info);
     _enemies.push_back(enemy);
     if (info.name == "OrangeRobot")
         _orangeRobotGroups->insert(enemy);
@@ -420,14 +418,14 @@ void RType::createEnemy(IEntity::EntityInfo info) {
 }
 
 void RType::createBackground(IEntity::EntityInfo info) {
-    std::shared_ptr<AEntity> background = std::make_shared<AEntity>(info);
+    std::shared_ptr <AEntity> background = std::make_shared<AEntity>(info);
     _staticObjects.push_back(background);
     _staticObjectsGroups->insert(background);
 }
 
 void RType::clearLevel() {
     _lastId = 0;
-    for (auto player : _players) {
+    for (auto player: _players) {
         player->setId(_lastId++);
         player->setCreated(false);
         player->resetLife();
@@ -443,22 +441,22 @@ void RType::clearLevel() {
     _staticObjects.clear();
 }
 
-std::shared_ptr<AEntity> RType::getPlayer(int id) {
-    for (auto player : _players)
+std::shared_ptr <AEntity> RType::getPlayer(int id) {
+    for (auto player: _players)
         if (player->getId() == id)
             return (player);
     return (nullptr);
 }
 
-std::vector<std::shared_ptr<AEntity>> RType::getPlayers() {
-    std::vector<std::shared_ptr<AEntity>> players;
-    for (auto player : _players)
+std::vector <std::shared_ptr<AEntity>> RType::getPlayers() {
+    std::vector <std::shared_ptr<AEntity>> players;
+    for (auto player: _players)
         players.push_back(player);
     return (players);
 }
 
 void RType::setPlayerHasSupport(int id, bool support) {
-    for (auto player : _players) {
+    for (auto player: _players) {
         if (player->getId() == id) {
             player->setHasSupport(support);
             break;
