@@ -72,3 +72,15 @@ std::string InstanceButton::formatText(std::string toFormat) {
 Entity *InstanceButton::getSubmitButton() {
     return _entities[formatText("submitButton")].get();
 }
+
+void InstanceButton::setPosition(int x, int y) {
+    _x = x;
+    _y = y;
+    _entities[formatText("instanceBackground")]->setPosition(_x, _y);
+    _texts[formatText("instanceName")]->setPosition(sf::Vector2f(_x + 10, _y));
+    _texts[formatText("instanceGame")]->setPosition(sf::Vector2f(_x + 10, _y + 25));
+    _entities[formatText("userIcon")]->setPosition(_x + 10, _y + 55);
+    _texts[formatText("playersText")]->setPosition(sf::Vector2f(_x + 30, _y + 55));
+    _entities[formatText("submitButton")]->setPosition(_x + 250, _y + 50);
+    _texts[formatText("submitButtonText")]->setPosition(sf::Vector2f(_x + 275, _y + 55));
+}

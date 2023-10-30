@@ -158,6 +158,11 @@ void InstanceMenu::mainloop() {
         _window.clear();
         _window.setView(_view);
         _window.draw(_entities["background"]->getSprite());
+        int y = 170;
+        for (auto &instanceButton: _instanceButtons) {
+            instanceButton.second->setPosition(225, y);
+            y += 90;
+        }
         if (!_openInstanceModal) {
             _window.draw(_entities["listBackground"]->getSprite());
             _window.draw(_entities["pCreateInstanceButton"]->getSprite());

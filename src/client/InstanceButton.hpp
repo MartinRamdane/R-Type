@@ -29,6 +29,8 @@ public:
 
     Entity *getSubmitButton();
 
+    void setPosition(int x, int y);
+
     std::map <std::string, std::shared_ptr<sf::Text>> getTexts() { return _texts; }
 
 private:
