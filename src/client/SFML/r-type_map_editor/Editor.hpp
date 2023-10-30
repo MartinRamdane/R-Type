@@ -10,13 +10,12 @@
 
 #include <map>
 #include <memory>
-#include "../../../client/SFML/Entity.hpp"
+#include "../../client/SFML/Entity.hpp"
 
 class Editor {
    public:
     Editor();
     ~Editor();
-
     void mainloop();
 
    private:

@@ -1,6 +1,6 @@
 #include "engine/Core.hpp"
 #include "server/Server.hpp"
-#include "engine/r-type/map_editor/Editor.hpp"
+#include "engine/r-type/Editor.hpp"
 
 int main(int argc, char* argv[]) {
     Editor editor;
