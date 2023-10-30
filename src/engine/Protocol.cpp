@@ -101,8 +101,10 @@ std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> ent
             return "";
         }
     }
-    if ((std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) &&
-        !std::dynamic_pointer_cast<Projectile>(entity))
+    IEntity::Direction direction = entity->getDirection();
+    if ((std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) ||
+        (std::dynamic_pointer_cast<Projectile>(entity) && direction != IEntity::Direction::LEFT &&
+        direction != IEntity::Direction::RIGHT))
         return "emove " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) +
                " " + std::to_string(std::get<1>(pos));
     return "";

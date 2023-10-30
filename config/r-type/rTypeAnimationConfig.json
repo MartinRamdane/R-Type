@@ -99,7 +99,7 @@
     {
         "nb_rect": 4,
         "rect_init": 0,
-        "form": "once"
+        "form": "loop"
     },
     "Bomberman":
     {

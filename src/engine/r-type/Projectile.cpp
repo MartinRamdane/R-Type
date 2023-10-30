@@ -32,8 +32,11 @@ void Projectile::move(float x, float y) {
 
 void Projectile::trackPlayer() {
     auto player = RType::instance->getPlayer(_relatedPlayerId);
-    if (player == nullptr)
+    if (player == nullptr) {
+        //make it move in the direction of the player but not track it
+        directionalMove();
         return;
+    }
     auto pos = player->getPosition();
     int x = std::get<0>(pos);
     int y = std::get<1>(pos);
