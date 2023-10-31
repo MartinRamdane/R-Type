@@ -14,9 +14,13 @@ public:
     };
 
     SDL_Rect apply(const SDL_Rect& rect) const {
+        float scaleX = 1920 / width;
+        float scaleY = 1080 / height;
         SDL_Rect result = rect;
-        result.x -= x;
-        result.y -= y;
+        result.x = (result.x - x);
+        result.y = (result.y - y);
+        result.w *= scaleX;
+        result.h *= scaleY;
         return result;
     };
 

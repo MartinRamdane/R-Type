@@ -8,18 +8,24 @@
 #include "DisplaySDL.hpp"
 
 DisplaySDL::DisplaySDL() {
-}
-
-DisplaySDL::~DisplaySDL() {}
-
-void DisplaySDL::createWindow(std::string name, int x, int y) {
     SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
+}
+
+DisplaySDL::~DisplaySDL() {
+    SDL_DestroyRenderer(_renderer);
+    SDL_DestroyWindow(_window);
+    SDL_Quit();
+    IMG_Quit();
+}
+
+void DisplaySDL::createWindow(std::string name, int x, int y) {
     _window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     _ressourceManager = std::make_shared<RessourceManagerSDL>(_renderer);
     _camera = std::make_shared<Camera>(0, 0, x, y);
+    SDL_RenderSetLogicalSize(_renderer, x, y);
 }
 
 void DisplaySDL::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
@@ -84,8 +90,8 @@ std::shared_ptr<IEntity> DisplaySDL::createSprite(IEntity::EntityInfos entityInf
     std::shared_ptr<EntitySDL> entity = std::make_shared<EntitySDL>(_ressourceManager);
     entity->setTexture(entityInfos.path);
     entity->setRect(entityInfos.nbRect, entityInfos.initRect);
-    entity->setPosition(entityInfos.x, entityInfos.y);
     entity->setSpriteScale(entityInfos.scaleX, entityInfos.scaleY);
+    entity->setPosition(entityInfos.x, entityInfos.y);
     entity->setNextPos(entityInfos.nextX, entityInfos.nextY);
     entity->setSpeed(entityInfos.speed);
     entity->setDirection(entityInfos.direction);

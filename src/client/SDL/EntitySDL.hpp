@@ -70,4 +70,6 @@ class EntitySDL : public IEntity {
     std::tuple<float, float> _nextPos;
     bool _isHit = false;
     std::shared_ptr<RessourceManagerSDL> _ressourceManager;
+    float _scaleX;
+    float _scaleY;
 };
