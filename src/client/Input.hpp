@@ -32,6 +32,10 @@ class Input {
     sf::Vector2f getSpritePosition();
     bool getActive() const { return _isActive; };
     void setActive(bool active) { _isActive = active; };
+    void setFont(sf::Font font) {
+        _font = font;
+        _text.setFont(_font);
+    };
 
    protected:
    private:

@@ -13,6 +13,7 @@
 #include <tuple>
 #include "../client/SFML/Entity.hpp"
 #include "../global/JsonParser.hpp"
+#include "../client/Input.hpp"
 
 class Editor {
    public:
@@ -23,9 +24,10 @@ class Editor {
     void mainloop();
     void update();
     void saveLevel();
+    void getInput();
 
    private:
-    sf::RenderWindow _window;
+    std::shared_ptr<sf::RenderWindow> _window;
     sf::View _mainView;
     sf::View _menuView;
     sf::Font _font;
@@ -33,15 +35,19 @@ class Editor {
     sf::Texture _texture;
     std::map<std::string, std::unique_ptr<Entity>> _entities;
     std::map<std::string, std::unique_ptr<Entity>> _entitiesSelectMenu;
+    std::unique_ptr<Entity> _saveButton;
     std::map<std::string, std::tuple<int, int>> _entitiesRect;
     std::map<std::string, std::string> _entitiesJsonConfig;
     std::map<std::string, int> _entityQuantity;
     std::map<std::string, std::unique_ptr<sf::Text>> _texts;
     std::shared_ptr<RessourceManager> _ressourceManager;
+    std::map<std::string, std::unique_ptr<Input>> _inputs;
     std::string _selectedEntity = "flyer";
     bool _savingMode = false;
     std::string _levelName;
     JsonParser _jsonParser;
+    int _x = 0;
+    int _y = 0;
 };
 
 #endif /* !Editor_HPP_ */

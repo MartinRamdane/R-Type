@@ -1,4 +1,4 @@
-file(GLOB EDITOR_SRC_LIST src/editor/*.cpp src/client/SFML/*.cpp src/global/*.cpp)
+file(GLOB EDITOR_SRC_LIST src/editor/*.cpp src/client/SFML/*.cpp src/global/*.cpp src/client/Input.cpp)
 add_executable(r-type_editor ${EDITOR_SRC_LIST})
 
 if (MSVC)
