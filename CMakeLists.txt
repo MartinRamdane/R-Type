@@ -25,6 +25,7 @@ find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(GTest REQUIRED)
 find_package(lz4 REQUIRED)
+find_program(ZIP_TOOL zip)
 
 if (UNIX)
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -g3")
@@ -71,4 +72,20 @@ endif()
 
 if(NOT BUILD_EDITOR)
     message(STATUS "Editor build option is deactivated.")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_custom_target(zip_debug ALL
+        COMMAND ${ZIP_TOOL} -r Debug/r-type.zip Debug assets
+        DEPENDS ${YOUR_TARGETS}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Zipping debug binaries..."
+    )
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_custom_target(zip_release ALL
+        COMMAND ${ZIP_TOOL} -r Release/r-type.zip Release assets
+        DEPENDS ${YOUR_TARGETS}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Zipping release binaries..."
+    )
 endif()
