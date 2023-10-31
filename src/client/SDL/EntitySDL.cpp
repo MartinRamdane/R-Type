@@ -235,11 +235,8 @@ void EntitySDL::setFont() {
 
 void EntitySDL::draw(SDL_Renderer* renderer, std::shared_ptr<Camera> camera) {
     if (_type == IEntity::Type::SPRITE) {
-        SDL_Rect windowRect = camera->apply(SDL_Rect{0, 0, 1920, 1080});
-        SDL_RenderSetViewport(renderer, &windowRect);
-        SDL_RenderSetClipRect(renderer, &windowRect);
-        // SDL_Rect cameraRect = camera->apply(_destRect, _scaleX, _scaleY);
-        // SDL_Rect cameraRectAnim = camera->apply(_animRect, _scaleX, _scaleY);
+        // SDL_Rect cameraRect = camera->apply(_destRect, _speed);
+        // SDL_Rect cameraRectAnim = camera->apply(_animRect, _speed);
         SDL_RenderCopy(renderer, _texture, &_animRect, &_destRect);
     }
     // else if (_type == IEntity::Type::TEXT)

@@ -13,12 +13,12 @@ public:
         this->y = y;
     };
 
-    SDL_Rect apply(const SDL_Rect& rect) const {
+    SDL_Rect apply(const SDL_Rect& rect, float speed) const {
         float scaleX = 1920 / width;
         float scaleY = 1080 / height;
         SDL_Rect result = rect;
-        result.x = (result.x - x);
-        result.y = (result.y - y);
+        result.x = (result.x - x) * speed;
+        result.y = (result.y - y) * speed;
         result.w *= scaleX;
         result.h *= scaleY;
         return result;
