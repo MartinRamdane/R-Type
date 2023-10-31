@@ -208,8 +208,10 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
         for (auto player : _players) {
-            for (auto player : _players)
+            for (auto player : _players) {
                 player->resetLife();
+                player->setCreated(false);
+            }
             _lastId++;
         }
     }
@@ -385,6 +387,8 @@ void RType::deleteAllEntities() {
         supportShip->kill();
     for (auto dropper : _dropper)
         dropper->kill();
+    for (auto music : _musics)
+        music->kill();
     _staticObjects.clear();
     _enemies.clear();
     _projectiles.clear();
