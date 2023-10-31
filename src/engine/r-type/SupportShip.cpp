@@ -126,6 +126,7 @@ void SupportShip::shoot() {
     info.y = info.y + 4;
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::SUPPORT);
+    RType::instance->createSound("dropperShoot.ogg");
 }
 
 int SupportShip::getRelatedPlayerId() const {

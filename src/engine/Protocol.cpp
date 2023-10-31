@@ -80,7 +80,6 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(
             if (entity->isSound()) {
                 protocol.push_back("esound " + std::to_string(entity->getId()) + " " +
                                    entity->getPath());
-                entity->kill();
                 continue;
             }
             if (entity->getText() != "") {

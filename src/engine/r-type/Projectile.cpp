@@ -56,5 +56,6 @@ void Projectile::hurtEntity(IEntity& self, IEntity& you) {
     if (you.isDead()) {
         auto pos = you.getPosition();
         RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+        RType::instance->createSound("explosion.ogg");
     }
 }

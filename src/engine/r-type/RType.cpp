@@ -35,6 +35,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     // initializeLevel();
     _levelInitializer = std::make_unique<LevelInitializer>(this);
     _levelInitializer->loadLevel(_currentLevel);
+    createMusic("level1.ogg");
 
     // Add collision between entities groups
     _engine->setRelation(_projectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
@@ -206,6 +207,13 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         deleteAllEntities();
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
+
+        // TO fix
+        // if (_currentLevel == 2) {
+        //     createMusic("level2.ogg");
+        // } else if (_currentLevel == 3) {
+        //     createMusic("boss.ogg");
+        // }
         for (auto player : _players) {
             for (auto player : _players)
                 player->resetLife();
@@ -299,6 +307,9 @@ void RType::eraseDeadEntity(int id) {
 
 void RType::eraseDeadEntity() {
     for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
+        if ((*it)->isSound()) {
+            (*it)->kill();
+        }
         if ((*it)->isDead()) {
             _staticObjects.erase(it);
             break;
@@ -355,6 +366,9 @@ void RType::setAllEntitiesToCreated() {
     for (auto dropper : _dropper) {
         dropper->setCreated(false);
     }
+    for (auto music : _musics) {
+        music->setCreated(false);
+    }
 }
 
 void RType::deleteAllEntities() {
@@ -383,6 +397,7 @@ void RType::deleteAllEntities() {
     _supportProjectilesGroups->clear();
     _supportShipGroups->clear();
     _dropperGroups->clear();
+    _musics.clear();
 }
 
 bool RType::isReset() {
@@ -467,17 +482,22 @@ void RType::setPlayerHasSupport(int id, bool support) {
     }
 }
 
-void RType::createSoundShoot(std::string path) {
+void RType::createSound(std::string path) {
     IEntity::EntityInfo info;
     info.assetFile = path;
     info.id = _lastId++;
-    info.name = "shootSpaceship";
-    info.assetFile = path;
-    info.x = 425;
-    info.y = 239;
     std::shared_ptr<AEntity> sound = std::make_shared<AEntity>(info);
     sound->setSound(true);
-    sound->setPath(path);
     _staticObjects.push_back(sound);
     _staticObjectsGroups->insert(sound);
+}
+
+void RType::createMusic(std::string path) {
+    IEntity::EntityInfo info;
+    info.assetFile = path;
+    info.id = _lastId++;
+    std::shared_ptr<AEntity> music = std::make_shared<AEntity>(info);
+    music->setSound(true);
+    _musics.push_back(music);
+    _staticObjectsGroups->insert(music);
 }

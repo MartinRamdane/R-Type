@@ -234,8 +234,10 @@ void Game::updateText(Event evt) {
 
 void Game::updateSound(Event evt) {
     IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
-    _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
-        entityInfos.id, _display->createEntity(entityInfos)));
+    if (findEntity(entityInfos.id))
+        return;
+    _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(entityInfos.id,
+                                                              _display->createEntity(entityInfos)));
 }
 
 void Game::joinGame(Event evt) {
@@ -302,8 +304,7 @@ void Game::handleReceivedEvent(Event evt) {
     }
 }
 
-void Game::checkEntities(int nb)
-{
+void Game::checkEntities(int nb) {
     int currentNb = getEntitiesNumber();
     if (currentNb < nb) {
         std::cout << "current nb : " << currentNb << std::endl;
