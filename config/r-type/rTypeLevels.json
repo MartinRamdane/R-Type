@@ -1,26 +1,34 @@
 {
-    "Level-1": {
-        "Background": {
-            "Type": "Background"
-        },
-        "Enemy1": {
-            "Config": "OrangeRobot.rType.json",
-            "Count": 2,
-            "Positions": [
-                {"X": 960, "Y": 331},
-                {"X": 980, "Y": 300}
-              ]
-        },
-        "Dropper": {
-            "Config": "Dropper.rType.json",
-            "Count": 2,
-            "Positions": [
-                {"X": 700, "Y": 200},
-                {"X": 700, "Y": 400}
-            ]
-        },
-        "Music": {
-            "File": "level1.ogg"
-        }
+  "Level-1": {
+    "Entity1": {
+      "Type": "Background"
     }
+  },
+  "Level-2": {
+    "Entity1": {
+      "Type": "Background"
+    },
+    "Entity2": {
+      "Config": "Flyer.rType.json",
+      "Count": 4,
+      "Positions": [
+        {
+          "X": 351.5103759765625,
+          "Y": 133.75425720214844
+        },
+        {
+          "X": 339.9999694824219,
+          "Y": 256.791015625
+        },
+        {
+          "X": 584.8176879882813,
+          "Y": 154.7605438232422
+        },
+        {
+          "X": 498.0468444824219,
+          "Y": 221.20896911621094
+        }
+      ]
+    }
+  }
 }
