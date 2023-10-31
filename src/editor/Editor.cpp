@@ -275,10 +275,18 @@ void Editor::getInput() {
             }
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Enter) {
-                    _levelName = _inputs["levelName"]->getText();
-                    saveLevel();
-                    _savingMode = false;
-                    return;
+                    if (_inputs["levelName"]->getText() == "" ||
+                        _inputs["levelName"]->getText().substr(0, 6) != "Level-" ||
+                        _inputs["levelName"]
+                                ->getText()
+                                .substr(6, _inputs["levelName"]->getText().size() - 6)
+                                .find_first_not_of("0123456789") != std::string::npos) {
+                    } else {
+                        _levelName = _inputs["levelName"]->getText();
+                        saveLevel();
+                        _savingMode = false;
+                        return;
+                    }
                 }
                 if (event.key.code == sf::Keyboard::Escape) {
                     _savingMode = false;
