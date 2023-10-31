@@ -25,6 +25,7 @@ class Enemy;
 class Projectile;
 class SupportShip;
 class Dropper;
+class Boss;
 
 #define MAX_LEVEL 1
 
@@ -53,12 +54,14 @@ class RType : public IGame {
     void createEnemy(IEntity::EntityInfo info);
     void createBackground(IEntity::EntityInfo info);
     void createDropper(IEntity::EntityInfo info);
+    void createBoss(IEntity::EntityInfo info);
     void clearLevel();
     std::shared_ptr<AEntity> createSupportShip(int x, int y);
     std::shared_ptr<AEntity> getPlayer(int id);
     std::vector<std::shared_ptr<AEntity>> getPlayers();
     void setPlayerHasSupport(int id, bool support);
     void createAssetList();
+    std::vector<std::shared_ptr<AEntity>> getEnemies();
     void createSound(std::string path);
     void createMusic(std::string path);
 
@@ -72,12 +75,16 @@ class RType : public IGame {
     std::shared_ptr<EntityType<IEntity>> _staticObjectsGroups;
     std::shared_ptr<EntityType<IEntity>> _orangeRobotGroups;
     std::shared_ptr<EntityType<IEntity>> _enemie2Groups;
+    std::shared_ptr<EntityType<IEntity>> _wormGroups;
     std::shared_ptr<EntityType<IEntity>> _flyerGroups;
     std::shared_ptr<EntityType<IEntity>> _dropperGroups;
+    std::shared_ptr<EntityType<IEntity>> _bombermanGroups;
+    std::shared_ptr<EntityType<IEntity>> _bossGroups;
+    std::shared_ptr<EntityType<IEntity>> _bombGroups;
     std::vector<std::shared_ptr<Character>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     std::vector<std::shared_ptr<AEntity>> _staticObjects;
-    std::vector<std::shared_ptr<Enemy>> _enemies;
+    std::vector<std::shared_ptr<AEntity>> _enemies;
     std::vector<std::shared_ptr<SupportShip>> _supportShips;
     std::vector<std::shared_ptr<Dropper>> _dropper;
     std::vector<std::shared_ptr<AEntity>> _musics;

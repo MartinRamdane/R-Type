@@ -19,7 +19,13 @@ public:
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
+        UP_LEFT,
+        UP_RIGHT,
+        DOWN_LEFT,
+        DOWN_RIGHT,
+        TRACKING,
+        DIRECTIONAL,
     };
     typedef struct EntityInfo {
         std::string name;
@@ -31,8 +37,8 @@ public:
         std::string text;
         float x;
         float y;
-        float oldX;
-        float oldY;
+        float oldX = 0;
+        float oldY = 0;
         float speed;
         float radius;
         float scaleX = 1;
@@ -42,6 +48,7 @@ public:
         int damage;
         int life;
         int id;
+        int relatedPlayerId;
         Direction direction;
     } EntityInfo;
     virtual ~IEntity() = default;
@@ -73,7 +80,7 @@ public:
     virtual void setFlip(bool flip) = 0;
     virtual Direction getDirection() const = 0;
     virtual void setLife(int life) = 0;
-    virtual void setAlliesTouched(bool alliesTouched) = 0;
+    virtual void setEntitiesHasCollided(bool entitiesCollision) = 0;
     virtual std::tuple<float, float> getDirectionVector() const = 0;
     virtual void setDirectionVector(float x, float y) = 0;
     virtual int getWidth() const = 0;
@@ -83,6 +90,11 @@ public:
     virtual void setText(std::string text) = 0;
     virtual std::string getOldText() const = 0;
     virtual void setOldText(std::string text) = 0;
+    virtual int getLife() const = 0;
+    virtual void setHasSupport(bool hasSupport) = 0;
+    virtual bool getHasSupport() const = 0;
+    virtual void setRelatedPlayer(int relatedPlayer) = 0;
+    virtual int getRelatedPlayer() const = 0;
     virtual bool isSound() const = 0;
     virtual void setSound(bool sound) = 0;
 };

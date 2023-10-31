@@ -34,9 +34,9 @@ class Character : public AEntity {
     void resetLife();
     void setId(int id);
     void setLifeValue(int lifeValue);
-    static void hurtEnemy(IEntity& self, IEntity& you);
-    static void alliesTouched(IEntity& self, IEntity& you);
-    bool getAlliesTouched() const;
+    static void hurtEntities(IEntity& self, IEntity& you);
+    static void hurtFirstEntity(IEntity& self, IEntity& you);
+    static void entitiesCollision(IEntity& self, IEntity& you);
 
    private:
     float _projectileSpeed = 5;
