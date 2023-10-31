@@ -52,7 +52,7 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
   }
   DataCompress decompressor(netevt.compressed_size, netevt.original_size);
   char *decompressed = decompressor.Decompress(netevt.body);
-  decompressed[decompressor.getOriginalSize()] = '\0';
+  decompressed[decompressor.getOriginalSize() - 1] = '\0';
   Event event;
   event.ACTION_NAME = netevt.ACTION_NAME;
   event.body = std::string(decompressed);
