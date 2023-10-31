@@ -10,7 +10,9 @@
 
 #include <map>
 #include <memory>
+#include <tuple>
 #include "../client/SFML/Entity.hpp"
+#include "../global/JsonParser.hpp"
 
 class Editor {
    public:
@@ -20,6 +22,7 @@ class Editor {
     void mouseEvent(sf::Event event);
     void mainloop();
     void update();
+    void saveLevel();
 
    private:
     sf::RenderWindow _window;
@@ -30,10 +33,15 @@ class Editor {
     sf::Texture _texture;
     std::map<std::string, std::unique_ptr<Entity>> _entities;
     std::map<std::string, std::unique_ptr<Entity>> _entitiesSelectMenu;
+    std::map<std::string, std::tuple<int, int>> _entitiesRect;
+    std::map<std::string, std::string> _entitiesJsonConfig;
     std::map<std::string, int> _entityQuantity;
     std::map<std::string, std::unique_ptr<sf::Text>> _texts;
     std::shared_ptr<RessourceManager> _ressourceManager;
     std::string _selectedEntity = "flyer";
+    bool _savingMode = false;
+    std::string _levelName;
+    JsonParser _jsonParser;
 };
 
 #endif /* !Editor_HPP_ */
