@@ -26,13 +26,16 @@ void Ball::move(float x, float y) {
     if (((_y + y * _speed) < 10 + _radius / 2) && dirY < 0) {
         y = -y;
         dirY = -dirY;
+        Pong::instance->createSound("pongBallHitWall.ogg");
     }
     if (((_y + y * _speed) > Engine::instance->getWindowHeight() - 10 - _radius) && dirY > 0) {
         y = -y;
         dirY = -dirY;
+        Pong::instance->createSound("pongBallHitWall.ogg");
     }
     if (((_x + x * _speed) < _radius / 2) ||
         ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius / 2)) {
+        Pong::instance->createSound("pongBallOut.ogg");
         kill();
     }
     setOldPosition(_x, _y);
@@ -80,4 +83,5 @@ void Ball::hurtPlayer(IEntity& self, IEntity& you) {
     self.setSpeed(currentSpeed * boostFactor);
 
     self.setDirectionVector(dirX, dirY);
+    Pong::instance->createSound("pongBallhitPlayer.ogg");
 }

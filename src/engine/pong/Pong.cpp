@@ -199,6 +199,16 @@ void Pong::createScores() {
     _textGroups->insert(entity2);
 }
 
+void Pong::createSound(std::string path) {
+    IEntity::EntityInfo info;
+    info.assetFile = path;
+    info.id = _lastId++;
+    std::shared_ptr<AEntity> sound = std::make_shared<AEntity>(info);
+    sound->setSound(true);
+    _staticObjects.push_back(sound);
+    _staticObjectsGroups->insert(sound);
+}
+
 std::map<std::string, std::function<std::string()>> Pong::_assets = {
     {"Border",
      []() {
