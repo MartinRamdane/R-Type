@@ -83,7 +83,7 @@ public:
     void checkEntities(int nb);
     void animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy);
 
-    InstanceMenu *getInstanceMenu() { return _instanceMenu; };
+    InstanceMenu *getInstanceMenu() { return _instanceMenu.get(); };
 
     std::shared_ptr <TCPClientImpl> getClient() { return _client; };
 
@@ -112,5 +112,5 @@ private:
     std::mutex entityMutex;
     std::vector<int> _entitiesToRemove;
     Parser parseRef;
-    InstanceMenu *_instanceMenu;
+    std::unique_ptr<InstanceMenu> _instanceMenu;
 };

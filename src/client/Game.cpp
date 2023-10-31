@@ -18,7 +18,7 @@ Game::Game() : _threadPool(3) {
     _playerId = 0;
     closed = false;
     _progressBar = ProgressBar();
-    _instanceMenu = new InstanceMenu(this);
+    _instanceMenu = std::make_unique<InstanceMenu>(this);
 }
 
 Game::~Game() {
