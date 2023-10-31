@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 option(BUILD_CLIENT "Build the client" ON)
 option(BUILD_SERVER "Build the server" ON)
 option(BUILD_TESTS "Build the tests" ON)
+option(BUILD_EDITOR "Build the editor" ON)
 
 # Set the output directories for executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})  # Diretório raiz
@@ -47,6 +48,10 @@ if(BUILD_TESTS)
     include(src/tests/CMakeLists.txt)
 endif()
 
+if(BUILD_EDITOR)
+    include(src/editor/CMakeLists.txt)
+endif()
+
 if (WIN32)
     add_definitions(-D_WIN32_WINNT=0x0601)
 endif()
@@ -62,4 +67,8 @@ endif()
 
 if(NOT BUILD_TESTS)
     message(STATUS "Tests build option is deactivated.")
+endif()
+
+if(NOT BUILD_EDITOR)
+    message(STATUS "Editor build option is deactivated.")
 endif()
