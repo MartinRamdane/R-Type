@@ -232,6 +232,7 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         }
     }
     if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL) {
+        std::cout << "Level " << _currentLevel << " cleared" << std::endl;
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
@@ -240,6 +241,9 @@ void RType::update(ThreadSafeQueue<Event>& events) {
             for (auto player : _players) {
                 player->resetLife();
                 player->setCreated(false);
+                player->setEntitiesHasCollided(false);
+                player->setHasSupport(false);
+                player->setDirection(IEntity::Direction::RIGHT);
             }
             _lastId++;
         }

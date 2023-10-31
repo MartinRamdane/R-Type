@@ -97,4 +97,5 @@ public:
     virtual int getRelatedPlayer() const = 0;
     virtual bool isSound() const = 0;
     virtual void setSound(bool sound) = 0;
+    virtual void setDirection(Direction direction) = 0;
 };

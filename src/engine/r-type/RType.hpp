@@ -27,7 +27,7 @@ class SupportShip;
 class Dropper;
 class Boss;
 
-#define MAX_LEVEL 1
+#define MAX_LEVEL 2
 
 class RType : public IGame {
    public:

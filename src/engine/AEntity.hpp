@@ -61,6 +61,7 @@ class AEntity : public IEntity {
     void setLastMove(bool lastMove);
     bool isSound() const;
     void setSound(bool sound);
+    void setDirection(Direction direction);
 
    protected:
     float _x;

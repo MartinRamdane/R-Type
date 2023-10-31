@@ -71,7 +71,6 @@ Editor::Editor() {
     _music2->setPosition(500, 10);
     _music2->setSpriteScale(0.1, 0.1);
 
-
     _musics["music1"].openFromFile("sounds/level1.ogg");
     _musics["music1"].setLoop(true);
     _musics["music2"].openFromFile("sounds/level2.ogg");
@@ -121,8 +120,8 @@ Editor::Editor() {
     _texts["name"]->setOrigin(sf::Vector2f(_texts["name"]->getLocalBounds().width / 2,
                                            _texts["name"]->getLocalBounds().height / 2));
 
-    _inputs["levelName"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                   "assets/cenario/TextInputHover.png", "", _ressourceManager);
+    _inputs["levelName"] = std::make_unique<Input>(
+        "assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png", "", _ressourceManager);
     _inputs["levelName"]->setSpritePosition(sf::Vector2f(330, 220));
     _inputs["levelName"]->setSpriteScale(sf::Vector2f(2, 2));
     _inputs["levelName"]->setActive(true);
@@ -182,6 +181,7 @@ void Editor::keyEvent(sf::Event event) {
 void Editor::mouseEvent(sf::Event event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
+            _window->setView(_menuView);
             sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
 
             sf::Vector2f worldPosition = _window->mapPixelToCoords(mousePosition);
@@ -203,7 +203,10 @@ void Editor::mouseEvent(sf::Event event) {
                 _selectedMusic = "level2.ogg";
                 return;
             }
+            _window->setView(_mainView);
+            mousePosition = sf::Mouse::getPosition(*_window);
 
+            worldPosition = _window->mapPixelToCoords(mousePosition);
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])] =
                 std::make_unique<Entity>(_ressourceManager);
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]
