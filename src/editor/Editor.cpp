@@ -63,12 +63,12 @@ Editor::Editor() {
 
     _music1 = std::make_unique<Entity>(_ressourceManager);
     _music1->setTexture("music.png");
-    _music1->setPosition(500, 10);
+    _music1->setPosition(400, 10);
     _music1->setSpriteScale(0.1, 0.1);
 
     _music2 = std::make_unique<Entity>(_ressourceManager);
     _music2->setTexture("music.png");
-    _music2->setPosition(600, 10);
+    _music2->setPosition(500, 10);
     _music2->setSpriteScale(0.1, 0.1);
 
 
