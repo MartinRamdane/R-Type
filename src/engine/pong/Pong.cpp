@@ -48,7 +48,7 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
             float playerHeight = player->getHeight();
             float playerX = std::get<0>(playerPos);
             float playerY = std::get<1>(playerPos) - playerHeight / 2;
-            float _radius = _balls[0]->getRadius() * std::get<0>(_balls[0]->getScale());
+            float _radius = (_balls[0]->getRadius() * std::get<0>(_balls[0]->getScale())) / 2;
 
             if (ballX + _radius > playerX && ballX - _radius < playerX + playerWidth &&
                 ballY + _radius > playerY && ballY - _radius < playerY + playerHeight) {

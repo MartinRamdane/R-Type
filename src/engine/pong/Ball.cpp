@@ -23,12 +23,12 @@ Ball::Ball(EntityInfo info) : AEntity(info) {
 Ball::~Ball() {}
 
 void Ball::move(float x, float y) {
-    if (((_y + y * _speed) < 10 + _radius / 2) && dirY < 0) {
+    if (((_y + y * _speed) < _radius / 2) && dirY < 0) {
         y = -y;
         dirY = -dirY;
         Pong::instance->createSound("pongBallHitWall.ogg");
     }
-    if (((_y + y * _speed) > Engine::instance->getWindowHeight() - 10 - _radius) && dirY > 0) {
+    if (((_y + y * _speed) > Engine::instance->getWindowHeight() - _radius) && dirY > 0) {
         y = -y;
         dirY = -dirY;
         Pong::instance->createSound("pongBallHitWall.ogg");
