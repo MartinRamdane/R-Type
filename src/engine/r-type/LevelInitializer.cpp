@@ -29,9 +29,10 @@ void LevelInitializer::loadLevel(int currentLevel) {
             } else if (config["Type"] == "Dropper") {
                 createDropper(value["Count"], value["Positions"]);
             }
-        } else {
+        } else if (value.contains("File")) {
+            _game->createMusic(value["File"]);
+        } else
             createBackground();
-        }
     }
 }
 

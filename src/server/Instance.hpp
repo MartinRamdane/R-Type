@@ -48,9 +48,6 @@ public:
     void EventLoop();
 
     void addAction(Event event) {
-        if (event.ACTION_NAME == ACTION::SPACE) {
-            std::cout << "space event" << std::endl;
-        }
         _events.push_back(event);
     }
 
