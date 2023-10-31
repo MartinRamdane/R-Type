@@ -106,7 +106,7 @@ Editor::Editor() {
                                            _texts["name"]->getLocalBounds().height / 2));
 
     _inputs["levelName"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                   "assets/cenario/TextInputHover.png", "");
+                                                   "assets/cenario/TextInputHover.png", "", _ressourceManager);
     _inputs["levelName"]->setSpritePosition(sf::Vector2f(330, 220));
     _inputs["levelName"]->setSpriteScale(sf::Vector2f(2, 2));
     _inputs["levelName"]->setActive(true);
