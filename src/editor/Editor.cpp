@@ -61,6 +61,22 @@ Editor::Editor() {
     _saveButton->setPosition(800, 430);
     _saveButton->setSpriteScale(0.1, 0.1);
 
+    _music1 = std::make_unique<Entity>(_ressourceManager);
+    _music1->setTexture("music.png");
+    _music1->setPosition(500, 10);
+    _music1->setSpriteScale(0.1, 0.1);
+
+    _music2 = std::make_unique<Entity>(_ressourceManager);
+    _music2->setTexture("music.png");
+    _music2->setPosition(600, 10);
+    _music2->setSpriteScale(0.1, 0.1);
+
+
+    _musics["music1"].openFromFile("sounds/level1.ogg");
+    _musics["music1"].setLoop(true);
+    _musics["music2"].openFromFile("sounds/level2.ogg");
+    _musics["music2"].setLoop(true);
+
     //create Rects
     _entitiesRect["flyer"] = std::make_tuple(8, 0);
     _entitiesRect["OrangeRobot"] = std::make_tuple(2, 0);
@@ -175,6 +191,18 @@ void Editor::mouseEvent(sf::Event event) {
                 _savingMode = true;
                 return;
             }
+            if (_music1->getSprite().getGlobalBounds().contains(worldPosition)) {
+                _musics["music2"].stop();
+                _musics["music1"].play();
+                _selectedMusic = "level1.ogg";
+                return;
+            }
+            if (_music2->getSprite().getGlobalBounds().contains(worldPosition)) {
+                _musics["music1"].stop();
+                _musics["music2"].play();
+                _selectedMusic = "level2.ogg";
+                return;
+            }
 
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])] =
                 std::make_unique<Entity>(_ressourceManager);
@@ -243,6 +271,7 @@ void Editor::saveLevel() {
         }
         i++;
     }
+    level[_levelName]["Music"]["File"] = _selectedMusic;
 
     std::string jsonString = level.dump(2);
     std::cout << jsonString << std::endl;
@@ -330,6 +359,8 @@ void Editor::mainloop() {
             _window->draw(*text.second);
         }
         _window->draw(_saveButton->getSprite());
+        _window->draw(_music1->getSprite());
+        _window->draw(_music2->getSprite());
         if (_savingMode) {
             getInput();
         }

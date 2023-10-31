@@ -36,18 +36,22 @@ class Editor {
     std::map<std::string, std::unique_ptr<Entity>> _entities;
     std::map<std::string, std::unique_ptr<Entity>> _entitiesSelectMenu;
     std::unique_ptr<Entity> _saveButton;
+    std::unique_ptr<Entity> _music1;
+    std::unique_ptr<Entity> _music2;
     std::map<std::string, std::tuple<int, int>> _entitiesRect;
     std::map<std::string, std::string> _entitiesJsonConfig;
     std::map<std::string, int> _entityQuantity;
     std::map<std::string, std::unique_ptr<sf::Text>> _texts;
     std::shared_ptr<RessourceManager> _ressourceManager;
     std::map<std::string, std::unique_ptr<Input>> _inputs;
+    std::map<std::string, sf::Music> _musics;
     std::string _selectedEntity = "flyer";
     bool _savingMode = false;
     std::string _levelName;
     JsonParser _jsonParser;
     int _x = 0;
     int _y = 0;
+    std::string _selectedMusic = "level1.ogg";
 };
 
 #endif /* !Editor_HPP_ */
