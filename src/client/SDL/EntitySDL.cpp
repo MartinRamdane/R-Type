@@ -30,8 +30,8 @@ void EntitySDL::setSpriteScale(float scaleX, float scaleY) {
     _scaleX = scaleX;
     _scaleY = scaleY;
     SDL_QueryTexture(_texture, NULL, NULL, &_textureWidth, &_textureHeight);
-    _textureWidth = (_textureWidth / _nbRect) * scaleX;
-    _textureHeight = _textureHeight * scaleY;
+    _textureWidth = (_textureWidth * _scaleX) / _nbRect;
+    _textureHeight = _textureHeight * _scaleY;
     _destRect.w = _textureWidth;
     _destRect.h = _textureHeight;
     _animRect.w = _textureWidth;
