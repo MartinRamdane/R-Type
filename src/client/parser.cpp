@@ -29,7 +29,8 @@ IEntity::EntityInfos Parser::addEntity(std::map<std::string, std::string> value)
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.type = IEntity::Type::SPRITE;
     entityInfos.path = value["path"];
-    getConfig(value["config_path"], value["object_type"], entityInfos);
+    if (value["config_path"] != "none")
+        getConfig(value["config_path"], value["object_type"], entityInfos);
     entityInfos.scaleX = std::stof(value["scale.x"]);
     entityInfos.scaleY = std::stof(value["scale.y"]);
     entityInfos.x = std::stof(value["x"]);

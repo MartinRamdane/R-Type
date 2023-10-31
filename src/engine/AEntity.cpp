@@ -233,3 +233,7 @@ bool AEntity::isSound() const {
 void AEntity::setSound(bool sound) {
     _sound = sound;
 }
+
+void AEntity::setDirection(Direction direction) {
+    _direction = direction;
+}
