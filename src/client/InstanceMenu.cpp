@@ -95,25 +95,22 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
 
 InstanceMenu::~InstanceMenu() {
     if (_windowCreated)
-        _window.close();
+        _window->close();
 }
 
-void InstanceMenu::mainloop() {
-    if (!_windowCreated) {
-        _window.create(sf::VideoMode(1920, 1080), "Instance Window");
-        _window.setFramerateLimit(60);
-        _windowCreated = true;
-    }
+void InstanceMenu::mainloop(std::shared_ptr<sf::RenderWindow> window) {
+    _window = window;
+    _windowCreated = true;
     _client = _game->getClient();
-    while (_window.isOpen()) {
+    while (_window->isOpen()) {
         sf::Event event;
         if (!_client->Incoming().empty()) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
-        while (_window.pollEvent(event)) {
-            sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
-            sf::Vector2f worldMousePosition = _window.mapPixelToCoords(mousePosition);
+        while (_window->pollEvent(event)) {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
+            sf::Vector2f worldMousePosition = _window->mapPixelToCoords(mousePosition);
 
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Left) {
@@ -126,7 +123,7 @@ void InstanceMenu::mainloop() {
                         std::string serverToJoinInfos = std::to_string(port);
                         Event evt = {ACTION::JOIN, serverToJoinInfos};
                         _client->SendEvent(evt);
-                        _window.close();
+                        _window->close();
                     }
                 }
                 if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
@@ -153,47 +150,47 @@ void InstanceMenu::mainloop() {
                             std::string body = gameSelector.first;
                             evt.body = body;
                             _game.get()->getClient()->SendEvent(evt);
-                            _window.close();
+                            _window->close();
                         }
                     }
                 }
             }
         }
 
-        _window.clear();
-        _window.setView(_view);
-        _window.draw(_entities["background"]->getSprite());
+        _window->clear();
+        _window->setView(_view);
+        _window->draw(_entities["background"]->getSprite());
         int y = 170;
         for (auto &instanceButton: _instanceButtons) {
             instanceButton.second->setPosition(225, y);
             y += 90;
         }
         if (!_openInstanceModal) {
-            _window.draw(_entities["listBackground"]->getSprite());
-            _window.draw(_entities["pCreateInstanceButton"]->getSprite());
-            _window.draw(_entities["pRefreshList"]->getSprite());
-            _window.draw(*_texts["pCreateInstanceText"]);
-            _window.draw(*_texts["title"]);
+            _window->draw(_entities["listBackground"]->getSprite());
+            _window->draw(_entities["pCreateInstanceButton"]->getSprite());
+            _window->draw(_entities["pRefreshList"]->getSprite());
+            _window->draw(*_texts["pCreateInstanceText"]);
+            _window->draw(*_texts["title"]);
             for (auto &instanceButton: _instanceButtons) {
                 for (auto &entity: instanceButton.second->getEntities()) {
-                    _window.draw(entity.second->getSprite());
+                    _window->draw(entity.second->getSprite());
                 }
                 for (auto &text: instanceButton.second->getTexts())
-                    _window.draw(*text.second);
+                    _window->draw(*text.second);
             }
         }
         if (_openInstanceModal) {
-            _window.draw(_entities["modalBackground"]->getSprite());
-            _window.draw(*_texts["modalTitle"]);
-            _window.draw(_entities["modalExitButton"]->getSprite());
-            _window.draw(*_texts["modalExitButtonText"]);
+            _window->draw(_entities["modalBackground"]->getSprite());
+            _window->draw(*_texts["modalTitle"]);
+            _window->draw(_entities["modalExitButton"]->getSprite());
+            _window->draw(*_texts["modalExitButtonText"]);
             for (auto &gameSelector: _gameSelector) {
-                _window.draw(gameSelector.second->getSprite());
+                _window->draw(gameSelector.second->getSprite());
             }
         }
         if (!_errorConnect)
-            _window.draw(*_texts["ErrorConnexion"]);
-        _window.display();
+            _window->draw(*_texts["ErrorConnexion"]);
+        _window->display();
     }
 }
 

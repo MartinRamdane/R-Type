@@ -41,7 +41,7 @@ int Game::getEntitiesNumber() {
     return _entities.size();
 }
 
-void Game::run() {
+void Game::run(std::shared_ptr<sf::RenderWindow> window) {
     setLib(1);
     setLibToUse();
     bool sendListEvent = false;
@@ -55,7 +55,7 @@ void Game::run() {
                 Event evt = {ACTION::LIST, ""};
                 _client->SendEvent(evt);
             }
-            _instanceMenu->mainloop();
+            _instanceMenu->mainloop(window);
             sendListEvent = true;
         }
         if (isUDPClientConnected) {

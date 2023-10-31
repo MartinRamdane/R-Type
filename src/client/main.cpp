@@ -33,8 +33,8 @@ int main(int ac, char **av) {
     }
     // game->setType(param);
     Menu *menu = new Menu(game);
-    menu->mainloop();
+    std::shared_ptr<sf::RenderWindow> window = menu->mainloop();
     delete menu;
-    game->run();
+    game->run(window);
     return 0;
 }

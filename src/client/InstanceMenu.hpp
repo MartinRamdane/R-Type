@@ -25,13 +25,13 @@ public:
 
     ~InstanceMenu();
 
-    void mainloop();
+    void mainloop(std::shared_ptr<sf::RenderWindow> window);
 
     void addInstanceButton(InstanceType instance, int x,
                            int y);
 
 private:
-    sf::RenderWindow _window;
+    std::shared_ptr<sf::RenderWindow> _window;
     sf::View _view;
     sf::Font _font;
     std::map <std::string, std::unique_ptr<Entity>> _entities;

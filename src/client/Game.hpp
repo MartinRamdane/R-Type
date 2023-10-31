@@ -39,7 +39,7 @@ public:
 
     ~Game();
 
-    void run();
+    void run(std::shared_ptr<sf::RenderWindow> window);
 
     void update(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
 

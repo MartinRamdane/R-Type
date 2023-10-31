@@ -118,6 +118,7 @@ IEntity::EntityInfos Parser::hitEntity(std::map<std::string, std::string> value)
 }
 
 IEntity::EntityInfos Parser::parseMessage(Event evt) {
+    std::cout << "body: " << evt.body << std::endl;
     std::size_t com = evt.body.find(' ');
     if (com != std::string::npos) {
         std::string commande = evt.body.substr(0, com);
