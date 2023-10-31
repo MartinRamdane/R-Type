@@ -66,6 +66,7 @@ void Character::shoot() {
     info.direction = _direction;
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::PLAYER);
+    RType::instance->createSound("shootSpaceship.ogg");
 }
 
 void Character::update() {
@@ -122,10 +123,12 @@ void Character::hurtEntities(IEntity& self, IEntity& you) {
     if (self.getLife() <= 0) {
         auto pos = self.getPosition();
         RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+        RType::instance->createSound("explosion.ogg");
     }
     if (you.getLife() <= 0) {
         auto pos = you.getPosition();
         RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
+        RType::instance->createSound("explosion.ogg");
     }
 }
 

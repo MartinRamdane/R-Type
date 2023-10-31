@@ -33,9 +33,10 @@ void LevelInitializer::loadLevel(int currentLevel) {
             } else if (config["Type"] == "Boss") {
                 createBoss(value["Count"], value["Positions"]);
             }
-        } else {
+        } else if (value.contains("File")) {
+            _game->createMusic(value["File"]);
+        } else
             createBackground();
-        }
     }
 }
 

@@ -60,6 +60,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_supportProjectilesGroups, _bossGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _bombermanGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _bombGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
@@ -236,8 +237,10 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
         for (auto player : _players) {
-            for (auto player : _players)
+            for (auto player : _players) {
                 player->resetLife();
+                player->setCreated(false);
+            }
             _lastId++;
         }
     }
@@ -331,6 +334,9 @@ void RType::eraseDeadEntity(int id) {
 
 void RType::eraseDeadEntity() {
     for (auto it = _staticObjects.begin(); it != _staticObjects.end(); it++) {
+        if ((*it)->isSound()) {
+            (*it)->kill();
+        }
         if ((*it)->isDead()) {
             _staticObjects.erase(it);
             break;
@@ -366,6 +372,15 @@ void RType::eraseDeadEntity() {
             break;
         }
     }
+    for (auto it = _musics.begin(); it != _musics.end(); it++) {
+        if ((*it)->isSound()) {
+            (*it)->kill();
+        }
+        if ((*it)->isDead()) {
+            _musics.erase(it);
+            break;
+        }
+    }
 }
 
 void RType::setAllEntitiesToCreated() {
@@ -387,6 +402,9 @@ void RType::setAllEntitiesToCreated() {
     for (auto dropper : _dropper) {
         dropper->setCreated(false);
     }
+    for (auto music : _musics) {
+        music->setCreated(false);
+    }
 }
 
 void RType::deleteAllEntities() {
@@ -401,6 +419,8 @@ void RType::deleteAllEntities() {
         supportShip->kill();
     for (auto dropper : _dropper)
         dropper->kill();
+    for (auto music : _musics)
+        music->kill();
     _staticObjects.clear();
     _enemies.clear();
     _projectiles.clear();
@@ -418,6 +438,7 @@ void RType::deleteAllEntities() {
     _wormGroups->clear();
     _bossGroups->clear();
     _bombermanGroups->clear();
+    _musics.clear();
 }
 
 bool RType::isReset() {
@@ -525,4 +546,24 @@ std::vector<std::shared_ptr<AEntity>> RType::getEnemies() {
     for (auto enemy : _enemies)
         enemies.push_back(enemy);
     return (enemies);
+}
+
+void RType::createSound(std::string path) {
+    IEntity::EntityInfo info;
+    info.assetFile = path;
+    info.id = _lastId++;
+    std::shared_ptr<AEntity> sound = std::make_shared<AEntity>(info);
+    sound->setSound(true);
+    _staticObjects.push_back(sound);
+    _staticObjectsGroups->insert(sound);
+}
+
+void RType::createMusic(std::string path) {
+    IEntity::EntityInfo info;
+    info.assetFile = path;
+    info.id = _lastId++;
+    std::shared_ptr<AEntity> music = std::make_shared<AEntity>(info);
+    music->setSound(true);
+    _musics.push_back(music);
+    _staticObjectsGroups->insert(music);
 }

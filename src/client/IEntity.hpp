@@ -16,6 +16,7 @@ class IEntity {
     enum Type {
         SPRITE,
         TEXT,
+        SOUND
     };
     typedef struct EntityInfos {
         int id;
@@ -64,4 +65,5 @@ class IEntity {
     virtual void makePrediction() = 0;
     virtual std::string getEventForm() const = 0;
     virtual void setFont() = 0;
+    virtual void setSound(const std::string& path) = 0;
 };

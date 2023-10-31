@@ -59,6 +59,8 @@ class AEntity : public IEntity {
     int getRelatedPlayer() const;
     int getLife() const;
     void setLastMove(bool lastMove);
+    bool isSound() const;
+    void setSound(bool sound);
 
    protected:
     float _x;
@@ -89,4 +91,5 @@ class AEntity : public IEntity {
     bool _hasSupport = false;
     int _relatedPlayerId = -1;
     bool _lastMove = false;
+    bool _sound = false;
 };

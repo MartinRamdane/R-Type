@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <filesystem>
 #include <iostream>
 #include <map>
@@ -20,7 +21,9 @@ class RessourceManager {
     RessourceManager();
     ~RessourceManager(){};
     std::map<std::string, std::shared_ptr<sf::Texture>> getTextures() const;
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>> getSounds() const;
 
    public:
     std::map<std::string, std::shared_ptr<sf::Texture>> _textures;
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>> _sounds;
 };

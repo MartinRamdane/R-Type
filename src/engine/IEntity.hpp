@@ -95,4 +95,6 @@ public:
     virtual bool getHasSupport() const = 0;
     virtual void setRelatedPlayer(int relatedPlayer) = 0;
     virtual int getRelatedPlayer() const = 0;
+    virtual bool isSound() const = 0;
+    virtual void setSound(bool sound) = 0;
 };
