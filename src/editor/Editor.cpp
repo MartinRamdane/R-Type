@@ -267,9 +267,9 @@ void Editor::saveLevel() {
                     continue;
                 std::cout << entity.first + std::to_string(j) << std::endl;
                 level[_levelName]["EntitySFML" + std::to_string(i)]["Positions"][j]["X"] =
-                    _entities[entity.first + std::to_string(j)]->getSprite().getPosition().x;
+                    (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().x;
                 level[_levelName]["EntitySFML" + std::to_string(i)]["Positions"][j]["Y"] =
-                    _entities[entity.first + std::to_string(j)]->getSprite().getPosition().y;
+                    (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().y;
             }
         }
         i++;
