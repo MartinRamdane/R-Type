@@ -76,8 +76,6 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _texts["modalExitButtonText"]->setCharacterSize(16);
     _texts["modalExitButtonText"]->setPosition(sf::Vector2f(394, 405));
 
-    // TODO: create dynamically game selector for each games we support
-
     _gameSelector["rType"] = std::make_unique<Entity>(ressourceManager);
     _gameSelector["rType"]->setTexture("gameSelectorRtype.png");
     _gameSelector["rType"]->setRect(1, 0);

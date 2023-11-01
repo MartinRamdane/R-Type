@@ -50,7 +50,12 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
+        if (!window->isOpen()) {
+            window->create(sf::VideoMode(1920, 1080), "Menu");
+            window->setFramerateLimit(60);
+        }
         if (isTCPClientConnected && !isUDPClientConnected) {
+            std::cout << "instance menu" << std::endl;
             if (!sendListEvent) {
                 Event evt = {ACTION::LIST, ""};
                 _client->SendEvent(evt);
@@ -59,6 +64,7 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             sendListEvent = true;
         }
         if (isUDPClientConnected) {
+            sendListEvent = false;
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
@@ -332,5 +338,7 @@ void Game::sendQuitEvent() {
         std::cout << "event body: " << body << std::endl;
         Event evt = {ACTION::QUIT, body};
         _client.get()->SendEvent(evt);
+        isUDPClientConnected = false;
+        _display.get()->closeWindow();
     }
 }
