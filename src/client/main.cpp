@@ -25,7 +25,15 @@ int getParam(char **av) {
 int main(int ac, char **av) {
     struct Login login;
     std::shared_ptr <Game> game = std::make_shared<Game>();
-    // game->setType(param);
+    int param = 0;
+    if (ac == 1) {
+        std::cout << "Usage: ./client [lib]" << std::endl;
+        std::cout << "Lib: -sfml or -sdl" << std::endl;
+        return 84;
+    } else {
+        param = getParam(av);
+    }
+    game->setLib(param);
     Menu *menu = new Menu(game);
     std::shared_ptr <sf::RenderWindow> window = menu->mainloop();
     delete menu;

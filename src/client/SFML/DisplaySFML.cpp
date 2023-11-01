@@ -6,10 +6,10 @@
 */
 
 #include "DisplaySFML.hpp"
-#include "Entity.hpp"
+#include "EntitySFML.hpp"
 
 DisplaySFML::DisplaySFML() {
-    _ressourceManager = std::make_shared<RessourceManager>();
+    _ressourceManager = std::make_shared<RessourceManagerSFML>();
 }
 
 DisplaySFML::~DisplaySFML() {}
@@ -25,7 +25,7 @@ void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
     _window.clear();
     std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities->begin();
     while (it != _entities->end()) {
-        auto entity = std::dynamic_pointer_cast<Entity>(it->second);
+        auto entity = std::dynamic_pointer_cast<EntitySFML>(it->second);
         entity->draw(_window);
         it++;
     }
@@ -89,7 +89,7 @@ std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityIn
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
+    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
     entity->setTexture(entityInfos.path);
     if (entity->_texture == nullptr)
         return nullptr;
@@ -107,7 +107,7 @@ std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityIn
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
+    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
     entity->setFont();
     entity->setTextString(entityInfos.text);
     entity->setTextInfo(entityInfos.size, entityInfos.color);
@@ -117,7 +117,7 @@ std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfo
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createSound(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
+    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
     entity->setSound(entityInfos.path);
     entity->setType(entityInfos.type);
     return entity;

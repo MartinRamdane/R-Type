@@ -10,8 +10,8 @@
 #include <map>
 #include <memory>
 #include "../types/Instance.hpp"
-#include "SFML/Entity.hpp"
-#include "SFML/RessourceManager.hpp"
+#include "SFML/EntitySFML.hpp"
+#include "SFML/RessourceManagerSFML.hpp"
 
 class InstanceButton {
 public:
@@ -25,9 +25,9 @@ public:
 
     int getPort() { return _instance.port; }
 
-    std::map <std::string, std::shared_ptr<Entity>> getEntities() { return _entities; }
+    std::map <std::string, std::shared_ptr<EntitySFML>> getEntities() { return _entities; }
 
-    Entity *getSubmitButton();
+    EntitySFML *getSubmitButton();
 
     void setPosition(int x, int y);
 
@@ -40,7 +40,7 @@ private:
     InstanceType _instance;
     int _x;
     int _y;
-    std::map <std::string, std::shared_ptr<Entity>> _entities;
+    std::map <std::string, std::shared_ptr<EntitySFML>> _entities;
     std::map <std::string, std::shared_ptr<sf::Text>> _texts;
 };
 

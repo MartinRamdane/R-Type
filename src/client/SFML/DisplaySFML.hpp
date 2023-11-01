@@ -15,7 +15,7 @@
 #include "../IDisplay.hpp"
 #include "../TCPClientImpl.hpp"
 #include "../UDPClient.hpp"
-#include "RessourceManager.hpp"
+#include "RessourceManagerSFML.hpp"
 
 class DisplaySFML : public IDisplay {
 public:
@@ -49,7 +49,7 @@ private:
     sf::RenderWindow _window;
     sf::View _view;
     sf::Event _event;
-    std::shared_ptr <RessourceManager> _ressourceManager;
+    std::shared_ptr<RessourceManagerSFML> _ressourceManager;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
     bool closed = false;
     std::vector <std::string> _events;
