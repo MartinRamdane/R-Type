@@ -88,7 +88,6 @@ public:
     std::shared_ptr <TCPClientImpl> getClient() { return _client; };
 
 private:
-    sf::RenderWindow _window;
     sf::View _view;
     sf::Clock _clock;
     std::shared_ptr <TCPClientImpl> _client;
