@@ -124,8 +124,10 @@ void Game::handleEvent() {
     Event evt;
     std::string playerId = "p" + std::to_string(_playerId);
     for (auto event : events) {
-        if (event == "close")
+        if (event == "escape") {
+            sendQuitEvent();
             _client->Disconnect();
+        }
         if (event == "r")
             evt.ACTION_NAME = ACTION::FLIP;
         if (event == "left")
@@ -319,5 +321,17 @@ void Game::checkEntities(int nb) {
     int currentNb = getEntitiesNumber();
     if (currentNb < nb) {
         _udpClient->sendEvent({ACTION::CHECK, ""});
+    }
+}
+
+void Game::sendQuitEvent() {
+    if (isUDPClientConnected) {
+        std::cout << "send quit event" << std::endl;
+        std::string targetPort = std::to_string(_udpClient.get()->getPort());
+        std::string targetHost = _udpClient.get()->getHost();
+        std::string body = targetHost + " " + targetPort;
+        std::cout << "event body: " << body << std::endl;
+        Event evt = {ACTION::QUIT, body};
+        _client.get()->SendEvent(evt);
     }
 }

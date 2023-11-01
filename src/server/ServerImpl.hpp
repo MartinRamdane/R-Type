@@ -128,6 +128,22 @@ protected:
                 break;
             case ACTION::QUIT: {
                 std::cout << "[" << client->GetID() << "]: QUIT" << std::endl;
+                std::cout << "quit event" << std::endl;
+                EventHandler handler;
+                handler.decodeMessage(msg.body);
+                std::stringstream ss(handler.getBody());
+                std::string host;
+                std::string portString;
+                ss >> host;
+                ss >> portString;
+                int port = std::stoi(portString);
+                Instance *instance = _server->getInstanceByPort(port);
+                if (instance == nullptr) {
+                    std::cerr << "[ERROR]: Bad instance to quit" << std::endl;
+                    return;
+                }
+                int nbPlayers = instance->getNbPlayers();
+                instance->getUDPServer()->setNbPlayers(nbPlayers - 1);
             }
                 break;
             case ACTION::PING: {
