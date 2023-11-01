@@ -337,8 +337,8 @@ void Game::sendQuitEvent() {
         std::string body = targetHost + " " + targetPort;
         std::cout << "event body: " << body << std::endl;
         Event evt = {ACTION::QUIT, body};
-        _client.get()->SendEvent(evt);
         isUDPClientConnected = false;
         _display.get()->closeWindow();
+        _client.get()->SendEvent(evt);
     }
 }
