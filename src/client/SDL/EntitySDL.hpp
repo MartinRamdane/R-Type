@@ -13,7 +13,6 @@
 #include <string>
 #include "../IEntity.hpp"
 #include "RessourceManagerSDL.hpp"
-#include "Camera.hpp"
 
 
 class EntitySDL : public IEntity {
@@ -26,7 +25,7 @@ class EntitySDL : public IEntity {
     std::tuple<float, float> getSpritePosition() const;
     void setSpriteOriginToCenter();
     void setRect(int nb, int initRect = 0);
-    void animateSprite(const int ei, const int framerate);
+    void animateSprite(const int ei, const float framerate);
     void setInitPos();
     void setTextString(std::string str);
     void setType(IEntity::Type type);
@@ -45,7 +44,7 @@ class EntitySDL : public IEntity {
     void makePrediction();
     std::string getEventForm() const;
     void setFont();
-    void draw(SDL_Renderer* renderer, std::shared_ptr<Camera> camera);
+    void draw(SDL_Renderer* renderer);
 
    public:
     SDL_Texture* _texture;
@@ -72,4 +71,8 @@ class EntitySDL : public IEntity {
     std::shared_ptr<RessourceManagerSDL> _ressourceManager;
     float _scaleX;
     float _scaleY;
+    unsigned int _framerate;
+    unsigned int _framedelay;
+    double _delta;
+    bool _flip = false;
 };

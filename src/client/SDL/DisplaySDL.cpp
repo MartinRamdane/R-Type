@@ -8,7 +8,7 @@
 #include "DisplaySDL.hpp"
 
 DisplaySDL::DisplaySDL() {
-    SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
+    SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
 }
@@ -21,10 +21,9 @@ DisplaySDL::~DisplaySDL() {
 }
 
 void DisplaySDL::createWindow(std::string name, int x, int y) {
-    _window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN);
+    _window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     _ressourceManager = std::make_shared<RessourceManagerSDL>(_renderer);
-    _camera = std::make_shared<Camera>(0, 0, x, y);
     SDL_RenderSetLogicalSize(_renderer, x, y);
 }
 
@@ -33,13 +32,14 @@ void DisplaySDL::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
     std::map<int, std::shared_ptr<IEntity>>::iterator it = _entities->begin();
     while (it != _entities->end()) {
         auto entity = std::dynamic_pointer_cast<EntitySDL>(it->second);
-        entity->draw(_renderer, _camera);
+        entity->draw(_renderer);
         it++;
     }
     SDL_RenderPresent(_renderer);
 }
 
 void DisplaySDL::handleEvent() {
+    
     while (SDL_PollEvent(&_event) != 0) {
         if (_event.type == SDL_QUIT) {
             _events.push_back("close");

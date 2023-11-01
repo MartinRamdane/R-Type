@@ -45,7 +45,7 @@ class IEntity {
     virtual std::tuple<float, float> getSpritePosition() const = 0;
     virtual void setSpriteOriginToCenter() = 0;
     virtual void setRect(int nb, int initRect = 0) = 0;
-    virtual void animateSprite(const int ei, const int framerate) = 0;
+    virtual void animateSprite(const int ei, const float framerate) = 0;
     virtual void setInitPos() = 0;
     virtual void setTextString(std::string str) = 0;
     virtual void setType(IEntity::Type type) = 0;

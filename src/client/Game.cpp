@@ -91,11 +91,9 @@ void Game::animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
     std::map<int, std::shared_ptr<IEntity>>::iterator it = entitiesCopy->begin();
     while (it != entitiesCopy->end()) {
         if (it->second->getEventForm() == "loop")
-            it->second->animateSprite(0, 60);
+            it->second->animateSprite(0, 50);
         if (it->second->getEventForm() == "once")
-            it->second->animateSprite(3, 60);
-        if (it->second->getEventForm() == "event")
-            it->second->setInitPos();
+            it->second->animateSprite(3, 50);
         if (it->second->getEventForm() == "paralaxe")
             it->second->animateSprite(4, 1);
         it++;

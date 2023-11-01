@@ -10,6 +10,9 @@
 EntitySDL::EntitySDL(std::shared_ptr<RessourceManagerSDL> ressourceManager)
     : _ressourceManager(ressourceManager) {
     _clock = SDL_GetPerformanceCounter();
+    _framerate = SDL_GetTicks();
+    _framedelay = SDL_GetTicks();
+    _delta = 0;
 }
 
 EntitySDL::~EntitySDL() {}
@@ -30,8 +33,8 @@ void EntitySDL::setSpriteScale(float scaleX, float scaleY) {
     _scaleX = scaleX;
     _scaleY = scaleY;
     SDL_QueryTexture(_texture, NULL, NULL, &_textureWidth, &_textureHeight);
-    _textureWidth = (_textureWidth * _scaleX) / _nbRect;
-    _textureHeight = _textureHeight * _scaleY;
+    _textureWidth = _textureWidth / _nbRect;
+    _textureHeight = _textureHeight;
     _destRect.w = _textureWidth;
     _destRect.h = _textureHeight;
     _animRect.w = _textureWidth;
@@ -52,10 +55,6 @@ std::tuple<float, float> EntitySDL::getSpritePosition() const {
 }
 
 void EntitySDL::setSpriteOriginToCenter() {
-    _centerX = (_textureWidth / 2);
-    _centerY = (_textureHeight / 2);
-    _destRect.x -= _centerX;
-    _destRect.y -= _centerY;
 }
 
 void EntitySDL::setRect(int nb, int initRect) {
@@ -63,12 +62,15 @@ void EntitySDL::setRect(int nb, int initRect) {
     _initRect = initRect;
 }
 
-void EntitySDL::animateSprite(const int ei, const int framerate) {
+void EntitySDL::animateSprite(const int ei, const float framerate) {
     if (_type != IEntity::Type::SPRITE)
         return;
     Uint64 end = SDL_GetPerformanceCounter();
     double elapsed = (end - _clock) / (double)SDL_GetPerformanceFrequency();
-    if (elapsed > framerate) {
+    float newFramerate = framerate;
+    if (framerate <= 100 && framerate > 1)
+        newFramerate = framerate - 40;
+    if (elapsed > newFramerate / 100) {
         if (ei == 0) {
             if (_animRect.x == _textureWidth * (_nbRect - 1))
                 _animRect.x = _textureWidth * _initRect;
@@ -98,7 +100,7 @@ void EntitySDL::animateSprite(const int ei, const int framerate) {
 void EntitySDL::setInitPos() {
     Uint64 end = SDL_GetPerformanceCounter();
     double elapsed = (end - _clock) / (double)SDL_GetPerformanceFrequency();
-    if (elapsed > 100) {
+    if (elapsed > 0.1) {
         if (_animRect.x > _textureWidth * _initRect)
             _animRect.x -= _textureWidth;
         else if (_animRect.x < _textureWidth * _initRect)
@@ -134,40 +136,48 @@ void EntitySDL::setDirection(std::string direction) {
 }
 
 void EntitySDL::update() {
-    if (_type == IEntity::Type::SPRITE)
-        makePrediction();
-    float nextX = std::get<0>(_nextPos);
-    float nextY = std::get<1>(_nextPos);
-    if (_destRect.x == nextX && _destRect.y == nextY) {
-        if (_eventForm == "event")
-            setInitPos();
-        return;
+    _framerate = SDL_GetTicks();
+    _delta = _framerate - _framedelay;
+    if (_delta > 1000/60.0)
+    {
+        _framedelay = _framerate;
+        if (_type == IEntity::Type::SPRITE)
+            makePrediction();
+        float nextX = std::get<0>(_nextPos);
+        float nextY = std::get<1>(_nextPos);
+        if ((_destRect.x == nextX && _destRect.y == nextY) && _animRect.x != (_textureWidth * _initRect)) {
+            if (_eventForm == "event")
+                setInitPos();
+            return;
+        }
+        if (_destRect.x < nextX)
+            _destRect.x += _speed;
+        else if (_destRect.x > nextX)
+            _destRect.x -= _speed;
+        if (_destRect.y < nextY) {
+            _destRect.y += _speed;
+            if (_eventForm == "event")
+                animateSprite(2, 100);
+        } else if (_destRect.y > nextY) {
+            _destRect.y -= _speed;
+            if (_eventForm == "event")
+                animateSprite(1, 100);
+        }
+        if (_destRect.x + _speed > nextX && _destRect.x - _speed < nextX)
+            _destRect.x = nextX;
+        if (_destRect.y + _speed > nextY && _destRect.y - _speed < nextY) {
+            _destRect.y = nextY;
+            _oldPosY = _destRect.y;
+        }
+        if (_destRect.y > _oldPosY && _eventForm == "event")
+            animateSprite(2, 50);
+        else if (_destRect.y < _oldPosY && _eventForm == "event")
+            animateSprite(1, 50);
     }
-    if (_destRect.x < nextX)
-        _destRect.x += _speed;
-    else if (_destRect.x > nextX)
-        _destRect.x -= _speed;
-    if (_destRect.y < nextY) {
-        _destRect.y += _speed;
-        if (_eventForm == "event")
-            animateSprite(2, 100);
-    } else if (_destRect.y > nextY) {
-        _destRect.y -= _speed;
-        if (_eventForm == "event")
-            animateSprite(1, 100);
-    }
-    if (_destRect.x + _speed > nextX && _destRect.x - _speed < nextX)
-        _destRect.x = nextX;
-    if (_destRect.y + _speed > nextY && _destRect.y - _speed < nextY)
-        _destRect.y = nextY;
-    if (_destRect.y > _oldPosY)
-        animateSprite(2, 100);
-    else if (_destRect.y < _oldPosY)
-        animateSprite(1, 100);
 }
 
 void EntitySDL::flip() {
-    _animRect.w *= -1;
+    _flip = !_flip;
 }
 
 void EntitySDL::setHit(bool touch) {
@@ -233,12 +243,15 @@ void EntitySDL::setFont() {
     // _text.setFont(_font);
 }
 
-void EntitySDL::draw(SDL_Renderer* renderer, std::shared_ptr<Camera> camera) {
+void EntitySDL::draw(SDL_Renderer* renderer) {
     if (_type == IEntity::Type::SPRITE) {
-        // SDL_Rect cameraRect = camera->apply(_destRect, _speed);
-        // SDL_Rect cameraRectAnim = camera->apply(_animRect, _speed);
-        SDL_RenderCopy(renderer, _texture, &_animRect, &_destRect);
+        int centerX = _textureWidth / 2;
+        int centerY = _textureHeight / 2;
+        int newX = _destRect.x - (centerX * _scaleX);
+        int newY = _destRect.y - (centerY * _scaleY);
+        SDL_Rect destRect = { newX, newY, (int)(_textureWidth * _scaleX), (int)(_textureHeight * _scaleY) };
+        SDL_RendererFlip flipArg = _flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+        SDL_RenderCopyEx(renderer, _texture, &_animRect, &destRect, 0, NULL, flipArg);
     }
-    // else if (_type == IEntity::Type::TEXT)
-    //     window.draw(_text);
 }
+

@@ -12,7 +12,6 @@
 #include "RessourceManagerSDL.hpp"
 #include "EntitySDL.hpp"
 #include "../IDisplay.hpp"
-#include "Camera.hpp"
 
 class DisplaySDL : public IDisplay {
    public:
@@ -31,7 +30,6 @@ class DisplaySDL : public IDisplay {
    private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
-    std::shared_ptr<Camera> _camera;
     SDL_Event _event;
     std::shared_ptr<RessourceManagerSDL> _ressourceManager;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
