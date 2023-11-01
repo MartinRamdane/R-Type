@@ -126,7 +126,6 @@ void Game::handleEvent() {
     for (auto event : events) {
         if (event == "escape") {
             sendQuitEvent();
-            _client->Disconnect();
         }
         if (event == "r")
             evt.ACTION_NAME = ACTION::FLIP;
