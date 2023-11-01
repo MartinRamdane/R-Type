@@ -50,6 +50,8 @@ void DisplaySFML::handleEvent() {
             std::chrono::high_resolution_clock::now() - _lastFrameTime)
             .count() > 10) {
         _lastFrameTime = std::chrono::high_resolution_clock::now();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
+            _events.push_back("escape");
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             _events.push_back("left");
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
