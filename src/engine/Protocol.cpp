@@ -181,5 +181,5 @@ std::string Protocol::getKeyFromBody(std::string body) {
 
 int Protocol::getIdFromBodyKey(std::string body) {
     std::string id = body.substr(body.find(" ") + 1, body.size());
-    return std::stoi(id);
+    return std::stoi(id.substr(1));
 }
