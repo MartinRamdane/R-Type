@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(r-type)
 
-if(POLICY CMP0091)
+if (POLICY CMP0091)
     cmake_policy(SET CMP0091 NEW)
-endif()
+endif ()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -15,7 +15,7 @@ option(BUILD_TESTS "Build the tests" ON)
 option(BUILD_EDITOR "Build the editor" ON)
 
 # Set the output directories for executables
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})  # Diretório raiz
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/Debug)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/Release)
 
@@ -37,55 +37,55 @@ if (WIN32)
 endif (WIN32)
 
 # Include other CMake files for different targets based on build options
-if(BUILD_CLIENT)
+if (BUILD_CLIENT)
     include(src/client/CMakeLists.txt)
-endif()
+endif ()
 
-if(BUILD_SERVER)
+if (BUILD_SERVER)
     include(src/server/CMakeLists.txt)
-endif()
+endif ()
 
-if(BUILD_TESTS)
+if (BUILD_TESTS)
     include(src/tests/CMakeLists.txt)
-endif()
+endif ()
 
-if(BUILD_EDITOR)
+if (BUILD_EDITOR)
     include(src/editor/CMakeLists.txt)
-endif()
+endif ()
 
 if (WIN32)
     add_definitions(-D_WIN32_WINNT=0x0601)
-endif()
+endif ()
 
 # Check if options are deactivated
-if(NOT BUILD_CLIENT)
+if (NOT BUILD_CLIENT)
     message(STATUS "Client build option is deactivated.")
-endif()
+endif ()
 
-if(NOT BUILD_SERVER)
+if (NOT BUILD_SERVER)
     message(STATUS "Server build option is deactivated.")
-endif()
+endif ()
 
-if(NOT BUILD_TESTS)
+if (NOT BUILD_TESTS)
     message(STATUS "Tests build option is deactivated.")
-endif()
+endif ()
 
-if(NOT BUILD_EDITOR)
+if (NOT BUILD_EDITOR)
     message(STATUS "Editor build option is deactivated.")
-endif()
+endif ()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_custom_target(zip_debug ALL
-        COMMAND ${ZIP_TOOL} -r Debug/r-type.zip Debug assets
-        DEPENDS ${YOUR_TARGETS}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMENT "Zipping debug binaries..."
+            COMMAND ${ZIP_TOOL} -r Debug/r-type.zip Debug assets
+            DEPENDS ${YOUR_TARGETS}
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            COMMENT "Zipping debug binaries..."
     )
-elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
     add_custom_target(zip_release ALL
-        COMMAND ${ZIP_TOOL} -r Release/r-type.zip Release assets
-        DEPENDS ${YOUR_TARGETS}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMENT "Zipping release binaries..."
+            COMMAND ${ZIP_TOOL} -r Release/r-type.zip Release assets
+            DEPENDS ${YOUR_TARGETS}
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            COMMENT "Zipping release binaries..."
     )
-endif()
+endif ()

@@ -246,10 +246,9 @@ void UDPServer::addPlayerEntity(int id, std::string entity) {
     _playerEntities[id] = entity;
 }
 
-void UDPServer::handleUnknownEntities(std::vector<Client>::iterator client, Event event)
-{
-    std::vector<std::string> createData = _instanceRef->getCore()->getCreateEntities();
-    for (std::string data : createData) {
+void UDPServer::handleUnknownEntities(std::vector<Client>::iterator client, Event event) {
+    std::vector <std::string> createData = _instanceRef->getCore()->getCreateEntities();
+    for (std::string data: createData) {
         std::cout << "Sending " << data << std::endl;
         sendEvent({ACTION::SPRITE, data}, client->client.address().to_string(), client->client.port());
     }
