@@ -46,9 +46,13 @@ void ServerClass::loop() {
 }
 
 Instance *ServerClass::getInstanceByPort(int port) {
-    for (auto instance : _instances) {
+    for (auto instance: _instances) {
         if (instance->getPort() == port)
             return instance;
     }
     return nullptr;
+}
+
+void ServerClass::deleteInstance(int instanceId) {
+    _instances.erase(_instances.begin() + instanceId);
 }

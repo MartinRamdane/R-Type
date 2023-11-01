@@ -64,6 +64,8 @@ protected:
                 std::cout << "[" << client->GetID() << "]: LIST" << std::endl;
                 Event evt = {ACTION::LIST, ""};
                 for (auto instance: _server->getInstances()) {
+                    if (instance->getNbPlayers() == 1)
+                        continue;
                     evt.body = instance->getName() + " " + instance->getGameName() + " " +
                                std::to_string(instance->getNbPlayers() - 1) + " " +
                                std::to_string(instance->getMaxPlayers()) + " " + std::to_string(instance->getPort()) +
@@ -144,6 +146,9 @@ protected:
                 }
                 int nbPlayers = instance->getNbPlayers();
                 instance->getUDPServer()->setNbPlayers(nbPlayers - 1);
+                if (instance->getNbPlayers() == 1) {
+                    _server->deleteInstance(instance->getId());
+                }
             }
                 break;
             case ACTION::PING: {
