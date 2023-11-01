@@ -412,7 +412,7 @@ void RType::setAllEntitiesToCreated() {
 }
 
 void RType::deleteAllEntities() {
-    _lastId = 0;
+    _lastId = _players.size() - 1;
     for (auto staticObject : _staticObjects)
         staticObject->kill();
     for (auto enemy : _enemies)
