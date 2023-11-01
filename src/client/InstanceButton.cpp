@@ -49,8 +49,7 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     _texts[formatText("playersText")]->setCharacterSize(16);
     _texts[formatText("playersText")]->setFillColor(sf::Color::White);
     _texts[formatText("playersText")]->setPosition(sf::Vector2f(_x + 30, _y + 55));
-    std::cout << "nb players of instance: " << instance.nbPlayers << std::endl;
-    std::cout << "max players of instance: " << instance.maxPlayers << std::endl;
+    
     if (instance.nbPlayers < instance.maxPlayers) {
         _entities[formatText("submitButton")] = std::make_shared<Entity>(ressourceManager);
         _entities[formatText("submitButton")]->setTexture("button.png");
