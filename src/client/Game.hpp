@@ -105,7 +105,6 @@ private:
     std::map<int, std::shared_ptr<IEntity>> _entities;
     int _playerId;
     std::string _host;
-    std::chrono::high_resolution_clock::time_point _lastFrameTime;
     ProgressBar _progressBar;
     std::unique_ptr <IDisplay> _display;
     Lib _lib;

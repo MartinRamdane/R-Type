@@ -2,12 +2,12 @@
 ** EPITECH PROJECT, 2023
 ** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
-** RessourceManager.cpp
+** RessourceManagerSFML.cpp
 */
 
-#include "RessourceManager.hpp"
+#include "RessourceManagerSFML.hpp"
 
-RessourceManager::RessourceManager() {
+RessourceManagerSFML::RessourceManagerSFML() {
     std::string directory = "assets";
     for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
         if (entry.is_regular_file()) {
@@ -36,10 +36,14 @@ RessourceManager::RessourceManager() {
     }
 }
 
-std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManager::getTextures() const {
+RessourceManagerSFML::~RessourceManagerSFML() {
+    _textures.clear();
+}
+
+std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManagerSFML::getTextures() const {
     return _textures;
 }
 
-std::map<std::string, std::shared_ptr<sf::SoundBuffer>> RessourceManager::getSounds() const {
+std::map<std::string, std::shared_ptr<sf::SoundBuffer>> RessourceManagerSFML::getSounds() const {
     return _sounds;
 }
