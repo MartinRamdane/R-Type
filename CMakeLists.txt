@@ -72,3 +72,7 @@ endif ()
 if (NOT BUILD_TESTS)
     message(STATUS "Tests build option is deactivated.")
 endif ()
+
+if (NOT BUILD_EDITOR)
+    message(STATUS "Editor build option is deactivated.")
+endif ()
