@@ -154,10 +154,6 @@ protected:
                 std::cout << "[" << client->GetID() << "]: SPRITE" << std::endl;
             }
                 break;
-            case ACTION::KEY_S: {
-                std::cout << "[" << client->GetID() << "]: KEY_S" << std::endl;
-            }
-                break;
             case ACTION::DEAD: {
                 std::cout << "[" << client->GetID() << "]: DEAD" << std::endl;
             }
@@ -170,20 +166,12 @@ protected:
             case ACTION::RESET: {
                 std::cout << "[" << client->GetID() << "]: RESET" << std::endl;
             }
-            case ACTION::KEY_L: {
-                std::cout << "[" << client->GetID() << "]: KEY_L" << std::endl;
-            }
-            case ACTION::KEY_C: {
-                std::cout << "[" << client->GetID() << "]: KEY_C" << std::endl;
-            }
-                break;
             case ACTION::CHECK: {
                 std::cout << "[" << client->GetID() << "]: CHECK" << std::endl;
             }
             case ACTION::SOUND: {
                 std::cout << "[" << client->GetID() << "]: SOUND" << std::endl;
             }
-                break;
         }
     }
 

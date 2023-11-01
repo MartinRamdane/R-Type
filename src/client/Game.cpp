@@ -138,9 +138,19 @@ void Game::handleEvent() {
             evt.ACTION_NAME = ACTION::DOWN;
         if (event == "space")
             evt.ACTION_NAME = ACTION::SPACE;
-        if (event == "s")
-            evt.ACTION_NAME = ACTION::KEY_S;
-        evt.body = playerId;
+        if (event == "s") {
+            evt.ACTION_NAME = ACTION::KEY;
+            evt.body = "s ";
+        }
+        if (event == "l") {
+            evt.ACTION_NAME = ACTION::KEY;
+            evt.body = "l ";
+        }
+        if (event == "c") {
+            evt.ACTION_NAME = ACTION::KEY;
+            evt.body = "c ";
+        }
+        evt.body += playerId;
         _udpClient->sendEvent(evt);
     }
 }

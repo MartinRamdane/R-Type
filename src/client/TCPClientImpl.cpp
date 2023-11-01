@@ -14,8 +14,8 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
         case ACTION::CONNECT: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
-        }
             break;
+        }
         case ACTION::CREATE: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
@@ -31,8 +31,8 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
             Event evtToSend = {ACTION::JOIN, serverToJoinInfos};
             _game->getClient().get()->SendEvent(evtToSend);
             // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
-        }
             break;
+        }
         case ACTION::LIST: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
@@ -56,11 +56,11 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
             InstanceType instance = {instanceName, instanceGameName, nbPlayers,
                                      maxPlayers, port, id};
             _game->getInstanceMenu()->addInstanceButton(instance, 0, 0);
-        }
             break;
+        }
         case ACTION::JOIN: {
-        }
             break;
+        }
         case ACTION::JOINED: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
@@ -71,64 +71,70 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
             ss >> getPort;
             _game->setPlayerId(std::stoi(playerId));
             _game->connectToUdpServer(_game->getHost(), std::stoi(getPort));
-        }
             break;
+        }
         case ACTION::READY: {
-        }
             break;
+        }
         case ACTION::START: {
-        }
             break;
+        }
         case ACTION::LEFT: {
-        }
             break;
+        }
         case ACTION::RIGHT: {
-        }
             break;
+        }
         case ACTION::UP: {
-        }
             break;
+        }
         case ACTION::DOWN: {
-        }
             break;
+        }
         case ACTION::SPACE: {
-        }
             break;
+        }
         case ACTION::QUIT: {
-        }
             break;
+        }
         case ACTION::PING: {
-        }
             break;
+        }
         case ACTION::PONG: {
-        }
             break;
+        }
         case ACTION::OK: {
-        }
             break;
+        }
         case ACTION::KO: {
+            break;
         }
         case ACTION::SPRITE: {
+            break;
         }
         case ACTION::UNKNOWN: {
-        }
-        case ACTION::KEY_S: {
-        }
             break;
+        }
         case ACTION::TEXT: {
-        }
             break;
+        }
         case ACTION::DEAD: {
+            break;
         }
         case ACTION::FLIP: {
+            break;
         }
         case ACTION::RESET: {
-        }
-        case ACTION::KEY_L: {
-        }
             break;
-        case ACTION::KEY_C: {
         }
+        case ACTION::CHECK: {
             break;
+        }
+        case ACTION::SOUND: {
+            break;
+        }
+        case ACTION::KEY: {
+            break;
+        }
     }
 }

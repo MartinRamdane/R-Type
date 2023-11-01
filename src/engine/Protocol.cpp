@@ -173,3 +173,13 @@ std::vector<std::string> Protocol::transformAllEntitiesToCreate(
     }
     return protocol;
 }
+
+std::string Protocol::getKeyFromBody(std::string body) {
+    std::string key = body.substr(0, body.find(" "));
+    return key;
+}
+
+int Protocol::getIdFromBodyKey(std::string body) {
+    std::string id = body.substr(body.find(" ") + 1, body.size());
+    return std::stoi(id);
+}
