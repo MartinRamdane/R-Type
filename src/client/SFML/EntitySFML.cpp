@@ -214,7 +214,7 @@ IEntity::Type EntitySFML::getType() const {
     return _type;
 }
 
-void Entity::makePrediction() {
+void EntitySFML::makePrediction() {
     if (_direction == "left" || _direction == "right" || _direction == "up" || _direction == "down") {
         float speed = _speed;
         if (_direction == "left" || _direction == "up") {
@@ -245,7 +245,7 @@ sf::Sprite EntitySFML::getSprite() const {
     return _sprite;
 }
 
-void Entity::setSound(const std::string& path) {
+void EntitySFML::setSound(const std::string& path) {
     std::map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds = _ressourceManager->getSounds();
     std::map<std::string, std::shared_ptr<sf::SoundBuffer>>::iterator it = sounds.begin();
     while (it != sounds.end()) {

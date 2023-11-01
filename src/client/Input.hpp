@@ -12,11 +12,11 @@
 #include <iostream>
 #include <map>
 #include <memory>
-#include "SFML/RessourceManager.hpp"
+#include "SFML/RessourceManagerSFML.hpp"
 
 class Input {
    public:
-    Input(std::string texture, std::string textureHover, std::string textValue, std::shared_ptr<RessourceManager> ressourceManager);
+    Input(std::string texture, std::string textureHover, std::string textValue, std::shared_ptr<RessourceManagerSFML> ressourceManager);
     ~Input(){};
     void createSprite();
     void setSpriteRect(sf::IntRect rect);

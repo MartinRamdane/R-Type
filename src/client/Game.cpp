@@ -42,7 +42,6 @@ int Game::getEntitiesNumber() {
 }
 
 void Game::run(std::shared_ptr<sf::RenderWindow> window) {
-    setLib(1);
     setLibToUse();
     bool sendListEvent = false;
     while (!_display->getClosed()) {

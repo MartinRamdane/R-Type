@@ -46,6 +46,7 @@ class EntitySDL : public IEntity {
     std::string getEventForm() const;
     void setFont();
     void draw(SDL_Renderer* renderer);
+    void setSound(const std::string& path);
 
    public:
     SDL_Texture* _texture;

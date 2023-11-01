@@ -12,11 +12,11 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
 
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _openInstanceModal = false;
-    std::shared_ptr <RessourceManager> ressourceManager = std::make_shared<RessourceManager>();
+    std::shared_ptr <RessourceManagerSFML> ressourceManager = std::make_shared<RessourceManagerSFML>();
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
-    _entities["background"] = std::make_unique<Entity>(ressourceManager);
+    _entities["background"] = std::make_unique<EntitySFML>(ressourceManager);
     _entities["background"]->setTexture("background.png");
     _entities["background"]->setPosition(0, 0);
 
@@ -26,14 +26,14 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _texts["title"]->setCharacterSize(20);
     _texts["title"]->setPosition(sf::Vector2f(325, 50));
 
-    _entities["listBackground"] = std::make_unique<Entity>(ressourceManager);
+    _entities["listBackground"] = std::make_unique<EntitySFML>(ressourceManager);
     _entities["listBackground"]->setTexture("listMenu.png");
     _entities["listBackground"]->setPosition(425, 280);
     _entities["listBackground"]->setSpriteScale(1, 1);
     _entities["listBackground"]->setRect(1, 0);
     _entities["listBackground"]->setSpriteOriginToCenter();
 
-    _entities["pCreateInstanceButton"] = std::make_unique<Entity>(ressourceManager);
+    _entities["pCreateInstanceButton"] = std::make_unique<EntitySFML>(ressourceManager);
     _entities["pCreateInstanceButton"]->setTexture("button.png");
     _entities["pCreateInstanceButton"]->setRect(1, 0);
     _entities["pCreateInstanceButton"]->setPosition(220, 100);
@@ -45,13 +45,13 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _texts["pCreateInstanceText"]->setCharacterSize(12);
     _texts["pCreateInstanceText"]->setPosition(sf::Vector2f(230, 108));
 
-    _entities["pRefreshList"] = std::make_unique<Entity>(ressourceManager);
+    _entities["pRefreshList"] = std::make_unique<EntitySFML>(ressourceManager);
     _entities["pRefreshList"]->setTexture("refreshButton.png");
     _entities["pRefreshList"]->setRect(1, 0);
     _entities["pRefreshList"]->setPosition(380, 100);
     _entities["pRefreshList"]->setSpriteScale(1.5, 1.5);
 
-    _entities["modalBackground"] = std::make_unique<Entity>(ressourceManager);
+    _entities["modalBackground"] = std::make_unique<EntitySFML>(ressourceManager);
     _entities["modalBackground"]->setTexture("listMenu.png");
     _entities["modalBackground"]->setRect(1, 0);
     _entities["modalBackground"]->setPosition(425, 280);
@@ -64,7 +64,7 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _texts["modalTitle"]->setCharacterSize(20);
     _texts["modalTitle"]->setPosition(sf::Vector2f(325, 100));
 
-    _entities["modalExitButton"] = std::make_unique<Entity>(ressourceManager);
+    _entities["modalExitButton"] = std::make_unique<EntitySFML>(ressourceManager);
     _entities["modalExitButton"]->setTexture("button.png");
     _entities["modalExitButton"]->setRect(1, 0);
     _entities["modalExitButton"]->setPosition(355, 400);
@@ -78,13 +78,13 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
 
     // TODO: create dynamically game selector for each games we support
 
-    _gameSelector["rType"] = std::make_unique<Entity>(ressourceManager);
+    _gameSelector["rType"] = std::make_unique<EntitySFML>(ressourceManager);
     _gameSelector["rType"]->setTexture("gameSelectorRtype.png");
     _gameSelector["rType"]->setRect(1, 0);
     _gameSelector["rType"]->setPosition(220, 150);
     _gameSelector["rType"]->setSpriteScale(1, 1);
 
-    _gameSelector["pong"] = std::make_unique<Entity>(ressourceManager);
+    _gameSelector["pong"] = std::make_unique<EntitySFML>(ressourceManager);
     _gameSelector["pong"]->setTexture("gameSelectorPong.png");
     _gameSelector["pong"]->setRect(1, 0);
     _gameSelector["pong"]->setPosition(430, 150);
@@ -117,7 +117,7 @@ void InstanceMenu::mainloop(std::shared_ptr<sf::RenderWindow> window) {
                 for (auto &instanceButton: _instanceButtons) {
                     std::string key =
                             "submitButton" + std::to_string(instanceButton.second.get()->getId());
-                    Entity *submitButton = instanceButton.second.get()->getSubmitButton();
+                    EntitySFML *submitButton = instanceButton.second.get()->getSubmitButton();
                     if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
                         int port = instanceButton.second.get()->getPort();
                         std::string serverToJoinInfos = std::to_string(port);

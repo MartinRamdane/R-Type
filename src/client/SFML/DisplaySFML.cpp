@@ -115,7 +115,7 @@ std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfo
 }
 
 std::shared_ptr<IEntity> DisplaySFML::createSound(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<Entity> entity = std::make_shared<Entity>(_ressourceManager);
+    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
     entity->setSound(entityInfos.path);
     entity->setType(entityInfos.type);
     return entity;
