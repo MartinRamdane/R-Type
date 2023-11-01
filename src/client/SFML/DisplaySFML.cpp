@@ -43,6 +43,18 @@ void DisplaySFML::handleEvent() {
             if (_event.key.code == sf::Keyboard::R)
                 _events.push_back("r");
         }
+        if (_event.type == (sf::Event::KeyPressed)) {
+            if (_event.key.code == sf::Keyboard::S)
+                _events.push_back("s");
+        }
+        if (_event.type == (sf::Event::KeyPressed)) {
+            if (_event.key.code == sf::Keyboard::L)
+                _events.push_back("l");
+        }
+        if (_event.type == (sf::Event::KeyPressed)) {
+            if (_event.key.code == sf::Keyboard::C)
+                _events.push_back("c");
+        }
     }
     if (_lastFrameTime.time_since_epoch().count() == 0)
         _lastFrameTime = std::chrono::high_resolution_clock::now();

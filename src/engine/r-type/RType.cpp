@@ -15,6 +15,7 @@
 #include "Speed.hpp"
 #include "SupportShip.hpp"
 #include "Tank.hpp"
+#include "../Protocol.hpp"
 
 RType* RType::instance = nullptr;
 
@@ -169,6 +170,7 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
 
 void RType::update(ThreadSafeQueue<Event>& events) {
     eraseDeadEntity();
+    std::string key = "";
     while (!events.empty()) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
@@ -192,10 +194,6 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->shoot();
                 break;
-            case ACTION::KEY_S:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
-                    _players[getId(event) - 1]->action();
-                break;
             case ACTION::FLIP:
                 if (!_players.empty() && (int)_players.size() >= getId(event))
                     _players[getId(event) - 1]->flip();
@@ -205,20 +203,27 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 _playersGroups->insert(_players[_players.size() - 1]);
                 setAllEntitiesToCreated();
                 break;
-            case ACTION::KEY_L:
-                for (auto supportShip : _supportShips) {
-                    if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
-                        supportShip->launch();
-                        break;
+            case ACTION::KEY:
+                key = Protocol::getKeyFromBody(event.body);
+                if (key == "s") {
+                    if (!_players.empty() && (int)_players.size() >= Protocol::getIdFromBodyKey(event.body))
+                    _players[Protocol::getIdFromBodyKey(event.body) - 1]->action();
+                }
+                if (key == "l") {
+                    for (auto supportShip : _supportShips) {
+                        if (supportShip->getRelatedPlayerId() == _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
+                            supportShip->launch();
+                            break;
+                        }
                     }
                 }
-                break;
-            case ACTION::KEY_C:
-                for (auto supportShip : _supportShips) {
-                    if (supportShip->getRelatedPlayerId() == _players[getId(event) - 1]->getId()) {
-                        supportShip->setEntitiesHasCollided(true);
-                        _players[getId(event) - 1]->setEntitiesHasCollided(true);
-                        break;
+                if (key == "c") {
+                    for (auto supportShip : _supportShips) {
+                        if (supportShip->getRelatedPlayerId() == _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
+                            supportShip->setEntitiesHasCollided(true);
+                            _players[Protocol::getIdFromBodyKey(event.body) - 1]->setEntitiesHasCollided(true);
+                            break;
+                        }
                     }
                 }
                 break;
@@ -288,7 +293,7 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
         projectile->setFlip(flip);
 }
 
-std::shared_ptr<AEntity> RType::createShield(int x, int y) {
+std::shared_ptr<AEntity> RType::createShield(int x, int y, float speed) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -296,6 +301,7 @@ std::shared_ptr<AEntity> RType::createShield(int x, int y) {
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Shield";
     info.id = _lastId;
+    info.speed = speed;
     _lastId++;
     std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(_shield);

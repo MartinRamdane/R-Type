@@ -28,7 +28,7 @@ void Shield::activateShield() {
     _shieldIsUp = true;
     _shieldStart = std::chrono::high_resolution_clock::now();
     auto pos = getPosition();
-    _shield = RType::instance->createShield(std::get<0>(pos), std::get<1>(pos));
+    _shield = RType::instance->createShield(std::get<0>(pos), std::get<1>(pos), _speed);
 }
 
 void Shield::deactivateShield() {
@@ -59,8 +59,10 @@ void Shield::update() {
     }
     if (_shieldIsUp) {
         auto pos = getPosition();
-        _shield->setPosition(std::get<0>(pos), std::get<1>(pos));
-        _shield->setLastMove(true);
+        if (pos != _shield->getPosition()) {
+            _shield->setPosition(std::get<0>(pos), std::get<1>(pos));
+            _shield->setLastMove(true);
+        }
         auto _curentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsedTime = _curentTime - _shieldStart;
         if (elapsedTime >= _targetShieldDuration) {

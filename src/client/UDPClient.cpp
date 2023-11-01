@@ -48,8 +48,6 @@ std::string actionToString(ACTION action) {
             return "SPRITE";
         case ACTION::UNKNOWN:
             return "UNKNOWN";
-        case ACTION::KEY_S:
-            return "KEY_S";
         case ACTION::TEXT:
             return "TEXT";
         case ACTION::DEAD:
@@ -58,14 +56,12 @@ std::string actionToString(ACTION action) {
             return "FLIP";
         case ACTION::RESET:
             return "RESET";
-        case ACTION::KEY_L:
-            return "KEY_L";
-        case ACTION::KEY_C:
-            return "KEY_C";
         case ACTION::CHECK:
             return "CHECK";
         case ACTION::SOUND:
             return "SOUND";
+        case ACTION::KEY:
+            return "KEY";
     }
     return "";
 }
