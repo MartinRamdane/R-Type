@@ -8,6 +8,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -64,7 +65,7 @@ class EntitySDL : public IEntity {
     int _oldPosY;
     IEntity::Type _type;
     // sf::Text _text;
-    // sf::Font _font;
+    TTF_Font *_font;
     float _speed;
     std::tuple<float, float> _nextPos;
     bool _isHit = false;
@@ -75,4 +76,11 @@ class EntitySDL : public IEntity {
     unsigned int _framedelay;
     double _delta;
     bool _flip = false;
+    std::string _text;
+    std::string _textColor;
+    int _size;
+    SDL_Surface * _surface;
+    SDL_Texture * _textureText;
+    SDL_Rect _textRect;
+    int _x, _y;
 };

@@ -11,6 +11,7 @@ DisplaySDL::DisplaySDL() {
     SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
+    TTF_Init();
 }
 
 DisplaySDL::~DisplaySDL() {
@@ -104,9 +105,9 @@ std::shared_ptr<IEntity> DisplaySDL::createSprite(IEntity::EntityInfos entityInf
 
 std::shared_ptr<IEntity> DisplaySDL::createText(IEntity::EntityInfos entityInfos) {
     std::shared_ptr<EntitySDL> entity = std::make_shared<EntitySDL>(_ressourceManager);
+    entity->setTextInfo(entityInfos.size, entityInfos.color);
     entity->setFont();
     entity->setTextString(entityInfos.text);
-    entity->setTextInfo(entityInfos.size, entityInfos.color);
     entity->setPosition(entityInfos.x, entityInfos.y);
     entity->setType(entityInfos.type);
     return entity;

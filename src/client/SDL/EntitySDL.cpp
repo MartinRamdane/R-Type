@@ -34,7 +34,6 @@ void EntitySDL::setSpriteScale(float scaleX, float scaleY) {
     _scaleY = scaleY;
     SDL_QueryTexture(_texture, NULL, NULL, &_textureWidth, &_textureHeight);
     _textureWidth = _textureWidth / _nbRect;
-    _textureHeight = _textureHeight;
     _destRect.w = _textureWidth;
     _destRect.h = _textureHeight;
     _animRect.w = _textureWidth;
@@ -47,7 +46,7 @@ void EntitySDL::setPosition(float x, float y) {
     _oldPosY = _destRect.y;
     _destRect.x = x;
     _destRect.y = y;
-    // _text.setPosition((sf::Vector2f(x, y)));
+    _x = x, _y = y;
 }
 
 std::tuple<float, float> EntitySDL::getSpritePosition() const {
@@ -111,7 +110,7 @@ void EntitySDL::setInitPos() {
 }
 
 void EntitySDL::setTextString(std::string str) {
-    // _text.setString(str);
+    _text = str;
 }
 
 void EntitySDL::setType(IEntity::Type type) {
@@ -119,8 +118,8 @@ void EntitySDL::setType(IEntity::Type type) {
 }
 
 void EntitySDL::setTextInfo(int size, std::string color) {
-    //     _text.setCharacter_size(size);
-    //     _text.setFillColor(getColor(color));
+    _size = size;
+    _textColor = color;
 }
 
 void EntitySDL::setSpeed(float speed) {
@@ -239,8 +238,8 @@ std::string EntitySDL::getEventForm() const {
 }
 
 void EntitySDL::setFont() {
-    // _font.loadFromFile("font/pixel.ttf");
-    // _text.setFont(_font);
+    _font = TTF_OpenFont("font/pixel.ttf", _size);
+
 }
 
 void EntitySDL::draw(SDL_Renderer* renderer) {
@@ -252,6 +251,15 @@ void EntitySDL::draw(SDL_Renderer* renderer) {
         SDL_Rect destRect = { newX, newY, (int)(_textureWidth * _scaleX), (int)(_textureHeight * _scaleY) };
         SDL_RendererFlip flipArg = _flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
         SDL_RenderCopyEx(renderer, _texture, &_animRect, &destRect, 0, NULL, flipArg);
+    }
+    if (_type == IEntity::Type::TEXT) {
+        _surface = TTF_RenderText_Solid(_font, _text.c_str(), getColor(_textColor));
+        _textureText = SDL_CreateTextureFromSurface(renderer, _surface);
+        int texW = 0;
+        int texH = 0;
+        SDL_QueryTexture(_textureText, NULL, NULL, &texW, &texH);
+        _textRect = { _x, _y, texW, texH };
+        SDL_RenderCopy(renderer, _textureText, NULL, &_textRect);
     }
 }
 
