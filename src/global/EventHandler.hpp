@@ -35,15 +35,13 @@ enum class ACTION : uint8_t
   PONG,
   SPRITE,
   TEXT,
-  KEY_S,
   DEAD,
   FLIP,
   RESET,
-  KEY_L,
-  KEY_C,
   UNKNOWN,
   CHECK,
-  SOUND
+  SOUND,
+  KEY
 };
 
 struct Event

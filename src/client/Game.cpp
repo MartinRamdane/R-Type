@@ -125,9 +125,10 @@ void Game::animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
 
 void Game::handleEvent() {
     std::vector<std::string> events = _display->getEvents();
-    Event evt;
     std::string playerId = "p" + std::to_string(_playerId);
     for (auto event : events) {
+        Event evt;
+        std::string body = "";
         if (event == "escape") {
             sendQuitEvent();
         }
@@ -143,9 +144,19 @@ void Game::handleEvent() {
             evt.ACTION_NAME = ACTION::DOWN;
         if (event == "space")
             evt.ACTION_NAME = ACTION::SPACE;
-        if (event == "s")
-            evt.ACTION_NAME = ACTION::KEY_S;
-        evt.body = playerId;
+        if (event == "s") {
+            evt.ACTION_NAME = ACTION::KEY;
+            body = "s ";
+        }
+        if (event == "l") {
+            evt.ACTION_NAME = ACTION::KEY;
+            body = "l ";
+        }
+        if (event == "c") {
+            evt.ACTION_NAME = ACTION::KEY;
+            body = "c ";
+        }
+        evt.body = body + playerId;
         _udpClient->sendEvent(evt);
     }
 }

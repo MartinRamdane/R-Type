@@ -38,7 +38,7 @@ class RType : public IGame {
     void update(ThreadSafeQueue<Event>& events);
     void createExplosion(int x, int y);
     void createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group);
-    std::shared_ptr<AEntity> createShield(int x, int y);
+    std::shared_ptr<AEntity> createShield(int x, int y, float speed);
     int getId(Event event);
     std::shared_ptr<Character> getRandomSpaceship();
     void eraseDeadEntity(int id);
