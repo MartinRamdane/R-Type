@@ -13,7 +13,7 @@ UDPServer::UDPServer(boost::asio::io_service &io_service, int port) : socket_(io
                                                                                       boost::asio::ip::udp::v4(),
                                                                                       port)) {
     _nbPlayers = 0;
-    clients_ = std::vector<Client>();
+    _clients = std::vector<Client>();
     try {
         startReceive();
         // ping_thread_ = std::thread(&UDPServer::sendPingToClient, this);
@@ -45,10 +45,10 @@ void UDPServer::processMessage(UDPMessage &msg) {
     EventHandler eventHandler;
     checkConnection(msg);
     evt = eventHandler.decodeMessage(msg.data);
-    auto client = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c) {
+    auto client = std::find_if(clientsSec.begin(), clientsSec.end(), [this](const Client &c) {
         return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port();
     });
-    if (evt.ACTION_NAME == ACTION::PONG && client != clients_.end()) {
+    if (evt.ACTION_NAME == ACTION::PONG && client != clientsSec.end()) {
         client->timestamp = std::chrono::system_clock::now();
     } else {
         handleEvents(evt, remote_endpoint_, client);
@@ -59,16 +59,16 @@ void UDPServer::processMessage(UDPMessage &msg) {
 void UDPServer::checkConnection(UDPMessage &msg) {
     Client client{msg.endpoint, std::chrono::system_clock::now()};
     Event evt;
-    if (std::find_if(clients_.begin(), clients_.end(), [&client](const Client &c) {
+    if (std::find_if(clientsSec.begin(), clientsSec.end(), [&client](const Client &c) {
         return c.client.address() == client.client.address() && c.client.port() == client.client.port();
-    }) == clients_.end()) {
+    }) == clientsSec.end()) {
         userJoined(client);
     }
 }
 
 void UDPServer::userJoined(Client client) {
     Event evt;
-    clients_.push_back(client);
+    clientsSec.push_back(client);
     Client newClient = {client.client, std::chrono::system_clock::now()};
     addClient(newClient);
     std::shared_ptr <Engine> engineRef = _instanceRef->getCore()->getEngine();
@@ -88,21 +88,21 @@ void UDPServer::handler(const std::error_code &error, std::size_t) {
         startReceive();
     } else if (error.value() == boost::asio::error::eof) {
         mutex_.lock();
-        auto it = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c) {
+        auto it = std::find_if(clientsSec.begin(), clientsSec.end(), [this](const Client &c) {
             return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port();
         });
-        if (it != clients_.end()) {
-            clients_.erase(it);
+        if (it != clientsSec.end()) {
+            clientsSec.erase(it);
         }
         mutex_.unlock();
         startReceive();
     } else {
         mutex_.lock();
-        auto it = std::find_if(clients_.begin(), clients_.end(), [this](const Client &c) {
+        auto it = std::find_if(clientsSec.begin(), clientsSec.end(), [this](const Client &c) {
             return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port();
         });
-        if (it != clients_.end()) {
-            clients_.erase(it); // Erase the found element
+        if (it != clientsSec.end()) {
+            clientsSec.erase(it); // Erase the found element
         }
         mutex_.unlock();
         startReceive();
@@ -112,10 +112,10 @@ void UDPServer::handler(const std::error_code &error, std::size_t) {
 void UDPServer::sendPingToClient() {
     while (true) {
         mutex_.lock();
-        for (auto it = clients_.begin(); it != clients_.end();) {
+        for (auto it = clientsSec.begin(); it != clientsSec.end();) {
             if (std::chrono::duration_cast<std::chrono::seconds>(
                     std::chrono::system_clock::now() - it->timestamp).count() > 5) {
-                it = clients_.erase(it);
+                it = clientsSec.erase(it);
             } else {
                 sendEvent({ACTION::PING, ""}, it->client.address().to_string(), it->client.port());
                 ++it;
@@ -127,12 +127,12 @@ void UDPServer::sendPingToClient() {
 }
 
 void UDPServer::addClient(Client client) {
-    clients_.push_back(client);
+    _clients.push_back(client);
     _nbPlayers++;
 }
 
 void UDPServer::removeClient(Client client) {
-    clients_.erase(std::remove_if(clients_.begin(), clients_.end(), [&client](const Client &c) {
+    _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c) {
         return c.client.address() == client.client.address() && c.client.port() == client.client.port();
     }));
     _nbPlayers--;
@@ -159,7 +159,7 @@ void UDPServer::sendEvent(Event evt, const std::string &host, int port) {
 }
 
 void UDPServer::sendEventToAllClients(Event evt) {
-    for (auto it = clients_.begin(); it != clients_.end(); ++it) {
+    for (auto it = _clients.begin(); it != _clients.end(); ++it) {
         sendEvent(evt, it->client.address().to_string(), it->client.port());
     }
 }
