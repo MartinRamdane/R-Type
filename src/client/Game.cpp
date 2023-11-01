@@ -50,11 +50,11 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
-        if (!window->isOpen()) {
+        if (!window->isOpen() && !isUDPClientConnecting) {
             window->create(sf::VideoMode(1920, 1080), "Menu");
             window->setFramerateLimit(60);
         }
-        if (isTCPClientConnected && !isUDPClientConnected) {
+        if (isTCPClientConnected && !isUDPClientConnected && !isUDPClientConnecting) {
             std::cout << "instance menu" << std::endl;
             if (!sendListEvent) {
                 Event evt = {ACTION::LIST, ""};
@@ -64,6 +64,7 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             sendListEvent = true;
         }
         if (isUDPClientConnected) {
+            isUDPClientConnecting = false;
             sendListEvent = false;
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
@@ -153,7 +154,7 @@ void Game::handleEvent() {
 }
 
 void Game::LoopUDPMessages() {
-    while (1) {
+    while (isUDPClientConnected) {
         if (_udpClient->Incoming().empty() == false) {
             auto msg = _udpClient->Incoming().pop_front();
             _udpClient->HandleMessage(msg);
@@ -162,7 +163,7 @@ void Game::LoopUDPMessages() {
 }
 
 void Game::loopEventQueue() {
-    while (1) {
+    while (isUDPClientConnected) {
         if (_udpClient->getEventQueue().empty() == false) {
             auto evt = _udpClient->getEventQueue().pop_front();
             handleReceivedEvent(evt);
@@ -341,4 +342,10 @@ void Game::sendQuitEvent() {
         _display.get()->closeWindow();
         _client.get()->SendEvent(evt);
     }
+}
+
+void Game::clearUDPClient() {
+    _udpClient.reset();
+    isUDPClientConnected = false;
+    isUDPClientConnecting = false;
 }

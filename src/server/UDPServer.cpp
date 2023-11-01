@@ -13,7 +13,7 @@ UDPServer::UDPServer(boost::asio::io_service &io_service, int port) : socket_(io
                                                                                       boost::asio::ip::udp::v4(),
                                                                                       port)) {
     _nbPlayers = 0;
-    _clients = std::vector<Client>();
+    clients_ = std::vector<Client>();
     try {
         startReceive();
         // ping_thread_ = std::thread(&UDPServer::sendPingToClient, this);
@@ -127,12 +127,12 @@ void UDPServer::sendPingToClient() {
 }
 
 void UDPServer::addClient(Client client) {
-    _clients.push_back(client);
+    clients_.push_back(client);
     _nbPlayers++;
 }
 
 void UDPServer::removeClient(Client client) {
-    _clients.erase(std::remove_if(_clients.begin(), _clients.end(), [&client](const Client &c) {
+    clients_.erase(std::remove_if(clients_.begin(), clients_.end(), [&client](const Client &c) {
         return c.client.address() == client.client.address() && c.client.port() == client.client.port();
     }));
     _nbPlayers--;
@@ -159,7 +159,7 @@ void UDPServer::sendEvent(Event evt, const std::string &host, int port) {
 }
 
 void UDPServer::sendEventToAllClients(Event evt) {
-    for (auto it = _clients.begin(); it != _clients.end(); ++it) {
+    for (auto it = clients_.begin(); it != clients_.end(); ++it) {
         sendEvent(evt, it->client.address().to_string(), it->client.port());
     }
 }

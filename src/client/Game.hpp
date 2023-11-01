@@ -93,6 +93,10 @@ public:
 
     void sendQuitEvent();
 
+    void setUDPClientConnecting(bool state) { isUDPClientConnecting = state; };
+
+    void clearUDPClient();
+
 private:
     sf::RenderWindow _window;
     sf::View _view;
@@ -104,6 +108,7 @@ private:
     ThreadPool _threadPool;
     bool isTCPClientConnected = false;
     bool isUDPClientConnected = false;
+    bool isUDPClientConnecting = false;
     bool closed;
     std::string _gameTitle;
     int _width;

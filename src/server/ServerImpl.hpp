@@ -147,6 +147,7 @@ protected:
                 int nbPlayers = instance->getNbPlayers();
                 instance->getUDPServer()->setNbPlayers(nbPlayers - 1);
                 if (instance->getNbPlayers() == 1) {
+                    std::cout << "delete instance" << std::endl;
                     _server->deleteInstance(instance->getId());
                 }
             }
