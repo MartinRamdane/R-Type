@@ -33,6 +33,8 @@ public:
 
     std::map <std::string, std::shared_ptr<sf::Text>> getTexts() { return _texts; }
 
+    bool hasSubmitButton() { return _instance.nbPlayers < _instance.maxPlayers; }
+
 private:
     sf::Font _font;
     InstanceType _instance;
