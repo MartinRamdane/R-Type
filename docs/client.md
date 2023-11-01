@@ -13,31 +13,23 @@ The customer section is divided into 3 parts:
 
 # Game display
 
-Folder: src/client
-Important Files: Game, Entity, RessourcesManager, Login, Menu
+Folder: src/client and src/client/SFML
+Important Files: Game, IDisplay, DisplaySFML, IEntity, EntitySFML, RessourcesManager, Login, Menu
 
 The SFML lib is used to display the game.
-The **Game** class handles SFML management.
+There is a **IDisplay** class and a child class named **DisplaySFML** that handle all the fucntion for displaying the game
+If you want to add another graphic lib you can create a new **Display** class that inherit from **IDsiplay**.
+It's the same thing for the entities handling, there is a **IEntity** class and a **EntitySFML** class to create and manage game entities.
+So you have to create a new **Entity** class if you add a new graphic lib.
 
 The main loop is handle by the `Game.run()` function.
-If you want to add other events you have to go in the `Game.handleEvent()` function.
-For drawing element we use the `Game.update()` function.
+All the event are get by the **DisplaySFML** class and the Game get them for doing action for each event.
+All the entities are display in the draw function of the **DisplaySFML** class.
 
-It retrieves the information sent by the parser and creates a map of class **Entity**.
+It retrieves the information sent by the parser and creates a map of class **IEntity**.
 This map contains all the Sprites and their Id to be displayed during the game.
-The client receive a `tuple<int, Entity>` of the **Parser**.
-
-In the `Game.addEntity()` function who is taking the Tuple in argument,
-the Client is checking if the Entity is existing using the Id in the tuple.
-{
-    if (findEntity(id) == true)
-    {
-        _entities[id].setNextPos(entity.getNextPos());
-    }
-    else
-        _entities[id] = entity;
-}
-if the entity exists, the client only modifies its coordinates using those of the entity passed in the tuple,
+The client receive a `tuple<int, EntityInfos>` of the **Parser** and with this tuple the **DisplaySFML** create the entity and stock here in a map.
+If the entity exists, the client only modifies its coordinates or is state using those of the entity passed in the tuple,
 otherwise it creates a new entity and stores it in the map.
 
 When the Entity is create, we use a **RessourceManager** class who is loading all the texture using in SFML at the start of the program for reducing the lag of the game.
