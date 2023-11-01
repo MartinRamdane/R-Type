@@ -10,6 +10,10 @@
 #include <cstdlib>
 #include <ctime>
 #include "../Character.hpp"
+#ifdef WIN32
+#define M_PI 3.14159265358979323846
+#endif
+
 class Enemy : public Character {
    public:
     enum LastMove { UP, DOWN, LEFT, RIGHT, NONE };

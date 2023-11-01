@@ -62,6 +62,10 @@ std::string actionToString(ACTION action) {
             return "KEY_L";
         case ACTION::KEY_C:
             return "KEY_C";
+        case ACTION::CHECK:
+            return "CHECK";
+        case ACTION::SOUND:
+            return "SOUND";
     }
     return "";
 }
@@ -136,4 +140,29 @@ void UDPClient::processSendQueue() {
                                   std::cout << "[ERROR] sending data" << std::endl;
                               }
                           });
+}
+
+void UDPClient::addUnknownEntity(int id) {
+    std::vector<int> unknownEntitiesCopy = unknownEntities;
+    if (std::find(unknownEntitiesCopy.begin(), unknownEntitiesCopy.end(), id) ==
+        unknownEntitiesCopy.end()) {
+        std::cout << "Adding unknown entity " << id << std::endl;
+        unknownEntities.push_back(id);
+    }
+}
+
+void UDPClient::sendUnknownEntities() {
+    if (_lastSentUnknownEntities.time_since_epoch().count() == 0) {
+        _lastSentUnknownEntities = std::chrono::high_resolution_clock::now();
+    }
+    if (std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::high_resolution_clock::now() - _lastSentUnknownEntities)
+            .count() < 1000) {
+        return;
+    }
+    for (auto it = unknownEntities.begin(); it != unknownEntities.end(); ++it) {
+        std::cout << "sent unknown entity " << *it << std::endl;
+        sendEvent({ACTION::UNKNOWN, std::to_string(*it)});
+    }
+    unknownEntities.clear();
 }

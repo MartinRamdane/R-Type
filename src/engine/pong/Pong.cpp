@@ -48,7 +48,7 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
             float playerHeight = player->getHeight();
             float playerX = std::get<0>(playerPos);
             float playerY = std::get<1>(playerPos) - playerHeight / 2;
-            float _radius = _balls[0]->getRadius() * std::get<0>(_balls[0]->getScale());
+            float _radius = (_balls[0]->getRadius() * std::get<0>(_balls[0]->getScale())) / 2;
 
             if (ballX + _radius > playerX && ballX - _radius < playerX + playerWidth &&
                 ballY + _radius > playerY && ballY - _radius < playerY + playerHeight) {
@@ -197,6 +197,16 @@ void Pong::createScores() {
     std::shared_ptr<AEntity> entity2 = std::make_shared<AEntity>(info);
     _texts.push_back(entity2);
     _textGroups->insert(entity2);
+}
+
+void Pong::createSound(std::string path) {
+    IEntity::EntityInfo info;
+    info.assetFile = path;
+    info.id = _lastId++;
+    std::shared_ptr<AEntity> sound = std::make_shared<AEntity>(info);
+    sound->setSound(true);
+    _staticObjects.push_back(sound);
+    _staticObjectsGroups->insert(sound);
 }
 
 std::map<std::string, std::function<std::string()>> Pong::_assets = {

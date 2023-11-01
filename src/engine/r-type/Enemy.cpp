@@ -28,7 +28,7 @@ void Enemy::update() {
 
     if (movementType == "Linear") {
         move(-1, 0);
-    } else if (movementType == "UpAndDown") {
+    } else if (movementType == "Wave") {
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed =
             std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
@@ -40,11 +40,11 @@ void Enemy::update() {
             _lastMoveTime = currentTime;
         }
 
-        if (_lastMove == NONE || _lastMove == UP) {
-            move(-1, 1);
-        } else {
-            move(-1, -1);
-        }
+        double verticalDisplacement = std::sin(2 * M_PI * timeElapsed / 4000.0);
+        int verticalDirection = (_lastMove == UP) ? 1 : -1;
+        int horizontalDirection = -1;
+
+        move(horizontalDirection, verticalDirection * verticalDisplacement);
     } else if (movementType == "Random") {
         int x = rand() % 3 - 1;
         int y = rand() % 3 - 1;
@@ -61,6 +61,21 @@ void Enemy::update() {
             }
         }
         move(x, y);
+    } else if (movementType == "UpAndDown") {
+        const auto currentTime = std::chrono::high_resolution_clock::now();
+        const auto timeElapsed =
+            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+                .count();
+        const bool needsDirectionChange = timeElapsed > 2000;
+
+        if (needsDirectionChange) {
+            _lastMove = (_lastMove == NONE || _lastMove == UP) ? DOWN : UP;
+            _lastMoveTime = currentTime;
+        }
+
+        int verticalDirection = (_lastMove == UP) ? 1 : -1;
+
+        move(-1, verticalDirection);
     }
     shoot();
 }
@@ -79,7 +94,14 @@ void Enemy::shoot() {
     info.damage = getDamage();
     info.spriteConfigJsonObjectName = getShootAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
+    if (getShootAsset() == "Bomb") {
+        info.scaleX = 0.75;
+        info.scaleY = 0.75;
+        info.x = std::get<0>(pos) + 10;
+        info.y = std::get<1>(pos) + 5;
+    }
     info.direction = IEntity::LEFT;
+    
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::ENEMY);
 }

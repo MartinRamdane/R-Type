@@ -11,6 +11,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -48,9 +49,11 @@ class EntitySFML : public IEntity {
     void setFont();
     void draw(sf::RenderWindow& window);
     sf::Sprite getSprite() const;
+    void setSound(const std::string& path);
 
    public:
     sf::Sprite _sprite;
+    sf::Sound _sound;
     std::shared_ptr<sf::Texture> _texture;
     int _nbRect;
     int _initRect;

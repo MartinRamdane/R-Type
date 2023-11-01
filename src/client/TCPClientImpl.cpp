@@ -7,13 +7,15 @@
 
 #include "TCPClientImpl.hpp"
 #include "Game.hpp"
+#include "InstanceMenu.hpp"
 
-void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
+void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
     switch (msg.header.id) {
         case ACTION::CONNECT: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
-        } break;
+        }
+            break;
         case ACTION::CREATE: {
             EventHandler evt;
             evt.decodeMessage(msg.body);
@@ -23,40 +25,87 @@ void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
             ss >> playerId;
             ss >> getPort;
             ss >> getPort;
-            // add get windows infos
+            // add get windows
             int port = std::stoi(getPort);
-            _game->connectToUdpServer(_game->getHost(), port);
-            _game->setPlayerId(std::stoi(playerId));
+            std::string serverToJoinInfos = std::to_string(port);
+            Event evtToSend = {ACTION::JOIN, serverToJoinInfos};
+            _game->getClient().get()->SendEvent(evtToSend);
             // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
-        } break;
+        }
+            break;
         case ACTION::LIST: {
-        } break;
+            EventHandler evt;
+            evt.decodeMessage(msg.body);
+            std::stringstream ss(evt.getBody());
+            std::string instanceName;
+            std::string instanceGameName;
+            std::string instanceNbPlayers;
+            std::string instanceMaxPlayers;
+            std::string instancePort;
+            std::string instanceId;
+            ss >> instanceName;
+            ss >> instanceGameName;
+            ss >> instanceNbPlayers;
+            ss >> instanceMaxPlayers;
+            ss >> instancePort;
+            ss >> instanceId;
+            int nbPlayers = std::stoi(instanceNbPlayers);
+            int maxPlayers = std::stoi(instanceMaxPlayers);
+            int port = std::stoi(instancePort);
+            int id = std::stoi(instanceId);
+            InstanceType instance = {instanceName, instanceGameName, nbPlayers,
+                                     maxPlayers, port, id};
+            _game->getInstanceMenu()->addInstanceButton(instance, 0, 0);
+        }
+            break;
         case ACTION::JOIN: {
-        } break;
+        }
+            break;
         case ACTION::JOINED: {
-        } break;
+            EventHandler evt;
+            evt.decodeMessage(msg.body);
+            std::stringstream ss(evt.getBody());
+            std::string playerId;
+            std::string getPort;
+            ss >> playerId;
+            ss >> getPort;
+            _game->setPlayerId(std::stoi(playerId));
+            _game->connectToUdpServer(_game->getHost(), std::stoi(getPort));
+        }
+            break;
         case ACTION::READY: {
-        } break;
+        }
+            break;
         case ACTION::START: {
-        } break;
+        }
+            break;
         case ACTION::LEFT: {
-        } break;
+        }
+            break;
         case ACTION::RIGHT: {
-        } break;
+        }
+            break;
         case ACTION::UP: {
-        } break;
+        }
+            break;
         case ACTION::DOWN: {
-        } break;
+        }
+            break;
         case ACTION::SPACE: {
-        } break;
+        }
+            break;
         case ACTION::QUIT: {
-        } break;
+        }
+            break;
         case ACTION::PING: {
-        } break;
+        }
+            break;
         case ACTION::PONG: {
-        } break;
+        }
+            break;
         case ACTION::OK: {
-        } break;
+        }
+            break;
         case ACTION::KO: {
         }
         case ACTION::SPRITE: {
@@ -64,9 +113,11 @@ void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
         case ACTION::UNKNOWN: {
         }
         case ACTION::KEY_S: {
-        } break;
+        }
+            break;
         case ACTION::TEXT: {
-        } break;
+        }
+            break;
         case ACTION::DEAD: {
         }
         case ACTION::FLIP: {
@@ -74,8 +125,10 @@ void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
         case ACTION::RESET: {
         }
         case ACTION::KEY_L: {
-        } break;
+        }
+            break;
         case ACTION::KEY_C: {
-        } break;
+        }
+            break;
     }
 }

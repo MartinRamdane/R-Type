@@ -35,6 +35,7 @@ class Pong : public IGame {
     int getId(Event event);
     void createBall();
     void createScores();
+    void createSound(std::string path);
 
    private:
     std::shared_ptr<Engine> _engine;

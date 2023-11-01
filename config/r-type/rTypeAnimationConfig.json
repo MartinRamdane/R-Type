@@ -82,5 +82,35 @@
         "nb_rect": 12,
         "rect_init": 0,
         "form": "loop"
+    },
+    "Worm":
+    {
+        "nb_rect": 6,
+        "rect_init": 0,
+        "form": "loop"
+    },
+    "Boss1":
+    {
+        "nb_rect": 7,
+        "rect_init": 0,
+        "form": "loop"
+    },
+    "Boss1Projectile":
+    {
+        "nb_rect": 4,
+        "rect_init": 0,
+        "form": "loop"
+    },
+    "Bomberman":
+    {
+        "nb_rect": 7,
+        "rect_init": 0,
+        "form": "loop"
+    },
+    "Bomb":
+    {
+        "nb_rect": 1,
+        "rect_init": 0,
+        "form": "loop"
     }
 }

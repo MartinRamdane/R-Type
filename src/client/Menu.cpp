@@ -8,9 +8,10 @@
 #include "Menu.hpp"
 
 Menu::Menu(std::shared_ptr<Game>& game) : _game(game) {
-    _window.create(sf::VideoMode(1920, 1080), "My _window");
+    _window = std::make_shared<sf::RenderWindow>();
+    _window->create(sf::VideoMode(1920, 1080), "Menu");
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
-    _window.setFramerateLimit(60);
+    _window->setFramerateLimit(60);
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
@@ -34,26 +35,26 @@ Menu::Menu(std::shared_ptr<Game>& game) : _game(game) {
     _entities["connectButton"]->setSpriteOriginToCenter();
 
     _inputs["nameInput"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                   "assets/cenario/TextInputHover.png", "Name");
+                                                   "assets/cenario/TextInputHover.png", "Name", ressourceManager);
     _inputs["nameInput"]->setSpritePosition(sf::Vector2f(300, 170));
     _inputs["nameInput"]->setSpriteScale(sf::Vector2f(2.5, 2.5));
 
     _inputs["portInput"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                   "assets/cenario/TextInputHover.png", "Port");
+                                                   "assets/cenario/TextInputHover.png", "Port", ressourceManager);
     _inputs["portInput"]->setSpritePosition(sf::Vector2f(300, 230));
     _inputs["portInput"]->setSpriteScale(sf::Vector2f(2.5, 2.5));
 
     _inputs["ipInput"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                 "assets/cenario/TextInputHover.png", "IP Adress");
+                                                 "assets/cenario/TextInputHover.png", "IP Adress", ressourceManager);
     _inputs["ipInput"]->setSpritePosition(sf::Vector2f(300, 290));
     _inputs["ipInput"]->setSpriteScale(sf::Vector2f(2.5, 2.5));
 
     _texts["connect"] = std::make_unique<sf::Text>();
     _texts["connect"]->setFont(_font);
-    _texts["connect"]->setString("connect");
+    _texts["connect"]->setString("Connect");
     _texts["connect"]->setCharacterSize(20);
     _texts["connect"]->setFillColor(sf::Color::White);
-    _texts["connect"]->setPosition(sf::Vector2f(425, 380));
+    _texts["connect"]->setPosition(sf::Vector2f(425, 375));
     _texts["connect"]->setOrigin(sf::Vector2f(_texts["connect"]->getLocalBounds().width / 2,
                                               _texts["connect"]->getLocalBounds().height / 2));
 
@@ -68,23 +69,21 @@ Menu::Menu(std::shared_ptr<Game>& game) : _game(game) {
                      _texts["ErrorConnexion"]->getLocalBounds().height / 2));
 }
 
-Menu::~Menu() {
-    _window.close();
-}
+Menu::~Menu() {}
 
-void Menu::mainloop() {
-    while (_window.isOpen()) {
+std::shared_ptr<sf::RenderWindow> Menu::mainloop() {
+    while (_window->isOpen()) {
         sf::Event event;
-        while (_window.pollEvent(event)) {
+        while (_window->pollEvent(event)) {
             for (auto& input : _inputs) {
-                input.second->eventHandler(event, _window);
+                input.second->eventHandler(event, *_window);
             }
-            sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
-            sf::Vector2f worldMousePosition = _window.mapPixelToCoords(mousePosition);
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
+            sf::Vector2f worldMousePosition = _window->mapPixelToCoords(mousePosition);
 
             if (event.type == sf::Event::Closed ||
                 sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-                _window.close();
+                _window->close();
             }
 
             if (event.type == sf::Event::MouseButtonPressed &&
@@ -96,7 +95,7 @@ void Menu::mainloop() {
                     _login.ip = _inputs["ipInput"]->getText();
                     if ((_errorConnect =
                              _game->connectToServer(_login.ip, std::atoi(_login.port.c_str()))))
-                        return;
+                        return _window;
                 }
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return &&
@@ -110,7 +109,7 @@ void Menu::mainloop() {
                         _login.ip = _inputs["ipInput"]->getText();
                         if ((_errorConnect =
                                  _game->connectToServer(_login.ip, std::atoi(_login.port.c_str()))))
-                            return;
+                            return _window;
                     }
                 }
             }
@@ -132,18 +131,18 @@ void Menu::mainloop() {
             input.second->update();
         }
 
-        _window.clear();
-        _window.setView(_view);
-        _window.draw(_entities["background"]->getSprite());
-        _window.draw(_entities["logo"]->getSprite());
+        _window->clear();
+        _window->setView(_view);
+        _window->draw(_entities["background"]->getSprite());
+        _window->draw(_entities["logo"]->getSprite());
         for (auto& input : _inputs) {
-            input.second->draw(_window);
+            input.second->draw(*_window);
         }
-        _window.draw(_entities["connectButton"]->getSprite());
-        _window.draw(*_texts["connect"]);
+        _window->draw(_entities["connectButton"]->getSprite());
+        _window->draw(*_texts["connect"]);
         if (!_errorConnect)
-            _window.draw(*_texts["ErrorConnexion"]);
+            _window->draw(*_texts["ErrorConnexion"]);
 
-        _window.display();
+        _window->display();
     }
 }

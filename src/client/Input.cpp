@@ -7,7 +7,7 @@
 
 #include "Input.hpp"
 
-Input::Input(std::string texture, std::string textureHover, std::string textValue)
+Input::Input(std::string texture, std::string textureHover, std::string textValue, std::shared_ptr<RessourceManager> ressourceManager)
     : _textureFile(texture), _textureFileHover(textureHover) {
     _textValue = textValue;
     this->_font.loadFromFile(std::string("font/pixel.ttf"));
@@ -19,6 +19,13 @@ Input::Input(std::string texture, std::string textureHover, std::string textValu
     createSprite();
     cursor = sf::RectangleShape(sf::Vector2f(2, 24));
     cursor.setFillColor(sf::Color::White);
+    auto sounds = ressourceManager->getSounds();
+    for (auto& sound : sounds) {
+        if (sound.first == "inputHover.ogg") {
+            _inputHoverSound.setBuffer(*sound.second);
+            _inputHoverSound.setVolume(75);
+        }
+    }
 }
 
 void Input::createSprite() {
@@ -73,6 +80,8 @@ void Input::eventHandler(sf::Event event, sf::RenderWindow& window) {
     sf::Vector2f mousePosF = window.mapPixelToCoords(mousePosition);
 
     if (_sprite.getGlobalBounds().contains(mousePosF)) {
+        if (_inputHoverSound.getStatus() != sf::Sound::Playing && !_hover)
+            _inputHoverSound.play();
         _hover = true;
         if (event.type == sf::Event::MouseButtonPressed) {
             this->_isActive = true;

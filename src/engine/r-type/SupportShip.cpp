@@ -36,8 +36,8 @@ SupportShip::~SupportShip() {}
 void SupportShip::update() {
     if (_relatedPlayerId == -1) {
         for (auto& it : RType::instance->getPlayers()) {
-            if (it->AEntity::getAlliesTouched() && !it->AEntity::getHasSupport() &&
-                AEntity::getAlliesTouched()) {
+            if (it->AEntity::getEntityHasCollided() && !it->AEntity::getHasSupport() &&
+                AEntity::getEntityHasCollided()) {
                 _relatedPlayerId = it->getId();
                 RType::instance->setPlayerHasSupport(_relatedPlayerId, true);
                 break;
@@ -55,9 +55,9 @@ void SupportShip::update() {
     auto pos = player->getPosition();
     int x = std::get<0>(pos);
     int y = std::get<1>(pos);
-    if (player->getAlliesTouched() == true && AEntity::getAlliesTouched() == false) {
-        player->setAlliesTouched(false);
-        setAlliesTouched(false);
+    if (player->getEntityHasCollided() == true && AEntity::getEntityHasCollided() == false) {
+        player->setEntitiesHasCollided(false);
+        setEntitiesHasCollided(false);
     }
 
     if (_launched) {
@@ -68,12 +68,12 @@ void SupportShip::update() {
         } else {
             _launchX = 0;
             _launched = false;
-            setAlliesTouched(false);
+            setEntitiesHasCollided(false);
         }
     }
 
     shoot();
-    bool touched = AEntity::getAlliesTouched();
+    bool touched = AEntity::getEntityHasCollided();
     IEntity::Direction playerDirection = player->getDirection();
 
     if (playerDirection == IEntity::LEFT && _direction == IEntity::RIGHT) {
@@ -126,6 +126,7 @@ void SupportShip::shoot() {
     info.y = info.y + 4;
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::SUPPORT);
+    RType::instance->createSound("dropperShoot.ogg");
 }
 
 int SupportShip::getRelatedPlayerId() const {
@@ -133,7 +134,7 @@ int SupportShip::getRelatedPlayerId() const {
 }
 
 void SupportShip::launch() {
-    if (AEntity::getAlliesTouched()) {
+    if (AEntity::getEntityHasCollided()) {
         _launched = true;
     }
 }

@@ -29,7 +29,8 @@ IEntity::EntityInfos Parser::addEntity(std::map<std::string, std::string> value)
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.type = IEntity::Type::SPRITE;
     entityInfos.path = value["path"];
-    getConfig(value["config_path"], value["object_type"], entityInfos);
+    if (value["config_path"] != "none")
+        getConfig(value["config_path"], value["object_type"], entityInfos);
     entityInfos.scaleX = std::stof(value["scale.x"]);
     entityInfos.scaleY = std::stof(value["scale.y"]);
     entityInfos.x = std::stof(value["x"]);
@@ -144,6 +145,17 @@ IEntity::EntityInfos Parser::parseMessage(Event evt) {
                 key.clear();
             }
             return addEntityText(valueMap);
+        } else if (commande == "esound" && evt.ACTION_NAME == ACTION::SOUND) {
+            IEntity::EntityInfos entityInfos;
+            std::istringstream iss(tmp);
+            std::string id;
+            std::string path;
+            iss >> id;
+            iss >> path;
+            entityInfos.path = path;
+            entityInfos.id = std::stoi(id);
+            entityInfos.type = IEntity::Type::SOUND;
+            return entityInfos;
         } else if (commande == "pmove" || commande == "emove") {
             std::istringstream iss(tmp);
             std::map<std::string, std::string> valueMap;

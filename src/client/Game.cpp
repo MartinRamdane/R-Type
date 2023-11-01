@@ -8,8 +8,9 @@
 #include "Game.hpp"
 #include "SFML/DisplaySFML.hpp"
 #include "TCPClientImpl.hpp"
+#include "InstanceMenu.hpp"
 
-Game::Game() : _threadPool(2) {
+Game::Game() : _threadPool(3) {
     _event_indicator = 0;
     _gameTitle = "game";
     _width = 850;
@@ -17,6 +18,7 @@ Game::Game() : _threadPool(2) {
     _playerId = 0;
     closed = false;
     _progressBar = ProgressBar();
+    _instanceMenu = std::make_unique<InstanceMenu>(this);
 }
 
 Game::~Game() {
@@ -34,15 +36,29 @@ void Game::setLibToUse() {
     }
 }
 
-void Game::run() {
+int Game::getEntitiesNumber() {
+    std::lock_guard<std::mutex> lock(entityMutex);
+    return _entities.size();
+}
+
+void Game::run(std::shared_ptr<sf::RenderWindow> window) {
     setLib(1);
     setLibToUse();
-    while (_display->getClosed() == false) {
-        if (_client->Incoming().empty() == false) {
+    bool sendListEvent = false;
+    while (!_display->getClosed()) {
+        if (!_client->Incoming().empty()) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
-        if (isUDPClientConnected == true) {
+        if (isTCPClientConnected && !isUDPClientConnected) {
+            if (!sendListEvent) {
+                Event evt = {ACTION::LIST, ""};
+                _client->SendEvent(evt);
+            }
+            _instanceMenu->mainloop(window);
+            sendListEvent = true;
+        }
+        if (isUDPClientConnected) {
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
@@ -50,15 +66,15 @@ void Game::run() {
             _udpClient->sendEvent(evt);
             _threadPool.enqueue([this] { this->LoopUDPMessages(); });
             _threadPool.enqueue([this] { this->loopEventQueue(); });
-            while (_display->windowIsOpen() == true) {
+            while (_display->windowIsOpen()) {
                 _display->handleEvent();
-                std::map<int, std::shared_ptr<IEntity>>* entitiesCopy;
+                std::map<int, std::shared_ptr<IEntity>> entitiesCopy;
                 {
                     std::lock_guard<std::mutex> lock(entityMutex);
-                    entitiesCopy = &_entities;
+                    entitiesCopy = _entities;
                 }
-                update(entitiesCopy);
-                _display->draw(entitiesCopy);
+                update(&entitiesCopy);
+                _display->draw(&entitiesCopy);
             }
         }
     }
@@ -191,9 +207,13 @@ void Game::addEntity(IEntity::EntityInfos entityInfos) {
         _entities.at(entityInfos.id)->setNextPos(entityInfos.nextX, entityInfos.nextY);
         if (entityInfos.type == IEntity::Type::TEXT)
             _entities.at(entityInfos.id)->setTextString(entityInfos.text);
-    } else
-        _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
-            entityInfos.id, _display->createEntity(entityInfos)));
+    } else {
+        auto entity = _display->createEntity(entityInfos);
+        if (entity != nullptr) {
+            _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
+                entityInfos.id, _display->createEntity(entityInfos)));
+        }
+    }
 }
 
 void Game::flipEntity(Event evt) {
@@ -215,25 +235,20 @@ void Game::updateSprite(Event evt) {
 }
 
 void Game::updateText(Event evt) {
-    std::stringstream ss(evt.body);
-    std::string id;
-    std::string x;
-    std::string y;
-    std::string text;
-    std::string color;
-    std::string objectType;
-    ss >> id;
-    ss >> x;
-    ss >> y;
-    ss >> text;
-    ss >> color;
-    ss >> objectType;
     Parser parseRef;
     IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
     if (entityInfos.id < 0)
         removeEntity(entityInfos.id);
     else
         addEntity(entityInfos);
+}
+
+void Game::updateSound(Event evt) {
+    IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
+    if (findEntity(entityInfos.id))
+        return;
+    _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(entityInfos.id,
+                                                              _display->createEntity(entityInfos)));
 }
 
 void Game::joinGame(Event evt) {
@@ -268,20 +283,41 @@ void Game::handleReceivedEvent(Event evt) {
         case ACTION::SPRITE: {
             std::lock_guard<std::mutex> lock(entityMutex);
             updateSprite(evt);
-        } break;
+            break;
+        }
         case ACTION::TEXT: {
             std::lock_guard<std::mutex> lock(entityMutex);
             updateText(evt);
-        } break;
+            break;
+        }
         case ACTION::FLIP: {
             std::lock_guard<std::mutex> lock(entityMutex);
             flipEntity(evt);
-        } break;
+            break;
+        }
         case ACTION::RESET: {
             std::lock_guard<std::mutex> lock(entityMutex);
             _entities.clear();
+            break;
+        }
+        case ACTION::CHECK: {
+            int entities = std::stoi(evt.body);
+            checkEntities(entities);
+            break;
+        }
+        case ACTION::SOUND: {
+            std::lock_guard<std::mutex> lock(entityMutex);
+            updateSound(evt);
+            break;
         }
         default:
             break;
+    }
+}
+
+void Game::checkEntities(int nb) {
+    int currentNb = getEntitiesNumber();
+    if (currentNb < nb) {
+        _udpClient->sendEvent({ACTION::CHECK, ""});
     }
 }

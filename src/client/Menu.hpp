@@ -20,11 +20,11 @@ class Menu {
     Menu(std::shared_ptr<Game>& game);
     ~Menu();
 
-    void mainloop();
+    std::shared_ptr<sf::RenderWindow> mainloop();
 
    private:
     struct Login _login;
-    sf::RenderWindow _window;
+    std::shared_ptr<sf::RenderWindow> _window;
     sf::View _view;
     sf::Font _font;
     std::map<std::string, std::unique_ptr<EntitySFML>> _entities;

@@ -177,6 +177,8 @@ bool EntitySFML::isDead() const {
         if (rect.left == size * (_nbRect - 1) || rect.left < size * _initRect)
             return true;
     }
+    if (_type == IEntity::Type::SOUND && _sound.getStatus() == sf::Sound::Stopped)
+        return true;
     return false;
 }
 
@@ -212,10 +214,10 @@ IEntity::Type EntitySFML::getType() const {
     return _type;
 }
 
-void EntitySFML::makePrediction() {
-    if (_direction == "left" || _direction == "right") {
+void Entity::makePrediction() {
+    if (_direction == "left" || _direction == "right" || _direction == "up" || _direction == "down") {
         float speed = _speed;
-        if (_direction == "left") {
+        if (_direction == "left" || _direction == "up") {
             speed = _speed * -1;
         }
         sf::Vector2f oldPos = _sprite.getPosition();
@@ -241,4 +243,17 @@ void EntitySFML::draw(sf::RenderWindow& window) {
 
 sf::Sprite EntitySFML::getSprite() const {
     return _sprite;
+}
+
+void Entity::setSound(const std::string& path) {
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds = _ressourceManager->getSounds();
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>>::iterator it = sounds.begin();
+    while (it != sounds.end()) {
+        if (it->first == path) {
+            _sound.setBuffer(*it->second);
+            _sound.play();
+            break;
+        }
+        it++;
+    }
 }

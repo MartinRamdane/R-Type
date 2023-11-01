@@ -8,13 +8,15 @@
 #ifndef INPUT_HEADER_GUARD
 #define INPUT_HEADER_GUARD
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <map>
 #include <memory>
+#include "SFML/RessourceManager.hpp"
 
 class Input {
    public:
-    Input(std::string texture, std::string textureHover, std::string textValue);
+    Input(std::string texture, std::string textureHover, std::string textValue, std::shared_ptr<RessourceManager> ressourceManager);
     ~Input(){};
     void createSprite();
     void setSpriteRect(sf::IntRect rect);
@@ -30,6 +32,10 @@ class Input {
     sf::Vector2f getSpritePosition();
     bool getActive() const { return _isActive; };
     void setActive(bool active) { _isActive = active; };
+    void setFont(sf::Font font) {
+        _font = font;
+        _text.setFont(_font);
+    };
 
    protected:
    private:
@@ -48,6 +54,7 @@ class Input {
     sf::Clock clock;
     bool cursorVisible = false;
     std::string _textValue;
+    sf::Sound _inputHoverSound;
 };
 
 #endif /* !INPUT_HEADER_GUARD */

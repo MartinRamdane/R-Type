@@ -1,0 +1,11 @@
+{
+    "Type": "Enemy",
+    "Name": "Worm",
+    "MovementType": "Linear",
+    "ProjectileType": "DiskProjectile",
+    "FireRate": 0,
+    "ProjectileSpeed": 0,
+    "Speed": 2,
+    "Damage": 20,
+    "Life": 70
+}

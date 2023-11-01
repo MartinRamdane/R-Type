@@ -21,6 +21,19 @@ RessourceManagerSFML::RessourceManagerSFML() {
                 std::cerr << "Impossible de charger la texture : " << key << std::endl;
         }
     }
+    directory = "sounds";
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
+        if (entry.is_regular_file()) {
+            std::string filePath = entry.path().string();
+            std::string key = entry.path().stem().string();
+            key = key + ".ogg";
+            std::shared_ptr<sf::SoundBuffer> sound = std::make_shared<sf::SoundBuffer>();
+            if (sound->loadFromFile(filePath))
+                _sounds[key] = sound;
+            else
+                std::cerr << "Impossible de charger le son : " << key << std::endl;
+        }
+    }
 }
 
 RessourceManagerSFML::~RessourceManagerSFML() {
@@ -29,4 +42,8 @@ RessourceManagerSFML::~RessourceManagerSFML() {
 
 std::map<std::string, std::shared_ptr<sf::Texture>> RessourceManagerSFML::getTextures() const {
     return _textures;
+}
+
+std::map<std::string, std::shared_ptr<sf::SoundBuffer>> RessourceManager::getSounds() const {
+    return _sounds;
 }

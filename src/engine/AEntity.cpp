@@ -37,10 +37,11 @@ void AEntity::setPosition(float x, float y) {
 }
 
 void AEntity::update() {
-    if (_x != _oldX || _y != _oldY)
+    if ((_x != _oldX || _y != _oldY) && !_lastMove)
         setOldPosition(_x, _y);
     if (_text != _oldText)
         setOldText(_text);
+    _lastMove = false;
 }
 
 std::tuple<float, float> AEntity::getPosition() const {
@@ -155,12 +156,12 @@ void AEntity::setLife(int life) {
     _life = life;
 }
 
-void AEntity::setAlliesTouched(bool alliesTouched) {
-    _alliesTouched = alliesTouched;
+void AEntity::setEntitiesHasCollided(bool entitiesCollision) {
+    _entitiesCollision = entitiesCollision;
 }
 
-bool AEntity::getAlliesTouched() const {
-    return _alliesTouched;
+bool AEntity::getEntityHasCollided() const {
+    return _entitiesCollision;
 }
 
 std::tuple<float, float> AEntity::getDirectionVector() const {
@@ -207,4 +208,32 @@ void AEntity::setHasSupport(bool hasSupport) {
 
 bool AEntity::getHasSupport() const {
     return _hasSupport;
+}
+
+int AEntity::getLife() const {
+    return _life;
+}
+
+void AEntity::setRelatedPlayer(int relatedPlayer) {
+    _relatedPlayerId = relatedPlayer;
+}
+
+int AEntity::getRelatedPlayer() const {
+    return _relatedPlayerId;
+}
+
+void AEntity::setLastMove(bool lastMove) {
+    _lastMove = lastMove;
+}
+
+bool AEntity::isSound() const {
+    return _sound;
+}
+
+void AEntity::setSound(bool sound) {
+    _sound = sound;
+}
+
+void AEntity::setDirection(Direction direction) {
+    _direction = direction;
 }
