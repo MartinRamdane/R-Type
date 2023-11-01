@@ -16,38 +16,38 @@ Editor::Editor() {
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
-    _ressourceManager = std::make_shared<RessourceManager>();
+    _ressourceManager = std::make_shared<RessourceManagerSFML>();
 
-    _entities["background"] = std::make_unique<Entity>(_ressourceManager);
+    _entities["background"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entities["background"]->setTexture("background.png");
     _entities["background"]->setPosition(0, 0);
 
     //menu entities
-    _entitiesSelectMenu["flyer"] = std::make_unique<Entity>(_ressourceManager);
+    _entitiesSelectMenu["flyer"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["flyer"]->setTexture("flyer.png");
     _entitiesJsonConfig["flyer"] = "Flyer.rType.json";
 
-    _entitiesSelectMenu["OrangeRobot"] = std::make_unique<Entity>(_ressourceManager);
+    _entitiesSelectMenu["OrangeRobot"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["OrangeRobot"]->setTexture("OrangeRobot.png");
     _entitiesJsonConfig["OrangeRobot"] = "OrangeRobot.rType.json";
 
-    _entitiesSelectMenu["bomberman"] = std::make_unique<Entity>(_ressourceManager);
+    _entitiesSelectMenu["bomberman"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["bomberman"]->setTexture("bomberman.png");
     _entitiesJsonConfig["bomberman"] = "Bomberman.rType.json";
 
-    _entitiesSelectMenu["robot_type_5"] = std::make_unique<Entity>(_ressourceManager);
+    _entitiesSelectMenu["robot_type_5"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["robot_type_5"]->setTexture("robot_type_5.png");
 
-    _entitiesSelectMenu["worm"] = std::make_unique<Entity>(_ressourceManager);
+    _entitiesSelectMenu["worm"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["worm"]->setTexture("worm.png");
     _entitiesSelectMenu["worm"]->setSpriteScale(0.5, 0.5);
     _entitiesJsonConfig["worm"] = "Worm.rType.json";
 
-    _entitiesSelectMenu["dropper"] = std::make_unique<Entity>(_ressourceManager);
+    _entitiesSelectMenu["dropper"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["dropper"]->setTexture("dropper.png");
     _entitiesJsonConfig["dropper"] = "Dropper.rType.json";
 
-    _entitiesSelectMenu["boss1"] = std::make_unique<Entity>(_ressourceManager);
+    _entitiesSelectMenu["boss1"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["boss1"]->setTexture("boss1.png");
     _entitiesSelectMenu["boss1"]->setSpriteScale(0.5, 0.5);
     _entitiesJsonConfig["boss1"] = "Boss1.rType.json";
@@ -56,17 +56,17 @@ Editor::Editor() {
         entity.second->setPosition(5, 5);
     }
 
-    _saveButton = std::make_unique<Entity>(_ressourceManager);
+    _saveButton = std::make_unique<EntitySFML>(_ressourceManager);
     _saveButton->setTexture("save.png");
     _saveButton->setPosition(800, 430);
     _saveButton->setSpriteScale(0.1, 0.1);
 
-    _music1 = std::make_unique<Entity>(_ressourceManager);
+    _music1 = std::make_unique<EntitySFML>(_ressourceManager);
     _music1->setTexture("music.png");
     _music1->setPosition(400, 10);
     _music1->setSpriteScale(0.1, 0.1);
 
-    _music2 = std::make_unique<Entity>(_ressourceManager);
+    _music2 = std::make_unique<EntitySFML>(_ressourceManager);
     _music2->setTexture("music.png");
     _music2->setPosition(500, 10);
     _music2->setSpriteScale(0.1, 0.1);
@@ -208,7 +208,7 @@ void Editor::mouseEvent(sf::Event event) {
 
             worldPosition = _window->mapPixelToCoords(mousePosition);
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])] =
-                std::make_unique<Entity>(_ressourceManager);
+                std::make_unique<EntitySFML>(_ressourceManager);
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]
                 ->setTexture(_selectedEntity + ".png");
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]
@@ -254,21 +254,21 @@ void Editor::saveLevel() {
     level[_levelName] = {};
     for (auto entity : _entityQuantity) {
         if (entity.first == "background") {
-            level[_levelName]["Entity" + std::to_string(i)]["Type"] = "Background";
+            level[_levelName]["EntitySFML" + std::to_string(i)]["Type"] = "Background";
         } else {
             if (entity.second == 0)
                 continue;
-            level[_levelName]["Entity" + std::to_string(i)]["Count"] = entity.second;
-            level[_levelName]["Entity" + std::to_string(i)]["Config"] =
+            level[_levelName]["EntitySFML" + std::to_string(i)]["Count"] = entity.second;
+            level[_levelName]["EntitySFML" + std::to_string(i)]["Config"] =
                 _entitiesJsonConfig[entity.first];
             for (int j = 0; j <= entity.second; j++) {
                 if (entity.first == "background" ||
                     _entities.find(entity.first + std::to_string(j)) == _entities.end())
                     continue;
                 std::cout << entity.first + std::to_string(j) << std::endl;
-                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["X"] =
+                level[_levelName]["EntitySFML" + std::to_string(i)]["Positions"][j]["X"] =
                     (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().x;
-                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["Y"] =
+                level[_levelName]["EntitySFML" + std::to_string(i)]["Positions"][j]["Y"] =
                     (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().y;
             }
         }

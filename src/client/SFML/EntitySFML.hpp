@@ -16,20 +16,19 @@
 #include <memory>
 #include <string>
 #include "../IEntity.hpp"
-#include "RessourceManager.hpp"
+#include "RessourceManagerSFML.hpp"
 
-class Entity : public IEntity {
+class EntitySFML : public IEntity {
    public:
-    Entity(std::shared_ptr<RessourceManager> ressourceManager);
-    ~Entity();
+    EntitySFML(std::shared_ptr<RessourceManagerSFML> ressourceManager);
+    ~EntitySFML();
     void setTexture(const std::string& path);
     void setSpriteScale(float scaleX, float scaleY);
     void setPosition(float x, float y);
     std::tuple<float, float> getSpritePosition() const;
-    void setSpriteRotation(const float angle);
     void setSpriteOriginToCenter();
     void setRect(int nb, int initRect = 0);
-    void animateSprite(const int ei, const int framerate);
+    void animateSprite(const int ei, const float framerate);
     void setInitPos();
     void setTextString(std::string str);
     void setType(IEntity::Type type);
@@ -49,7 +48,6 @@ class Entity : public IEntity {
     std::string getEventForm() const;
     void setFont();
     void draw(sf::RenderWindow& window);
-    sf::Text getText() const;
     sf::Sprite getSprite() const;
     void setSound(const std::string& path);
 
@@ -70,7 +68,7 @@ class Entity : public IEntity {
     float _speed;
     sf::Vector2f _nextPos;
     bool _isHit = false;
-    std::shared_ptr<RessourceManager> _ressourceManager;
+    std::shared_ptr<RessourceManagerSFML> _ressourceManager;
 };
 
 // ecreate id x y text size color

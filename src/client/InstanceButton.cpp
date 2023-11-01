@@ -10,11 +10,11 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
 
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
-    std::shared_ptr <RessourceManager> ressourceManager = std::make_shared<RessourceManager>();
+    std::shared_ptr <RessourceManagerSFML> ressourceManager = std::make_shared<RessourceManagerSFML>();
     _instance = instance;
     _x = x;
     _y = y;
-    _entities[formatText("instanceBackground")] = std::make_shared<Entity>(ressourceManager);
+    _entities[formatText("instanceBackground")] = std::make_shared<EntitySFML>(ressourceManager);
     _entities[formatText("instanceBackground")]->setTexture(
             "instanceBackground.png");
     _entities[formatText("instanceBackground")]->setPosition(_x, _y);
@@ -35,7 +35,7 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     _texts[formatText("instanceGame")]->setFillColor(sf::Color::White);
     _texts[formatText("instanceGame")]->setPosition(sf::Vector2f(_x + 10, _y + 25));
 
-    _entities[formatText("userIcon")] = std::make_shared<Entity>(ressourceManager);
+    _entities[formatText("userIcon")] = std::make_shared<EntitySFML>(ressourceManager);
     _entities[formatText("userIcon")]->setTexture("userIcon.png");
     _entities[formatText("userIcon")]->setPosition(_x + 10, _y + 55);
     _entities[formatText("userIcon")]->setSpriteScale(1.5, 1.5);
@@ -50,7 +50,7 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     _texts[formatText("playersText")]->setFillColor(sf::Color::White);
     _texts[formatText("playersText")]->setPosition(sf::Vector2f(_x + 30, _y + 55));
 
-    _entities[formatText("submitButton")] = std::make_shared<Entity>(ressourceManager);
+    _entities[formatText("submitButton")] = std::make_shared<EntitySFML>(ressourceManager);
     _entities[formatText("submitButton")]->setTexture("button.png");
     _entities[formatText("submitButton")]->setPosition(_x + 250, _y + 50);
     _entities[formatText("submitButton")]->setSpriteScale(1.5, 1.5);
@@ -69,7 +69,7 @@ std::string InstanceButton::formatText(std::string toFormat) {
     return toFormat + std::to_string(_instance.id);
 }
 
-Entity *InstanceButton::getSubmitButton() {
+EntitySFML *InstanceButton::getSubmitButton() {
     return _entities[formatText("submitButton")].get();
 }
 

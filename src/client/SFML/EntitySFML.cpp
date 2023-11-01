@@ -5,16 +5,16 @@
 ** Sprite.cpp
 */
 
-#include "Entity.hpp"
+#include "EntitySFML.hpp"
 
-Entity::Entity(std::shared_ptr<RessourceManager> ressourceManager)
+EntitySFML::EntitySFML(std::shared_ptr<RessourceManagerSFML> ressourceManager)
     : _ressourceManager(ressourceManager) {
     _clock.restart();
 }
 
-Entity::~Entity() {}
+EntitySFML::~EntitySFML() {}
 
-void Entity::setTexture(const std::string& path) {
+void EntitySFML::setTexture(const std::string& path) {
     std::map<std::string, std::shared_ptr<sf::Texture>> textures = _ressourceManager->getTextures();
     std::map<std::string, std::shared_ptr<sf::Texture>>::iterator it = textures.begin();
     while (it != textures.end()) {
@@ -27,30 +27,26 @@ void Entity::setTexture(const std::string& path) {
     }
 }
 
-void Entity::setSpriteScale(float scaleX, float scaleY) {
+void EntitySFML::setSpriteScale(float scaleX, float scaleY) {
     _sprite.setScale(sf::Vector2f(scaleX, scaleY));
 }
 
-void Entity::setPosition(float x, float y) {
+void EntitySFML::setPosition(float x, float y) {
     _oldPosY = _sprite.getPosition().y;
     _sprite.setPosition(sf::Vector2f(x, y));
     _text.setPosition((sf::Vector2f(x, y)));
 }
 
-std::tuple<float, float> Entity::getSpritePosition() const {
+std::tuple<float, float> EntitySFML::getSpritePosition() const {
     return std::make_tuple(_sprite.getPosition().x, _sprite.getPosition().y);
 }
 
-void Entity::setSpriteRotation(const float angle) {
-    _sprite.setRotation(angle);
-}
-
-void Entity::setSpriteOriginToCenter() {
+void EntitySFML::setSpriteOriginToCenter() {
     sf::Vector2f size = sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
     _sprite.setOrigin(sf::Vector2f(size.x / 2, size.y / 2));
 }
 
-void Entity::setRect(int nb, int initRect) {
+void EntitySFML::setRect(int nb, int initRect) {
     _nbRect = nb;
     _initRect = initRect;
     float size = _texture->getSize().x / nb;
@@ -59,7 +55,7 @@ void Entity::setRect(int nb, int initRect) {
     _sprite.setTextureRect(rect);
 }
 
-void Entity::animateSprite(const int ei, const int framerate) {
+void EntitySFML::animateSprite(const int ei, const float framerate) {
     if (_type != IEntity::Type::SPRITE)
         return;
     float size = _texture->getSize().x / _nbRect;
@@ -92,7 +88,7 @@ void Entity::animateSprite(const int ei, const int framerate) {
     }
 }
 
-void Entity::setInitPos() {
+void EntitySFML::setInitPos() {
     float size = _texture->getSize().x / _nbRect;
     sf::IntRect rect = _sprite.getTextureRect();
     if (_clock.getElapsedTime().asMilliseconds() > 100) {
@@ -106,32 +102,32 @@ void Entity::setInitPos() {
     }
 }
 
-void Entity::setTextString(std::string str) {
+void EntitySFML::setTextString(std::string str) {
     _text.setString(str);
 }
 
-void Entity::setType(IEntity::Type type) {
+void EntitySFML::setType(IEntity::Type type) {
     _type = type;
 }
 
-void Entity::setTextInfo(int size, std::string color) {
+void EntitySFML::setTextInfo(int size, std::string color) {
     _text.setCharacterSize(size);
     _text.setFillColor(getColor(color));
 }
 
-void Entity::setSpeed(float speed) {
+void EntitySFML::setSpeed(float speed) {
     _speed = speed;
 }
 
-void Entity::setNextPos(float x, float y) {
+void EntitySFML::setNextPos(float x, float y) {
     _nextPos = sf::Vector2f(x, y);
 }
 
-void Entity::setDirection(std::string direction) {
+void EntitySFML::setDirection(std::string direction) {
     _direction = direction;
 }
 
-void Entity::update() {
+void EntitySFML::update() {
     if (_type == IEntity::Type::SPRITE)
         makePrediction();
     sf::Vector2f pos = _sprite.getPosition();
@@ -164,17 +160,17 @@ void Entity::update() {
     _sprite.setPosition(pos);
 }
 
-void Entity::flip() {
+void EntitySFML::flip() {
     auto scale = _sprite.getScale();
     scale.x *= -1;
     _sprite.setScale(scale);
 }
 
-void Entity::setHit(bool touch) {
+void EntitySFML::setHit(bool touch) {
     _isHit = touch;
 }
 
-bool Entity::isDead() const {
+bool EntitySFML::isDead() const {
     if (_eventForm == "once") {
         float size = _texture->getSize().x / _nbRect;
         sf::IntRect rect = _sprite.getTextureRect();
@@ -186,15 +182,15 @@ bool Entity::isDead() const {
     return false;
 }
 
-void Entity::setEventForm(std::string form) {
+void EntitySFML::setEventForm(std::string form) {
     _eventForm = form;
 }
 
-void Entity::setObjectType(std::string type) {
+void EntitySFML::setObjectType(std::string type) {
     _objectType = type;
 }
 
-sf::Color Entity::getColor(std::string color) {
+sf::Color EntitySFML::getColor(std::string color) {
     if (color == "red")
         return sf::Color::Red;
     if (color == "blue")
@@ -214,11 +210,11 @@ sf::Color Entity::getColor(std::string color) {
     return sf::Color::White;
 }
 
-IEntity::Type Entity::getType() const {
+IEntity::Type EntitySFML::getType() const {
     return _type;
 }
 
-void Entity::makePrediction() {
+void EntitySFML::makePrediction() {
     if (_direction == "left" || _direction == "right" || _direction == "up" || _direction == "down") {
         float speed = _speed;
         if (_direction == "left" || _direction == "up") {
@@ -229,31 +225,27 @@ void Entity::makePrediction() {
     }
 }
 
-std::string Entity::getEventForm() const {
+std::string EntitySFML::getEventForm() const {
     return _eventForm;
 }
 
-void Entity::setFont() {
+void EntitySFML::setFont() {
     _font.loadFromFile("font/pixel.ttf");
     _text.setFont(_font);
 }
 
-void Entity::draw(sf::RenderWindow& window) {
+void EntitySFML::draw(sf::RenderWindow& window) {
     if (_type == IEntity::Type::SPRITE)
         window.draw(_sprite);
     else if (_type == IEntity::Type::TEXT)
         window.draw(_text);
 }
 
-sf::Text Entity::getText() const {
-    return _text;
-}
-
-sf::Sprite Entity::getSprite() const {
+sf::Sprite EntitySFML::getSprite() const {
     return _sprite;
 }
 
-void Entity::setSound(const std::string& path) {
+void EntitySFML::setSound(const std::string& path) {
     std::map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds = _ressourceManager->getSounds();
     std::map<std::string, std::shared_ptr<sf::SoundBuffer>>::iterator it = sounds.begin();
     while (it != sounds.end()) {

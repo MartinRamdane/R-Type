@@ -13,7 +13,7 @@
 #include "Game.hpp"
 #include "Input.hpp"
 #include "Login.hpp"
-#include "SFML/Entity.hpp"
+#include "SFML/EntitySFML.hpp"
 
 class Menu {
    public:
@@ -27,7 +27,7 @@ class Menu {
     std::shared_ptr<sf::RenderWindow> _window;
     sf::View _view;
     sf::Font _font;
-    std::map<std::string, std::unique_ptr<Entity>> _entities;
+    std::map<std::string, std::unique_ptr<EntitySFML>> _entities;
     std::map<std::string, std::unique_ptr<Input>> _inputs;
     std::map<std::string, std::unique_ptr<sf::Text>> _texts;
     bool _errorConnect = true;

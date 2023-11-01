@@ -11,12 +11,12 @@
 #include <map>
 #include <memory>
 #include "../types/Instance.hpp"
-#include "SFML/Entity.hpp"
+#include "SFML/EntitySFML.hpp"
 #include "Game.hpp"
 #include "Input.hpp"
 #include "InstanceButton.hpp"
 #include "Login.hpp"
-#include "SFML/RessourceManager.hpp"
+#include "SFML/RessourceManagerSFML.hpp"
 #include "IDisplay.hpp"
 
 class InstanceMenu {
@@ -34,9 +34,9 @@ private:
     std::shared_ptr<sf::RenderWindow> _window;
     sf::View _view;
     sf::Font _font;
-    std::map <std::string, std::unique_ptr<Entity>> _entities;
+    std::map <std::string, std::unique_ptr<EntitySFML>> _entities;
     std::map <std::string, std::unique_ptr<sf::Text>> _texts;
-    std::map <std::string, std::unique_ptr<Entity>> _gameSelector;
+    std::map <std::string, std::unique_ptr<EntitySFML>> _gameSelector;
     bool _errorConnect = true;
     std::shared_ptr <Game> _game;
     bool _openInstanceModal = false;

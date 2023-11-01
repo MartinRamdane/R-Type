@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** B-CPP-500-MAR-5-1-rtype-martin.ramdane
 ** File description:
-** RessourceManager.hpp
+** RessourceManagerSFML.hpp
 */
 
 #pragma once
@@ -16,10 +16,10 @@
 #include <memory>
 #include <string>
 
-class RessourceManager {
+class RessourceManagerSFML {
    public:
-    RessourceManager();
-    ~RessourceManager(){};
+    RessourceManagerSFML();
+    ~RessourceManagerSFML();
     std::map<std::string, std::shared_ptr<sf::Texture>> getTextures() const;
     std::map<std::string, std::shared_ptr<sf::SoundBuffer>> getSounds() const;
 
