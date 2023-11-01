@@ -120,6 +120,7 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
                             Event evt = {ACTION::JOIN, serverToJoinInfos};
                             _client->SendEvent(evt);
                             _window->close();
+                            _game->setUDPClientConnecting(true);
                         }
                     }
                 }
@@ -148,6 +149,7 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
                             evt.body = body;
                             _game.get()->getClient()->SendEvent(evt);
                             _window->close();
+                            _game->setUDPClientConnecting(true);
                         }
                     }
                 }

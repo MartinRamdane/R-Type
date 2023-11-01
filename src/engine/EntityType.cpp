@@ -15,7 +15,6 @@ EntityType<T>::EntityType(float radius) : _radius(radius) {
 
 template <class T>
 EntityType<T>::~EntityType() {
-    Engine::instance->removeEntityType(this);
 }
 
 template class EntityType<IEntity>;

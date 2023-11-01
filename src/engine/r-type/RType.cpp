@@ -82,6 +82,8 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
 
 RType::~RType() {
     // Destroy all entities
+    instance = nullptr;
+    std::cout << "starting clearing " << std::endl;
     _players.clear();
     _enemies.clear();
     _projectiles.clear();

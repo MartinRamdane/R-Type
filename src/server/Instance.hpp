@@ -69,6 +69,7 @@ private:
     ThreadSafeQueue<Event> _events;
     JsonParser _jsonParser;
     std::chrono::high_resolution_clock::time_point _lastCheck;
+    bool _isRunning;
 };
 
 #endif /* !HEADER_INSTANCE */

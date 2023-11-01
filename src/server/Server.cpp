@@ -54,5 +54,7 @@ Instance *ServerClass::getInstanceByPort(int port) {
 }
 
 void ServerClass::deleteInstance(int instanceId) {
+    Instance *instance = _instances[instanceId];
     _instances.erase(_instances.begin() + instanceId);
+    delete instance;
 }
