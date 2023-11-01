@@ -293,7 +293,7 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
         projectile->setFlip(flip);
 }
 
-std::shared_ptr<AEntity> RType::createShield(int x, int y) {
+std::shared_ptr<AEntity> RType::createShield(int x, int y, float speed) {
     IEntity::EntityInfo info;
     info.x = x;
     info.y = y;
@@ -301,6 +301,7 @@ std::shared_ptr<AEntity> RType::createShield(int x, int y) {
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Shield";
     info.id = _lastId;
+    info.speed = speed;
     _lastId++;
     std::shared_ptr<AEntity> _shield = std::make_shared<AEntity>(info);
     _staticObjectsGroups->insert(_shield);
