@@ -28,7 +28,7 @@ class EntitySFML : public IEntity {
     std::tuple<float, float> getSpritePosition() const;
     void setSpriteOriginToCenter();
     void setRect(int nb, int initRect = 0);
-    void animateSprite(const int ei, const int framerate);
+    void animateSprite(const int ei, const float framerate);
     void setInitPos();
     void setTextString(std::string str);
     void setType(IEntity::Type type);

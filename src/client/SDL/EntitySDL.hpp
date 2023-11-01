@@ -6,18 +6,15 @@
 */
 
 #pragma once
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <memory>
 #include <string>
 #include "../IEntity.hpp"
 #include "RessourceManagerSDL.hpp"
 
-typedef struct {
-    float x, y;
-    float width, height;
-} Camera;
 
 class EntitySDL : public IEntity {
    public:
@@ -29,7 +26,7 @@ class EntitySDL : public IEntity {
     std::tuple<float, float> getSpritePosition() const;
     void setSpriteOriginToCenter();
     void setRect(int nb, int initRect = 0);
-    void animateSprite(const int ei, const int framerate);
+    void animateSprite(const int ei, const float framerate);
     void setInitPos();
     void setTextString(std::string str);
     void setType(IEntity::Type type);
@@ -48,13 +45,15 @@ class EntitySDL : public IEntity {
     void makePrediction();
     std::string getEventForm() const;
     void setFont();
-    void draw(SDL_Renderer* renderer, Camera camera);
+    void draw(SDL_Renderer* renderer);
 
    public:
-    std::shared_ptr<SDL_Texture> _texture;
+    SDL_Texture* _texture;
     SDL_Rect _destRect;
     SDL_Rect _animRect;
     SDL_Point _center;
+    int _centerX;
+    int _centerY;
     int _nbRect;
     int _initRect;
     int _textureWidth;
@@ -66,9 +65,22 @@ class EntitySDL : public IEntity {
     int _oldPosY;
     IEntity::Type _type;
     // sf::Text _text;
-    // sf::Font _font;
+    TTF_Font *_font;
     float _speed;
     std::tuple<float, float> _nextPos;
     bool _isHit = false;
     std::shared_ptr<RessourceManagerSDL> _ressourceManager;
+    float _scaleX;
+    float _scaleY;
+    unsigned int _framerate;
+    unsigned int _framedelay;
+    double _delta;
+    bool _flip = false;
+    std::string _text;
+    std::string _textColor;
+    int _size;
+    SDL_Surface * _surface;
+    SDL_Texture * _textureText;
+    SDL_Rect _textRect;
+    int _x, _y;
 };

@@ -55,7 +55,7 @@ void EntitySFML::setRect(int nb, int initRect) {
     _sprite.setTextureRect(rect);
 }
 
-void EntitySFML::animateSprite(const int ei, const int framerate) {
+void EntitySFML::animateSprite(const int ei, const float framerate) {
     if (_type != IEntity::Type::SPRITE)
         return;
     float size = _texture->getSize().x / _nbRect;

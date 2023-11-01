@@ -10,10 +10,12 @@ class MyConanFile(ConanFile):
         "gtest/1.14.0",
         "sdl/2.26.5",
         "sdl_image/2.0.5",
-        "lz4/1.9.4"
+        "lz4/1.9.4",
+        "sdl_ttf/2.20.2"
     ]
     generators = "CMakeDeps", "CMakeToolchain"
 
     def requirements(self):
+        self.requires("freetype/2.12.1", override=True)
         if self.settings.os == "Linux":
             self.requires("libalsa/1.2.10", override=True)
