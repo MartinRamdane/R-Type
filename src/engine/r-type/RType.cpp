@@ -232,20 +232,20 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         }
     }
     if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL) {
-        std::cout << "Level " << _currentLevel << " cleared" << std::endl;
+        _lastId = 0;
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
         for (auto player : _players) {
             for (auto player : _players) {
+                player->setId(_lastId++);
                 player->resetLife();
                 player->setCreated(false);
                 player->setEntitiesHasCollided(false);
                 player->setHasSupport(false);
                 player->setDirection(IEntity::Direction::RIGHT);
             }
-            _lastId++;
         }
     }
 }
@@ -412,7 +412,6 @@ void RType::setAllEntitiesToCreated() {
 }
 
 void RType::deleteAllEntities() {
-    _lastId = _players.size() - 1;
     for (auto staticObject : _staticObjects)
         staticObject->kill();
     for (auto enemy : _enemies)
@@ -442,6 +441,7 @@ void RType::deleteAllEntities() {
     _wormGroups->clear();
     _bossGroups->clear();
     _bombermanGroups->clear();
+    _bombGroups->clear();
     _musics.clear();
 }
 
@@ -497,7 +497,6 @@ void RType::createBackground(IEntity::EntityInfo info) {
 }
 
 void RType::clearLevel() {
-    _lastId = 0;
     for (auto player : _players) {
         player->setId(_lastId++);
         player->setCreated(false);
