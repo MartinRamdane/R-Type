@@ -70,14 +70,13 @@ public:
   void addEvent(ACTION ACTION_NAME, std::string body);
   const std::string getBody() const { return _body; };
   const Event getEvent() const { return Event{_ACTION_NAME, _body}; };
-  uint32_t calculateCRC(const std::vector<uint8_t>& data) {
-      boost::crc_32_type result;
-      result.process_bytes(data.data(), data.size());
-      std::cout << "CRC: " << result.checksum() << std::endl;
-      return result.checksum();
+  uint32_t calculateCRC(const NetworkEvent& event) {
+    boost::crc_32_type result;
+    result.process_bytes(&event, sizeof(NetworkEvent));
+    return result.checksum();
   }
-  bool verifyCRC(const std::vector<uint8_t>& data, uint32_t expectedCRC) {
-    return calculateCRC(data) == expectedCRC;
+  bool verifyCRC(const NetworkEvent& event, uint32_t expectedCRC) {
+    return calculateCRC(event) == expectedCRC;
   }
 protected:
 private:

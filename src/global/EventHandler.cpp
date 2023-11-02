@@ -25,19 +25,15 @@ std::vector<uint8_t> EventHandler::encodeMessage()
   event.original_size = compressor.getOriginalSize();
   event.compressed_size = compressor.getCompressedSize();
   event.body = compressed;
-
-  std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size);
-
+  uint32_t crc = calculateCRC(event);
+  std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size + sizeof(uint32_t));
   // Copy the event data into the vector
   std::memcpy(data.data(), &event.ACTION_NAME, sizeof(ACTION));
   std::memcpy(data.data() + sizeof(ACTION), &event.original_size, sizeof(int));
   std::memcpy(data.data() + sizeof(ACTION) + sizeof(int), &event.compressed_size, sizeof(int));
   std::memcpy(data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int), event.body, event.compressed_size);
-
-  // Calculate CRC for the data and append it to the end
-  uint32_t crc = calculateCRC(data);
-  data.insert(data.end(), reinterpret_cast<uint8_t*>(&crc), reinterpret_cast<uint8_t*>(&crc) + sizeof(uint32_t));
-
+  std::memcpy(data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size, &crc, sizeof(uint32_t));
+  std::cout << "checksum got : " << crc << std::endl;
   return data;
 }
 
@@ -62,16 +58,6 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     if (static_cast<unsigned int>(netevt.compressed_size) > data.size() - sizeof(ACTION) - sizeof(int) - sizeof(int)) {
       delete[] netevt.body;
       throw std::runtime_error("Packet has been corrupted");
-    }
-    uint32_t receivedCRC;
-    std::memcpy(&receivedCRC, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + netevt.compressed_size, sizeof(uint32_t));
-
-    // Calculate CRC for the data (excluding the received CRC)
-    std::vector<uint8_t> dataWithoutCRC(data.begin(), data.end() - sizeof(uint32_t));
-    uint32_t calculatedCRC = calculateCRC(dataWithoutCRC);
-
-    if (receivedCRC != calculatedCRC) {
-      throw std::runtime_error("CRC check failed");
     }
     std::memcpy(netevt.body, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int), netevt.compressed_size);
      if (netevt.compressed_size < 0 || netevt.original_size < 0) {
