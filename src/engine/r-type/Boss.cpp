@@ -64,12 +64,12 @@ void Boss::shoot() {
         random == 0 ? info.x = std::get<0>(pos) + getRadius() / 2 + 55
                     : info.x = std::get<0>(pos) - getRadius() / 2 - 55;
         info.y = std::get<1>(pos) - getRadius();
-        info.name = getShootAsset();
+        info.name = getProjectileAsset();
         info.scaleX = 1.7;
         info.scaleY = 1.7;
         info.speed = getProjectileSpeed();
         info.damage = getDamage();
-        info.spriteConfigJsonObjectName = getShootAsset();
+        info.spriteConfigJsonObjectName = getProjectileAsset();
         info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
         info.direction = IEntity::Direction::TRACKING;
         info.relatedPlayerId = player->getId();
