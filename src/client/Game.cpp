@@ -90,14 +90,19 @@ void Game::update(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
         }
     }
     handleEvent();
-    for (auto it = entitiesCopy->begin(); it != entitiesCopy->end(); it++) {
-        (*it).second->update();
-        if ((*it).second->isDead()) {
-            Event evt;
-            evt.ACTION_NAME = ACTION::DEAD;
-            evt.body = std::to_string((*it).first);
-            _udpClient->sendEvent(evt);
-            _udpClient->getEventQueue().push_back(evt);
+    if (entitiesCopy->empty() == false) {
+        for (auto it = entitiesCopy->begin(); it != entitiesCopy->end(); it++) {
+            if ((*it).first == -1) {
+                continue;
+            }
+            (*it).second->update();
+            if ((*it).second->isDead()) {
+                Event evt;
+                evt.ACTION_NAME = ACTION::DEAD;
+                evt.body = std::to_string((*it).first);
+                _udpClient->sendEvent(evt);
+                _udpClient->getEventQueue().push_back(evt);
+            }
         }
     }
     animate(entitiesCopy);
