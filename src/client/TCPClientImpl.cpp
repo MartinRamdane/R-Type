@@ -16,7 +16,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
                 EventHandler evt;
                 evt.decodeMessage(msg.body);
             } catch (std::exception &e) {
-                std::cerr << e.what() << std::endl;
             }
             break;
         }
@@ -37,7 +36,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
                 _game->getClient().get()->SendEvent(evtToSend);
                 // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
             } catch (std::exception &e) {
-                std::cerr << e.what() << std::endl;
             }
             break;
         }
@@ -66,7 +64,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
                                          maxPlayers, port, id};
                 _game->getInstanceMenu()->addInstanceButton(instance, 0, 0);
             } catch (std::exception &e) {
-                std::cerr << e.what() << std::endl;
             }
             break;
         }
@@ -85,7 +82,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
                 _game->setPlayerId(std::stoi(playerId));
                 _game->connectToUdpServer(_game->getHost(), std::stoi(getPort));
             } catch (std::exception &e) {
-                std::cerr << e.what() << std::endl;
             }
             break;
         }

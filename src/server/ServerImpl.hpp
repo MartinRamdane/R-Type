@@ -42,7 +42,6 @@ protected:
                     EventHandler evt;
                     evt.decodeMessage(msg.body);
                 } catch (std::exception &e) {
-                    std::cerr << e.what() << std::endl;
                 }
             }
                 break;
@@ -64,7 +63,6 @@ protected:
                     _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
                     SendEvent(client, evt);
                 } catch (std::exception &e) {
-                    std::cerr << e.what() << std::endl;
                 }
             }
                 break;
@@ -105,7 +103,6 @@ protected:
                     _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
                     SendEvent(client, evt);
                 } catch (std::exception &e) {
-                    std::cerr << e.what() << std::endl;
                 }
             }
                 break;

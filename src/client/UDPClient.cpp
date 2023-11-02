@@ -104,7 +104,6 @@ void UDPClient::HandleMessage(std::vector<uint8_t>& msg) {
         Event event = evt.decodeMessage(msg);
         _eventQueue.push_back(event);
     } catch (std::exception& e) {
-        std::cerr << e.what() << std::endl;
     }
 }
 
