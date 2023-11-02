@@ -92,6 +92,9 @@ void Game::update(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
     handleEvent();
     if (entitiesCopy->empty() == false) {
         for (auto it = entitiesCopy->begin(); it != entitiesCopy->end(); it++) {
+            if ((*it).first == -1) {
+                continue;
+            }
             (*it).second->update();
             if ((*it).second->isDead()) {
                 Event evt;

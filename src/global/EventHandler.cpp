@@ -25,7 +25,11 @@ std::vector<uint8_t> EventHandler::encodeMessage()
   event.original_size = compressor.getOriginalSize();
   event.compressed_size = compressor.getCompressedSize();
   event.body = compressed;
-  uint32_t crc = calculateCRC(event);
+  NetworkChecksum checksum;
+  checksum.ACTION_NAME = _ACTION_NAME;
+  checksum.original_size = compressor.getOriginalSize();
+  checksum.compressed_size = compressor.getCompressedSize();
+  uint32_t crc = calculateCRC(checksum);
   std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size + sizeof(uint32_t));
   // Copy the event data into the vector
   std::memcpy(data.data(), &event.ACTION_NAME, sizeof(ACTION));
@@ -33,7 +37,7 @@ std::vector<uint8_t> EventHandler::encodeMessage()
   std::memcpy(data.data() + sizeof(ACTION) + sizeof(int), &event.compressed_size, sizeof(int));
   std::memcpy(data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int), event.body, event.compressed_size);
   std::memcpy(data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size, &crc, sizeof(uint32_t));
-  std::cout << "checksum got : " << crc << std::endl;
+  // std::cout << "checksum got : " << crc << std::endl;
   return data;
 }
 
@@ -47,10 +51,19 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     std::memcpy(&netevt.ACTION_NAME, data.data(), sizeof(ACTION));
     std::memcpy(&netevt.original_size, data.data() + sizeof(ACTION), sizeof(int));
     std::memcpy(&netevt.compressed_size, data.data() + sizeof(ACTION) + sizeof(int), sizeof(int));
-    if (static_cast<unsigned int>(netevt.ACTION_NAME) < 0U || static_cast<unsigned int>(netevt.ACTION_NAME) > 25U)
-      throw std::runtime_error("Invalid ACTION");
-    if (netevt.compressed_size < 0 || netevt.original_size < 0)
-      throw std::runtime_error("Invalid size");
+    NetworkChecksum checksum;
+    checksum.ACTION_NAME = netevt.ACTION_NAME;
+    checksum.original_size = netevt.original_size;
+    checksum.compressed_size = netevt.compressed_size;
+    if (data.size() < sizeof(ACTION) + 2 * sizeof(int) + netevt.compressed_size + sizeof(uint32_t))
+      throw std::runtime_error("Packet has been corrupted. Not enought size of CRC");
+
+    uint32_t getCRC = 0;
+    uint32_t generateCRC = calculateCRC(checksum);
+    std::memcpy(&getCRC, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + netevt.compressed_size, sizeof(uint32_t));
+    // std::cout << "checksum received : " << getCRC << std::endl;
+     if (getCRC != generateCRC)
+      throw std::runtime_error("Packet has been corrupted CRC IS NOT VALID");
     netevt.body = new char[netevt.compressed_size];
     if (netevt.body == NULL) {
       throw std::runtime_error("Not enough memory");
@@ -77,10 +90,22 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     DataCompress decompressor(netevt.compressed_size, netevt.original_size);
     char *decompressed = decompressor.Decompress(netevt.body);
     decompressed[decompressor.getOriginalSize() - 1] = '\0';
+    if (strlen(decompressed) != decompressor.getOriginalSize() - 1)
+    {
+      delete decompressed;
+      delete[] netevt.body;
+      throw std::runtime_error("Decompression failed");
+    }
     Event event;
     event.ACTION_NAME = netevt.ACTION_NAME;
     event.body = std::string(decompressed);
     _body = std::string(decompressed);
+    if (event.body.size() != decompressor.getOriginalSize() - 1)
+    {
+      delete decompressed;
+      delete[] netevt.body;
+      throw std::runtime_error("Decompression failed. Wrong size.");
+    }
     _ACTION_NAME = netevt.ACTION_NAME;
     _body_size = netevt.original_size;
     delete[] netevt.body;
