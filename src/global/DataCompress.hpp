@@ -39,6 +39,10 @@ class DataCompress {
             char *new_compressed = new char[compressed_size];
             if (new_compressed == NULL) {
                 // Not enough memory
+                throw std::runtime_error("Memory alloc error");
+            }
+            if (new_compressed == NULL) {
+                // Not enough memory
                 throw std::runtime_error("Not enough memory");
             }
             memcpy(new_compressed, compressed, compressed_size);
