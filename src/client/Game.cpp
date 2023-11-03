@@ -244,7 +244,10 @@ void Game::flipEntity(Event evt) {
     ss >> tpm;
     ss >> id;
     int entityId = std::stoi(id);
-    _entities[entityId]->flip();
+    if (findEntity(entityId))
+        _entities.at(entityId)->flip();
+    else
+        return;
 }
 
 void Game::updateSprite(Event evt) {

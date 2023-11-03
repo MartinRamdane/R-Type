@@ -78,6 +78,7 @@ protected:
                                    std::to_string(instance->getMaxPlayers()) + " " + std::to_string(instance->getPort()) +
                                    " " + std::to_string(instance->getId());
                         SendEvent(client, evt);
+                    }
                 } catch (std::exception &e) {
                     std::cerr << e.what() << std::endl;
                 }
