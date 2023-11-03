@@ -57,7 +57,6 @@ struct NetworkEvent
   int original_size;
   int compressed_size;
   char *body;
-  uint32_t bodyCrc;
 };
 
 struct NetworkChecksum
@@ -65,7 +64,6 @@ struct NetworkChecksum
   ACTION ACTION_NAME;
   int original_size;
   int compressed_size;
-  uint32_t bodyCrc;
 };
 
 class EventHandler

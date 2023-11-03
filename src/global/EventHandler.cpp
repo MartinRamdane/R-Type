@@ -26,13 +26,11 @@ std::vector<uint8_t> EventHandler::encodeMessage()
   event.compressed_size = compressor.getCompressedSize();
   event.body = compressed;
   uint32_t bodyCrc = calculateCRCForBody(compressed, event.compressed_size);
-  event.bodyCrc = bodyCrc;
   NetworkChecksum checksum;
   checksum.ACTION_NAME = _ACTION_NAME;
   checksum.original_size = compressor.getOriginalSize();
   checksum.compressed_size = compressor.getCompressedSize();
-  checksum.bodyCrc = bodyCrc;
-  std::cout << "body checksum got : " << checksum.bodyCrc << std::endl;
+  std::cout << "body checksum got : " << bodyCrc << std::endl;
   uint32_t crc = calculateCRC(checksum);
   std::cout << "checksum got : " << crc << std::endl;
   std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size + 2 * sizeof(uint32_t));
@@ -54,15 +52,15 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     NetworkEvent netevt;
     netevt.compressed_size = -1;
     netevt.original_size = -1;
+    uint32_t bodyCrc = 0;
     std::memcpy(&netevt.ACTION_NAME, data.data(), sizeof(ACTION));
     std::memcpy(&netevt.original_size, data.data() + sizeof(ACTION), sizeof(int));
     std::memcpy(&netevt.compressed_size, data.data() + sizeof(ACTION) + sizeof(int), sizeof(int));
-    std::memcpy(&netevt.bodyCrc, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + netevt.compressed_size, sizeof(uint32_t));
+    std::memcpy(&bodyCrc, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + netevt.compressed_size, sizeof(uint32_t));
     NetworkChecksum checksum;
     checksum.ACTION_NAME = netevt.ACTION_NAME;
     checksum.original_size = netevt.original_size;
     checksum.compressed_size = netevt.compressed_size;
-    checksum.bodyCrc = netevt.bodyCrc;
     if (data.size() < sizeof(ACTION) + 2 * sizeof(int) + netevt.compressed_size + 2 * sizeof(uint32_t)) {
       throw std::runtime_error("[ERROR] Packet has been corrupted. Not enought size of CRC");
     }
@@ -96,7 +94,7 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     }
     DataCompress decompressor(netevt.compressed_size, netevt.original_size);
     uint32_t compressedCRC = calculateCRCForBody(netevt.body, netevt.compressed_size);
-    if (compressedCRC != netevt.bodyCrc)
+    if (compressedCRC != bodyCrc)
     {
       delete[] netevt.body;
       throw std::runtime_error("Packet has been corrupted. CRC is not valid for body");
