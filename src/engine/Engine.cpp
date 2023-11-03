@@ -59,11 +59,18 @@ bool Engine::frameRateControl() {
 }
 
 void Engine::openWindow() {
-    JsonParser parser;
-    nlohmann::json windowConfig = JsonParser::readFile("WindowConfig.json");
-    _width = parser.get<int>(windowConfig, "Window.Width");
-    _height = parser.get<int>(windowConfig, "Window.Height");
-    _title = parser.get<std::string>(windowConfig, "Window.Title");
+    try {
+        JsonParser parser;
+        nlohmann::json windowConfig = JsonParser::readFile("WindowConfig.json");
+        _width = parser.get<int>(windowConfig, "Window.Width");
+        _height = parser.get<int>(windowConfig, "Window.Height");
+        _title = parser.get<std::string>(windowConfig, "Window.Title");
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        _width = 800;
+        _height = 600;
+        _title = "R-Type";
+    }
 }
 
 std::string Engine::getWindowTitle() const {

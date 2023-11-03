@@ -348,11 +348,9 @@ void Game::checkEntities(int nb) {
 
 void Game::sendQuitEvent() {
     if (isUDPClientConnected) {
-        std::cout << "send quit event" << std::endl;
         std::string targetPort = std::to_string(_udpClient.get()->getPort());
         std::string targetHost = _udpClient.get()->getHost();
         std::string body = targetHost + " " + targetPort;
-        std::cout << "event body: " << body << std::endl;
         Event evt = {ACTION::QUIT, body};
         isUDPClientConnected = false;
         _display.get()->closeWindow();

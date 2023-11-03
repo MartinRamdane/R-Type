@@ -13,14 +13,24 @@ Parser::~Parser() {}
 
 void Parser::getConfig(std::string configpath, std::string type,
                        IEntity::EntityInfos& entityInfos) {
-    JsonParser jsonParser;
-    if (_jsons.find(configpath) == _jsons.end())
-        _jsons[configpath] = jsonParser.readFile(configpath);
-    int nbRect = jsonParser.get<int>(_jsons[configpath], type + ".nb_rect");
-    int initRect = jsonParser.get<int>(_jsons[configpath], type + ".rect_init");
-    entityInfos.nbRect = nbRect;
-    entityInfos.initRect = initRect;
-    entityInfos.eventForm = jsonParser.get<std::string>(_jsons[configpath], type + ".form");
+    if (configpath == "null") {
+        entityInfos.nbRect = 0;
+        entityInfos.initRect = 0;
+        entityInfos.eventForm = "none";
+        return;
+    }
+    try {
+        JsonParser jsonParser;
+        if (_jsons.find(configpath) == _jsons.end())
+            _jsons[configpath] = jsonParser.readFile(configpath);
+        int nbRect = jsonParser.get<int>(_jsons[configpath], type + ".nb_rect");
+        int initRect = jsonParser.get<int>(_jsons[configpath], type + ".rect_init");
+        entityInfos.nbRect = nbRect;
+        entityInfos.initRect = initRect;
+        entityInfos.eventForm = jsonParser.get<std::string>(_jsons[configpath], type + ".form");
+    } catch (std::exception& e) {
+        std::cerr << "ERROR : " << e.what() << std::endl;
+    }
     entityInfos.objectType = type;
 }
 
