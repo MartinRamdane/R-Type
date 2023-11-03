@@ -1,5 +1,6 @@
 #include "engine/Core.hpp"
 #include "server/Server.hpp"
+#include "global/EventHandler.hpp"
 
 int main() {
     // TODO: Deprecated
@@ -12,6 +13,10 @@ int main() {
             return 1;
         }
     }*/
+    EventHandler handler;
+    handler.addEvent(ACTION::CREATE, "test");
+    std::vector<uint8_t> data = handler.encodeMessage();
+    Event evt = handler.decodeMessage(data);
     try {
         ServerClass server;
         server.loop();

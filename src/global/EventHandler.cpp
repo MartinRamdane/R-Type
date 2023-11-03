@@ -32,7 +32,9 @@ std::vector<uint8_t> EventHandler::encodeMessage()
   checksum.original_size = compressor.getOriginalSize();
   checksum.compressed_size = compressor.getCompressedSize();
   checksum.bodyCrc = bodyCrc;
+  std::cout << "body checksum got : " << checksum.bodyCrc << std::endl;
   uint32_t crc = calculateCRC(checksum);
+  std::cout << "checksum got : " << crc << std::endl;
   std::vector<uint8_t> data(sizeof(ACTION) + sizeof(int) + sizeof(int) + event.compressed_size + 2 * sizeof(uint32_t));
   // Copy the event data into the vector
   std::memcpy(data.data(), &event.ACTION_NAME, sizeof(ACTION));
