@@ -10,6 +10,7 @@
 Instance::Instance(int id, std::string gameName)
         : _id(id), _port((int) (4210 + id)), _gameName(gameName), _threadPool(3) {
     _isRunning = true;
+    _playerIdToGive = 1;
     std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
     _name = "toChange";
     nlohmann::json jsonFile = _jsonParser.readFile(gameConfigFilePathName);

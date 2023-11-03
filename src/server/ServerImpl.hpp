@@ -56,11 +56,11 @@ protected:
                     Instance *instance = _server->getInstance(_server->getInstancesNb() - 1);
                     Event evt;
                     evt.ACTION_NAME = ACTION::JOINED;
-                    int playerId = _server->getPlayerIdToGive();
-                    evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(infos.port);
+                    int playerId = instance->getPlayerIdToGive();
+                    evt.body = std::to_string(instance->getPlayerIdToGive()) + " " + std::to_string(infos.port);
                     std::string playerEntityId = "p" + std::to_string(playerId);
                     instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
-                    _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
+                    instance->setPlayerIdToGive(instance->getPlayerIdToGive() + 1);
                     SendEvent(client, evt);
                 } catch (std::exception &e) {
                 }
@@ -98,11 +98,11 @@ protected:
                     }
                     Event evt;
                     evt.ACTION_NAME = ACTION::JOINED;
-                    int playerId = _server->getPlayerIdToGive();
-                    evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + port;
+                    int playerId = instance->getPlayerIdToGive();
+                    evt.body = std::to_string(instance->getPlayerIdToGive()) + " " + port;
                     std::string playerEntityId = "p" + std::to_string(playerId);
                     instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
-                    _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
+                    instance->setPlayerIdToGive(instance->getPlayerIdToGive() + 1);
                     SendEvent(client, evt);
                 } catch (std::exception &e) {
                 }
