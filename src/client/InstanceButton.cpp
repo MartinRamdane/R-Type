@@ -49,18 +49,20 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     _texts[formatText("playersText")]->setCharacterSize(16);
     _texts[formatText("playersText")]->setFillColor(sf::Color::White);
     _texts[formatText("playersText")]->setPosition(sf::Vector2f(_x + 30, _y + 55));
+    
+    if (instance.nbPlayers < instance.maxPlayers) {
+        _entities[formatText("submitButton")] = std::make_shared<EntitySFML>(ressourceManager);
+        _entities[formatText("submitButton")]->setTexture("button.png");
+        _entities[formatText("submitButton")]->setPosition(_x + 250, _y + 50);
+        _entities[formatText("submitButton")]->setSpriteScale(1.5, 1.5);
 
-    _entities[formatText("submitButton")] = std::make_shared<EntitySFML>(ressourceManager);
-    _entities[formatText("submitButton")]->setTexture("button.png");
-    _entities[formatText("submitButton")]->setPosition(_x + 250, _y + 50);
-    _entities[formatText("submitButton")]->setSpriteScale(1.5, 1.5);
-
-    _texts[formatText("submitButtonText")] = std::make_shared<sf::Text>();
-    _texts[formatText("submitButtonText")]->setFont(_font);
-    _texts[formatText("submitButtonText")]->setString("Join game");
-    _texts[formatText("submitButtonText")]->setCharacterSize(16);
-    _texts[formatText("submitButtonText")]->setFillColor(sf::Color::White);
-    _texts[formatText("submitButtonText")]->setPosition(sf::Vector2f(_x + 275, _y + 55));
+        _texts[formatText("submitButtonText")] = std::make_shared<sf::Text>();
+        _texts[formatText("submitButtonText")]->setFont(_font);
+        _texts[formatText("submitButtonText")]->setString("Join game");
+        _texts[formatText("submitButtonText")]->setCharacterSize(16);
+        _texts[formatText("submitButtonText")]->setFillColor(sf::Color::White);
+        _texts[formatText("submitButtonText")]->setPosition(sf::Vector2f(_x + 275, _y + 55));
+    }
 }
 
 InstanceButton::~InstanceButton() {}
@@ -81,6 +83,8 @@ void InstanceButton::setPosition(int x, int y) {
     _texts[formatText("instanceGame")]->setPosition(sf::Vector2f(_x + 10, _y + 25));
     _entities[formatText("userIcon")]->setPosition(_x + 10, _y + 55);
     _texts[formatText("playersText")]->setPosition(sf::Vector2f(_x + 30, _y + 55));
-    _entities[formatText("submitButton")]->setPosition(_x + 250, _y + 50);
-    _texts[formatText("submitButtonText")]->setPosition(sf::Vector2f(_x + 275, _y + 55));
+    if (hasSubmitButton()) {
+        _entities[formatText("submitButton")]->setPosition(_x + 250, _y + 50);
+        _texts[formatText("submitButtonText")]->setPosition(sf::Vector2f(_x + 275, _y + 55));
+    }
 }

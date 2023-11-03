@@ -73,6 +73,11 @@ UDPClient::UDPClient() : io_context_(), socket_(io_context_) {
 }
 
 UDPClient::~UDPClient() {
+    io_context_.stop();
+    _thread.join();
+    _queue.clear();
+    _eventQueue.clear();
+    _outQueue.clear();
     socket_.close();
 }
 

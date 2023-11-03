@@ -53,6 +53,10 @@ public:
 
     void checkEntitiesInClients();
 
+    int getPlayerIdToGive() { return _playerIdToGive; }
+
+    void setPlayerIdToGive(int id) { _playerIdToGive = id; }
+
 protected:
 private:
     int _id;
@@ -69,6 +73,8 @@ private:
     ThreadSafeQueue<Event> _events;
     JsonParser _jsonParser;
     std::chrono::high_resolution_clock::time_point _lastCheck;
+    bool _isRunning;
+    int _playerIdToGive;
 };
 
 #endif /* !HEADER_INSTANCE */

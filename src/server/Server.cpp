@@ -12,7 +12,6 @@ ServerClass::ServerClass() : _threadPool(1) {
     MyServer *server = new MyServer(4244, this);
     _server = server;
     _server->StartServer();
-    _playerIdToGive = 1;
 }
 
 ServerClass::~ServerClass() {
@@ -46,9 +45,15 @@ void ServerClass::loop() {
 }
 
 Instance *ServerClass::getInstanceByPort(int port) {
-    for (auto instance : _instances) {
+    for (auto instance: _instances) {
         if (instance->getPort() == port)
             return instance;
     }
     return nullptr;
+}
+
+void ServerClass::deleteInstance(int instanceId) {
+    Instance *instance = _instances[instanceId];
+    _instances.erase(_instances.begin() + instanceId);
+    delete instance;
 }

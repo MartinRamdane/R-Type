@@ -90,7 +90,6 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _gameSelector["pong"]->setPosition(430, 150);
     _gameSelector["pong"]->setSpriteScale(1, 1);
 
-    // gap between each instance button is 90 pixels in y
 }
 
 InstanceMenu::~InstanceMenu() {
@@ -98,7 +97,7 @@ InstanceMenu::~InstanceMenu() {
         _window->close();
 }
 
-void InstanceMenu::mainloop(std::shared_ptr<sf::RenderWindow> window) {
+void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
     _window = window;
     _windowCreated = true;
     _client = _game->getClient();
@@ -115,15 +114,16 @@ void InstanceMenu::mainloop(std::shared_ptr<sf::RenderWindow> window) {
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Left) {
                 for (auto &instanceButton: _instanceButtons) {
-                    std::string key =
-                            "submitButton" + std::to_string(instanceButton.second.get()->getId());
-                    EntitySFML *submitButton = instanceButton.second.get()->getSubmitButton();
-                    if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
-                        int port = instanceButton.second.get()->getPort();
-                        std::string serverToJoinInfos = std::to_string(port);
-                        Event evt = {ACTION::JOIN, serverToJoinInfos};
-                        _client->SendEvent(evt);
-                        _window->close();
+                    if (instanceButton.second.get()->hasSubmitButton()) {
+                        EntitySFML *submitButton = instanceButton.second.get()->getSubmitButton();
+                        if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
+                            int port = instanceButton.second.get()->getPort();
+                            std::string serverToJoinInfos = std::to_string(port);
+                            Event evt = {ACTION::JOIN, serverToJoinInfos};
+                            _client->SendEvent(evt);
+                            _window->close();
+                            _game->setUDPClientConnecting(true);
+                        }
                     }
                 }
                 if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
@@ -151,6 +151,7 @@ void InstanceMenu::mainloop(std::shared_ptr<sf::RenderWindow> window) {
                             evt.body = body;
                             _game.get()->getClient()->SendEvent(evt);
                             _window->close();
+                            _game->setUDPClientConnecting(true);
                         }
                     }
                 }

@@ -56,11 +56,11 @@ protected:
                     Instance *instance = _server->getInstance(_server->getInstancesNb() - 1);
                     Event evt;
                     evt.ACTION_NAME = ACTION::JOINED;
-                    int playerId = _server->getPlayerIdToGive();
-                    evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + std::to_string(infos.port);
+                    int playerId = instance->getPlayerIdToGive();
+                    evt.body = std::to_string(instance->getPlayerIdToGive()) + " " + std::to_string(infos.port);
                     std::string playerEntityId = "p" + std::to_string(playerId);
                     instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
-                    _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
+                    instance->setPlayerIdToGive(instance->getPlayerIdToGive() + 1);
                     SendEvent(client, evt);
                 } catch (std::exception &e) {
                 }
@@ -71,6 +71,8 @@ protected:
                     std::cout << "[" << client->GetID() << "]: LIST" << std::endl;
                     Event evt = {ACTION::LIST, ""};
                     for (auto instance: _server->getInstances()) {
+                        if (instance->getNbPlayers() == 1)
+                            continue;
                         evt.body = instance->getName() + " " + instance->getGameName() + " " +
                                    std::to_string(instance->getNbPlayers() - 1) + " " +
                                    std::to_string(instance->getMaxPlayers()) + " " + std::to_string(instance->getPort()) +
@@ -96,11 +98,11 @@ protected:
                     }
                     Event evt;
                     evt.ACTION_NAME = ACTION::JOINED;
-                    int playerId = _server->getPlayerIdToGive();
-                    evt.body = std::to_string(_server->getPlayerIdToGive()) + " " + port;
+                    int playerId = instance->getPlayerIdToGive();
+                    evt.body = std::to_string(instance->getPlayerIdToGive()) + " " + port;
                     std::string playerEntityId = "p" + std::to_string(playerId);
                     instance->getUDPServer()->addPlayerEntity(playerId, playerEntityId);
-                    _server->setPlayerIdToGive(_server->getPlayerIdToGive() + 1);
+                    instance->setPlayerIdToGive(instance->getPlayerIdToGive() + 1);
                     SendEvent(client, evt);
                 } catch (std::exception &e) {
                 }
@@ -140,6 +142,26 @@ protected:
                 break;
             case ACTION::QUIT: {
                 std::cout << "[" << client->GetID() << "]: QUIT" << std::endl;
+                std::cout << "quit event" << std::endl;
+                EventHandler handler;
+                handler.decodeMessage(msg.body);
+                std::stringstream ss(handler.getBody());
+                std::string host;
+                std::string portString;
+                ss >> host;
+                ss >> portString;
+                int port = std::stoi(portString);
+                Instance *instance = _server->getInstanceByPort(port);
+                if (instance == nullptr) {
+                    std::cerr << "[ERROR]: Bad instance to quit" << std::endl;
+                    return;
+                }
+                int nbPlayers = instance->getNbPlayers();
+                instance->getUDPServer()->setNbPlayers(nbPlayers - 1);
+                if (instance->getNbPlayers() == 1) {
+                    std::cout << "delete instance" << std::endl;
+                    _server->deleteInstance(instance->getId());
+                }
             }
                 break;
             case ACTION::PING: {

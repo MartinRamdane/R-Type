@@ -27,6 +27,7 @@ class DisplaySDL : public IDisplay {
     std::shared_ptr<IEntity> createEntity(IEntity::EntityInfos entityInfos);
     std::shared_ptr<IEntity> createSprite(IEntity::EntityInfos entityInfos);
     std::shared_ptr<IEntity> createText(IEntity::EntityInfos entityInfos);
+    void closeWindow() {  };
 
    private:
     SDL_Window* _window;

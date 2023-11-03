@@ -39,7 +39,7 @@ public:
 
     ~Game();
 
-    void run(std::shared_ptr<sf::RenderWindow> window);
+    void run(std::shared_ptr <sf::RenderWindow> window);
 
     void update(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
 
@@ -74,18 +74,28 @@ public:
     void updateSprite(Event evt);
 
     void updateText(Event evt);
+
     void updateSound(Event evt);
 
     void joinGame(Event evt);
 
     void loopEventQueue();
+
     int getEntitiesNumber();
+
     void checkEntities(int nb);
-    void animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy);
+
+    void animate(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
 
     InstanceMenu *getInstanceMenu() { return _instanceMenu.get(); };
 
     std::shared_ptr <TCPClientImpl> getClient() { return _client; };
+
+    void sendQuitEvent();
+
+    void setUDPClientConnecting(bool state) { isUDPClientConnecting = state; };
+
+    void clearUDPClient();
 
 private:
     sf::View _view;
@@ -97,6 +107,7 @@ private:
     ThreadPool _threadPool;
     bool isTCPClientConnected = false;
     bool isUDPClientConnected = false;
+    bool isUDPClientConnecting = false;
     bool closed;
     std::string _gameTitle;
     int _width;
@@ -110,5 +121,5 @@ private:
     std::mutex entityMutex;
     std::vector<int> _entitiesToRemove;
     Parser parseRef;
-    std::unique_ptr<InstanceMenu> _instanceMenu;
+    std::unique_ptr <InstanceMenu> _instanceMenu;
 };

@@ -6,6 +6,7 @@
 */
 
 #pragma once
+
 #include <iostream>
 #include <thread>
 #include "../global/EventHandler.hpp"
@@ -20,26 +21,35 @@ struct InstanceInfos {
 };
 
 class ServerClass {
-   public:
+public:
     ServerClass();
+
     ~ServerClass();
+
     InstanceInfos createInstance(std::string gameName);
+
+    void deleteInstance(int instanceId);
+
     int getPortInstance(int instanceId);
+
     int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers(); }
-    void interpretEvent(Event& event);
+
+    void interpretEvent(Event &event);
+
     int getInstancesNb() { return _instances.size(); }
-    int getPlayerIdToGive() { return _playerIdToGive; }
-    void setPlayerIdToGive(int id) { _playerIdToGive = id; }
-    std::vector<Instance*> getInstances() { return _instances; }
-    Instance* getInstance(int id) { return _instances[id]; }
-    Instance* getInstanceByPort(int port);
+
+    std::vector<Instance *> getInstances() { return _instances; }
+
+    Instance *getInstance(int id) { return _instances[id]; }
+
+    Instance *getInstanceByPort(int port);
+
     void loop();
 
-   protected:
-   private:
+protected:
+private:
     boost::asio::io_service _io_service;
     ThreadPool _threadPool;
-    MyServer* _server;
-    std::vector<Instance*> _instances;
-    int _playerIdToGive;
+    MyServer *_server;
+    std::vector<Instance *> _instances;
 };

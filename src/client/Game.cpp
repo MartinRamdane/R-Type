@@ -49,7 +49,12 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
         }
-        if (isTCPClientConnected && !isUDPClientConnected) {
+        if (!window->isOpen() && !isUDPClientConnecting) {
+            window->create(sf::VideoMode(1920, 1080), "Menu");
+            window->setFramerateLimit(60);
+        }
+        if (isTCPClientConnected && !isUDPClientConnected && !isUDPClientConnecting) {
+            std::cout << "instance menu" << std::endl;
             if (!sendListEvent) {
                 Event evt = {ACTION::LIST, ""};
                 _client->SendEvent(evt);
@@ -58,6 +63,8 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             sendListEvent = true;
         }
         if (isUDPClientConnected) {
+            isUDPClientConnecting = false;
+            sendListEvent = false;
             _display->createWindow(_gameTitle, _width, _height);
             Event evt;
             evt.ACTION_NAME = ACTION::READY;
@@ -127,8 +134,9 @@ void Game::handleEvent() {
     for (auto event : events) {
         Event evt;
         std::string body = "";
-        if (event == "close")
-            _client->Disconnect();
+        if (event == "escape" || event == "close") {
+            sendQuitEvent();
+        }
         if (event == "r")
             evt.ACTION_NAME = ACTION::FLIP;
         if (event == "left")
@@ -159,7 +167,7 @@ void Game::handleEvent() {
 }
 
 void Game::LoopUDPMessages() {
-    while (1) {
+    while (isUDPClientConnected) {
         if (_udpClient->Incoming().empty() == false) {
             auto msg = _udpClient->Incoming().pop_front();
             _udpClient->HandleMessage(msg);
@@ -168,7 +176,7 @@ void Game::LoopUDPMessages() {
 }
 
 void Game::loopEventQueue() {
-    while (1) {
+    while (isUDPClientConnected) {
         if (_udpClient->getEventQueue().empty() == false) {
             auto evt = _udpClient->getEventQueue().pop_front();
             handleReceivedEvent(evt);
@@ -236,7 +244,10 @@ void Game::flipEntity(Event evt) {
     ss >> tpm;
     ss >> id;
     int entityId = std::stoi(id);
-    _entities[entityId]->flip();
+    if (findEntity(entityId))
+        _entities.at(entityId)->flip();
+    else
+        return;
 }
 
 void Game::updateSprite(Event evt) {
@@ -333,4 +344,24 @@ void Game::checkEntities(int nb) {
     if (currentNb < nb) {
         _udpClient->sendEvent({ACTION::CHECK, ""});
     }
+}
+
+void Game::sendQuitEvent() {
+    if (isUDPClientConnected) {
+        std::cout << "send quit event" << std::endl;
+        std::string targetPort = std::to_string(_udpClient.get()->getPort());
+        std::string targetHost = _udpClient.get()->getHost();
+        std::string body = targetHost + " " + targetPort;
+        std::cout << "event body: " << body << std::endl;
+        Event evt = {ACTION::QUIT, body};
+        isUDPClientConnected = false;
+        _display.get()->closeWindow();
+        _client.get()->SendEvent(evt);
+    }
+}
+
+void Game::clearUDPClient() {
+    _udpClient.reset();
+    isUDPClientConnected = false;
+    isUDPClientConnecting = false;
 }

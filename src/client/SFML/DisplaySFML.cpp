@@ -33,6 +33,8 @@ void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
 }
 
 void DisplaySFML::handleEvent() {
+    if (_window.hasFocus() == false)
+        return;
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
             _events.push_back("close");
@@ -42,6 +44,8 @@ void DisplaySFML::handleEvent() {
         if (_event.type == (sf::Event::KeyPressed)) {
             if (_event.key.code == sf::Keyboard::R)
                 _events.push_back("r");
+            if (_event.key.code == sf::Keyboard::Escape)
+                _events.push_back("escape");
         }
         if (_event.type == (sf::Event::KeyPressed)) {
             if (_event.key.code == sf::Keyboard::S)

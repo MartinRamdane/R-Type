@@ -153,9 +153,9 @@ private:
 
     boost::asio::ip::udp::socket socket_;
     boost::asio::ip::udp::endpoint remote_endpoint_;
-    std::vector<Client> clients_;
-    std::thread ping_thread_;
+    std::vector<Client> clientsSec;
     std::vector<Client> _clients;
+    std::thread ping_thread_;
     int _nbPlayers;
     Mutex mutex_;
     Instance *_instanceRef;

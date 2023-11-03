@@ -35,7 +35,7 @@ int main(int ac, char **av) {
     }
     game->setLib(param);
     Menu *menu = new Menu(game);
-    std::shared_ptr<sf::RenderWindow> window = menu->mainloop();
+    std::shared_ptr <sf::RenderWindow> window = menu->mainloop();
     delete menu;
     game->run(window);
     return 0;

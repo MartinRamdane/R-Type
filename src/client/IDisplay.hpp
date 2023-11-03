@@ -30,6 +30,8 @@ public:
 
     virtual bool windowIsOpen() const = 0;
 
+    virtual void closeWindow() = 0;
+
     virtual std::shared_ptr <IEntity> createEntity(IEntity::EntityInfos entityInfos) = 0;
 
     virtual std::vector <std::string> getEvents() = 0;

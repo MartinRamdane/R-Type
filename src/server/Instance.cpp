@@ -9,6 +9,8 @@
 
 Instance::Instance(int id, std::string gameName)
         : _id(id), _port((int) (4210 + id)), _gameName(gameName), _threadPool(3) {
+    _isRunning = true;
+    _playerIdToGive = 1;
     std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
     _name = "toChange";
     nlohmann::json jsonFile = _jsonParser.readFile(gameConfigFilePathName);
@@ -26,16 +28,29 @@ Instance::Instance(int id, std::string gameName)
     _threadPool.enqueue([this]() { EventLoop(); });
 }
 
-Instance::~Instance() {}
+Instance::~Instance() {
+    _isRunning = false;
+    std::cout << "running false" << std::endl;
+    _io_service.stop();
+    std::cout << "io_service stopped" << std::endl;
+    // std::cout << "threadpool destroyed" << std::endl;
+    delete _udpServer;
+    std::cout << "udpserver destroyed" << std::endl;
+    delete _core;
+    std::cout << "core destroyed" << std::endl;
+    std::cout << "Instance destroyed" << std::endl;
+
+}
 
 void Instance::MessagesLoop() {
-    while (1) {
-        _udpServer->handleMessages(-1, true);
+    while (_isRunning) {
+        _udpServer->handleMessages(-1, false);
     }
+    std::cout << "MessagesLoop stopped" << std::endl;
 }
 
 void Instance::EventLoop() {
-    while (1) {
+    while (_isRunning) {
         int nbPlayers = _udpServer->getNbPlayers();
         if (nbPlayers == 0) {
             continue;    // TODO: destroy the instance
@@ -81,6 +96,7 @@ void Instance::EventLoop() {
             }
         }
     }
+    std::cout << "EventLoop stopped" << std::endl;
 }
 
 void Instance::checkEntitiesInClients() {
