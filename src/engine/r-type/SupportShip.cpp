@@ -46,12 +46,15 @@ void SupportShip::update() {
         if (_relatedPlayerId == -1)
             return;
     }
-
     if (_x != _oldX || _y != _oldY) {
         setOldPosition(_x, _y);
     }
 
     auto player = RType::instance->getPlayer(_relatedPlayerId);
+    if (player == nullptr) {
+        //destroy support
+        return;
+    }
     auto pos = player->getPosition();
     int x = std::get<0>(pos);
     int y = std::get<1>(pos);

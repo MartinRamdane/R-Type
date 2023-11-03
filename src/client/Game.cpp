@@ -134,7 +134,7 @@ void Game::handleEvent() {
     for (auto event : events) {
         Event evt;
         std::string body = "";
-        if (event == "escape") {
+        if (event == "escape" || event == "close") {
             sendQuitEvent();
         }
         if (event == "r")

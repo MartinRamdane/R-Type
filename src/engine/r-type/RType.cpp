@@ -362,7 +362,15 @@ void RType::eraseDeadEntity() {
     }
     for (auto it = _players.begin(); it != _players.end(); it++) {
         if ((*it)->isDead()) {
-            _players.erase(it);
+            if ((*it)->getHasSupport()) {
+                for (auto supportShip : _supportShips) {
+                    if (supportShip->getRelatedPlayerId() == (*it)->getId()) {
+                        supportShip->kill();
+                        break;
+                    }
+                }
+                _players.erase(it);
+            }
             break;
         }
     }
