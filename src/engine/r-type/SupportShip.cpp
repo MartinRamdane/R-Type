@@ -113,12 +113,12 @@ void SupportShip::shoot() {
     EntityInfo info;
     info.x = std::get<0>(pos) + (_direction == RIGHT ? 30 : -30);
     info.y = std::get<1>(pos) - 2;
-    info.name = getShootAsset();
+    info.name = getProjectileAsset();
     info.scaleX = 0.25;
     info.scaleY = 0.25;
     info.speed = getProjectileSpeed();
     info.damage = getDamage();
-    info.spriteConfigJsonObjectName = getShootAsset();
+    info.spriteConfigJsonObjectName = getProjectileAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.direction = _direction;
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,

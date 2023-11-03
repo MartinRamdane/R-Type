@@ -13,6 +13,7 @@
 #include <cstring>
 #include <memory>
 #include "DataCompress.hpp"
+#include <boost/crc.hpp>
 
 enum class ACTION : uint8_t
 {
@@ -56,6 +57,15 @@ struct NetworkEvent
   int original_size;
   int compressed_size;
   char *body;
+  uint32_t bodyCrc;
+};
+
+struct NetworkChecksum
+{
+  ACTION ACTION_NAME;
+  int original_size;
+  int compressed_size;
+  uint32_t bodyCrc;
 };
 
 class EventHandler
@@ -69,7 +79,19 @@ public:
   void addEvent(ACTION ACTION_NAME, std::string body);
   const std::string getBody() const { return _body; };
   const Event getEvent() const { return Event{_ACTION_NAME, _body}; };
-
+  uint32_t calculateCRC(const NetworkChecksum& event) {
+    boost::crc_32_type result;
+    result.process_bytes(&event, sizeof(NetworkChecksum));
+    return result.checksum();
+  }
+  bool verifyCRC(const NetworkChecksum& event, uint32_t expectedCRC) {
+    return calculateCRC(event) == expectedCRC;
+  }
+  uint32_t calculateCRCForBody(const char *body, int size) {
+    boost::crc_32_type result;
+    result.process_bytes(body, size);
+    return result.checksum();
+  }
 protected:
 private:
   ACTION _ACTION_NAME;

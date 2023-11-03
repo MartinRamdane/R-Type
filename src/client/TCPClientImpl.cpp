@@ -12,65 +12,77 @@
 void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
     switch (msg.header.id) {
         case ACTION::CONNECT: {
-            EventHandler evt;
-            evt.decodeMessage(msg.body);
+            try {
+                EventHandler evt;
+                evt.decodeMessage(msg.body);
+            } catch (std::exception &e) {
+            }
             break;
         }
         case ACTION::CREATE: {
-            EventHandler evt;
-            evt.decodeMessage(msg.body);
-            std::stringstream ss(evt.getBody());
-            std::string playerId;
-            std::string getPort;
-            ss >> playerId;
-            ss >> getPort;
-            ss >> getPort;
-            // add get windows
-            int port = std::stoi(getPort);
-            std::string serverToJoinInfos = std::to_string(port);
-            Event evtToSend = {ACTION::JOIN, serverToJoinInfos};
-            _game->getClient().get()->SendEvent(evtToSend);
-            // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
+            try {
+                EventHandler evt;
+                evt.decodeMessage(msg.body);
+                std::stringstream ss(evt.getBody());
+                std::string playerId;
+                std::string getPort;
+                ss >> playerId;
+                ss >> getPort;
+                ss >> getPort;
+                // add get windows
+                int port = std::stoi(getPort);
+                std::string serverToJoinInfos = std::to_string(port);
+                Event evtToSend = {ACTION::JOIN, serverToJoinInfos};
+                _game->getClient().get()->SendEvent(evtToSend);
+                // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
+            } catch (std::exception &e) {
+            }
             break;
         }
         case ACTION::LIST: {
-            EventHandler evt;
-            evt.decodeMessage(msg.body);
-            std::stringstream ss(evt.getBody());
-            std::string instanceName;
-            std::string instanceGameName;
-            std::string instanceNbPlayers;
-            std::string instanceMaxPlayers;
-            std::string instancePort;
-            std::string instanceId;
-            ss >> instanceName;
-            ss >> instanceGameName;
-            ss >> instanceNbPlayers;
-            ss >> instanceMaxPlayers;
-            ss >> instancePort;
-            ss >> instanceId;
-            int nbPlayers = std::stoi(instanceNbPlayers);
-            int maxPlayers = std::stoi(instanceMaxPlayers);
-            int port = std::stoi(instancePort);
-            int id = std::stoi(instanceId);
-            InstanceType instance = {instanceName, instanceGameName, nbPlayers,
-                                     maxPlayers, port, id};
-            _game->getInstanceMenu()->addInstanceButton(instance, 0, 0);
+            try {
+                EventHandler evt;
+                evt.decodeMessage(msg.body);
+                std::stringstream ss(evt.getBody());
+                std::string instanceName;
+                std::string instanceGameName;
+                std::string instanceNbPlayers;
+                std::string instanceMaxPlayers;
+                std::string instancePort;
+                std::string instanceId;
+                ss >> instanceName;
+                ss >> instanceGameName;
+                ss >> instanceNbPlayers;
+                ss >> instanceMaxPlayers;
+                ss >> instancePort;
+                ss >> instanceId;
+                int nbPlayers = std::stoi(instanceNbPlayers);
+                int maxPlayers = std::stoi(instanceMaxPlayers);
+                int port = std::stoi(instancePort);
+                int id = std::stoi(instanceId);
+                InstanceType instance = {instanceName, instanceGameName, nbPlayers,
+                                         maxPlayers, port, id};
+                _game->getInstanceMenu()->addInstanceButton(instance, 0, 0);
+            } catch (std::exception &e) {
+            }
             break;
         }
         case ACTION::JOIN: {
             break;
         }
         case ACTION::JOINED: {
-            EventHandler evt;
-            evt.decodeMessage(msg.body);
-            std::stringstream ss(evt.getBody());
-            std::string playerId;
-            std::string getPort;
-            ss >> playerId;
-            ss >> getPort;
-            _game->setPlayerId(std::stoi(playerId));
-            _game->connectToUdpServer(_game->getHost(), std::stoi(getPort));
+            try {
+                EventHandler evt;
+                evt.decodeMessage(msg.body);
+                std::stringstream ss(evt.getBody());
+                std::string playerId;
+                std::string getPort;
+                ss >> playerId;
+                ss >> getPort;
+                _game->setPlayerId(std::stoi(playerId));
+                _game->connectToUdpServer(_game->getHost(), std::stoi(getPort));
+            } catch (std::exception &e) {
+            }
             break;
         }
         case ACTION::READY: {

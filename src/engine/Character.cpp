@@ -56,13 +56,13 @@ void Character::shoot() {
     EntityInfo info;
     info.x = std::get<0>(pos) + (_direction == RIGHT ? 30 : -30);
     info.y = std::get<1>(pos) + 2;
-    info.name = getShootAsset();
+    info.name = getProjectileAsset();
     info.scaleX = 0.25;
     info.scaleY = 0.25;
     info.speed = getProjectileSpeed();
     info.damage = getDamage();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-    info.spriteConfigJsonObjectName = getShootAsset();
+    info.spriteConfigJsonObjectName = getProjectileAsset();
     info.direction = _direction;
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::PLAYER);
@@ -75,7 +75,7 @@ void Character::update() {
 }
 
 void Character::setShootAsset(std::string shootAsset) {
-    _shootAsset = shootAsset;
+    _projectileAsset = shootAsset;
 }
 
 void Character::setMovementType(std::string movementType) {
@@ -86,8 +86,8 @@ std::string Character::getMovementType() const {
     return _movementType;
 }
 
-std::string Character::getShootAsset() const {
-    return _shootAsset;
+std::string Character::getProjectileAsset() const {
+    return _projectileAsset;
 }
 
 void Character::setProjectileSpeed(float projectileSpeed) {

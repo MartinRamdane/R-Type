@@ -87,14 +87,14 @@ void Enemy::shoot() {
     EntityInfo info;
     info.x = std::get<0>(pos) - 33;
     info.y = std::get<1>(pos) - 2;
-    info.name = getShootAsset();
+    info.name = getProjectileAsset();
     info.scaleX = 0.25;
     info.scaleY = 0.25;
     info.speed = getProjectileSpeed();
     info.damage = getDamage();
-    info.spriteConfigJsonObjectName = getShootAsset();
+    info.spriteConfigJsonObjectName = getProjectileAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-    if (getShootAsset() == "Bomb") {
+    if (getProjectileAsset() == "Bomb") {
         info.scaleX = 0.75;
         info.scaleY = 0.75;
         info.x = std::get<0>(pos) + 10;

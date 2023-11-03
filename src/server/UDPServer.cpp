@@ -41,17 +41,21 @@ void UDPServer::startReceive() {
 
 void UDPServer::processMessage(UDPMessage &msg) {
     mutex_.lock();
-    Event evt;
-    EventHandler eventHandler;
-    checkConnection(msg);
-    evt = eventHandler.decodeMessage(msg.data);
-    auto client = std::find_if(clientsSec.begin(), clientsSec.end(), [this](const Client &c) {
-        return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port();
-    });
-    if (evt.ACTION_NAME == ACTION::PONG && client != clientsSec.end()) {
-        client->timestamp = std::chrono::system_clock::now();
-    } else {
-        handleEvents(evt, remote_endpoint_, client);
+    try {
+        Event evt;
+        EventHandler eventHandler;
+        checkConnection(msg);
+        evt = eventHandler.decodeMessage(msg.data);
+        auto client = std::find_if(clientsSec.begin(), clientsSec.end(), [this](const Client &c) {
+            return c.client.address() == remote_endpoint_.address() && c.client.port() == remote_endpoint_.port();
+        });
+        if (evt.ACTION_NAME == ACTION::PONG && client != clientsSec.end()) {
+            client->timestamp = std::chrono::system_clock::now();
+        } else {
+            handleEvents(evt, remote_endpoint_, client);
+        }
+    } catch (std::exception &e) {
+        std::cerr << "[ERROR] processing message: " << e.what() << std::endl;
     }
     mutex_.unlock();
 }

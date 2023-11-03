@@ -28,7 +28,7 @@ class Character : public AEntity {
     void setShootAsset(std::string shootAsset);
     void setMovementType(std::string movementType);
     std::string getMovementType() const;
-    std::string getShootAsset() const;
+    std::string getProjectileAsset() const;
     void setProjectileSpeed(float projectileSpeed);
     float getProjectileSpeed() const;
     void resetLife();
@@ -43,7 +43,7 @@ class Character : public AEntity {
     std::chrono::duration<double> _targetFrameDuration;
     std::chrono::high_resolution_clock::time_point _lastShootTime;
     std::chrono::high_resolution_clock::time_point _currentTime;
-    std::string _shootAsset = "PlayerProjectile";
+    std::string _projectileAsset = "PlayerProjectile";
     std::string _movementType;
     int _lifeValue;
     int _fireRate;
