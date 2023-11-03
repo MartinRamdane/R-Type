@@ -82,6 +82,16 @@ public:
     result.process_bytes(&event, sizeof(NetworkChecksum));
     return result.checksum();
   }
+  uint32_t calculateCRCForInt(int value) {
+    boost::crc_32_type result;
+    result.process_bytes(&value, sizeof(int));
+    return result.checksum();
+  }
+  uint32_t calculateCRCForAction(ACTION action) {
+    boost::crc_32_type result;
+    result.process_bytes(&action, sizeof(ACTION));
+    return result.checksum();
+  }
   bool verifyCRC(const NetworkChecksum& event, uint32_t expectedCRC) {
     return calculateCRC(event) == expectedCRC;
   }

@@ -14,6 +14,12 @@ int main() {
         }
     }*/
     EventHandler handler;
+    uint32_t compressedCrc = handler.calculateCRCForInt(6);
+    uint32_t originalCrc = handler.calculateCRCForInt(5);
+    uint32_t actionCrc = handler.calculateCRCForAction(ACTION::CREATE);
+    std::cout << "compressedCrc : " << compressedCrc << std::endl;
+    std::cout << "originalCrc : " << originalCrc << std::endl;
+    std::cout << "actionCrc : " << actionCrc << std::endl;
     handler.addEvent(ACTION::CREATE, "test");
     std::vector<uint8_t> data = handler.encodeMessage();
     Event evt = handler.decodeMessage(data);
