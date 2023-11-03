@@ -33,8 +33,6 @@ void DisplaySFML::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
 }
 
 void DisplaySFML::handleEvent() {
-    if (_window.hasFocus() == false)
-        return;
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed) {
             _events.push_back("close");
