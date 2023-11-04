@@ -55,6 +55,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _bombermanGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _bombGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _circularRobotGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _wallGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
@@ -66,6 +67,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_supportProjectilesGroups, _bombGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _circularRobotGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _wallGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
@@ -385,8 +387,8 @@ void RType::eraseDeadEntity() {
                         break;
                     }
                 }
-                _players.erase(it);
             }
+            _players.erase(it);
             break;
         }
     }

@@ -66,7 +66,7 @@ void Character::shoot() {
     info.direction = _direction;
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::PLAYER);
-    
+
     RType::instance->createSound("shootSpaceship.ogg");
 }
 
@@ -118,15 +118,17 @@ void Character::takeDamage(int damage) {
 }
 
 void Character::hurtEntities(IEntity& self, IEntity& you) {
+    if (self.isDead() || you.isDead())
+        return;
     self.takeDamage(you.getDamage());
     you.takeDamage(self.getDamage());
 
-    if (self.getLife() <= 0) {
+    if (self.isDead()) {
         auto pos = self.getPosition();
         RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
         RType::instance->createSound("explosion.ogg");
     }
-    if (you.getLife() <= 0) {
+    if (you.isDead()) {
         auto pos = you.getPosition();
         RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
         RType::instance->createSound("explosion.ogg");
@@ -134,8 +136,11 @@ void Character::hurtEntities(IEntity& self, IEntity& you) {
 }
 
 void Character::hurtFirstEntity(IEntity& self, IEntity& you) {
+    if (self.isDead() || you.isDead())
+        return;
+
     self.takeDamage(you.getDamage());
-    if (self.getLife() <= 0) {
+    if (self.isDead()) {
         auto pos = self.getPosition();
         RType::instance->createExplosion(std::get<0>(pos), std::get<1>(pos));
     }
