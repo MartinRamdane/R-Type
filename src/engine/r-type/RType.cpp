@@ -38,7 +38,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _bombermanGroups = std::make_shared<EntityType<IEntity>>(10);
     _bombGroups = std::make_shared<EntityType<IEntity>>(4);
     _circularRobotGroups = std::make_shared<EntityType<IEntity>>(15);
-    _wallGroups = std::make_shared<EntityType<IEntity>>(36);
+    _wallGroups = std::make_shared<EntityType<IEntity>>(30);
 
     // initializeLevel
     _levelInitializer = std::make_unique<LevelInitializer>(this);
@@ -533,7 +533,7 @@ void RType::createBackground(IEntity::EntityInfo info) {
 }
 
 void RType::createWall(IEntity::EntityInfo info) {
-    std::shared_ptr<AEntity> wall = std::make_shared<AEntity>(info);
+    std::shared_ptr<AEntity> wall = std::make_shared<Enemy>(info);
     _enemies.push_back(wall);
     _wallGroups->insert(wall);
 }
