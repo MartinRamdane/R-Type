@@ -38,6 +38,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _bombermanGroups = std::make_shared<EntityType<IEntity>>(10);
     _bombGroups = std::make_shared<EntityType<IEntity>>(4);
     _circularRobotGroups = std::make_shared<EntityType<IEntity>>(15);
+    _wallGroups = std::make_shared<EntityType<IEntity>>(36);
 
     // initializeLevel
     _levelInitializer = std::make_unique<LevelInitializer>(this);
@@ -84,6 +85,8 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_bombermanGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_bombGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_circularRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
+
+    _engine->setRelation(_playersGroups, _wallGroups, Character::hurtFirstEntity);
 }
 
 RType::~RType() {
@@ -127,6 +130,9 @@ void RType::createAssetList() {
     _assets["Bomberman"] = parser.get<std::string>(val, "Game.Assets.Images.Bomberman");
     _assets["Bomb"] = parser.get<std::string>(val, "Game.Assets.Images.Bomb");
     _assets["CircularRobot"] = parser.get<std::string>(val, "Game.Assets.Images.CircularRobot");
+    _assets["Wall1"] = parser.get<std::string>(val, "Game.Assets.Images.Wall1");
+    _assets["Wall2"] = parser.get<std::string>(val, "Game.Assets.Images.Wall2");
+    _assets["Wall3"] = parser.get<std::string>(val, "Game.Assets.Images.Wall3");
 }
 
 int RType::getId(Event event) {
@@ -248,7 +254,7 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 break;
         }
     }
-    if (_enemies.size() == 0 && _currentLevel != MAX_LEVEL) {
+    if (_enemies.size() == 0 && _currentLevel != _maxLevel) {
         _lastId = 0;
         _currentLevel++;
         deleteAllEntities();
@@ -469,6 +475,7 @@ void RType::deleteAllEntities() {
     _bossGroups->clear();
     _bombermanGroups->clear();
     _bombGroups->clear();
+    _wallGroups->clear();
     _musics.clear();
 }
 
@@ -525,6 +532,12 @@ void RType::createBackground(IEntity::EntityInfo info) {
     _staticObjectsGroups->insert(background);
 }
 
+void RType::createWall(IEntity::EntityInfo info) {
+    std::shared_ptr<AEntity> wall = std::make_shared<AEntity>(info);
+    _enemies.push_back(wall);
+    _wallGroups->insert(wall);
+}
+
 void RType::clearLevel() {
     for (auto player : _players) {
         player->setId(_lastId++);
@@ -544,6 +557,8 @@ void RType::clearLevel() {
     _bossGroups->clear();
     _bombermanGroups->clear();
     _wormGroups->clear();
+    _bombGroups->clear();
+    _wallGroups->clear();
     _enemies.clear();
     _projectiles.clear();
     _staticObjects.clear();

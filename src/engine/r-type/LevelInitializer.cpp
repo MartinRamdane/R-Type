@@ -32,6 +32,8 @@ void LevelInitializer::loadLevel(int currentLevel) {
                 createDropper(value["Count"], value["Positions"]);
             } else if (config["Type"] == "Boss") {
                 createBoss(value["Count"], value["Positions"]);
+            } else if (config["Type"] == "Wall") {
+                createWall(value["Count"], value["Positions"]);
             }
         } else if (value.contains("File")) {
             _game->createMusic(value["File"]);
@@ -56,6 +58,17 @@ void LevelInitializer::loadConfig(nlohmann::json spriteConfig) {
         _info.scaleX = spriteConfig["ScaleX"];
         _info.scaleY = spriteConfig["ScaleY"];
     }
+}
+
+void LevelInitializer::createWall(int cout, nlohmann::json positions) {
+    for (int i = 0; i < cout; i++) {
+        _info.id = _game->getCurrentId();
+        _info.x = positions[i]["X"];
+        _info.y = positions[i]["Y"];
+        _game->createWall(_info);
+        _game->setCurrentId(_info.id + 1);
+    }
+    _info = {};
 }
 
 void LevelInitializer::createBoss(int cout, nlohmann::json positions) {

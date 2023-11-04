@@ -23,6 +23,7 @@ class LevelInitializer {
     void createBoss(int cout, nlohmann::json positions);
     void createBackground();
     void createDropper(int cout, nlohmann::json positions);
+    void createWall(int cout, nlohmann::json positions);
 
    protected:
    private:

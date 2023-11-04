@@ -1,0 +1,11 @@
+{
+    "Type": "Wall",
+    "Name": "Wall2",
+    "MovementType": "Linear",
+    "ProjectileType": "Null",
+    "FireRate": 0,
+    "ProjectileSpeed": 0,
+    "Speed": 1,
+    "Damage": 1000,
+    "Life": 10000
+}

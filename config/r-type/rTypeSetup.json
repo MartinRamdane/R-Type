@@ -24,7 +24,10 @@
                 "Boss1Projectile": "Boss1Projectile.png",
                 "Bomberman": "bomberman.png",
                 "Bomb": "bomb.png",
-                "CircularRobot": "CircularRobot.png"
+                "CircularRobot": "CircularRobot.png",
+                "Wall1": "wall1.png",
+                "Wall2": "wall2.png",
+                "Wall3": "wall3.png"
             },
             "Sounds": {
                 "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",

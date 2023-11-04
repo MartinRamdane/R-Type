@@ -27,8 +27,6 @@ class SupportShip;
 class Dropper;
 class Boss;
 
-#define MAX_LEVEL 2
-
 class RType : public IGame {
    public:
     RType(std::shared_ptr<Engine>& engine);
@@ -55,6 +53,7 @@ class RType : public IGame {
     void createBackground(IEntity::EntityInfo info);
     void createDropper(IEntity::EntityInfo info);
     void createBoss(IEntity::EntityInfo info);
+    void createWall(IEntity::EntityInfo info);
     void clearLevel();
     std::shared_ptr<AEntity> createSupportShip(int x, int y);
     std::shared_ptr<AEntity> getPlayer(int id);
@@ -82,6 +81,7 @@ class RType : public IGame {
     std::shared_ptr<EntityType<IEntity>> _bossGroups;
     std::shared_ptr<EntityType<IEntity>> _bombGroups;
     std::shared_ptr<EntityType<IEntity>> _circularRobotGroups;
+    std::shared_ptr<EntityType<IEntity>> _wallGroups;
     std::vector<std::shared_ptr<Character>> _players;
     std::vector<std::shared_ptr<Projectile>> _projectiles;
     std::vector<std::shared_ptr<AEntity>> _staticObjects;
@@ -94,4 +94,5 @@ class RType : public IGame {
     int _currentLevel = 1;
     bool _reset = false;
     std::unique_ptr<LevelInitializer> _levelInitializer;
+    int _maxLevel = 1;
 };

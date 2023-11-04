@@ -4,20 +4,24 @@
       "Type": "Background"
     },
     "Entity2": {
-      "Config": "GreenRobot.rType.json",
-      "Count": 3,
+      "Config": "Wall1.rType.json",
+      "Count": 4,
       "Positions": [
         {
-          "X": 532,
-          "Y": 354
+          "X": 535,
+          "Y": 142
         },
         {
-          "X": 713,
-          "Y": 183
+          "X": 565,
+          "Y": 253
         },
         {
-          "X": 619,
-          "Y": 298
+          "X": 653,
+          "Y": 182
+        },
+        {
+          "X": 646,
+          "Y": 100
         }
       ]
     },
