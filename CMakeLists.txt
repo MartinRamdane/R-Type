@@ -86,7 +86,7 @@ set(CPACK_PACKAGE_VENDOR "Your company or name")
 set(CPACK_PACKAGE_VERSION "1.0.0")  # Set your project version
 set(CPACK_GENERATOR "ZIP")  # Use ZIP generator
 set(CPACK_SOURCE_GENERATOR "ZIP")
-set(CPACK_OUTPUT_FILE_PREFIX "${CMAKE_BINARY_DIR}/packages")
+set(CPACK_OUTPUT_FILE_PREFIX "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 # Include the binary output directory in the package
 set(CPACK_STRIP_FILES OFF)
@@ -97,7 +97,7 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "r-type")
 
 # Include files and directories you want in the package
 install(
-    DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/"
+    DIRECTORY "${CMAKE_SOURCE_DIR}/Release/"
     DESTINATION bin
     PATTERN ".pdb" EXCLUDE  # Exclude .pdb files on Windows
 )
@@ -122,6 +122,8 @@ install (
     DIRECTORY "${CMAKE_SOURCE_DIR}/config/"
     DESTINATION config
 )
+
+
 
 
 # Optionally, specify additional files or directories to include in the package
