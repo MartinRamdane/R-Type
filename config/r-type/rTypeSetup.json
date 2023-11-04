@@ -23,7 +23,8 @@
                 "Boss1": "boss1.png",
                 "Boss1Projectile": "Boss1Projectile.png",
                 "Bomberman": "bomberman.png",
-                "Bomb": "bomb.png"
+                "Bomb": "bomb.png",
+                "CircularRobot": "CircularRobot.png"
             },
             "Sounds": {
                 "Background": "./src/GameEngine/r-type/assets/sounds/background.mp3",

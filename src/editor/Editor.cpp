@@ -48,6 +48,10 @@ Editor::Editor() {
     _entitiesSelectMenu["dropper"]->setTexture("dropper.png");
     _entitiesJsonConfig["dropper"] = "Dropper.rType.json";
 
+    _entitiesSelectMenu["CircularRobot"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["CircularRobot"]->setTexture("CircularRobot.png");
+    _entitiesJsonConfig["CircularRobot"] = "CircularRobot.rType.json";
+
     _entitiesSelectMenu["boss1"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["boss1"]->setTexture("boss1.png");
     _entitiesSelectMenu["boss1"]->setSpriteScale(0.5, 0.5);
@@ -85,6 +89,7 @@ Editor::Editor() {
     _entitiesRect["worm"] = std::make_tuple(6, 0);
     _entitiesRect["dropper"] = std::make_tuple(12, 0);
     _entitiesRect["boss1"] = std::make_tuple(7, 0);
+    _entitiesRect["CircularRobot"] = std::make_tuple(8, 0);
 
     _entityQuantity["background"] = 0;
 
@@ -171,6 +176,8 @@ void Editor::keyEvent(sf::Event event) {
         } else if (event.key.code == sf::Keyboard::Num6) {
             _selectedEntity = "dropper";
         } else if (event.key.code == sf::Keyboard::Num7) {
+            _selectedEntity = "CircularRobot";
+        } else if (event.key.code == sf::Keyboard::Num8) {
             _selectedEntity = "boss1";
         } else if (event.key.code == sf::Keyboard::S) {
             std::cout << "Saving..." << std::endl;
@@ -213,7 +220,7 @@ void Editor::mouseEvent(sf::Event event) {
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]
                 ->setTexture(_selectedEntity + ".png");
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]
-                ->setPosition(worldPosition.x, worldPosition.y);
+                ->setPosition(worldPosition.x - 15, worldPosition.y - 15);
             _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]->setRect(
                 std::get<0>(_entitiesRect[_selectedEntity]),
                 std::get<1>(_entitiesRect[_selectedEntity]));

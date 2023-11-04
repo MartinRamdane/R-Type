@@ -49,6 +49,8 @@ void Boss::update() {
 
             move(horizontalDirection * horizontalDisplacement, verticalDirection);
         }
+    } else if (movementType == "Boss2" && RType::instance->getEnemies().size() == 1) {
+        
     }
     shoot();
 }

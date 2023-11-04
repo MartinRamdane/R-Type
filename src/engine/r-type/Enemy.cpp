@@ -112,8 +112,7 @@ void Enemy::update() {
 
         move(-1, verticalDirection);
     }
-    if (movementType != "Random")
-        shoot();
+    shoot();
 }
 
 void Enemy::shoot() {

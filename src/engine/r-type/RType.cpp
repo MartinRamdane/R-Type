@@ -37,6 +37,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _bossGroups = std::make_shared<EntityType<IEntity>>(94);
     _bombermanGroups = std::make_shared<EntityType<IEntity>>(10);
     _bombGroups = std::make_shared<EntityType<IEntity>>(4);
+    _circularRobotGroups = std::make_shared<EntityType<IEntity>>(15);
 
     // initializeLevel
     _levelInitializer = std::make_unique<LevelInitializer>(this);
@@ -52,6 +53,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _bossGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _bombermanGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _bombGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _circularRobotGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
@@ -62,6 +64,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_supportProjectilesGroups, _bombermanGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _bombGroups, Projectile::hurtEntity);
     _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _circularRobotGroups, Projectile::hurtEntity);
 
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
@@ -70,6 +73,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bombermanGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bombGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _circularRobotGroups, Character::hurtEntities);
 
     _engine->setRelation(_playersGroups, _supportShipGroups, Character::entitiesCollision);
     _engine->setRelation(_orangeRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
@@ -79,6 +83,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_greenRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_bombermanGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_bombGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_circularRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
 }
 
 RType::~RType() {
@@ -121,6 +126,7 @@ void RType::createAssetList() {
     _assets["Boss1Projectile"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1Projectile");
     _assets["Bomberman"] = parser.get<std::string>(val, "Game.Assets.Images.Bomberman");
     _assets["Bomb"] = parser.get<std::string>(val, "Game.Assets.Images.Bomb");
+    _assets["CircularRobot"] = parser.get<std::string>(val, "Game.Assets.Images.CircularRobot");
 }
 
 int RType::getId(Event event) {
@@ -454,6 +460,7 @@ void RType::deleteAllEntities() {
     _flyerGroups->clear();
     _orangeRobotGroups->clear();
     _projectilesGroups->clear();
+    _circularRobotGroups->clear();
     _enemyProjectilesGroups->clear();
     _supportProjectilesGroups->clear();
     _supportShipGroups->clear();
@@ -508,6 +515,8 @@ void RType::createEnemy(IEntity::EntityInfo info) {
         _wormGroups->insert(enemy);
     else if (info.name == "Bomberman")
         _bombermanGroups->insert(enemy);
+    else if (info.name == "CircularRobot")
+        _circularRobotGroups->insert(enemy);
 }
 
 void RType::createBackground(IEntity::EntityInfo info) {
@@ -529,6 +538,7 @@ void RType::clearLevel() {
     _enemyProjectilesGroups->clear();
     _staticObjectsGroups->clear();
     _supportProjectilesGroups->clear();
+    _circularRobotGroups->clear();
     _supportShipGroups->clear();
     _dropperGroups->clear();
     _bossGroups->clear();

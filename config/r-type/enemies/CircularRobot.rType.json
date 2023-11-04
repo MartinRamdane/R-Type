@@ -1,0 +1,11 @@
+{
+    "Type": "Enemy",
+    "Name": "CircularRobot",
+    "MovementType": "Linear",
+    "ProjectileType": "Null",
+    "FireRate": 0,
+    "ProjectileSpeed": 0,
+    "Speed": 1,
+    "Damage": 10,
+    "Life": 10
+}
