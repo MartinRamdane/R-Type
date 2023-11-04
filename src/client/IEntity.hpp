@@ -19,25 +19,25 @@ class IEntity {
         SOUND
     };
     typedef struct EntityInfos {
-        int id;
-        std::string path;
-        float scaleX;
-        float scaleY;
-        float x;
-        float y;
-        float nextX;
-        float nextY;
-        float speed;
-        int nbRect;
-        int initRect;
-        std::string objectType;
-        std::string eventForm;
-        std::string direction;
-        Type type;
-        std::string text;
-        int size;
-        std::string color;
-        bool hit;
+        int id = -1;
+        std::string path = "";
+        float scaleX = 0;
+        float scaleY = 0;
+        float x = 0;
+        float y = 0;
+        float nextX = 0;
+        float nextY = 0;
+        float speed = 0;
+        int nbRect = 0;
+        int initRect = 0;
+        std::string objectType = "";
+        std::string eventForm = "";
+        std::string direction = "";
+        Type type = SPRITE;
+        std::string text = "";
+        int size = 0;
+        std::string color = "";
+        bool hit = false;
     } EntityInfo;
     virtual ~IEntity() {}
     virtual void setTexture(const std::string& path) = 0;

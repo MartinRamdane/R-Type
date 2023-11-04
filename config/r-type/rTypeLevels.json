@@ -1,6 +1,9 @@
 {
   "Level-1": {
     "EntitySFML1": {
+      "Type": "Background"
+    },
+    "EntitySFML2": {
       "Config": "OrangeRobot.rType.json",
       "Count": 5,
       "Positions": [
@@ -25,9 +28,6 @@
           "Y": 80
         }
       ]
-    },
-    "EntitySFML2": {
-      "Type": "Background"
     }
     },
     "Music": {
