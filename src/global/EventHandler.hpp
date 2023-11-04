@@ -59,13 +59,6 @@ struct NetworkEvent
   char *body;
 };
 
-struct NetworkChecksum
-{
-  ACTION ACTION_NAME;
-  int original_size;
-  int compressed_size;
-};
-
 class EventHandler
 {
 public:
@@ -77,11 +70,6 @@ public:
   void addEvent(ACTION ACTION_NAME, std::string body);
   const std::string getBody() const { return _body; };
   const Event getEvent() const { return Event{_ACTION_NAME, _body}; };
-  uint32_t calculateCRC(const NetworkChecksum& event) {
-    boost::crc_32_type result;
-    result.process_bytes(&event, sizeof(NetworkChecksum));
-    return result.checksum();
-  }
   uint32_t calculateCRCForInt(int value) {
     boost::crc_32_type result;
     result.process_bytes(&value, sizeof(int));
@@ -91,9 +79,6 @@ public:
     boost::crc_32_type result;
     result.process_bytes(&action, sizeof(ACTION));
     return result.checksum();
-  }
-  bool verifyCRC(const NetworkChecksum& event, uint32_t expectedCRC) {
-    return calculateCRC(event) == expectedCRC;
   }
   uint32_t calculateCRCForBody(const char *body, int size) {
     boost::crc_32_type result;
