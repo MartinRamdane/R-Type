@@ -145,4 +145,5 @@ std::shared_ptr<sf::RenderWindow> Menu::mainloop() {
 
         _window->display();
     }
+    return _window;
 }

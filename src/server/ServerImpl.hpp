@@ -202,6 +202,8 @@ protected:
             case ACTION::SOUND: {
                 std::cout << "[" << client->GetID() << "]: SOUND" << std::endl;
             }
+            default:
+                break;
         }
     }
 }

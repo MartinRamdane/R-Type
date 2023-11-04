@@ -129,7 +129,7 @@ public:
     void addPlayerEntity(int id, std::string entity);
     std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
     void sendSpriteToReadyClient(std::vector<Client>::iterator client);
-    void handleUnknownEntities(std::vector<Client>::iterator client, Event event);
+    void handleUnknownEntities(std::vector<Client>::iterator client);
 private:
     /**
      * @brief Start receiving data from the client
