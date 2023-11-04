@@ -103,9 +103,9 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     }
     char *decompressed = decompressor.Decompress(netevt.body);
     decompressed[decompressor.getOriginalSize() - 1] = '\0';
-    if (strlen(decompressed) != decompressor.getOriginalSize() - 1)
+    if ((int)strlen(decompressed) != (int)decompressor.getOriginalSize() - 1)
     {
-      delete decompressed;
+      delete[] decompressed;
       delete[] netevt.body;
       throw std::runtime_error("[ERROR] Decoding failed");
     }
@@ -113,9 +113,9 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     event.ACTION_NAME = netevt.ACTION_NAME;
     event.body = std::string(decompressed);
     _body = std::string(decompressed);
-    if (event.body.size() != decompressor.getOriginalSize() - 1)
+    if ((int)event.body.size() != (int)decompressor.getOriginalSize() - 1)
     {
-      delete decompressed;
+      delete[] decompressed;
       delete[] netevt.body;
       throw std::runtime_error("Decompression failed. Wrong size.");
     }

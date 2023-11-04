@@ -264,5 +264,5 @@ void EntitySDL::draw(SDL_Renderer* renderer) {
 }
 
 void EntitySDL::setSound(const std::string& path) {
-    ;
+    std::cout << "path : " << path << std::endl;
 }
