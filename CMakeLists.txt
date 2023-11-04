@@ -76,3 +76,62 @@ endif ()
 if (NOT BUILD_EDITOR)
     message(STATUS "Editor build option is deactivated.")
 endif ()
+
+# Include CPack for packaging
+
+# Configure CPack settings
+set(CPACK_PACKAGE_NAME "r-type")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Your project description")
+set(CPACK_PACKAGE_VENDOR "Your company or name")
+set(CPACK_PACKAGE_VERSION "1.0.0")  # Set your project version
+set(CPACK_GENERATOR "ZIP")  # Use ZIP generator
+set(CPACK_SOURCE_GENERATOR "ZIP")
+set(CPACK_OUTPUT_FILE_PREFIX "${CMAKE_BINARY_DIR}/packages")
+
+# Include the binary output directory in the package
+set(CPACK_STRIP_FILES OFF)
+set(CPACK_SOURCE_STRIP_FILES OFF)
+
+# Specify the install prefix if needed
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "r-type")
+
+# Include files and directories you want in the package
+install(
+    DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/"
+    DESTINATION bin
+    PATTERN ".pdb" EXCLUDE  # Exclude .pdb files on Windows
+)
+
+# Include your assets directory
+install(
+    DIRECTORY "${CMAKE_SOURCE_DIR}/assets/"
+    DESTINATION assets
+)
+
+install(
+    DIRECTORY "${CMAKE_SOURCE_DIR}/font/"
+    DESTINATION font
+)
+
+install(
+    DIRECTORY "${CMAKE_SOURCE_DIR}/sounds/"
+    DESTINATION sounds
+)
+
+install (
+    DIRECTORY "${CMAKE_SOURCE_DIR}/config/"
+    DESTINATION config
+)
+
+
+# Optionally, specify additional files or directories to include in the package
+# install(
+#     FILES
+#     "file1.txt"
+#     "file2.txt"
+#     DESTINATION bin
+# )
+
+# Set the CPack component for the package
+set(CPACK_COMPONENTS_ALL bin assets)
+include(CPack)
