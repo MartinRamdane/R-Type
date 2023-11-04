@@ -117,6 +117,15 @@ Editor::Editor() {
     _texts["Y"]->setOrigin(sf::Vector2f(_texts["Y"]->getLocalBounds().width / 2,
                                         _texts["Y"]->getLocalBounds().height / 2));
 
+    _texts["help"] = std::make_unique<sf::Text>();
+    _texts["help"]->setFont(_font);
+    _texts["help"]->setString("Select entities with numbers 1 to 8");
+    _texts["help"]->setCharacterSize(15);
+    _texts["help"]->setFillColor(sf::Color::Red);
+    _texts["help"]->setPosition(sf::Vector2f(25, 460));
+    _texts["help"]->setOrigin(sf::Vector2f(_texts["Y"]->getLocalBounds().width / 2,
+                                        _texts["Y"]->getLocalBounds().height / 2));
+
     _texts["name"] = std::make_unique<sf::Text>();
     _texts["name"]->setFont(_font);
     _texts["name"]->setString("flyer");
@@ -130,7 +139,6 @@ Editor::Editor() {
         "assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png", "", _ressourceManager);
     _inputs["levelName"]->setSpritePosition(sf::Vector2f(330, 220));
     _inputs["levelName"]->setSpriteScale(sf::Vector2f(2, 2));
-    _inputs["levelName"]->setActive(true);
 }
 
 Editor::~Editor() {
@@ -140,28 +148,28 @@ Editor::~Editor() {
 void Editor::keyEvent(sf::Event event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Left) {
-            _mainView.move(-5, 0);
+            _mainView.move(-15, 0);
             _entities["background"]->setPosition(
-                _entities["background"]->getSprite().getPosition().x - 5,
+                _entities["background"]->getSprite().getPosition().x - 15,
                 _entities["background"]->getSprite().getPosition().y);
-            _x -= 5;
+            _x -= 15;
         } else if (event.key.code == sf::Keyboard::Right) {
-            _mainView.move(5, 0);
+            _mainView.move(15, 0);
             _entities["background"]->setPosition(
-                _entities["background"]->getSprite().getPosition().x + 5,
+                _entities["background"]->getSprite().getPosition().x + 15,
                 _entities["background"]->getSprite().getPosition().y);
-            _x += 5;
+            _x += 15;
         } else if (event.key.code == sf::Keyboard::Up) {
-            _mainView.move(0, -5);
+            _mainView.move(0, -15);
             _entities["background"]->setPosition(
                 _entities["background"]->getSprite().getPosition().x,
-                _entities["background"]->getSprite().getPosition().y - 5);
-            _y -= 5;
+                _entities["background"]->getSprite().getPosition().y - 15);
+            _y -= 15;
         } else if (event.key.code == sf::Keyboard::Down) {
-            _mainView.move(0, 5);
+            _mainView.move(0, 15);
             _entities["background"]->setPosition(
                 _entities["background"]->getSprite().getPosition().x,
-                _entities["background"]->getSprite().getPosition().y + 5);
+                _entities["background"]->getSprite().getPosition().y + 15);
             _y += 5;
         } else if (event.key.code == sf::Keyboard::Num1) {
             _selectedEntity = "flyer";
@@ -319,12 +327,25 @@ void Editor::getInput() {
     font.loadFromFile(std::string("font/arial.ttf"));
     sf::Text text;
     text.setFont(font);
-    text.setString("Level name:\nIt must be Level-1, Level-2, etc...");
+    text.setString(
+        "Level name:\nIt must be Level-1, Level-2, etc...\n\n\n\nOnce you have entered the "
+        "name,\npress Enter to save or Escape to cancel.");
     text.setCharacterSize(20);
     text.setFillColor(sf::Color::White);
-    text.setPosition(sf::Vector2f(_inputs["levelName"]->getSpritePosition().x + 100,
-                                  _inputs["levelName"]->getSpritePosition().y - 50));
+    text.setPosition(sf::Vector2f(_inputs["levelName"]->getSpritePosition().x + 120,
+                                  _inputs["levelName"]->getSpritePosition().y + 10));
     text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2));
+
+    sf::Text text2;
+    text2.setFont(font);
+    text2.setString("Invalid level name");
+    text2.setCharacterSize(20);
+    text2.setFillColor(sf::Color::Red);
+    text2.setPosition(sf::Vector2f(_inputs["levelName"]->getSpritePosition().x + 100,
+                                   _inputs["levelName"]->getSpritePosition().y + 130));
+    text2.setOrigin(
+        sf::Vector2f(text2.getLocalBounds().width / 2, text2.getLocalBounds().height / 2));
+    bool invalidName = false;
 
     _inputs["levelName"]->setFont(font);
     _entities["background"]->setPosition(0, 0);
@@ -346,6 +367,7 @@ void Editor::getInput() {
                                 ->getText()
                                 .substr(6, _inputs["levelName"]->getText().size() - 6)
                                 .find_first_not_of("0123456789") != std::string::npos) {
+                        invalidName = true;
                     } else {
                         _levelName = _inputs["levelName"]->getText();
                         saveLevel();
@@ -365,6 +387,8 @@ void Editor::getInput() {
         for (auto& input : _inputs) {
             input.second->draw(*_window);
         }
+        if (invalidName)
+            _window->draw(text2);
         _window->draw(text);
         _window->display();
     }
