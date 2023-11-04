@@ -17,7 +17,6 @@
 
 enum class ACTION : uint8_t
 {
-  OK,
   KO,
   CONNECT,
   CREATE,
@@ -85,6 +84,61 @@ public:
     result.process_bytes(body, size);
     return result.checksum();
   }
+  std::string actionToString(ACTION action) {
+    switch (action) {
+        case ACTION::KO:
+            return "KO";
+        case ACTION::CONNECT:
+            return "CONNECT";
+        case ACTION::CREATE:
+            return "CREATE";
+        case ACTION::LIST:
+            return "LIST";
+        case ACTION::JOIN:
+            return "JOIN";
+        case ACTION::JOINED:
+            return "JOINED";
+        case ACTION::READY:
+            return "READY";
+        case ACTION::START:
+            return "START";
+        case ACTION::LEFT:
+            return "LEFT";
+        case ACTION::RIGHT:
+            return "RIGHT";
+        case ACTION::UP:
+            return "UP";
+        case ACTION::DOWN:
+            return "DOWN";
+        case ACTION::SPACE:
+            return "SPACE";
+        case ACTION::QUIT:
+            return "QUIT";
+        case ACTION::PING:
+            return "PING";
+        case ACTION::PONG:
+            return "PONG";
+        case ACTION::SPRITE:
+            return "SPRITE";
+        case ACTION::UNKNOWN:
+            return "UNKNOWN";
+        case ACTION::TEXT:
+            return "TEXT";
+        case ACTION::DEAD:
+            return "DEAD";
+        case ACTION::FLIP:
+            return "FLIP";
+        case ACTION::RESET:
+            return "RESET";
+        case ACTION::CHECK:
+            return "CHECK";
+        case ACTION::SOUND:
+            return "SOUND";
+        case ACTION::KEY:
+            return "KEY";
+    }
+    return "";
+}
 protected:
 private:
   ACTION _ACTION_NAME;

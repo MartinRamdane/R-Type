@@ -64,8 +64,9 @@ Event EventHandler::decodeMessage(std::vector<uint8_t> data)
     std::memcpy(&compressedCrc, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + netevt.compressed_size + sizeof(uint32_t), sizeof(uint32_t));
     std::memcpy(&originalCrc, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + netevt.compressed_size + 2 * sizeof(uint32_t), sizeof(uint32_t));
     std::memcpy(&actionCrc, data.data() + sizeof(ACTION) + sizeof(int) + sizeof(int) + netevt.compressed_size + 3 * sizeof(uint32_t), sizeof(uint32_t));
-    if (compressedCrc != calculateCRCForInt(netevt.compressed_size))
+    if (compressedCrc != calculateCRCForInt(netevt.compressed_size)) {
       throw std::runtime_error("[ERROR] Packet has been corrupted. CRC is not valid for compressed size");
+    }
     if (originalCrc != calculateCRCForInt(netevt.original_size))
       throw std::runtime_error("[ERROR] Packet has been corrupted. CRC is not valid for original size");
     if (actionCrc != calculateCRCForAction(netevt.ACTION_NAME))

@@ -115,9 +115,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
         case ACTION::PONG: {
             break;
         }
-        case ACTION::OK: {
-            break;
-        }
         case ACTION::KO: {
             break;
         }
