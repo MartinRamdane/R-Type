@@ -233,6 +233,27 @@ void Editor::mouseEvent(sf::Event event) {
                     it++;
                 }
             }
+            for (auto entity : _entityQuantity) {
+                if (entity.first == "background") {
+                    continue;
+                } else {
+                    if (entity.second == 0)
+                        continue;
+                    for (int j = 0; j <= entity.second; j++) {
+                        if (_entities.find(entity.first + std::to_string(j)) == _entities.end()) {
+                            for (int k = j + 1; k <= entity.second; k++) {
+                                if (_entities.find(entity.first + std::to_string(k)) !=
+                                    _entities.end()) {
+                                    _entities[entity.first + std::to_string(k - 1)] =
+                                        std::move(_entities[entity.first + std::to_string(k)]);
+                                    _entities.erase(entity.first + std::to_string(k));
+                                }
+                            }
+                        } else
+                            continue;
+                    }
+                }
+            }
         }
     }
 }
@@ -252,23 +273,26 @@ void Editor::saveLevel() {
     std::cout << level[_levelName] << std::endl;
     int i = 1;
     level[_levelName] = {};
+    level[_levelName]["Entity" + std::to_string(i)]["Type"] = "Background";
+    i++;
+
     for (auto entity : _entityQuantity) {
         if (entity.first == "background") {
-            level[_levelName]["EntitySFML" + std::to_string(i)]["Type"] = "Background";
+            continue;
         } else {
             if (entity.second == 0)
                 continue;
-            level[_levelName]["EntitySFML" + std::to_string(i)]["Count"] = entity.second;
-            level[_levelName]["EntitySFML" + std::to_string(i)]["Config"] =
+            level[_levelName]["Entity" + std::to_string(i)]["Count"] = entity.second;
+            level[_levelName]["Entity" + std::to_string(i)]["Config"] =
                 _entitiesJsonConfig[entity.first];
             for (int j = 0; j <= entity.second; j++) {
                 if (entity.first == "background" ||
                     _entities.find(entity.first + std::to_string(j)) == _entities.end())
                     continue;
                 std::cout << entity.first + std::to_string(j) << std::endl;
-                level[_levelName]["EntitySFML" + std::to_string(i)]["Positions"][j]["X"] =
+                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["X"] =
                     (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().x;
-                level[_levelName]["EntitySFML" + std::to_string(i)]["Positions"][j]["Y"] =
+                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["Y"] =
                     (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().y;
             }
         }
@@ -295,9 +319,10 @@ void Editor::getInput() {
     text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2));
 
     _inputs["levelName"]->setFont(font);
+    _entities["background"]->setPosition(0, 0);
 
     sf::Event event;
-    while (1) {
+    while (_window->isOpen()) {
         while (_window->pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 _window->close();
@@ -317,15 +342,18 @@ void Editor::getInput() {
                         _levelName = _inputs["levelName"]->getText();
                         saveLevel();
                         _savingMode = false;
+                        _entities["background"]->setPosition(_x, _y);
                         return;
                     }
                 }
                 if (event.key.code == sf::Keyboard::Escape) {
                     _savingMode = false;
+                    _entities["background"]->setPosition(_x, _y);
                     return;
                 }
             }
         }
+        _window->draw(_entities["background"]->getSprite());
         for (auto& input : _inputs) {
             input.second->draw(*_window);
         }
