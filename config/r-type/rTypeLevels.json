@@ -4,39 +4,67 @@
       "Type": "Background"
     },
     "Entity2": {
-      "Config": "OrangeRobot.rType.json",
-      "Count": 3,
-      "Positions": [
-        {
-          "X": 727,
-          "Y": 247
-        },
-        {
-          "X": 656,
-          "Y": 149
-        },
-        {
-          "X": 869,
-          "Y": 140
-        }
-      ]
-    },
-    "Entity3": {
       "Config": "Flyer.rType.json",
       "Count": 2,
       "Positions": [
         {
-          "X": 333,
-          "Y": 137
+          "X": 465,
+          "Y": 146
         },
         {
-          "X": 499,
-          "Y": 181
+          "X": 646,
+          "Y": 163
         }
       ]
     },
     "Music": {
-      "File": "level2.ogg"
+      "File": "level1.ogg"
+    }
+  },
+  "Level-2": {
+    "Entity1": {
+      "Type": "Background"
+    },
+    "Entity2": {
+      "Config": "Flyer.rType.json",
+      "Count": 8,
+      "Positions": [
+        {
+          "X": 646,
+          "Y": 163
+        },
+        {
+          "X": 519,
+          "Y": 227
+        },
+        {
+          "X": 606,
+          "Y": 293
+        },
+        {
+          "X": 585,
+          "Y": 69
+        },
+        {
+          "X": 701,
+          "Y": 119
+        },
+        {
+          "X": 729,
+          "Y": 232
+        },
+        {
+          "X": 634,
+          "Y": 241
+        },
+        {
+          "X": 552,
+          "Y": 171
+        }
+      ]
+    },
+    "Music": {
+      "File": "level1.ogg"
     }
   }
 }

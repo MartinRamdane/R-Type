@@ -254,6 +254,27 @@ void Editor::saveLevel() {
     level[_levelName] = {};
     level[_levelName]["Entity" + std::to_string(i)]["Type"] = "Background";
     i++;
+
+    for (auto entity : _entityQuantity) {
+        if (entity.first == "background") {
+            continue;
+        } else {
+            if (entity.second == 0)
+                continue;
+            for (int j = 0; j <= entity.second; j++) {
+                if (_entities.find(entity.first + std::to_string(j)) == _entities.end()) {
+                    for (int k = j + 1; k <= entity.second; k++) {
+                        if (_entities.find(entity.first + std::to_string(k)) != _entities.end()) {
+                            _entities[entity.first + std::to_string(k - 1)] =
+                                std::move(_entities[entity.first + std::to_string(k)]);
+                            _entities.erase(entity.first + std::to_string(k));
+                        }
+                    }
+                } else
+                    continue;
+            }
+        }
+    }
     for (auto entity : _entityQuantity) {
         if (entity.first == "background") {
             continue;
