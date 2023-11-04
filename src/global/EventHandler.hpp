@@ -17,7 +17,6 @@
 
 enum class ACTION : uint8_t
 {
-  OK,
   KO,
   CONNECT,
   CREATE,
@@ -57,15 +56,6 @@ struct NetworkEvent
   int original_size;
   int compressed_size;
   char *body;
-  uint32_t bodyCrc;
-};
-
-struct NetworkChecksum
-{
-  ACTION ACTION_NAME;
-  int original_size;
-  int compressed_size;
-  uint32_t bodyCrc;
 };
 
 class EventHandler
@@ -79,19 +69,76 @@ public:
   void addEvent(ACTION ACTION_NAME, std::string body);
   const std::string getBody() const { return _body; };
   const Event getEvent() const { return Event{_ACTION_NAME, _body}; };
-  uint32_t calculateCRC(const NetworkChecksum& event) {
+  uint32_t calculateCRCForInt(int value) {
     boost::crc_32_type result;
-    result.process_bytes(&event, sizeof(NetworkChecksum));
+    result.process_bytes(&value, sizeof(int));
     return result.checksum();
   }
-  bool verifyCRC(const NetworkChecksum& event, uint32_t expectedCRC) {
-    return calculateCRC(event) == expectedCRC;
+  uint32_t calculateCRCForAction(ACTION action) {
+    boost::crc_32_type result;
+    result.process_bytes(&action, sizeof(ACTION));
+    return result.checksum();
   }
   uint32_t calculateCRCForBody(const char *body, int size) {
     boost::crc_32_type result;
     result.process_bytes(body, size);
     return result.checksum();
   }
+  std::string actionToString(ACTION action) {
+    switch (action) {
+        case ACTION::KO:
+            return "KO";
+        case ACTION::CONNECT:
+            return "CONNECT";
+        case ACTION::CREATE:
+            return "CREATE";
+        case ACTION::LIST:
+            return "LIST";
+        case ACTION::JOIN:
+            return "JOIN";
+        case ACTION::JOINED:
+            return "JOINED";
+        case ACTION::READY:
+            return "READY";
+        case ACTION::START:
+            return "START";
+        case ACTION::LEFT:
+            return "LEFT";
+        case ACTION::RIGHT:
+            return "RIGHT";
+        case ACTION::UP:
+            return "UP";
+        case ACTION::DOWN:
+            return "DOWN";
+        case ACTION::SPACE:
+            return "SPACE";
+        case ACTION::QUIT:
+            return "QUIT";
+        case ACTION::PING:
+            return "PING";
+        case ACTION::PONG:
+            return "PONG";
+        case ACTION::SPRITE:
+            return "SPRITE";
+        case ACTION::UNKNOWN:
+            return "UNKNOWN";
+        case ACTION::TEXT:
+            return "TEXT";
+        case ACTION::DEAD:
+            return "DEAD";
+        case ACTION::FLIP:
+            return "FLIP";
+        case ACTION::RESET:
+            return "RESET";
+        case ACTION::CHECK:
+            return "CHECK";
+        case ACTION::SOUND:
+            return "SOUND";
+        case ACTION::KEY:
+            return "KEY";
+    }
+    return "";
+}
 protected:
 private:
   ACTION _ACTION_NAME;

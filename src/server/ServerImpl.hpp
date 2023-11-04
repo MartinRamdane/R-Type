@@ -172,10 +172,6 @@ protected:
                 std::cout << "[" << client->GetID() << "]: PONG" << std::endl;
             }
                 break;
-            case ACTION::OK: {
-                std::cout << "[" << client->GetID() << "]: OK" << std::endl;
-            }
-                break;
             case ACTION::KO: {
                 std::cout << "[" << client->GetID() << "]: KO" << std::endl;
             }

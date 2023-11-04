@@ -10,8 +10,6 @@
 
 std::string actionToString(ACTION action) {
     switch (action) {
-        case ACTION::OK:
-            return "OK";
         case ACTION::KO:
             return "KO";
         case ACTION::CONNECT:
