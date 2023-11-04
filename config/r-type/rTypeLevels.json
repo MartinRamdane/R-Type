@@ -1,36 +1,42 @@
 {
   "Level-1": {
-    "EntitySFML1": {
+    "Entity1": {
+      "Type": "Background"
+    },
+    "Entity2": {
       "Config": "OrangeRobot.rType.json",
-      "Count": 5,
+      "Count": 3,
       "Positions": [
         {
-          "X": 814,
-          "Y": 360
+          "X": 727,
+          "Y": 247
         },
         {
-          "X": 824,
-          "Y": 285
+          "X": 656,
+          "Y": 149
         },
         {
-          "X": 815,
-          "Y": 219
-        },
-        {
-          "X": 826,
-          "Y": 127
-        },
-        {
-          "X": 814,
-          "Y": 80
+          "X": 869,
+          "Y": 140
         }
       ]
     },
-    "EntitySFML2": {
-      "Type": "Background"
-    }
+    "Entity3": {
+      "Config": "Flyer.rType.json",
+      "Count": 2,
+      "Positions": [
+        {
+          "X": 333,
+          "Y": 137
+        },
+        {
+          "X": 499,
+          "Y": 181
+        }
+      ]
     },
     "Music": {
-      "File": "level1.ogg"
+      "File": "level2.ogg"
     }
   }
+}
