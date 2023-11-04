@@ -6,6 +6,7 @@
 */
 
 #include "RType.hpp"
+#include "../Protocol.hpp"
 #include "Boss.hpp"
 #include "Classic.hpp"
 #include "Dropper.hpp"
@@ -15,7 +16,6 @@
 #include "Speed.hpp"
 #include "SupportShip.hpp"
 #include "Tank.hpp"
-#include "../Protocol.hpp"
 
 RType* RType::instance = nullptr;
 
@@ -29,7 +29,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _staticObjectsGroups = std::make_shared<EntityType<IEntity>>(0);
     _orangeRobotGroups = std::make_shared<EntityType<IEntity>>(20);
     _flyerGroups = std::make_shared<EntityType<IEntity>>(10);
-    _enemie2Groups = std::make_shared<EntityType<IEntity>>(24);
+    _greenRobotGroups = std::make_shared<EntityType<IEntity>>(24);
     _supportProjectilesGroups = std::make_shared<EntityType<IEntity>>(4);
     _supportShipGroups = std::make_shared<EntityType<IEntity>>(16);
     _dropperGroups = std::make_shared<EntityType<IEntity>>(14);
@@ -46,7 +46,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_projectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _enemie2Groups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _greenRobotGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _dropperGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _wormGroups, Projectile::hurtEntity);
     _engine->setRelation(_projectilesGroups, _bossGroups, Projectile::hurtEntity);
@@ -65,7 +65,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
 
     _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
-    _engine->setRelation(_playersGroups, _enemie2Groups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _greenRobotGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bombermanGroups, Character::hurtEntities);
@@ -76,7 +76,7 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _engine->setRelation(_flyerGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_wormGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_bossGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_enemie2Groups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_greenRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_bombermanGroups, _supportShipGroups, Character::hurtFirstEntity);
     _engine->setRelation(_bombGroups, _supportShipGroups, Character::hurtFirstEntity);
 }
@@ -103,7 +103,7 @@ void RType::createAssetList() {
     _assets["Tank"] = parser.get<std::string>(val, "Game.Assets.Images.Tank");
     _assets["ShieldSpaceship"] = parser.get<std::string>(val, "Game.Assets.Images.ShieldSpaceship");
     _assets["OrangeRobot"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeRobot");
-    _assets["Enemy2"] = parser.get<std::string>(val, "Game.Assets.Images.Enemy2");
+    _assets["GreenRobot"] = parser.get<std::string>(val, "Game.Assets.Images.GreenRobot");
     _assets["Background"] = parser.get<std::string>(val, "Game.Assets.Images.Background");
     _assets["ExplosionSpaceship"] =
         parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
@@ -208,12 +208,14 @@ void RType::update(ThreadSafeQueue<Event>& events) {
             case ACTION::KEY:
                 key = Protocol::getKeyFromBody(event.body);
                 if (key == "s") {
-                    if (!_players.empty() && (int)_players.size() >= Protocol::getIdFromBodyKey(event.body))
-                    _players[Protocol::getIdFromBodyKey(event.body) - 1]->action();
+                    if (!_players.empty() &&
+                        (int)_players.size() >= Protocol::getIdFromBodyKey(event.body))
+                        _players[Protocol::getIdFromBodyKey(event.body) - 1]->action();
                 }
                 if (key == "l") {
                     for (auto supportShip : _supportShips) {
-                        if (supportShip->getRelatedPlayerId() == _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
+                        if (supportShip->getRelatedPlayerId() ==
+                            _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
                             supportShip->launch();
                             break;
                         }
@@ -221,9 +223,11 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 }
                 if (key == "c") {
                     for (auto supportShip : _supportShips) {
-                        if (supportShip->getRelatedPlayerId() == _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
+                        if (supportShip->getRelatedPlayerId() ==
+                            _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
                             supportShip->setEntitiesHasCollided(true);
-                            _players[Protocol::getIdFromBodyKey(event.body) - 1]->setEntitiesHasCollided(true);
+                            _players[Protocol::getIdFromBodyKey(event.body) - 1]
+                                ->setEntitiesHasCollided(true);
                             break;
                         }
                     }
@@ -446,7 +450,7 @@ void RType::deleteAllEntities() {
     _supportShips.clear();
     _dropper.clear();
     _staticObjectsGroups->clear();
-    _enemie2Groups->clear();
+    _greenRobotGroups->clear();
     _flyerGroups->clear();
     _orangeRobotGroups->clear();
     _projectilesGroups->clear();
@@ -498,8 +502,8 @@ void RType::createEnemy(IEntity::EntityInfo info) {
         _orangeRobotGroups->insert(enemy);
     else if (info.name == "Flyer")
         _flyerGroups->insert(enemy);
-    else if (info.name == "Enemy2")
-        _enemie2Groups->insert(enemy);
+    else if (info.name == "GreenRobot")
+        _greenRobotGroups->insert(enemy);
     else if (info.name == "Worm")
         _wormGroups->insert(enemy);
     else if (info.name == "Bomberman")
@@ -520,7 +524,7 @@ void RType::clearLevel() {
     }
     _orangeRobotGroups->clear();
     _flyerGroups->clear();
-    _enemie2Groups->clear();
+    _greenRobotGroups->clear();
     _projectilesGroups->clear();
     _enemyProjectilesGroups->clear();
     _staticObjectsGroups->clear();

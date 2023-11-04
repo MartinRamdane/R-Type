@@ -35,8 +35,9 @@ Editor::Editor() {
     _entitiesSelectMenu["bomberman"]->setTexture("bomberman.png");
     _entitiesJsonConfig["bomberman"] = "Bomberman.rType.json";
 
-    _entitiesSelectMenu["robot_type_5"] = std::make_unique<EntitySFML>(_ressourceManager);
-    _entitiesSelectMenu["robot_type_5"]->setTexture("robot_type_5.png");
+    _entitiesSelectMenu["GreenRobot"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["GreenRobot"]->setTexture("GreenRobot.png");
+    _entitiesJsonConfig["GreenRobot"] = "GreenRobot.rType.json";
 
     _entitiesSelectMenu["worm"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["worm"]->setTexture("worm.png");
@@ -71,16 +72,16 @@ Editor::Editor() {
     _music2->setPosition(500, 10);
     _music2->setSpriteScale(0.1, 0.1);
 
-    _musics["music1"].openFromFile("sounds/level1.ogg");
+    _musics["music1"].openFromFile("sounds/r-type/level1.ogg");
     _musics["music1"].setLoop(true);
-    _musics["music2"].openFromFile("sounds/level2.ogg");
+    _musics["music2"].openFromFile("sounds/r-type/level2.ogg");
     _musics["music2"].setLoop(true);
 
     //create Rects
     _entitiesRect["flyer"] = std::make_tuple(8, 0);
     _entitiesRect["OrangeRobot"] = std::make_tuple(2, 0);
     _entitiesRect["bomberman"] = std::make_tuple(7, 0);
-    _entitiesRect["robot_type_5"] = std::make_tuple(3, 0);
+    _entitiesRect["GreenRobot"] = std::make_tuple(3, 0);
     _entitiesRect["worm"] = std::make_tuple(6, 0);
     _entitiesRect["dropper"] = std::make_tuple(12, 0);
     _entitiesRect["boss1"] = std::make_tuple(7, 0);
@@ -162,7 +163,7 @@ void Editor::keyEvent(sf::Event event) {
         } else if (event.key.code == sf::Keyboard::Num2) {
             _selectedEntity = "OrangeRobot";
         } else if (event.key.code == sf::Keyboard::Num3) {
-            _selectedEntity = "robot_type_5";
+            _selectedEntity = "GreenRobot";
         } else if (event.key.code == sf::Keyboard::Num4) {
             _selectedEntity = "bomberman";
         } else if (event.key.code == sf::Keyboard::Num5) {

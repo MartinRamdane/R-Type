@@ -41,7 +41,7 @@
         "rect_init": 0,
         "form": "loop"
     },
-    "Enemy2":
+    "GreenRobot":
     {
         "nb_rect": 3,
         "rect_init": 0,

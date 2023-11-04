@@ -1,0 +1,11 @@
+{
+    "Type": "Enemy",
+    "Name": "GreenRobot",
+    "MovementType": "Random",
+    "ProjectileType": "Bomb",
+    "FireRate": 1,
+    "ProjectileSpeed": 3,
+    "Speed": 2,
+    "Damage": 15,
+    "Life": 30
+}

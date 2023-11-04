@@ -46,21 +46,56 @@ void Enemy::update() {
 
         move(horizontalDirection, verticalDirection * verticalDisplacement);
     } else if (movementType == "Random") {
-        int x = rand() % 3 - 1;
-        int y = rand() % 3 - 1;
-        auto pos = getPosition();
-        int new_x = std::get<0>(pos) + x * getSpeed();
-        int new_y = std::get<1>(pos) + y * getSpeed();
-        int radius = getRadius();
-        if (new_x > 850) {
-            move(-1, 0);
-        } else {
-            if (new_y - radius < 0 || new_y + radius > 478) {
-                y = -y;
-                new_y = std::get<1>(pos) + y * getSpeed();
-            }
+        const auto currentTime = std::chrono::high_resolution_clock::now();
+        const auto timeElapsed =
+            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+                .count();
+        const bool needsDirectionChange = timeElapsed > 2000;
+
+        if (needsDirectionChange) {
+            _lastMove = static_cast<LastMove>(rand() % 4);
+            _lastMoveTime = currentTime;
         }
-        move(x, y);
+
+        int verticalDirection = 0;
+        int horizontalDirection = 0;
+
+        //check if the enemy is going to go out of the screen change direction if so
+        if (_x < 0 - _radius) {
+            _lastMove = RIGHT;
+            _lastMoveTime = currentTime;
+        } else if (_x > 700 + _radius) {
+            _lastMove = LEFT;
+            _lastMoveTime = currentTime;
+        } else if (_y < 60 - _radius) {
+            _lastMove = UP;
+            _lastMoveTime = currentTime;
+        } else if (_y > 400 + _radius) {
+            _lastMove = DOWN;
+            _lastMoveTime = currentTime;
+        } else if (_x < 200) {
+            _lastMove = RIGHT;
+            _lastMoveTime = currentTime;
+        }
+
+        switch (_lastMove) {
+            case UP:
+                verticalDirection = 1;
+                break;
+            case DOWN:
+                verticalDirection = -1;
+                break;
+            case LEFT:
+                horizontalDirection = -1;
+                break;
+            case RIGHT:
+                horizontalDirection = 1;
+                break;
+            default:
+                break;
+        }
+
+        move(horizontalDirection, verticalDirection);
     } else if (movementType == "UpAndDown") {
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed =
@@ -77,7 +112,8 @@ void Enemy::update() {
 
         move(-1, verticalDirection);
     }
-    shoot();
+    if (movementType != "Random")
+        shoot();
 }
 
 void Enemy::shoot() {
@@ -101,7 +137,7 @@ void Enemy::shoot() {
         info.y = std::get<1>(pos) + 5;
     }
     info.direction = IEntity::LEFT;
-    
+
     RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
                                       IGame::ProjectileGroup::ENEMY);
 }
