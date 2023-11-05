@@ -50,7 +50,13 @@ void Boss::update() {
             move(horizontalDirection * horizontalDisplacement, verticalDirection);
         }
     } else if (movementType == "Boss2" && RType::instance->getEnemies().size() == 1) {
-        
+        auto pos = getPosition();
+        //make an up and down movement
+
+        if (std::get<1>(pos) > 440) {
+            move(0, -1);
+        } else {
+        }
     }
     shoot();
 }
@@ -62,18 +68,26 @@ void Boss::shoot() {
     for (auto player : players) {
         auto pos = getPosition();
         EntityInfo info;
-        int random = rand() % 2;
-        random == 0 ? info.x = std::get<0>(pos) + getRadius() / 2 + 55
-                    : info.x = std::get<0>(pos) - getRadius() / 2 - 55;
-        info.y = std::get<1>(pos) - getRadius();
         info.name = getProjectileAsset();
-        info.scaleX = 1.7;
-        info.scaleY = 1.7;
+        if (!info.name.find("Boss1")) {
+            int random = rand() % 2;
+            random == 0 ? info.x = std::get<0>(pos) + getRadius() / 2 + 55
+                        : info.x = std::get<0>(pos) - getRadius() / 2 - 55;
+            info.y = std::get<1>(pos) - getRadius();
+            info.scaleX = 1.7;
+            info.scaleY = 1.7;
+        } else {
+            std::cout << "Boss2" << std::endl;
+            info.x = std::get<0>(pos) - 45;
+            info.y = std::get<1>(pos) + 25;
+        }
         info.speed = getProjectileSpeed();
         info.damage = getDamage();
         info.spriteConfigJsonObjectName = getProjectileAsset();
         info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-        info.direction = IEntity::Direction::TRACKING;
+        std::cout << info.name << std::endl;
+        info.direction =
+            info.name.find("Boss2") ? IEntity::Direction::TRACKING : IEntity::Direction::LEFT;
         info.relatedPlayerId = player->getId();
         RType::instance->createProjectile(info, false, IGame::ProjectileGroup::BOSS);
     }

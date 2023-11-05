@@ -135,6 +135,8 @@ void RType::createAssetList() {
     _assets["Wall1"] = parser.get<std::string>(val, "Game.Assets.Images.Wall1");
     _assets["Wall2"] = parser.get<std::string>(val, "Game.Assets.Images.Wall2");
     _assets["Wall3"] = parser.get<std::string>(val, "Game.Assets.Images.Wall3");
+    _assets["Boss2"] = parser.get<std::string>(val, "Game.Assets.Images.Boss2");
+    _assets["Boss2Projectile"] = parser.get<std::string>(val, "Game.Assets.Images.Boss2Projectile");
 }
 
 int RType::getId(Event event) {

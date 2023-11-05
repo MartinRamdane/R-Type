@@ -55,6 +55,10 @@ Editor::Editor() {
     _entitiesSelectMenu["boss1"]->setTexture("boss1.png");
     _entitiesJsonConfig["boss1"] = "Boss1.rType.json";
 
+    _entitiesSelectMenu["boss2"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["boss2"]->setTexture("boss2.png");
+    _entitiesJsonConfig["boss2"] = "Boss2.rType.json";
+
     _entitiesSelectMenu["wall1"] = std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["wall1"]->setTexture("wall1.png");
     _entitiesJsonConfig["wall1"] = "Wall1.rType.json";
@@ -104,6 +108,7 @@ Editor::Editor() {
     _entitiesRect["wall1"] = std::make_tuple(1, 0);
     _entitiesRect["wall2"] = std::make_tuple(1, 0);
     _entitiesRect["wall3"] = std::make_tuple(1, 0);
+    _entitiesRect["boss2"] = std::make_tuple(2, 0);
 
     _entityQuantity["background"] = 0;
 
@@ -133,7 +138,7 @@ Editor::Editor() {
 
     _texts["help"] = std::make_unique<sf::Text>();
     _texts["help"]->setFont(_font);
-    _texts["help"]->setString("Select entities with numbers 1 to 8");
+    _texts["help"]->setString("Select entities with the keys 1 to Equal\n");
     _texts["help"]->setCharacterSize(15);
     _texts["help"]->setFillColor(sf::Color::Red);
     _texts["help"]->setPosition(sf::Vector2f(25, 460));
@@ -202,10 +207,12 @@ void Editor::keyEvent(sf::Event event) {
         } else if (event.key.code == sf::Keyboard::Num8) {
             _selectedEntity = "boss1";
         } else if (event.key.code == sf::Keyboard::Num9) {
-            _selectedEntity = "wall1";
+            _selectedEntity = "boss2";
         } else if (event.key.code == sf::Keyboard::Num0) {
-            _selectedEntity = "wall2";
+            _selectedEntity = "wall1";
         } else if (event.key.code == sf::Keyboard::Dash) {
+            _selectedEntity = "wall2";
+        } else if (event.key.code == sf::Keyboard::Equal) {
             _selectedEntity = "wall3";
         } else if (event.key.code == sf::Keyboard::S) {
             std::cout << "Saving..." << std::endl;
@@ -323,7 +330,8 @@ void Editor::saveLevel() {
     i++;
 
     for (auto entity : _entityQuantity) {
-        if (entity.first == "background" || entity.first == "wall1" || entity.first == "wall2" || entity.first == "wall3") {
+        if (entity.first == "background" || entity.first == "wall1" || entity.first == "wall2" ||
+            entity.first == "wall3") {
             continue;
         } else {
             if (entity.second == 0)
