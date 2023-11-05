@@ -45,50 +45,86 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
     _levelInitializer->loadLevel(_currentLevel);
 
     // Add collision between entities groups
-    _engine->setRelation(_projectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _flyerGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _playersGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _greenRobotGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _dropperGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _wormGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _bossGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _bombermanGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _bombGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _circularRobotGroups, Projectile::hurtEntity);
-    _engine->setRelation(_projectilesGroups, _wallGroups, Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _orangeRobotGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _flyerGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _playersGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _greenRobotGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _dropperGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _wormGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bossGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bombermanGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _bombGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _circularRobotGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_projectilesGroups, _wallGroups,
+                         Projectile::hurtEntity);
 
-    _engine->setRelation(_enemyProjectilesGroups, _playersGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _flyerGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _playersGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _orangeRobotGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _bossGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _bombermanGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _bombGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _dropperGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _circularRobotGroups, Projectile::hurtEntity);
-    _engine->setRelation(_supportProjectilesGroups, _wallGroups, Projectile::hurtEntity);
+    _engine->setRelation(_enemyProjectilesGroups, _playersGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _flyerGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _playersGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _orangeRobotGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _dropperGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bossGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bombermanGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _bombGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _dropperGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _circularRobotGroups,
+                         Projectile::hurtEntity);
+    _engine->setRelation(_supportProjectilesGroups, _wallGroups,
+                         Projectile::hurtEntity);
 
-    _engine->setRelation(_playersGroups, _orangeRobotGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _orangeRobotGroups,
+                         Character::hurtEntities);
     _engine->setRelation(_playersGroups, _flyerGroups, Character::hurtEntities);
-    _engine->setRelation(_playersGroups, _greenRobotGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _greenRobotGroups,
+                         Character::hurtEntities);
     _engine->setRelation(_playersGroups, _wormGroups, Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bossGroups, Character::hurtEntities);
-    _engine->setRelation(_playersGroups, _bombermanGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _bombermanGroups,
+                         Character::hurtEntities);
     _engine->setRelation(_playersGroups, _bombGroups, Character::hurtEntities);
-    _engine->setRelation(_playersGroups, _circularRobotGroups, Character::hurtEntities);
+    _engine->setRelation(_playersGroups, _circularRobotGroups,
+                         Character::hurtEntities);
 
-    _engine->setRelation(_playersGroups, _supportShipGroups, Character::entitiesCollision);
-    _engine->setRelation(_orangeRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_flyerGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_wormGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_bossGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_greenRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_bombermanGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_bombGroups, _supportShipGroups, Character::hurtFirstEntity);
-    _engine->setRelation(_circularRobotGroups, _supportShipGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_playersGroups, _supportShipGroups,
+                         Character::entitiesCollision);
+    _engine->setRelation(_orangeRobotGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
+    _engine->setRelation(_flyerGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
+    _engine->setRelation(_wormGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
+    _engine->setRelation(_bossGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
+    _engine->setRelation(_greenRobotGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
+    _engine->setRelation(_bombermanGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
+    _engine->setRelation(_bombGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
+    _engine->setRelation(_circularRobotGroups, _supportShipGroups,
+                         Character::hurtFirstEntity);
 
-    _engine->setRelation(_playersGroups, _wallGroups, Character::hurtFirstEntity);
+    _engine->setRelation(_playersGroups, _wallGroups,
+                         Character::hurtFirstEntity);
 }
 
 RType::~RType() {
@@ -107,36 +143,50 @@ RType::~RType() {
 void RType::createAssetList() {
     JsonParser parser;
     auto val = JsonParser::readFile("rTypeSetup.json");
-    _assets["Classic"] = parser.get<std::string>(val, "Game.Assets.Images.Classic");
+    _assets["Classic"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Classic");
     _assets["Speed"] = parser.get<std::string>(val, "Game.Assets.Images.Speed");
-    _assets["Shooter"] = parser.get<std::string>(val, "Game.Assets.Images.Shooter");
+    _assets["Shooter"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Shooter");
     _assets["Tank"] = parser.get<std::string>(val, "Game.Assets.Images.Tank");
-    _assets["ShieldSpaceship"] = parser.get<std::string>(val, "Game.Assets.Images.ShieldSpaceship");
-    _assets["OrangeRobot"] = parser.get<std::string>(val, "Game.Assets.Images.OrangeRobot");
-    _assets["GreenRobot"] = parser.get<std::string>(val, "Game.Assets.Images.GreenRobot");
-    _assets["Background"] = parser.get<std::string>(val, "Game.Assets.Images.Background");
+    _assets["ShieldSpaceship"] =
+        parser.get<std::string>(val, "Game.Assets.Images.ShieldSpaceship");
+    _assets["OrangeRobot"] =
+        parser.get<std::string>(val, "Game.Assets.Images.OrangeRobot");
+    _assets["GreenRobot"] =
+        parser.get<std::string>(val, "Game.Assets.Images.GreenRobot");
+    _assets["Background"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Background");
     _assets["ExplosionSpaceship"] =
         parser.get<std::string>(val, "Game.Assets.Images.ExplosionSpaceShip");
-    _assets["Shield"] = parser.get<std::string>(val, "Game.Assets.Images.Shield");
+    _assets["Shield"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Shield");
     _assets["PlayerProjectile"] =
         parser.get<std::string>(val, "Game.Assets.Images.PlayerProjectile");
-    _assets["DiskProjectile"] = parser.get<std::string>(val, "Game.Assets.Images.DiskProjectile");
+    _assets["DiskProjectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.DiskProjectile");
     _assets["OrangeProjectile"] =
         parser.get<std::string>(val, "Game.Assets.Images.OrangeProjectile");
     _assets["Flyer"] = parser.get<std::string>(val, "Game.Assets.Images.Flyer");
-    _assets["SupportShip"] = parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
-    _assets["Dropper"] = parser.get<std::string>(val, "Game.Assets.Images.Dropper");
+    _assets["SupportShip"] =
+        parser.get<std::string>(val, "Game.Assets.Images.SupportShip");
+    _assets["Dropper"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Dropper");
     _assets["Worm"] = parser.get<std::string>(val, "Game.Assets.Images.Worm");
     _assets["Boss1"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1");
-    _assets["Boss1Projectile"] = parser.get<std::string>(val, "Game.Assets.Images.Boss1Projectile");
-    _assets["Bomberman"] = parser.get<std::string>(val, "Game.Assets.Images.Bomberman");
+    _assets["Boss1Projectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Boss1Projectile");
+    _assets["Bomberman"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Bomberman");
     _assets["Bomb"] = parser.get<std::string>(val, "Game.Assets.Images.Bomb");
-    _assets["CircularRobot"] = parser.get<std::string>(val, "Game.Assets.Images.CircularRobot");
+    _assets["CircularRobot"] =
+        parser.get<std::string>(val, "Game.Assets.Images.CircularRobot");
     _assets["Wall1"] = parser.get<std::string>(val, "Game.Assets.Images.Wall1");
     _assets["Wall2"] = parser.get<std::string>(val, "Game.Assets.Images.Wall2");
     _assets["Wall3"] = parser.get<std::string>(val, "Game.Assets.Images.Wall3");
     _assets["Boss2"] = parser.get<std::string>(val, "Game.Assets.Images.Boss2");
-    _assets["Boss2Projectile"] = parser.get<std::string>(val, "Game.Assets.Images.Boss2Projectile");
+    _assets["Boss2Projectile"] =
+        parser.get<std::string>(val, "Game.Assets.Images.Boss2Projectile");
 }
 
 int RType::getId(Event event) {
@@ -225,13 +275,16 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 key = Protocol::getKeyFromBody(event.body);
                 if (key == "s") {
                     if (!_players.empty() &&
-                        (int)_players.size() >= Protocol::getIdFromBodyKey(event.body))
-                        _players[Protocol::getIdFromBodyKey(event.body) - 1]->action();
+                        (int)_players.size() >=
+                            Protocol::getIdFromBodyKey(event.body))
+                        _players[Protocol::getIdFromBodyKey(event.body) - 1]
+                            ->action();
                 }
                 if (key == "l") {
                     for (auto supportShip : _supportShips) {
                         if (supportShip->getRelatedPlayerId() ==
-                            _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
+                            _players[Protocol::getIdFromBodyKey(event.body) - 1]
+                                ->getId()) {
                             supportShip->launch();
                             break;
                         }
@@ -240,7 +293,8 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 if (key == "c") {
                     for (auto supportShip : _supportShips) {
                         if (supportShip->getRelatedPlayerId() ==
-                            _players[Protocol::getIdFromBodyKey(event.body) - 1]->getId()) {
+                            _players[Protocol::getIdFromBodyKey(event.body) - 1]
+                                ->getId()) {
                             supportShip->setEntitiesHasCollided(true);
                             _players[Protocol::getIdFromBodyKey(event.body) - 1]
                                 ->setEntitiesHasCollided(true);
@@ -293,7 +347,8 @@ void RType::createExplosion(int x, int y) {
     _staticObjects.push_back(explosion);
 }
 
-void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::ProjectileGroup group) {
+void RType::createProjectile(IEntity::EntityInfo info, bool flip,
+                             IGame::ProjectileGroup group) {
     info.assetFile = _assets[info.name];
     info.id = _lastId;
     _lastId++;
@@ -301,7 +356,8 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip, IGame::Project
     if (group == ProjectileGroup::PLAYER) {
         _projectilesGroups->insert(projectile);
         _projectiles.push_back(projectile);
-    } else if (group == ProjectileGroup::ENEMY || group == ProjectileGroup::BOSS) {
+    } else if (group == ProjectileGroup::ENEMY ||
+               group == ProjectileGroup::BOSS) {
         if (info.name == "Bomb")
             _bombGroups->insert(projectile);
         else

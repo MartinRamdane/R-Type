@@ -85,7 +85,8 @@ std::vector<std::string> DisplaySFML::getEvents() {
     return events;
 }
 
-std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityInfos) {
+std::shared_ptr<IEntity> DisplaySFML::createEntity(
+    IEntity::EntityInfos entityInfos) {
     if (entityInfos.type == IEntity::Type::SPRITE) {
         auto value = createSprite(entityInfos);
         if (value == nullptr)
@@ -100,8 +101,10 @@ std::shared_ptr<IEntity> DisplaySFML::createEntity(IEntity::EntityInfos entityIn
     }
 }
 
-std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
+std::shared_ptr<IEntity> DisplaySFML::createSprite(
+    IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<EntitySFML> entity =
+        std::make_shared<EntitySFML>(_ressourceManager);
     entity->setTexture(entityInfos.path);
     if (entity->_texture == nullptr)
         return nullptr;
@@ -118,8 +121,10 @@ std::shared_ptr<IEntity> DisplaySFML::createSprite(IEntity::EntityInfos entityIn
     return entity;
 }
 
-std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
+std::shared_ptr<IEntity> DisplaySFML::createText(
+    IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<EntitySFML> entity =
+        std::make_shared<EntitySFML>(_ressourceManager);
     entity->setFont();
     entity->setTextString(entityInfos.text);
     entity->setTextInfo(entityInfos.size, entityInfos.color);
@@ -128,8 +133,10 @@ std::shared_ptr<IEntity> DisplaySFML::createText(IEntity::EntityInfos entityInfo
     return entity;
 }
 
-std::shared_ptr<IEntity> DisplaySFML::createSound(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<EntitySFML> entity = std::make_shared<EntitySFML>(_ressourceManager);
+std::shared_ptr<IEntity> DisplaySFML::createSound(
+    IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<EntitySFML> entity =
+        std::make_shared<EntitySFML>(_ressourceManager);
     entity->setSound(entityInfos.path);
     entity->setType(entityInfos.type);
     return entity;

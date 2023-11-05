@@ -15,7 +15,6 @@
 #include "../IEntity.hpp"
 #include "RessourceManagerSDL.hpp"
 
-
 class EntitySDL : public IEntity {
    public:
     EntitySDL(std::shared_ptr<RessourceManagerSDL> ressourceManager);
@@ -66,7 +65,7 @@ class EntitySDL : public IEntity {
     int _oldPosY;
     IEntity::Type _type;
     // sf::Text _text;
-    TTF_Font *_font;
+    TTF_Font* _font;
     float _speed;
     std::tuple<float, float> _nextPos;
     bool _isHit = false;
@@ -80,8 +79,8 @@ class EntitySDL : public IEntity {
     std::string _text;
     std::string _textColor;
     int _size;
-    SDL_Surface * _surface;
-    SDL_Texture * _textureText;
+    SDL_Surface* _surface;
+    SDL_Texture* _textureText;
     SDL_Rect _textRect;
     int _x, _y;
 };

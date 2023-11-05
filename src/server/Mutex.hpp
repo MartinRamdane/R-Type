@@ -9,19 +9,18 @@
 #define MUTEX_HPP_
 #include "IMutex.hpp"
 #include <mutex>
-class Mutex : public IMutex
-{
-public:
+class Mutex : public IMutex {
+   public:
     Mutex();
     ~Mutex();
     void lock();
     void unlock();
     bool trylock();
 
-protected:
+   protected:
     std::mutex _mut;
 
-private:
+   private:
 };
 
 #endif /* !MUTEX_HPP_ */

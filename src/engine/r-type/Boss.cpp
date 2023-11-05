@@ -33,23 +33,28 @@ void Boss::update() {
         } else {
             const auto currentTime = std::chrono::high_resolution_clock::now();
             const auto timeElapsed =
-                std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    currentTime - _lastMoveTime)
                     .count();
             const bool needsDirectionChange = timeElapsed > 2000;
 
             if (needsDirectionChange) {
-                _lastMove = (_lastMove == NONE || _lastMove == LEFT) ? RIGHT : LEFT;
+                _lastMove =
+                    (_lastMove == NONE || _lastMove == LEFT) ? RIGHT : LEFT;
                 _lastMoveTime = currentTime;
             }
 
             double horizontalDisplacement =
-                std::sin(2 * M_PI * timeElapsed / 4000.0);    // Adjust the period (4000) as needed
+                std::sin(2 * M_PI * timeElapsed /
+                         4000.0);  // Adjust the period (4000) as needed
             int horizontalDirection = (_lastMove == LEFT) ? 1 : -1;
             int verticalDirection = 0;
 
-            move(horizontalDirection * horizontalDisplacement, verticalDirection);
+            move(horizontalDirection * horizontalDisplacement,
+                 verticalDirection);
         }
-    } else if (movementType == "Boss2" && RType::instance->getEnemies().size() == 1) {
+    } else if (movementType == "Boss2" &&
+               RType::instance->getEnemies().size() == 1) {
         auto pos = getPosition();
         //make an up and down movement
 
@@ -86,10 +91,11 @@ void Boss::shoot() {
         info.spriteConfigJsonObjectName = getProjectileAsset();
         info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
         std::cout << info.name << std::endl;
-        info.direction =
-            info.name.find("Boss2") ? IEntity::Direction::TRACKING : IEntity::Direction::LEFT;
+        info.direction = info.name.find("Boss2") ? IEntity::Direction::TRACKING
+                                                 : IEntity::Direction::LEFT;
         info.relatedPlayerId = player->getId();
-        RType::instance->createProjectile(info, false, IGame::ProjectileGroup::BOSS);
+        RType::instance->createProjectile(info, false,
+                                          IGame::ProjectileGroup::BOSS);
     }
 }
 

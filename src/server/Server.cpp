@@ -9,7 +9,7 @@
 #include "ServerImpl.hpp"
 
 ServerClass::ServerClass() : _threadPool(1) {
-    MyServer *server = new MyServer(4244, this);
+    MyServer* server = new MyServer(4244, this);
     _server = server;
     _server->StartServer();
 }
@@ -19,7 +19,7 @@ ServerClass::~ServerClass() {
 }
 
 InstanceInfos ServerClass::createInstance(std::string gameName) {
-    Instance *instance = new Instance(_instances.size(), gameName);
+    Instance* instance = new Instance(_instances.size(), gameName);
     instance->setServer(this);
     _instances.push_back(instance);
     InstanceInfos instanceinfos;
@@ -28,7 +28,7 @@ InstanceInfos ServerClass::createInstance(std::string gameName) {
     return instanceinfos;
 }
 
-void ServerClass::interpretEvent(Event &event) {
+void ServerClass::interpretEvent(Event& event) {
     if (event.ACTION_NAME == ACTION::CREATE) {
         std::cout << "CREATE" << std::endl;
     }
@@ -44,8 +44,8 @@ void ServerClass::loop() {
     }
 }
 
-Instance *ServerClass::getInstanceByPort(int port) {
-    for (auto instance: _instances) {
+Instance* ServerClass::getInstanceByPort(int port) {
+    for (auto instance : _instances) {
         if (instance->getPort() == port)
             return instance;
     }
@@ -53,7 +53,7 @@ Instance *ServerClass::getInstanceByPort(int port) {
 }
 
 void ServerClass::deleteInstance(int instanceId) {
-    Instance *instance = _instances[instanceId];
+    Instance* instance = _instances[instanceId];
     _instances.erase(_instances.begin() + instanceId);
     delete instance;
 }

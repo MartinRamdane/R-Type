@@ -29,7 +29,8 @@ class UDPClient {
     std::vector<uint8_t> encodeEvent(Event event);
     std::string getHost() const { return _host; }
     int getPort() const { return _port; }
-    void SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint);
+    void SendAsync(std::vector<uint8_t> data,
+                   boost::asio::ip::udp::endpoint endpoint);
     ThreadSafeQueue<std::vector<uint8_t>>& Incoming() { return _queue; }
     ThreadSafeQueue<Event>& getEventQueue() { return _eventQueue; }
     void processSendQueue();

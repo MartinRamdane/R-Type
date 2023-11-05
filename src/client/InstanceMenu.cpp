@@ -8,11 +8,12 @@
 #include "InstanceMenu.hpp"
 #include "TCPClientImpl.hpp"
 
-InstanceMenu::InstanceMenu(Game *game) : _game(game) {
+InstanceMenu::InstanceMenu(Game* game) : _game(game) {
 
     _view = sf::View(sf::FloatRect(0, 0, 850, 478));
     _openInstanceModal = false;
-    std::shared_ptr <RessourceManagerSFML> ressourceManager = std::make_shared<RessourceManagerSFML>();
+    std::shared_ptr<RessourceManagerSFML> ressourceManager =
+        std::make_shared<RessourceManagerSFML>();
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
@@ -26,14 +27,16 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _texts["title"]->setCharacterSize(20);
     _texts["title"]->setPosition(sf::Vector2f(325, 50));
 
-    _entities["listBackground"] = std::make_unique<EntitySFML>(ressourceManager);
+    _entities["listBackground"] =
+        std::make_unique<EntitySFML>(ressourceManager);
     _entities["listBackground"]->setTexture("listMenu.png");
     _entities["listBackground"]->setPosition(425, 280);
     _entities["listBackground"]->setSpriteScale(1, 1);
     _entities["listBackground"]->setRect(1, 0);
     _entities["listBackground"]->setSpriteOriginToCenter();
 
-    _entities["pCreateInstanceButton"] = std::make_unique<EntitySFML>(ressourceManager);
+    _entities["pCreateInstanceButton"] =
+        std::make_unique<EntitySFML>(ressourceManager);
     _entities["pCreateInstanceButton"]->setTexture("button.png");
     _entities["pCreateInstanceButton"]->setRect(1, 0);
     _entities["pCreateInstanceButton"]->setPosition(220, 100);
@@ -51,7 +54,8 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _entities["pRefreshList"]->setPosition(380, 100);
     _entities["pRefreshList"]->setSpriteScale(1.5, 1.5);
 
-    _entities["modalBackground"] = std::make_unique<EntitySFML>(ressourceManager);
+    _entities["modalBackground"] =
+        std::make_unique<EntitySFML>(ressourceManager);
     _entities["modalBackground"]->setTexture("listMenu.png");
     _entities["modalBackground"]->setRect(1, 0);
     _entities["modalBackground"]->setPosition(425, 280);
@@ -64,7 +68,8 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _texts["modalTitle"]->setCharacterSize(20);
     _texts["modalTitle"]->setPosition(sf::Vector2f(325, 100));
 
-    _entities["modalExitButton"] = std::make_unique<EntitySFML>(ressourceManager);
+    _entities["modalExitButton"] =
+        std::make_unique<EntitySFML>(ressourceManager);
     _entities["modalExitButton"]->setTexture("button.png");
     _entities["modalExitButton"]->setRect(1, 0);
     _entities["modalExitButton"]->setPosition(355, 400);
@@ -89,7 +94,6 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
     _gameSelector["pong"]->setRect(1, 0);
     _gameSelector["pong"]->setPosition(430, 150);
     _gameSelector["pong"]->setSpriteScale(1, 1);
-
 }
 
 InstanceMenu::~InstanceMenu() {
@@ -99,7 +103,7 @@ InstanceMenu::~InstanceMenu() {
     _instanceButtons.clear();
 }
 
-void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
+void InstanceMenu::mainloop(std::shared_ptr<sf::RenderWindow> window) {
     _window = window;
     _windowCreated = true;
     _client = _game->getClient();
@@ -111,19 +115,24 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
         }
         while (_window->pollEvent(event)) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
-            sf::Vector2f worldMousePosition = _window->mapPixelToCoords(mousePosition);
+            sf::Vector2f worldMousePosition =
+                _window->mapPixelToCoords(mousePosition);
             if (event.type == sf::Event::Closed) {
                 _game->setClosed(true);
                 _window->close();
             }
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Left) {
-                for (auto &instanceButton: _instanceButtons) {
+                for (auto& instanceButton : _instanceButtons) {
                     if (instanceButton.second.get()->hasSubmitButton()) {
-                        EntitySFML *submitButton = instanceButton.second.get()->getSubmitButton();
-                        if (submitButton->getSprite().getGlobalBounds().contains(worldMousePosition)) {
+                        EntitySFML* submitButton =
+                            instanceButton.second.get()->getSubmitButton();
+                        if (submitButton->getSprite()
+                                .getGlobalBounds()
+                                .contains(worldMousePosition)) {
                             int port = instanceButton.second.get()->getPort();
-                            std::string serverToJoinInfos = std::to_string(port);
+                            std::string serverToJoinInfos =
+                                std::to_string(port);
                             Event evt = {ACTION::JOIN, serverToJoinInfos};
                             _client->SendEvent(evt);
                             _window->close();
@@ -131,25 +140,31 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
                         }
                     }
                 }
-                if (_entities["pRefreshList"]->getSprite().getGlobalBounds().contains(
-                        worldMousePosition)) {
+                if (_entities["pRefreshList"]
+                        ->getSprite()
+                        .getGlobalBounds()
+                        .contains(worldMousePosition)) {
                     _client->SendEvent({ACTION::LIST, ""});
                 }
 
-                if (_entities["pCreateInstanceButton"]->getSprite().getGlobalBounds().contains(
-                        worldMousePosition)) {
+                if (_entities["pCreateInstanceButton"]
+                        ->getSprite()
+                        .getGlobalBounds()
+                        .contains(worldMousePosition)) {
                     _openInstanceModal = true;
                 }
 
-                if (_openInstanceModal &&
-                    _entities["modalExitButton"]->getSprite().getGlobalBounds().contains(
-                            worldMousePosition)) {
+                if (_openInstanceModal && _entities["modalExitButton"]
+                                              ->getSprite()
+                                              .getGlobalBounds()
+                                              .contains(worldMousePosition)) {
                     _openInstanceModal = false;
                 }
                 if (_openInstanceModal) {
-                    for (auto &gameSelector: _gameSelector) {
-                        if (gameSelector.second->getSprite().getGlobalBounds().contains(
-                                worldMousePosition)) {
+                    for (auto& gameSelector : _gameSelector) {
+                        if (gameSelector.second->getSprite()
+                                .getGlobalBounds()
+                                .contains(worldMousePosition)) {
                             Event evt;
                             evt.ACTION_NAME = ACTION::CREATE;
                             std::string body = gameSelector.first;
@@ -167,7 +182,7 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
         _window->setView(_view);
         _window->draw(_entities["background"]->getSprite());
         int y = 170;
-        for (auto &instanceButton: _instanceButtons) {
+        for (auto& instanceButton : _instanceButtons) {
             instanceButton.second->setPosition(225, y);
             y += 90;
         }
@@ -177,11 +192,11 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
             _window->draw(_entities["pRefreshList"]->getSprite());
             _window->draw(*_texts["pCreateInstanceText"]);
             _window->draw(*_texts["title"]);
-            for (auto &instanceButton: _instanceButtons) {
-                for (auto &entity: instanceButton.second->getEntities()) {
+            for (auto& instanceButton : _instanceButtons) {
+                for (auto& entity : instanceButton.second->getEntities()) {
                     _window->draw(entity.second->getSprite());
                 }
-                for (auto &text: instanceButton.second->getTexts())
+                for (auto& text : instanceButton.second->getTexts())
                     _window->draw(*text.second);
             }
         }
@@ -190,7 +205,7 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
             _window->draw(*_texts["modalTitle"]);
             _window->draw(_entities["modalExitButton"]->getSprite());
             _window->draw(*_texts["modalExitButtonText"]);
-            for (auto &gameSelector: _gameSelector) {
+            for (auto& gameSelector : _gameSelector) {
                 _window->draw(gameSelector.second->getSprite());
             }
         }
@@ -201,5 +216,6 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
 }
 
 void InstanceMenu::addInstanceButton(InstanceType instance, int x, int y) {
-    _instanceButtons[instance.id] = std::make_unique<InstanceButton>(instance, x, y);
+    _instanceButtons[instance.id] =
+        std::make_unique<InstanceButton>(instance, x, y);
 }

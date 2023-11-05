@@ -74,8 +74,8 @@ UDPClient::~UDPClient() {
 }
 
 void UDPClient::connect_to(const std::string& host, int port) {
-    remote_endpoint_ =
-        boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(host), port);
+    remote_endpoint_ = boost::asio::ip::udp::endpoint(
+        boost::asio::ip::address::from_string(host), port);
     sendEvent({ACTION::JOIN, "ok"});
     _port = port;
     _host = host;
@@ -85,7 +85,8 @@ void UDPClient::connect_to(const std::string& host, int port) {
 
 void UDPClient::start_receive() {
     try {
-        socket_.async_receive_from(boost::asio::buffer(temp_buffer), sender_endpoint,
+        socket_.async_receive_from(boost::asio::buffer(temp_buffer),
+                                   sender_endpoint,
                                    [this](const std::error_code, std::size_t) {
                                        _queue.push_back(temp_buffer);
                                        start_receive();
@@ -100,8 +101,7 @@ void UDPClient::HandleMessage(std::vector<uint8_t>& msg) {
         EventHandler evt;
         Event event = evt.decodeMessage(msg);
         _eventQueue.push_back(event);
-    } catch (std::exception& e) {
-    }
+    } catch (std::exception& e) {}
 }
 
 void UDPClient::sendEvent(Event evt) {
@@ -115,7 +115,8 @@ std::vector<uint8_t> UDPClient::encodeEvent(Event event) {
     return evt.encodeMessage();
 }
 
-void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpoint endpoint) {
+void UDPClient::SendAsync(std::vector<uint8_t> data,
+                          boost::asio::ip::udp::endpoint endpoint) {
     boost::asio::post(socket_.get_executor(), [this, data, endpoint]() {
         bool bWritingMessage = !_outQueue.empty();
         _outQueue.push_back({data, endpoint});
@@ -126,16 +127,17 @@ void UDPClient::SendAsync(std::vector<uint8_t> data, boost::asio::ip::udp::endpo
 }
 
 void UDPClient::processSendQueue() {
-    socket_.async_send_to(boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint,
-                          [this](const std::error_code& error, std::size_t) {
-                              if (!error) {
-                                  _outQueue.pop_front();
-                                  if (!_outQueue.empty())
-                                      processSendQueue();
-                              } else {
-                                  std::cout << "[ERROR] sending data" << std::endl;
-                              }
-                          });
+    socket_.async_send_to(
+        boost::asio::buffer(_outQueue.front().data), _outQueue.front().endpoint,
+        [this](const std::error_code& error, std::size_t) {
+            if (!error) {
+                _outQueue.pop_front();
+                if (!_outQueue.empty())
+                    processSendQueue();
+            } else {
+                std::cout << "[ERROR] sending data" << std::endl;
+            }
+        });
 }
 
 void UDPClient::addUnknownEntity(int id) {
@@ -152,7 +154,8 @@ void UDPClient::sendUnknownEntities() {
         _lastSentUnknownEntities = std::chrono::high_resolution_clock::now();
     }
     if (std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::high_resolution_clock::now() - _lastSentUnknownEntities)
+            std::chrono::high_resolution_clock::now() -
+            _lastSentUnknownEntities)
             .count() < 1000) {
         return;
     }

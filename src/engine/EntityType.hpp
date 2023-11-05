@@ -44,7 +44,8 @@ class EntityType {
             entity->update();
     }
     void removeDead() {
-        entities.remove_if([](std::shared_ptr<T> entity) { return entity->isDead(); });
+        entities.remove_if(
+            [](std::shared_ptr<T> entity) { return entity->isDead(); });
     }
     std::list<std::shared_ptr<T>>& getEntities() { return entities; }
     void clear() { entities.clear(); }

@@ -48,10 +48,14 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
             float playerHeight = player->getHeight();
             float playerX = std::get<0>(playerPos);
             float playerY = std::get<1>(playerPos) - playerHeight / 2;
-            float _radius = (_balls[0]->getRadius() * std::get<0>(_balls[0]->getScale())) / 2;
+            float _radius =
+                (_balls[0]->getRadius() * std::get<0>(_balls[0]->getScale())) /
+                2;
 
-            if (ballX + _radius > playerX && ballX - _radius < playerX + playerWidth &&
-                ballY + _radius > playerY && ballY - _radius < playerY + playerHeight) {
+            if (ballX + _radius > playerX &&
+                ballX - _radius < playerX + playerWidth &&
+                ballY + _radius > playerY &&
+                ballY - _radius < playerY + playerHeight) {
                 _balls[0]->hurtPlayer(*_balls[0], *player);
             }
         }
@@ -61,11 +65,13 @@ void Pong::update(ThreadSafeQueue<Event>& events) {
         auto event = events.pop_front();
         switch (event.ACTION_NAME) {
             case ACTION::UP:
-                if (_players.size() > 0 && getId(event) - 1 < (int)_players.size())
+                if (_players.size() > 0 &&
+                    getId(event) - 1 < (int)_players.size())
                     _players[getId(event) - 1]->move(0, -1);
                 break;
             case ACTION::DOWN:
-                if (_players.size() > 0 && getId(event) - 1 < (int)_players.size())
+                if (_players.size() > 0 &&
+                    getId(event) - 1 < (int)_players.size())
                     _players[getId(event) - 1]->move(0, 1);
                 break;
             case ACTION::READY:

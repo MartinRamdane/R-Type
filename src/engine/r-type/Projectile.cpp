@@ -20,7 +20,8 @@ Projectile::~Projectile() {}
 void Projectile::move(float x, float y) {
     if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius ||
         (_x + x * _speed) < 0 + _radius ||
-        (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) ||
+        (_y + y * _speed) >
+            Engine::instance->getWindowHeight() - (_radius / 2) ||
         (_y + y * _speed) < 0 + (_radius / 2)) {
         _isDead = true;
         return;
@@ -55,7 +56,7 @@ void Projectile::trackPlayer() {
         double moveY = std::sin(angle);
 
         // Adjust the speed if needed
-        double speed = 1.0;    // You can adjust this as necessary
+        double speed = 1.0;  // You can adjust this as necessary
 
         // Move the projectile smoothly
         move(speed * moveX, speed * moveY);

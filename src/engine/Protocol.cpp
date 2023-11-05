@@ -11,7 +11,8 @@ Protocol::Protocol() {}
 
 Protocol::~Protocol() {}
 
-std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> entity) {
+std::string Protocol::transformEntityCreateToProtocol(
+    std::shared_ptr<IEntity> entity) {
     auto pos = entity->getPosition();
     auto scale = entity->getScale();
     if (auto test = std::dynamic_pointer_cast<Projectile>(entity)) {
@@ -56,43 +57,52 @@ std::string Protocol::transformEntityCreateToProtocol(std::shared_ptr<IEntity> e
                 break;
         }
         return "ecreate " + std::to_string(entity->getId()) + " " +
-               std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
-               entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
-               std::to_string(std::get<1>(scale)) + " " + entity->getspriteConfigJsonFileName() +
-               " " + entity->getSpriteConfigJsonObjectName() + " " +
-               std::to_string(entity->getSpeed()) + " " + entityDirection + " " +
-               std::to_string(projectile->getDamage());
+               std::to_string(std::get<0>(pos)) + " " +
+               std::to_string(std::get<1>(pos)) + " " + entity->getPath() +
+               " " + std::to_string(std::get<0>(scale)) + " " +
+               std::to_string(std::get<1>(scale)) + " " +
+               entity->getspriteConfigJsonFileName() + " " +
+               entity->getSpriteConfigJsonObjectName() + " " +
+               std::to_string(entity->getSpeed()) + " " + entityDirection +
+               " " + std::to_string(projectile->getDamage());
     }
     if (std::dynamic_pointer_cast<Enemy>(entity)) {
         auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
         if (enemy->getMovementType() == "Linear") {
             return "ecreate " + std::to_string(entity->getId()) + " " +
-                   std::to_string(std::get<0>(pos)) + " " + std::to_string(std::get<1>(pos)) + " " +
-                   entity->getPath() + " " + std::to_string(std::get<0>(scale)) + " " +
+                   std::to_string(std::get<0>(pos)) + " " +
+                   std::to_string(std::get<1>(pos)) + " " + entity->getPath() +
+                   " " + std::to_string(std::get<0>(scale)) + " " +
                    std::to_string(std::get<1>(scale)) + " " +
                    entity->getspriteConfigJsonFileName() + " " +
                    entity->getSpriteConfigJsonObjectName() + " " +
                    std::to_string(entity->getSpeed()) + " " + "left";
         }
     }
-    return "ecreate " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) +
-           " " + std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " +
-           std::to_string(std::get<0>(scale)) + " " + std::to_string(std::get<1>(scale)) + " " +
-           entity->getspriteConfigJsonFileName() + " " + entity->getSpriteConfigJsonObjectName() +
-           " " + std::to_string(entity->getSpeed()) + " " + "none";
+    return "ecreate " + std::to_string(entity->getId()) + " " +
+           std::to_string(std::get<0>(pos)) + " " +
+           std::to_string(std::get<1>(pos)) + " " + entity->getPath() + " " +
+           std::to_string(std::get<0>(scale)) + " " +
+           std::to_string(std::get<1>(scale)) + " " +
+           entity->getspriteConfigJsonFileName() + " " +
+           entity->getSpriteConfigJsonObjectName() + " " +
+           std::to_string(entity->getSpeed()) + " " + "none";
 }
 
-std::string Protocol::transformTextCreateToProtocol(std::shared_ptr<IEntity> entity) {
+std::string Protocol::transformTextCreateToProtocol(
+    std::shared_ptr<IEntity> entity) {
     auto pos = entity->getPosition();
     if (entity->getText() != entity->getOldText() || !entity->isCreated()) {
-        return "etext " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) +
-               " " + std::to_string(std::get<1>(pos)) + " " + entity->getText() + " " +
-               std::to_string(std::get<0>(entity->getScale())) + " white";
+        return "etext " + std::to_string(entity->getId()) + " " +
+               std::to_string(std::get<0>(pos)) + " " +
+               std::to_string(std::get<1>(pos)) + " " + entity->getText() +
+               " " + std::to_string(std::get<0>(entity->getScale())) + " white";
     }
     return "";
 }
 
-std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> entity) {
+std::string Protocol::transformEntityMoveToProtocol(
+    std::shared_ptr<IEntity> entity) {
     const auto pos = entity->getPosition();
     const auto oldPos = entity->getOldPosition();
     if (std::dynamic_pointer_cast<Enemy>(entity)) {
@@ -102,11 +112,16 @@ std::string Protocol::transformEntityMoveToProtocol(std::shared_ptr<IEntity> ent
         }
     }
     IEntity::Direction direction = entity->getDirection();
-    if ((std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) ||
-        (std::dynamic_pointer_cast<Projectile>(entity) && direction != IEntity::Direction::LEFT &&
-        direction != IEntity::Direction::RIGHT && direction != IEntity::Direction::UP && direction != IEntity::Direction::DOWN))
-        return "emove " + std::to_string(entity->getId()) + " " + std::to_string(std::get<0>(pos)) +
-               " " + std::to_string(std::get<1>(pos));
+    if ((std::get<0>(pos) != std::get<0>(oldPos) ||
+         std::get<1>(pos) != std::get<1>(oldPos)) ||
+        (std::dynamic_pointer_cast<Projectile>(entity) &&
+         direction != IEntity::Direction::LEFT &&
+         direction != IEntity::Direction::RIGHT &&
+         direction != IEntity::Direction::UP &&
+         direction != IEntity::Direction::DOWN))
+        return "emove " + std::to_string(entity->getId()) + " " +
+               std::to_string(std::get<0>(pos)) + " " +
+               std::to_string(std::get<1>(pos));
     return "";
 }
 
@@ -116,8 +131,8 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(
     for (auto entityType : entities) {
         for (auto entity : entityType->getEntities()) {
             if (entity->isSound()) {
-                protocol.push_back("esound " + std::to_string(entity->getId()) + " " +
-                                   entity->getPath());
+                protocol.push_back("esound " + std::to_string(entity->getId()) +
+                                   " " + entity->getPath());
                 continue;
             }
             if (entity->getText() != "") {
@@ -147,8 +162,10 @@ std::vector<std::string> Protocol::transformEntitiesToProtocol(
     return protocol;
 }
 
-std::string Protocol::transformWindowCreateToProtocol(std::string title, int width, int height) {
-    return "wcreate " + title + " " + std::to_string(width) + " " + std::to_string(height);
+std::string Protocol::transformWindowCreateToProtocol(std::string title,
+                                                      int width, int height) {
+    return "wcreate " + title + " " + std::to_string(width) + " " +
+           std::to_string(height);
 }
 
 std::vector<std::string> Protocol::transformAllEntitiesToCreate(
@@ -167,7 +184,8 @@ std::vector<std::string> Protocol::transformAllEntitiesToCreate(
             } else {
                 protocol.push_back(transformEntityCreateToProtocol(entity));
                 if (entity->getDirection() == IEntity::Direction::LEFT)
-                    protocol.push_back("eflip " + std::to_string(entity->getId()));
+                    protocol.push_back("eflip " +
+                                       std::to_string(entity->getId()));
             }
         }
     }

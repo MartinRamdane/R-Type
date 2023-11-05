@@ -29,7 +29,7 @@ class InstanceMenu;
 class IDisplay;
 
 class Game {
-public:
+   public:
     enum Lib {
         SDL,
         SFML,
@@ -39,9 +39,9 @@ public:
 
     ~Game();
 
-    void run(std::shared_ptr <sf::RenderWindow> window);
+    void run(std::shared_ptr<sf::RenderWindow> window);
 
-    void update(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
+    void update(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy);
 
     void handleEvent();
 
@@ -85,11 +85,11 @@ public:
 
     void checkEntities(int nb);
 
-    void animate(std::map<int, std::shared_ptr<IEntity>> *entitiesCopy);
+    void animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy);
 
-    InstanceMenu *getInstanceMenu() { return _instanceMenu.get(); };
+    InstanceMenu* getInstanceMenu() { return _instanceMenu.get(); };
 
-    std::shared_ptr <TCPClientImpl> getClient() { return _client; };
+    std::shared_ptr<TCPClientImpl> getClient() { return _client; };
 
     void sendQuitEvent();
 
@@ -99,13 +99,13 @@ public:
 
     void setClosed(bool state) { closed = state; };
 
-private:
+   private:
     sf::View _view;
     sf::Clock _clock;
-    std::shared_ptr <TCPClientImpl> _client;
-    std::shared_ptr <UDPClient> _udpClient;
+    std::shared_ptr<TCPClientImpl> _client;
+    std::shared_ptr<UDPClient> _udpClient;
     int _event_indicator;
-    std::queue <std::vector<uint8_t>> _queue;
+    std::queue<std::vector<uint8_t>> _queue;
     ThreadPool _threadPool;
     bool isTCPClientConnected = false;
     bool isUDPClientConnected = false;
@@ -118,10 +118,10 @@ private:
     int _playerId;
     std::string _host;
     ProgressBar _progressBar;
-    std::unique_ptr <IDisplay> _display;
+    std::unique_ptr<IDisplay> _display;
     Lib _lib;
     std::mutex entityMutex;
     std::vector<int> _entitiesToRemove;
     Parser parseRef;
-    std::unique_ptr <InstanceMenu> _instanceMenu;
+    std::unique_ptr<InstanceMenu> _instanceMenu;
 };

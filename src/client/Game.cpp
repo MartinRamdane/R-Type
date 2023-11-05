@@ -22,14 +22,12 @@ Game::Game() : _threadPool(3) {
     _instanceMenu = std::make_unique<InstanceMenu>(this);
 }
 
-Game::~Game() {
-}
+Game::~Game() {}
 
 void Game::setLibToUse() {
     if (_lib == Lib::SDL) {
         _display = std::make_unique<DisplaySDL>();
-    }
-    else if (_lib == Lib::SFML) {
+    } else if (_lib == Lib::SFML) {
         _display = std::make_unique<DisplaySFML>();
     }
 }
@@ -51,7 +49,8 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             window->create(sf::VideoMode(1920, 1080), "Menu");
             window->setFramerateLimit(60);
         }
-        if (isTCPClientConnected && !isUDPClientConnected && !isUDPClientConnecting) {
+        if (isTCPClientConnected && !isUDPClientConnected &&
+            !isUDPClientConnecting) {
             std::cout << "instance menu" << std::endl;
             if (!sendListEvent) {
                 Event evt = {ACTION::LIST, ""};
@@ -90,7 +89,8 @@ void Game::update(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
     if (_entitiesToRemove.empty() == false) {
         std::lock_guard<std::mutex> lock(entityMutex);
         {
-            for (auto it = _entitiesToRemove.begin(); it != _entitiesToRemove.end(); it++) {
+            for (auto it = _entitiesToRemove.begin();
+                 it != _entitiesToRemove.end(); it++) {
                 _entities.erase((*it) * -1);
             }
             _entitiesToRemove.clear();
@@ -116,7 +116,8 @@ void Game::update(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
 }
 
 void Game::animate(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
-    std::map<int, std::shared_ptr<IEntity>>::iterator it = entitiesCopy->begin();
+    std::map<int, std::shared_ptr<IEntity>>::iterator it =
+        entitiesCopy->begin();
     while (it != entitiesCopy->end()) {
         if (it->second->getEventForm() == "loop")
             it->second->animateSprite(0, 50);
@@ -225,7 +226,8 @@ void Game::addEntity(IEntity::EntityInfos entityInfos) {
         //     _progressBar.setProgress(percent - 10);
         // }
         // else
-        _entities.at(entityInfos.id)->setNextPos(entityInfos.nextX, entityInfos.nextY);
+        _entities.at(entityInfos.id)
+            ->setNextPos(entityInfos.nextX, entityInfos.nextY);
         if (entityInfos.type == IEntity::Type::TEXT)
             _entities.at(entityInfos.id)->setTextString(entityInfos.text);
     } else {
@@ -271,8 +273,8 @@ void Game::updateSound(Event evt) {
     IEntity::EntityInfos entityInfos = parseRef.parseMessage(evt);
     if (findEntity(entityInfos.id))
         return;
-    _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(entityInfos.id,
-                                                              _display->createEntity(entityInfos)));
+    _entities.insert(std::pair<int, std::shared_ptr<IEntity>>(
+        entityInfos.id, _display->createEntity(entityInfos)));
 }
 
 void Game::joinGame(Event evt) {

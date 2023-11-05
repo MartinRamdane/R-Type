@@ -27,7 +27,8 @@ Engine::~Engine() {
 
 void Engine::update() {
     for (auto& collider : colliders)
-        collider.type1->collideAll(collider.type2, collider.squaredRadius, collider.func);
+        collider.type1->collideAll(collider.type2, collider.squaredRadius,
+                                   collider.func);
     for (auto& entity : entities)
         entity->updateAll();
 }

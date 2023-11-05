@@ -20,7 +20,8 @@ Character::~Character() {}
 void Character::move(float x, float y) {
     if ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius ||
         (_x + x * _speed) < 0 + _radius ||
-        (_y + y * _speed) > Engine::instance->getWindowHeight() - (_radius / 2) ||
+        (_y + y * _speed) >
+            Engine::instance->getWindowHeight() - (_radius / 2) ||
         (_y + y * _speed) < 0 + (_radius / 2))
         return;
     setOldPosition(_x, _y);
@@ -64,8 +65,9 @@ void Character::shoot() {
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = getProjectileAsset();
     info.direction = _direction;
-    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
-                                      IGame::ProjectileGroup::PLAYER);
+    RType::instance->createProjectile(
+        info, _direction == IEntity::LEFT ? true : false,
+        IGame::ProjectileGroup::PLAYER);
 
     RType::instance->createSound("shootSpaceship.ogg");
 }

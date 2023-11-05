@@ -24,17 +24,20 @@ void Parser::getConfig(std::string configpath, std::string type,
         if (_jsons.find(configpath) == _jsons.end())
             _jsons[configpath] = jsonParser.readFile(configpath);
         int nbRect = jsonParser.get<int>(_jsons[configpath], type + ".nb_rect");
-        int initRect = jsonParser.get<int>(_jsons[configpath], type + ".rect_init");
+        int initRect =
+            jsonParser.get<int>(_jsons[configpath], type + ".rect_init");
         entityInfos.nbRect = nbRect;
         entityInfos.initRect = initRect;
-        entityInfos.eventForm = jsonParser.get<std::string>(_jsons[configpath], type + ".form");
+        entityInfos.eventForm =
+            jsonParser.get<std::string>(_jsons[configpath], type + ".form");
     } catch (std::exception& e) {
         std::cerr << "ERROR : " << e.what() << std::endl;
     }
     entityInfos.objectType = type;
 }
 
-IEntity::EntityInfos Parser::addEntity(std::map<std::string, std::string> value) {
+IEntity::EntityInfos Parser::addEntity(
+    std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.type = IEntity::Type::SPRITE;
@@ -53,7 +56,8 @@ IEntity::EntityInfos Parser::addEntity(std::map<std::string, std::string> value)
     return entityInfos;
 }
 
-IEntity::EntityInfos Parser::addEntityText(std::map<std::string, std::string> value) {
+IEntity::EntityInfos Parser::addEntityText(
+    std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.type = IEntity::Type::TEXT;
@@ -65,13 +69,15 @@ IEntity::EntityInfos Parser::addEntityText(std::map<std::string, std::string> va
     return entityInfos;
 }
 
-IEntity::EntityInfos Parser::removeEntity(std::map<std::string, std::string> value) {
+IEntity::EntityInfos Parser::removeEntity(
+    std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = -std::stoi(value["id"]);
     return entityInfos;
 }
 
-IEntity::EntityInfos Parser::modifyPosEntity(std::map<std::string, std::string> value) {
+IEntity::EntityInfos Parser::modifyPosEntity(
+    std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.nextX = std::stof(value["x"]);
@@ -121,7 +127,8 @@ std::string Parser::setKeyText(std::string key, int i) {
     return key;
 }
 
-IEntity::EntityInfos Parser::hitEntity(std::map<std::string, std::string> value) {
+IEntity::EntityInfos Parser::hitEntity(
+    std::map<std::string, std::string> value) {
     IEntity::EntityInfos entityInfos;
     entityInfos.id = std::stoi(value["id"]);
     entityInfos.hit = true;

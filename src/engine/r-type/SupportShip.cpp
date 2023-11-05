@@ -7,7 +7,8 @@
 
 #include "SupportShip.hpp"
 
-SupportShip::SupportShip(EntityInfo info, int relatedPlayerId) : Character(info) {
+SupportShip::SupportShip(EntityInfo info, int relatedPlayerId)
+    : Character(info) {
     JsonParser parser;
     nlohmann::json json = parser.readFile("SupportShip.rType.json");
     setShootAsset(parser.get<std::string>(json, "ProjectileType"));
@@ -36,7 +37,8 @@ SupportShip::~SupportShip() {}
 void SupportShip::update() {
     if (_relatedPlayerId == -1) {
         for (auto& it : RType::instance->getPlayers()) {
-            if (it->AEntity::getEntityHasCollided() && !it->AEntity::getHasSupport() &&
+            if (it->AEntity::getEntityHasCollided() &&
+                !it->AEntity::getHasSupport() &&
                 AEntity::getEntityHasCollided()) {
                 _relatedPlayerId = it->getId();
                 RType::instance->setPlayerHasSupport(_relatedPlayerId, true);
@@ -58,7 +60,8 @@ void SupportShip::update() {
     auto pos = player->getPosition();
     int x = std::get<0>(pos);
     int y = std::get<1>(pos);
-    if (player->getEntityHasCollided() == true && AEntity::getEntityHasCollided() == false) {
+    if (player->getEntityHasCollided() == true &&
+        AEntity::getEntityHasCollided() == false) {
         player->setEntitiesHasCollided(false);
         setEntitiesHasCollided(false);
     }
@@ -81,7 +84,8 @@ void SupportShip::update() {
 
     if (playerDirection == IEntity::LEFT && _direction == IEntity::RIGHT) {
         flip();
-    } else if (playerDirection == IEntity::RIGHT && _direction == IEntity::LEFT) {
+    } else if (playerDirection == IEntity::RIGHT &&
+               _direction == IEntity::LEFT) {
         flip();
     }
 
@@ -124,11 +128,13 @@ void SupportShip::shoot() {
     info.spriteConfigJsonObjectName = getProjectileAsset();
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.direction = _direction;
-    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
-                                      IGame::ProjectileGroup::SUPPORT);
+    RType::instance->createProjectile(
+        info, _direction == IEntity::LEFT ? true : false,
+        IGame::ProjectileGroup::SUPPORT);
     info.y = info.y + 4;
-    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
-                                      IGame::ProjectileGroup::SUPPORT);
+    RType::instance->createProjectile(
+        info, _direction == IEntity::LEFT ? true : false,
+        IGame::ProjectileGroup::SUPPORT);
     RType::instance->createSound("dropperShoot.ogg");
 }
 

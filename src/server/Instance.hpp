@@ -19,17 +19,17 @@
 class ServerClass;
 
 class Instance {
-public:
+   public:
     Instance(int _id, std::string gameName);
 
-    Instance(const Instance &) = delete;
+    Instance(const Instance&) = delete;
 
-    ~Instance();    // destroy the instance if nbPlayers === 0
+    ~Instance();  // destroy the instance if nbPlayers === 0
     int getId() const { return _id; }
 
-    UDPServer *getUDPServer() { return _udpServer; }
+    UDPServer* getUDPServer() { return _udpServer; }
 
-    void setServer(ServerClass *server) { _serverRef = server; }
+    void setServer(ServerClass* server) { _serverRef = server; }
 
     int getNbPlayers() const { return _udpServer->getNbPlayers(); }
 
@@ -41,15 +41,13 @@ public:
 
     std::string getGameName() const { return _gameName; }
 
-    Core *getCore() { return _core; }
+    Core* getCore() { return _core; }
 
     void MessagesLoop();
 
     void EventLoop();
 
-    void addAction(Event event) {
-        _events.push_back(event);
-    }
+    void addAction(Event event) { _events.push_back(event); }
 
     void checkEntitiesInClients();
 
@@ -57,8 +55,8 @@ public:
 
     void setPlayerIdToGive(int id) { _playerIdToGive = id; }
 
-protected:
-private:
+   protected:
+   private:
     int _id;
     int _port;
     int _nbPlayersMax;
@@ -66,10 +64,10 @@ private:
     std::string _name;
     std::string _gameName;
     boost::asio::io_service _io_service;
-    UDPServer *_udpServer;
-    ServerClass *_serverRef;
+    UDPServer* _udpServer;
+    ServerClass* _serverRef;
     ThreadPool _threadPool;
-    Core *_core;
+    Core* _core;
     ThreadSafeQueue<Event> _events;
     JsonParser _jsonParser;
     std::chrono::high_resolution_clock::time_point _lastCheck;

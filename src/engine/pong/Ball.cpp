@@ -28,13 +28,15 @@ void Ball::move(float x, float y) {
         dirY = -dirY;
         Pong::instance->createSound("pongBallHitWall.ogg");
     }
-    if (((_y + y * _speed) > Engine::instance->getWindowHeight() - _radius) && dirY > 0) {
+    if (((_y + y * _speed) > Engine::instance->getWindowHeight() - _radius) &&
+        dirY > 0) {
         y = -y;
         dirY = -dirY;
         Pong::instance->createSound("pongBallHitWall.ogg");
     }
     if (((_x + x * _speed) < _radius / 2) ||
-        ((_x + x * _speed) > Engine::instance->getWindowWidth() - _radius / 2)) {
+        ((_x + x * _speed) >
+         Engine::instance->getWindowWidth() - _radius / 2)) {
         Pong::instance->createSound("pongBallOut.ogg");
         kill();
     }

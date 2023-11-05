@@ -7,7 +7,9 @@
 
 #include "Input.hpp"
 
-Input::Input(std::string texture, std::string textureHover, std::string textValue, std::shared_ptr<RessourceManagerSFML> ressourceManager)
+Input::Input(std::string texture, std::string textureHover,
+             std::string textValue,
+             std::shared_ptr<RessourceManagerSFML> ressourceManager)
     : _textureFile(texture), _textureFileHover(textureHover) {
     _textValue = textValue;
     this->_font.loadFromFile(std::string("font/pixel.ttf"));
@@ -52,7 +54,8 @@ void Input::setSpriteScale(sf::Vector2f scale) {
 }
 
 void Input::setSpriteOrigin() {
-    sf::Vector2f size = sf::Vector2f(_texture.getSize().x, _texture.getSize().y);
+    sf::Vector2f size =
+        sf::Vector2f(_texture.getSize().x, _texture.getSize().y);
     this->_sprite.setOrigin(size.x / 2, size.y / 2);
 }
 
@@ -100,11 +103,13 @@ void Input::eventHandler(sf::Event event, sf::RenderWindow& window) {
             this->_value.size() > 0)
             this->_value = this->_value.substr(0, this->_value.size() - 1);
         if (event.type == sf::Event::TextEntered && event.text.unicode == '.' &&
-            _text.getGlobalBounds().width < _sprite.getGlobalBounds().width - 30)
+            _text.getGlobalBounds().width <
+                _sprite.getGlobalBounds().width - 30)
             this->_value += ".";
-        else if (event.type == sf::Event::TextEntered && event.text.unicode >= 32 &&
-                 event.text.unicode <= 126 &&
-                 _text.getGlobalBounds().width < _sprite.getGlobalBounds().width - 30) {
+        else if (event.type == sf::Event::TextEntered &&
+                 event.text.unicode >= 32 && event.text.unicode <= 126 &&
+                 _text.getGlobalBounds().width <
+                     _sprite.getGlobalBounds().width - 30) {
             this->_value += event.text.unicode;
         }
     }
@@ -119,8 +124,9 @@ void Input::update() {
         cursorVisible = !cursorVisible;
         clock.restart();
     }
-    cursor.setPosition(sf::Vector2f(_text.getPosition().x + _text.getLocalBounds().width + 5,
-                                    _text.getPosition().y));
+    cursor.setPosition(
+        sf::Vector2f(_text.getPosition().x + _text.getLocalBounds().width + 5,
+                     _text.getPosition().y));
 }
 
 sf::Vector2f Input::getSpritePosition() {
@@ -128,20 +134,28 @@ sf::Vector2f Input::getSpritePosition() {
 }
 
 std::map<sf::Keyboard::Key, std::string> Input::keys = {
-    {sf::Keyboard::A, "a"},       {sf::Keyboard::B, "b"},       {sf::Keyboard::C, "c"},
-    {sf::Keyboard::D, "d"},       {sf::Keyboard::E, "e"},       {sf::Keyboard::F, "f"},
-    {sf::Keyboard::G, "g"},       {sf::Keyboard::H, "h"},       {sf::Keyboard::I, "i"},
-    {sf::Keyboard::J, "j"},       {sf::Keyboard::K, "k"},       {sf::Keyboard::L, "l"},
-    {sf::Keyboard::M, "m"},       {sf::Keyboard::N, "n"},       {sf::Keyboard::O, "o"},
-    {sf::Keyboard::P, "p"},       {sf::Keyboard::Q, "q"},       {sf::Keyboard::R, "r"},
-    {sf::Keyboard::S, "s"},       {sf::Keyboard::T, "t"},       {sf::Keyboard::U, "u"},
-    {sf::Keyboard::V, "v"},       {sf::Keyboard::W, "w"},       {sf::Keyboard::X, "x"},
-    {sf::Keyboard::Y, "y"},       {sf::Keyboard::Z, "z"},       {sf::Keyboard::Space, " "},
-    {sf::Keyboard::Num0, "0"},    {sf::Keyboard::Num1, "1"},    {sf::Keyboard::Num2, "2"},
-    {sf::Keyboard::Num3, "3"},    {sf::Keyboard::Num4, "4"},    {sf::Keyboard::Quote, "4"},
-    {sf::Keyboard::Num5, "5"},    {sf::Keyboard::Num6, "6"},    {sf::Keyboard::Num7, "7"},
-    {sf::Keyboard::Num8, "8"},    {sf::Keyboard::Num9, "9"},    {sf::Keyboard::Numpad0, "0"},
-    {sf::Keyboard::Numpad1, "1"}, {sf::Keyboard::Numpad2, "2"}, {sf::Keyboard::Numpad3, "3"},
-    {sf::Keyboard::Numpad4, "4"}, {sf::Keyboard::Numpad5, "5"}, {sf::Keyboard::Numpad6, "6"},
-    {sf::Keyboard::Numpad7, "7"}, {sf::Keyboard::Numpad8, "8"}, {sf::Keyboard::Numpad9, "9"},
+    {sf::Keyboard::A, "a"},       {sf::Keyboard::B, "b"},
+    {sf::Keyboard::C, "c"},       {sf::Keyboard::D, "d"},
+    {sf::Keyboard::E, "e"},       {sf::Keyboard::F, "f"},
+    {sf::Keyboard::G, "g"},       {sf::Keyboard::H, "h"},
+    {sf::Keyboard::I, "i"},       {sf::Keyboard::J, "j"},
+    {sf::Keyboard::K, "k"},       {sf::Keyboard::L, "l"},
+    {sf::Keyboard::M, "m"},       {sf::Keyboard::N, "n"},
+    {sf::Keyboard::O, "o"},       {sf::Keyboard::P, "p"},
+    {sf::Keyboard::Q, "q"},       {sf::Keyboard::R, "r"},
+    {sf::Keyboard::S, "s"},       {sf::Keyboard::T, "t"},
+    {sf::Keyboard::U, "u"},       {sf::Keyboard::V, "v"},
+    {sf::Keyboard::W, "w"},       {sf::Keyboard::X, "x"},
+    {sf::Keyboard::Y, "y"},       {sf::Keyboard::Z, "z"},
+    {sf::Keyboard::Space, " "},   {sf::Keyboard::Num0, "0"},
+    {sf::Keyboard::Num1, "1"},    {sf::Keyboard::Num2, "2"},
+    {sf::Keyboard::Num3, "3"},    {sf::Keyboard::Num4, "4"},
+    {sf::Keyboard::Quote, "4"},   {sf::Keyboard::Num5, "5"},
+    {sf::Keyboard::Num6, "6"},    {sf::Keyboard::Num7, "7"},
+    {sf::Keyboard::Num8, "8"},    {sf::Keyboard::Num9, "9"},
+    {sf::Keyboard::Numpad0, "0"}, {sf::Keyboard::Numpad1, "1"},
+    {sf::Keyboard::Numpad2, "2"}, {sf::Keyboard::Numpad3, "3"},
+    {sf::Keyboard::Numpad4, "4"}, {sf::Keyboard::Numpad5, "5"},
+    {sf::Keyboard::Numpad6, "6"}, {sf::Keyboard::Numpad7, "7"},
+    {sf::Keyboard::Numpad8, "8"}, {sf::Keyboard::Numpad9, "9"},
 };

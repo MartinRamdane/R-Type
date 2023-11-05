@@ -31,7 +31,8 @@ void Enemy::update() {
     } else if (movementType == "Wave") {
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed =
-            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime -
+                                                                  _lastMoveTime)
                 .count();
         const bool needsDirectionChange = timeElapsed > 2000;
 
@@ -48,7 +49,8 @@ void Enemy::update() {
     } else if (movementType == "Random") {
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed =
-            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime -
+                                                                  _lastMoveTime)
                 .count();
         const bool needsDirectionChange = timeElapsed > 2000;
 
@@ -99,7 +101,8 @@ void Enemy::update() {
     } else if (movementType == "UpAndDown") {
         const auto currentTime = std::chrono::high_resolution_clock::now();
         const auto timeElapsed =
-            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _lastMoveTime)
+            std::chrono::duration_cast<std::chrono::milliseconds>(currentTime -
+                                                                  _lastMoveTime)
                 .count();
         const bool needsDirectionChange = timeElapsed > 2000;
 
@@ -137,8 +140,9 @@ void Enemy::shoot() {
     }
     info.direction = IEntity::LEFT;
 
-    RType::instance->createProjectile(info, _direction == IEntity::LEFT ? true : false,
-                                      IGame::ProjectileGroup::ENEMY);
+    RType::instance->createProjectile(
+        info, _direction == IEntity::LEFT ? true : false,
+        IGame::ProjectileGroup::ENEMY);
 }
 
 void Enemy::move(float x, float y) {

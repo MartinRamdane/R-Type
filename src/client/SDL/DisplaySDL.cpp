@@ -22,7 +22,9 @@ DisplaySDL::~DisplaySDL() {
 }
 
 void DisplaySDL::createWindow(std::string name, int x, int y) {
-    _window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
+    _window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED,
+                               SDL_WINDOWPOS_CENTERED, 1920, 1080,
+                               SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     _ressourceManager = std::make_shared<RessourceManagerSDL>(_renderer);
     SDL_RenderSetLogicalSize(_renderer, x, y);
@@ -40,7 +42,7 @@ void DisplaySDL::draw(std::map<int, std::shared_ptr<IEntity>>* _entities) {
 }
 
 void DisplaySDL::handleEvent() {
-    
+
     while (SDL_PollEvent(&_event) != 0) {
         if (_event.type == SDL_QUIT) {
             _events.push_back("close");
@@ -81,14 +83,17 @@ std::vector<std::string> DisplaySDL::getEvents() {
     return events;
 }
 
-std::shared_ptr<IEntity> DisplaySDL::createEntity(IEntity::EntityInfos entityInfos) {
+std::shared_ptr<IEntity> DisplaySDL::createEntity(
+    IEntity::EntityInfos entityInfos) {
     if (entityInfos.type == IEntity::Type::SPRITE)
         return createSprite(entityInfos);
     return createText(entityInfos);
 }
 
-std::shared_ptr<IEntity> DisplaySDL::createSprite(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<EntitySDL> entity = std::make_shared<EntitySDL>(_ressourceManager);
+std::shared_ptr<IEntity> DisplaySDL::createSprite(
+    IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<EntitySDL> entity =
+        std::make_shared<EntitySDL>(_ressourceManager);
     entity->setTexture(entityInfos.path);
     entity->setRect(entityInfos.nbRect, entityInfos.initRect);
     entity->setSpriteScale(entityInfos.scaleX, entityInfos.scaleY);
@@ -103,8 +108,10 @@ std::shared_ptr<IEntity> DisplaySDL::createSprite(IEntity::EntityInfos entityInf
     return entity;
 }
 
-std::shared_ptr<IEntity> DisplaySDL::createText(IEntity::EntityInfos entityInfos) {
-    std::shared_ptr<EntitySDL> entity = std::make_shared<EntitySDL>(_ressourceManager);
+std::shared_ptr<IEntity> DisplaySDL::createText(
+    IEntity::EntityInfos entityInfos) {
+    std::shared_ptr<EntitySDL> entity =
+        std::make_shared<EntitySDL>(_ressourceManager);
     entity->setTextInfo(entityInfos.size, entityInfos.color);
     entity->setFont();
     entity->setTextString(entityInfos.text);

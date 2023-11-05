@@ -15,10 +15,10 @@
 class Game;
 
 class TCPClientImpl : public TCPClient<ACTION> {
-public:
+   public:
     void SendEvent(Event evt) {
         message<ACTION> msg;
-        std::vector <uint8_t> data = encodeEvent(evt);
+        std::vector<uint8_t> data = encodeEvent(evt);
         msg.header.id = evt.ACTION_NAME;
         msg.header.size = data.size();
         msg.body.resize(data.size());
@@ -26,18 +26,18 @@ public:
         Send(msg);
     }
 
-    void setGame(Game *game) { _game = game; }
+    void setGame(Game* game) { _game = game; }
 
-    std::vector <uint8_t> encodeEvent(Event event) {
+    std::vector<uint8_t> encodeEvent(Event event) {
         EventHandler evt;
         evt.addEvent(event.ACTION_NAME, event.body);
         return evt.encodeMessage();
     }
 
-    void HandleMessage(message<ACTION> &msg);
+    void HandleMessage(message<ACTION>& msg);
 
-private:
-    Game *_game;
+   private:
+    Game* _game;
 };
 
 #endif /* !TCPCLIENTIMPL_HPP_ */

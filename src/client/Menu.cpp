@@ -15,9 +15,11 @@ Menu::Menu(std::shared_ptr<Game>& game) : _game(game) {
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
 
-    std::shared_ptr<RessourceManagerSFML> _ressourceManagerSFML = std::make_shared<RessourceManagerSFML>();
+    std::shared_ptr<RessourceManagerSFML> _ressourceManagerSFML =
+        std::make_shared<RessourceManagerSFML>();
 
-    _entities["background"] = std::make_unique<EntitySFML>(_ressourceManagerSFML);
+    _entities["background"] =
+        std::make_unique<EntitySFML>(_ressourceManagerSFML);
     _entities["background"]->setTexture("background.png");
     _entities["background"]->setPosition(0, 0);
 
@@ -27,25 +29,29 @@ Menu::Menu(std::shared_ptr<Game>& game) : _game(game) {
     _entities["logo"]->setRect(1, 0);
     _entities["logo"]->setSpriteOriginToCenter();
 
-    _entities["connectButton"] = std::make_unique<EntitySFML>(_ressourceManagerSFML);
+    _entities["connectButton"] =
+        std::make_unique<EntitySFML>(_ressourceManagerSFML);
     _entities["connectButton"]->setTexture("button.png");
     _entities["connectButton"]->setPosition(425, 380);
     _entities["connectButton"]->setSpriteScale(2.5, 2.5);
     _entities["connectButton"]->setRect(1, 0);
     _entities["connectButton"]->setSpriteOriginToCenter();
 
-    _inputs["nameInput"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                   "assets/cenario/TextInputHover.png", "Name", _ressourceManagerSFML);
+    _inputs["nameInput"] = std::make_unique<Input>(
+        "assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png",
+        "Name", _ressourceManagerSFML);
     _inputs["nameInput"]->setSpritePosition(sf::Vector2f(300, 170));
     _inputs["nameInput"]->setSpriteScale(sf::Vector2f(2.5, 2.5));
 
-    _inputs["portInput"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                   "assets/cenario/TextInputHover.png", "Port", _ressourceManagerSFML);
+    _inputs["portInput"] = std::make_unique<Input>(
+        "assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png",
+        "Port", _ressourceManagerSFML);
     _inputs["portInput"]->setSpritePosition(sf::Vector2f(300, 230));
     _inputs["portInput"]->setSpriteScale(sf::Vector2f(2.5, 2.5));
 
-    _inputs["ipInput"] = std::make_unique<Input>("assets/cenario/TextInput.png",
-                                                 "assets/cenario/TextInputHover.png", "IP Adress", _ressourceManagerSFML);
+    _inputs["ipInput"] = std::make_unique<Input>(
+        "assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png",
+        "IP Adress", _ressourceManagerSFML);
     _inputs["ipInput"]->setSpritePosition(sf::Vector2f(300, 290));
     _inputs["ipInput"]->setSpriteScale(sf::Vector2f(2.5, 2.5));
 
@@ -55,8 +61,9 @@ Menu::Menu(std::shared_ptr<Game>& game) : _game(game) {
     _texts["connect"]->setCharacterSize(20);
     _texts["connect"]->setFillColor(sf::Color::White);
     _texts["connect"]->setPosition(sf::Vector2f(425, 375));
-    _texts["connect"]->setOrigin(sf::Vector2f(_texts["connect"]->getLocalBounds().width / 2,
-                                              _texts["connect"]->getLocalBounds().height / 2));
+    _texts["connect"]->setOrigin(
+        sf::Vector2f(_texts["connect"]->getLocalBounds().width / 2,
+                     _texts["connect"]->getLocalBounds().height / 2));
 
     _texts["ErrorConnexion"] = std::make_unique<sf::Text>();
     _texts["ErrorConnexion"]->setFont(_font);
@@ -79,7 +86,8 @@ std::shared_ptr<sf::RenderWindow> Menu::mainloop() {
                 input.second->eventHandler(event, *_window);
             }
             sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
-            sf::Vector2f worldMousePosition = _window->mapPixelToCoords(mousePosition);
+            sf::Vector2f worldMousePosition =
+                _window->mapPixelToCoords(mousePosition);
 
             if (event.type == sf::Event::Closed ||
                 sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -88,17 +96,20 @@ std::shared_ptr<sf::RenderWindow> Menu::mainloop() {
 
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Left) {
-                if (_entities["connectButton"]->getSprite().getGlobalBounds().contains(
-                        worldMousePosition)) {
+                if (_entities["connectButton"]
+                        ->getSprite()
+                        .getGlobalBounds()
+                        .contains(worldMousePosition)) {
                     _login.name = _inputs["nameInput"]->getText();
                     _login.port = _inputs["portInput"]->getText();
                     _login.ip = _inputs["ipInput"]->getText();
-                    if ((_errorConnect =
-                             _game->connectToServer(_login.ip, std::atoi(_login.port.c_str()))))
+                    if ((_errorConnect = _game->connectToServer(
+                             _login.ip, std::atoi(_login.port.c_str()))))
                         return _window;
                 }
             }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return &&
+            if (event.type == sf::Event::KeyPressed &&
+                event.key.code == sf::Keyboard::Return &&
                 _inputs["ipInput"]->getActive()) {
                 {
                     if (_inputs["nameInput"]->getText() != "" &&
@@ -107,14 +118,15 @@ std::shared_ptr<sf::RenderWindow> Menu::mainloop() {
                         _login.name = _inputs["nameInput"]->getText();
                         _login.port = _inputs["portInput"]->getText();
                         _login.ip = _inputs["ipInput"]->getText();
-                        if ((_errorConnect =
-                                 _game->connectToServer(_login.ip, std::atoi(_login.port.c_str()))))
+                        if ((_errorConnect = _game->connectToServer(
+                                 _login.ip, std::atoi(_login.port.c_str()))))
                             return _window;
                     }
                 }
             }
             if (event.type == sf::Event::KeyPressed &&
-                (event.key.code == sf::Keyboard::Tab || event.key.code == sf::Keyboard::Return)) {
+                (event.key.code == sf::Keyboard::Tab ||
+                 event.key.code == sf::Keyboard::Return)) {
                 if (_inputs["nameInput"]->getActive()) {
                     _inputs["nameInput"]->setActive(false);
                     _inputs["portInput"]->setActive(true);

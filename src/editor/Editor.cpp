@@ -23,51 +23,63 @@ Editor::Editor() {
     _entities["background"]->setPosition(0, 0);
 
     //menu entities
-    _entitiesSelectMenu["flyer"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["flyer"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["flyer"]->setTexture("flyer.png");
     _entitiesJsonConfig["flyer"] = "Flyer.rType.json";
 
-    _entitiesSelectMenu["OrangeRobot"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["OrangeRobot"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["OrangeRobot"]->setTexture("OrangeRobot.png");
     _entitiesJsonConfig["OrangeRobot"] = "OrangeRobot.rType.json";
 
-    _entitiesSelectMenu["bomberman"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["bomberman"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["bomberman"]->setTexture("bomberman.png");
     _entitiesJsonConfig["bomberman"] = "Bomberman.rType.json";
 
-    _entitiesSelectMenu["GreenRobot"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["GreenRobot"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["GreenRobot"]->setTexture("GreenRobot.png");
     _entitiesJsonConfig["GreenRobot"] = "GreenRobot.rType.json";
 
-    _entitiesSelectMenu["worm"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["worm"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["worm"]->setTexture("worm.png");
     _entitiesJsonConfig["worm"] = "Worm.rType.json";
 
-    _entitiesSelectMenu["dropper"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["dropper"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["dropper"]->setTexture("dropper.png");
     _entitiesJsonConfig["dropper"] = "Dropper.rType.json";
 
-    _entitiesSelectMenu["CircularRobot"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["CircularRobot"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["CircularRobot"]->setTexture("CircularRobot.png");
     _entitiesJsonConfig["CircularRobot"] = "CircularRobot.rType.json";
 
-    _entitiesSelectMenu["boss1"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["boss1"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["boss1"]->setTexture("boss1.png");
     _entitiesJsonConfig["boss1"] = "Boss1.rType.json";
 
-    _entitiesSelectMenu["boss2"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["boss2"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["boss2"]->setTexture("boss2.png");
     _entitiesJsonConfig["boss2"] = "Boss2.rType.json";
 
-    _entitiesSelectMenu["wall1"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["wall1"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["wall1"]->setTexture("wall1.png");
     _entitiesJsonConfig["wall1"] = "Wall1.rType.json";
 
-    _entitiesSelectMenu["wall2"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["wall2"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["wall2"]->setTexture("wall2.png");
     _entitiesJsonConfig["wall2"] = "Wall2.rType.json";
 
-    _entitiesSelectMenu["wall3"] = std::make_unique<EntitySFML>(_ressourceManager);
+    _entitiesSelectMenu["wall3"] =
+        std::make_unique<EntitySFML>(_ressourceManager);
     _entitiesSelectMenu["wall3"]->setTexture("wall3.png");
     _entitiesJsonConfig["wall3"] = "Wall3.rType.json";
 
@@ -124,8 +136,9 @@ Editor::Editor() {
     _texts["X"]->setCharacterSize(20);
     _texts["X"]->setFillColor(sf::Color::Red);
     _texts["X"]->setPosition(sf::Vector2f(750, 5));
-    _texts["X"]->setOrigin(sf::Vector2f(_texts["X"]->getLocalBounds().width / 2,
-                                        _texts["X"]->getLocalBounds().height / 2));
+    _texts["X"]->setOrigin(
+        sf::Vector2f(_texts["X"]->getLocalBounds().width / 2,
+                     _texts["X"]->getLocalBounds().height / 2));
 
     _texts["Y"] = std::make_unique<sf::Text>();
     _texts["Y"]->setFont(_font);
@@ -133,8 +146,9 @@ Editor::Editor() {
     _texts["Y"]->setCharacterSize(20);
     _texts["Y"]->setFillColor(sf::Color::Red);
     _texts["Y"]->setPosition(sf::Vector2f(750, 30));
-    _texts["Y"]->setOrigin(sf::Vector2f(_texts["Y"]->getLocalBounds().width / 2,
-                                        _texts["Y"]->getLocalBounds().height / 2));
+    _texts["Y"]->setOrigin(
+        sf::Vector2f(_texts["Y"]->getLocalBounds().width / 2,
+                     _texts["Y"]->getLocalBounds().height / 2));
 
     _texts["help"] = std::make_unique<sf::Text>();
     _texts["help"]->setFont(_font);
@@ -142,8 +156,9 @@ Editor::Editor() {
     _texts["help"]->setCharacterSize(15);
     _texts["help"]->setFillColor(sf::Color::Red);
     _texts["help"]->setPosition(sf::Vector2f(25, 460));
-    _texts["help"]->setOrigin(sf::Vector2f(_texts["Y"]->getLocalBounds().width / 2,
-                                           _texts["Y"]->getLocalBounds().height / 2));
+    _texts["help"]->setOrigin(
+        sf::Vector2f(_texts["Y"]->getLocalBounds().width / 2,
+                     _texts["Y"]->getLocalBounds().height / 2));
 
     _texts["name"] = std::make_unique<sf::Text>();
     _texts["name"]->setFont(_font);
@@ -151,11 +166,13 @@ Editor::Editor() {
     _texts["name"]->setCharacterSize(20);
     _texts["name"]->setFillColor(sf::Color::White);
     _texts["name"]->setPosition(sf::Vector2f(60, 10));
-    _texts["name"]->setOrigin(sf::Vector2f(_texts["name"]->getLocalBounds().width / 2,
-                                           _texts["name"]->getLocalBounds().height / 2));
+    _texts["name"]->setOrigin(
+        sf::Vector2f(_texts["name"]->getLocalBounds().width / 2,
+                     _texts["name"]->getLocalBounds().height / 2));
 
     _inputs["levelName"] = std::make_unique<Input>(
-        "assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png", "", _ressourceManager);
+        "assets/cenario/TextInput.png", "assets/cenario/TextInputHover.png", "",
+        _ressourceManager);
     _inputs["levelName"]->setSpritePosition(sf::Vector2f(330, 220));
     _inputs["levelName"]->setSpriteScale(sf::Vector2f(2, 2));
 }
@@ -227,20 +244,24 @@ void Editor::mouseEvent(sf::Event event) {
             _window->setView(_menuView);
             sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
 
-            sf::Vector2f worldPosition = _window->mapPixelToCoords(mousePosition);
+            sf::Vector2f worldPosition =
+                _window->mapPixelToCoords(mousePosition);
 
-            if (_saveButton->getSprite().getGlobalBounds().contains(worldPosition)) {
+            if (_saveButton->getSprite().getGlobalBounds().contains(
+                    worldPosition)) {
                 std::cout << "Saving..." << std::endl;
                 _savingMode = true;
                 return;
             }
-            if (_music1->getSprite().getGlobalBounds().contains(worldPosition)) {
+            if (_music1->getSprite().getGlobalBounds().contains(
+                    worldPosition)) {
                 _musics["music2"].stop();
                 _musics["music1"].play();
                 _selectedMusic = "level1.ogg";
                 return;
             }
-            if (_music2->getSprite().getGlobalBounds().contains(worldPosition)) {
+            if (_music2->getSprite().getGlobalBounds().contains(
+                    worldPosition)) {
                 _musics["music1"].stop();
                 _musics["music2"].play();
                 _selectedMusic = "level2.ogg";
@@ -250,32 +271,42 @@ void Editor::mouseEvent(sf::Event event) {
             mousePosition = sf::Mouse::getPosition(*_window);
 
             worldPosition = _window->mapPixelToCoords(mousePosition);
-            _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])] =
+            _entities[_selectedEntity +
+                      std::to_string(_entityQuantity[_selectedEntity])] =
                 std::make_unique<EntitySFML>(_ressourceManager);
-            _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]
+            _entities[_selectedEntity +
+                      std::to_string(_entityQuantity[_selectedEntity])]
                 ->setTexture(_selectedEntity + ".png");
-            _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]
+            _entities[_selectedEntity +
+                      std::to_string(_entityQuantity[_selectedEntity])]
                 ->setPosition(
-                    worldPosition.x -
-                        _entitiesSelectMenu[_selectedEntity]->getSprite().getLocalBounds().width /
-                            2,
-                    worldPosition.y -
-                        _entitiesSelectMenu[_selectedEntity]->getSprite().getLocalBounds().height /
-                            2);
-            _entities[_selectedEntity + std::to_string(_entityQuantity[_selectedEntity])]->setRect(
-                std::get<0>(_entitiesRect[_selectedEntity]),
-                std::get<1>(_entitiesRect[_selectedEntity]));
+                    worldPosition.x - _entitiesSelectMenu[_selectedEntity]
+                                              ->getSprite()
+                                              .getLocalBounds()
+                                              .width /
+                                          2,
+                    worldPosition.y - _entitiesSelectMenu[_selectedEntity]
+                                              ->getSprite()
+                                              .getLocalBounds()
+                                              .height /
+                                          2);
+            _entities[_selectedEntity +
+                      std::to_string(_entityQuantity[_selectedEntity])]
+                ->setRect(std::get<0>(_entitiesRect[_selectedEntity]),
+                          std::get<1>(_entitiesRect[_selectedEntity]));
             _entityQuantity[_selectedEntity]++;
         } else if (event.mouseButton.button == sf::Mouse::Right) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
-            sf::Vector2f worldPosition = _window->mapPixelToCoords(mousePosition);
+            sf::Vector2f worldPosition =
+                _window->mapPixelToCoords(mousePosition);
 
             for (auto it = _entities.begin(); it != _entities.end();) {
                 if (it->first == "background") {
                     it++;
                     continue;
                 }
-                if (it->second->getSprite().getGlobalBounds().contains(worldPosition)) {
+                if (it->second->getSprite().getGlobalBounds().contains(
+                        worldPosition)) {
                     it = _entities.erase(it);
                     _entityQuantity[_selectedEntity]--;
                 } else {
@@ -289,13 +320,18 @@ void Editor::mouseEvent(sf::Event event) {
                     if (entity.second == 0)
                         continue;
                     for (int j = 0; j <= entity.second; j++) {
-                        if (_entities.find(entity.first + std::to_string(j)) == _entities.end()) {
+                        if (_entities.find(entity.first + std::to_string(j)) ==
+                            _entities.end()) {
                             for (int k = j + 1; k <= entity.second; k++) {
-                                if (_entities.find(entity.first + std::to_string(k)) !=
+                                if (_entities.find(entity.first +
+                                                   std::to_string(k)) !=
                                     _entities.end()) {
-                                    _entities[entity.first + std::to_string(k - 1)] =
-                                        std::move(_entities[entity.first + std::to_string(k)]);
-                                    _entities.erase(entity.first + std::to_string(k));
+                                    _entities[entity.first +
+                                              std::to_string(k - 1)] =
+                                        std::move(_entities[entity.first +
+                                                            std::to_string(k)]);
+                                    _entities.erase(entity.first +
+                                                    std::to_string(k));
                                 }
                             }
                         } else
@@ -314,10 +350,16 @@ void Editor::update() {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
     sf::Vector2f worldPosition = _window->mapPixelToCoords(mousePosition);
     _entitiesSelectMenu[_selectedEntity]->setPosition(
-        worldPosition.x -
-            _entitiesSelectMenu[_selectedEntity]->getSprite().getLocalBounds().width / 2,
-        worldPosition.y -
-            _entitiesSelectMenu[_selectedEntity]->getSprite().getLocalBounds().height / 2);
+        worldPosition.x - _entitiesSelectMenu[_selectedEntity]
+                                  ->getSprite()
+                                  .getLocalBounds()
+                                  .width /
+                              2,
+        worldPosition.y - _entitiesSelectMenu[_selectedEntity]
+                                  ->getSprite()
+                                  .getLocalBounds()
+                                  .height /
+                              2);
 }
 
 void Editor::saveLevel() {
@@ -330,24 +372,32 @@ void Editor::saveLevel() {
     i++;
 
     for (auto entity : _entityQuantity) {
-        if (entity.first == "background" || entity.first == "wall1" || entity.first == "wall2" ||
-            entity.first == "wall3") {
+        if (entity.first == "background" || entity.first == "wall1" ||
+            entity.first == "wall2" || entity.first == "wall3") {
             continue;
         } else {
             if (entity.second == 0)
                 continue;
-            level[_levelName]["Entity" + std::to_string(i)]["Count"] = entity.second;
+            level[_levelName]["Entity" + std::to_string(i)]["Count"] =
+                entity.second;
             level[_levelName]["Entity" + std::to_string(i)]["Config"] =
                 _entitiesJsonConfig[entity.first];
             for (int j = 0; j <= entity.second; j++) {
                 if (entity.first == "background" ||
-                    _entities.find(entity.first + std::to_string(j)) == _entities.end())
+                    _entities.find(entity.first + std::to_string(j)) ==
+                        _entities.end())
                     continue;
                 std::cout << entity.first + std::to_string(j) << std::endl;
-                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["X"] =
-                    (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().x;
-                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["Y"] =
-                    (int)_entities[entity.first + std::to_string(j)]->getSprite().getPosition().y;
+                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]
+                     ["X"] = (int)_entities[entity.first + std::to_string(j)]
+                                 ->getSprite()
+                                 .getPosition()
+                                 .x;
+                level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]
+                     ["Y"] = (int)_entities[entity.first + std::to_string(j)]
+                                 ->getSprite()
+                                 .getPosition()
+                                 .y;
             }
         }
         i++;
@@ -355,36 +405,60 @@ void Editor::saveLevel() {
     for (int j = 0; j <= _entityQuantity["wall1"]; j++) {
         if (_entities.find("wall1" + std::to_string(j)) == _entities.end())
             continue;
-        level[_levelName]["Entity" + std::to_string(i)]["Count"] = _entityQuantity["wall1"];
-        level[_levelName]["Entity" + std::to_string(i)]["Config"] = _entitiesJsonConfig["wall1"];
+        level[_levelName]["Entity" + std::to_string(i)]["Count"] =
+            _entityQuantity["wall1"];
+        level[_levelName]["Entity" + std::to_string(i)]["Config"] =
+            _entitiesJsonConfig["wall1"];
         level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["X"] =
-            (int)_entities["wall1" + std::to_string(j)]->getSprite().getPosition().x;
+            (int)_entities["wall1" + std::to_string(j)]
+                ->getSprite()
+                .getPosition()
+                .x;
         level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["Y"] =
-            (int)_entities["wall1" + std::to_string(j)]->getSprite().getPosition().y;
+            (int)_entities["wall1" + std::to_string(j)]
+                ->getSprite()
+                .getPosition()
+                .y;
     }
     i++;
 
     for (int j = 0; j <= _entityQuantity["wall2"]; j++) {
         if (_entities.find("wall2" + std::to_string(j)) == _entities.end())
             continue;
-        level[_levelName]["Entity" + std::to_string(i)]["Count"] = _entityQuantity["wall2"];
-        level[_levelName]["Entity" + std::to_string(i)]["Config"] = _entitiesJsonConfig["wall2"];
+        level[_levelName]["Entity" + std::to_string(i)]["Count"] =
+            _entityQuantity["wall2"];
+        level[_levelName]["Entity" + std::to_string(i)]["Config"] =
+            _entitiesJsonConfig["wall2"];
         level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["X"] =
-            (int)_entities["wall2" + std::to_string(j)]->getSprite().getPosition().x;
+            (int)_entities["wall2" + std::to_string(j)]
+                ->getSprite()
+                .getPosition()
+                .x;
         level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["Y"] =
-            (int)_entities["wall2" + std::to_string(j)]->getSprite().getPosition().y;
+            (int)_entities["wall2" + std::to_string(j)]
+                ->getSprite()
+                .getPosition()
+                .y;
     }
     i++;
 
     for (int j = 0; j <= _entityQuantity["wall3"]; j++) {
         if (_entities.find("wall3" + std::to_string(j)) == _entities.end())
             continue;
-        level[_levelName]["Entity" + std::to_string(i)]["Count"] = _entityQuantity["wall3"];
-        level[_levelName]["Entity" + std::to_string(i)]["Config"] = _entitiesJsonConfig["wall3"];
+        level[_levelName]["Entity" + std::to_string(i)]["Count"] =
+            _entityQuantity["wall3"];
+        level[_levelName]["Entity" + std::to_string(i)]["Config"] =
+            _entitiesJsonConfig["wall3"];
         level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["X"] =
-            (int)_entities["wall3" + std::to_string(j)]->getSprite().getPosition().x;
+            (int)_entities["wall3" + std::to_string(j)]
+                ->getSprite()
+                .getPosition()
+                .x;
         level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]["Y"] =
-            (int)_entities["wall3" + std::to_string(j)]->getSprite().getPosition().y;
+            (int)_entities["wall3" + std::to_string(j)]
+                ->getSprite()
+                .getPosition()
+                .y;
     }
 
     level[_levelName]["Music"]["File"] = _selectedMusic;
@@ -401,23 +475,27 @@ void Editor::getInput() {
     sf::Text text;
     text.setFont(font);
     text.setString(
-        "Level name:\nIt must be Level-1, Level-2, etc...\n\n\n\nOnce you have entered the "
+        "Level name:\nIt must be Level-1, Level-2, etc...\n\n\n\nOnce you have "
+        "entered the "
         "name,\npress Enter to save or Escape to cancel.");
     text.setCharacterSize(20);
     text.setFillColor(sf::Color::White);
-    text.setPosition(sf::Vector2f(_inputs["levelName"]->getSpritePosition().x + 120,
-                                  _inputs["levelName"]->getSpritePosition().y + 10));
-    text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 2));
+    text.setPosition(
+        sf::Vector2f(_inputs["levelName"]->getSpritePosition().x + 120,
+                     _inputs["levelName"]->getSpritePosition().y + 10));
+    text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2,
+                                text.getLocalBounds().height / 2));
 
     sf::Text text2;
     text2.setFont(font);
     text2.setString("Invalid level name");
     text2.setCharacterSize(20);
     text2.setFillColor(sf::Color::Red);
-    text2.setPosition(sf::Vector2f(_inputs["levelName"]->getSpritePosition().x + 100,
-                                   _inputs["levelName"]->getSpritePosition().y + 130));
-    text2.setOrigin(
-        sf::Vector2f(text2.getLocalBounds().width / 2, text2.getLocalBounds().height / 2));
+    text2.setPosition(
+        sf::Vector2f(_inputs["levelName"]->getSpritePosition().x + 100,
+                     _inputs["levelName"]->getSpritePosition().y + 130));
+    text2.setOrigin(sf::Vector2f(text2.getLocalBounds().width / 2,
+                                 text2.getLocalBounds().height / 2));
     bool invalidName = false;
 
     _inputs["levelName"]->setFont(font);
@@ -435,11 +513,15 @@ void Editor::getInput() {
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Enter) {
                     if (_inputs["levelName"]->getText() == "" ||
-                        _inputs["levelName"]->getText().substr(0, 6) != "Level-" ||
+                        _inputs["levelName"]->getText().substr(0, 6) !=
+                            "Level-" ||
                         _inputs["levelName"]
                                 ->getText()
-                                .substr(6, _inputs["levelName"]->getText().size() - 6)
-                                .find_first_not_of("0123456789") != std::string::npos) {
+                                .substr(
+                                    6,
+                                    _inputs["levelName"]->getText().size() - 6)
+                                .find_first_not_of("0123456789") !=
+                            std::string::npos) {
                         invalidName = true;
                     } else {
                         _levelName = _inputs["levelName"]->getText();

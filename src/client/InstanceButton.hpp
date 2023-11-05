@@ -14,7 +14,7 @@
 #include "SFML/RessourceManagerSFML.hpp"
 
 class InstanceButton {
-public:
+   public:
     InstanceButton(InstanceType instance, int x, int y);
 
     ~InstanceButton();
@@ -25,23 +25,29 @@ public:
 
     int getPort() { return _instance.port; }
 
-    std::map <std::string, std::shared_ptr<EntitySFML>> getEntities() { return _entities; }
+    std::map<std::string, std::shared_ptr<EntitySFML>> getEntities() {
+        return _entities;
+    }
 
-    EntitySFML *getSubmitButton();
+    EntitySFML* getSubmitButton();
 
     void setPosition(int x, int y);
 
-    std::map <std::string, std::shared_ptr<sf::Text>> getTexts() { return _texts; }
+    std::map<std::string, std::shared_ptr<sf::Text>> getTexts() {
+        return _texts;
+    }
 
-    bool hasSubmitButton() { return _instance.nbPlayers < _instance.maxPlayers; }
+    bool hasSubmitButton() {
+        return _instance.nbPlayers < _instance.maxPlayers;
+    }
 
-private:
+   private:
     sf::Font _font;
     InstanceType _instance;
     int _x;
     int _y;
-    std::map <std::string, std::shared_ptr<EntitySFML>> _entities;
-    std::map <std::string, std::shared_ptr<sf::Text>> _texts;
+    std::map<std::string, std::shared_ptr<EntitySFML>> _entities;
+    std::map<std::string, std::shared_ptr<sf::Text>> _texts;
 };
 
 #endif  //B_CPP_500_MAR_5_1_RTYPE_MARTIN_RAMDANE_INSTANCEBUTTON_H

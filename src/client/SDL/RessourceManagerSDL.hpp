@@ -18,7 +18,7 @@ class RessourceManagerSDL {
    public:
     RessourceManagerSDL(SDL_Renderer* renderer);
     ~RessourceManagerSDL();
-     std::map<std::string, SDL_Texture*> getTextures() const;
+    std::map<std::string, SDL_Texture*> getTextures() const;
 
    public:
     std::map<std::string, SDL_Texture*> _textures;

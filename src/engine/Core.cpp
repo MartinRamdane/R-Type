@@ -10,7 +10,8 @@
 Core::Core(std::string gameName) {
     _engine = std::make_shared<Engine>();
     std::string protocol = Protocol::transformWindowCreateToProtocol(
-        _engine->getWindowTitle(), _engine->getWindowWidth(), _engine->getWindowHeight());
+        _engine->getWindowTitle(), _engine->getWindowWidth(),
+        _engine->getWindowHeight());
     // send protocol to client
     if (gameName == "pong")
         _game = std::make_unique<Pong>(_engine);
@@ -37,7 +38,8 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event>& events) {
                 .count() > 10) {
             _lastFrameTime = std::chrono::high_resolution_clock::now();
             auto entities = _engine->getEntities();
-            std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
+            std::vector<std::string> protocol =
+                Protocol::transformEntitiesToProtocol(entities);
             loopRunning = false;
             return protocol;
         }
@@ -48,7 +50,8 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event>& events) {
 
 std::vector<std::string> Core::getAllEntitiesToCreate() {
     auto entities = _engine->getEntities();
-    std::vector<std::string> protocol = Protocol::transformAllEntitiesToCreate(entities);
+    std::vector<std::string> protocol =
+        Protocol::transformAllEntitiesToCreate(entities);
     return protocol;
 }
 
@@ -56,8 +59,9 @@ std::vector<std::string> Core::getCreateEntities() {
     std::vector<std::string> entitiesList;
     auto entities = _engine->getEntities();
     for (auto entityType : entities) {
-        for (auto entity: entityType->getEntities()) {
-            entitiesList.push_back(Protocol::transformEntityCreateToProtocol(entity));
+        for (auto entity : entityType->getEntities()) {
+            entitiesList.push_back(
+                Protocol::transformEntityCreateToProtocol(entity));
         }
     }
     return entitiesList;

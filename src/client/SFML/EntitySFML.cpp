@@ -15,8 +15,10 @@ EntitySFML::EntitySFML(std::shared_ptr<RessourceManagerSFML> ressourceManager)
 EntitySFML::~EntitySFML() {}
 
 void EntitySFML::setTexture(const std::string& path) {
-    std::map<std::string, std::shared_ptr<sf::Texture>> textures = _ressourceManager->getTextures();
-    std::map<std::string, std::shared_ptr<sf::Texture>>::iterator it = textures.begin();
+    std::map<std::string, std::shared_ptr<sf::Texture>> textures =
+        _ressourceManager->getTextures();
+    std::map<std::string, std::shared_ptr<sf::Texture>>::iterator it =
+        textures.begin();
     while (it != textures.end()) {
         if (it->first == path) {
             _texture = it->second;
@@ -42,7 +44,8 @@ std::tuple<float, float> EntitySFML::getSpritePosition() const {
 }
 
 void EntitySFML::setSpriteOriginToCenter() {
-    sf::Vector2f size = sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
+    sf::Vector2f size =
+        sf::Vector2f(_texture->getSize().x / _nbRect, _texture->getSize().y);
     _sprite.setOrigin(sf::Vector2f(size.x / 2, size.y / 2));
 }
 
@@ -73,7 +76,8 @@ void EntitySFML::animateSprite(const int ei, const float framerate) {
             if (rect.left != 0)
                 rect.left -= size;
         } else if (ei == 3) {
-            if (rect.left == size * (_nbRect - 1) || rect.left < size * _initRect)
+            if (rect.left == size * (_nbRect - 1) ||
+                rect.left < size * _initRect)
                 rect.left = size * _initRect - size;
             else
                 rect.left += size;
@@ -177,7 +181,8 @@ bool EntitySFML::isDead() const {
         if (rect.left == size * (_nbRect - 1) || rect.left < size * _initRect)
             return true;
     }
-    if (_type == IEntity::Type::SOUND && _sound.getStatus() == sf::Sound::Stopped)
+    if (_type == IEntity::Type::SOUND &&
+        _sound.getStatus() == sf::Sound::Stopped)
         return true;
     return false;
 }
@@ -215,7 +220,8 @@ IEntity::Type EntitySFML::getType() const {
 }
 
 void EntitySFML::makePrediction() {
-    if (_direction == "left" || _direction == "right" || _direction == "up" || _direction == "down") {
+    if (_direction == "left" || _direction == "right" || _direction == "up" ||
+        _direction == "down") {
         float speed = _speed;
         if (_direction == "left" || _direction == "up") {
             speed = _speed * -1;
@@ -246,8 +252,10 @@ sf::Sprite EntitySFML::getSprite() const {
 }
 
 void EntitySFML::setSound(const std::string& path) {
-    std::map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds = _ressourceManager->getSounds();
-    std::map<std::string, std::shared_ptr<sf::SoundBuffer>>::iterator it = sounds.begin();
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds =
+        _ressourceManager->getSounds();
+    std::map<std::string, std::shared_ptr<sf::SoundBuffer>>::iterator it =
+        sounds.begin();
     while (it != sounds.end()) {
         if (it->first == path) {
             _sound.setBuffer(*it->second);

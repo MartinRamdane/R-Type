@@ -28,7 +28,8 @@ void Shield::activateShield() {
     _shieldIsUp = true;
     _shieldStart = std::chrono::high_resolution_clock::now();
     auto pos = getPosition();
-    _shield = RType::instance->createShield(std::get<0>(pos), std::get<1>(pos), _speed);
+    _shield = RType::instance->createShield(std::get<0>(pos), std::get<1>(pos),
+                                            _speed);
 }
 
 void Shield::deactivateShield() {
@@ -54,7 +55,8 @@ void Shield::takeDamage(int damage) {
 void Shield::update() {
     std::tuple<float, float> pos = getPosition();
     std::tuple<float, float> oldPos = getOldPosition();
-    if (std::get<0>(pos) != std::get<0>(oldPos) || std::get<1>(pos) != std::get<1>(oldPos)) {
+    if (std::get<0>(pos) != std::get<0>(oldPos) ||
+        std::get<1>(pos) != std::get<1>(oldPos)) {
         setOldPosition(std::get<0>(pos), std::get<1>(pos));
     }
     if (_shieldIsUp) {
