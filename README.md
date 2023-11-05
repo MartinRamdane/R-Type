@@ -34,6 +34,27 @@ You can learn more about each part using the sections in our wiki
 
 You can find documentation regarding our project in the [wiki](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki)
 
+## Dependencies
+
+We use Conan to manage our dependencies.
+
+If you want to use another package manager here's the list of our dependencies :
+
+| Package Name | Version |
+|--------------|---------|
+| zlib         | 1.2.13  |
+| sfml         | 2.6.0   |
+| nlohmann_json| 3.11.2  |
+| boost        | 1.83.0  |
+| gtest        | 1.14.0  |
+| sdl_image    | 2.0.5   |
+| lz4          | 1.9.4   |
+| sdl_ttf      | 2.20.2  |
+| freetype     | 2.12.1  |
+| sdl          | 2.26.5  |
+| libalsa      | 1.2.10  |
+
+
 ## Installation
 
 ### Prerequisites
