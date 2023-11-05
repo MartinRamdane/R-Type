@@ -15,7 +15,7 @@ The project is split in 3 parts :
 ### Client side
 The Client is the player's program. It connects to the server, creates/joins a game instance and displays the game. It is itself divided into 3 parts : 
 * Game display
-* Managing connections/communication with the server
+* Managing connections/communication with the server using TCP and UDP.
 * Parsing data received from the server
 ### Server side (networking)
 The server is the program that manages networking and handle data received / sent from/to the client. It uses an RFC specially made for the R-TYPE. The server also interacts with the game engine.
@@ -24,11 +24,12 @@ The Game Engine is the core of the R-TYPE. It manages the game and the entity as
 
 ## How can I learn more about each part ? 
 
-You can learn more about each part using the sections in our wiki
+You can learn more about each part using the sections in our wiki or inside of the docs folder.
 
 * [Client documentation](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Client-documentation)
 * [Server documentation](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Server-documentation)
 * [Game Engine Documentation](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Game-Engine-documentation)
+* [RFC](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/blob/main/rfc4242.txt)
 
 ## Documentation
 
@@ -85,7 +86,7 @@ You can disable the compilation of the tests using ```-DBUILD_TESTS=OFF```
 
 ### Windows
 
-For Windows, in order to generate the executables you need to execute theses commands in the **build folder** : 
+For Windows, in order to generate the executables you need to execute theses commands in the **build folder** :
 
 `cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake`
 ***
