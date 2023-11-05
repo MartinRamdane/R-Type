@@ -93,8 +93,10 @@ InstanceMenu::InstanceMenu(Game *game) : _game(game) {
 }
 
 InstanceMenu::~InstanceMenu() {
-    if (_windowCreated)
-        _window->close();
+    _entities.clear();
+    _texts.clear();
+    _gameSelector.clear();
+    _instanceButtons.clear();
 }
 
 void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
@@ -110,7 +112,10 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
         while (_window->pollEvent(event)) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(*_window);
             sf::Vector2f worldMousePosition = _window->mapPixelToCoords(mousePosition);
-
+            if (event.type == sf::Event::Closed) {
+                _game->setClosed(true);
+                _window->close();
+            }
             if (event.type == sf::Event::MouseButtonPressed &&
                 event.mouseButton.button == sf::Mouse::Left) {
                 for (auto &instanceButton: _instanceButtons) {
@@ -149,7 +154,7 @@ void InstanceMenu::mainloop(std::shared_ptr <sf::RenderWindow> window) {
                             evt.ACTION_NAME = ACTION::CREATE;
                             std::string body = gameSelector.first;
                             evt.body = body;
-                            _game.get()->getClient()->SendEvent(evt);
+                            _game->getClient()->SendEvent(evt);
                             _window->close();
                             _game->setUDPClientConnecting(true);
                         }

@@ -23,8 +23,6 @@ Game::Game() : _threadPool(3) {
 }
 
 Game::~Game() {
-    _entities.clear();
-    _entitiesToRemove.clear();
 }
 
 void Game::setLibToUse() {
@@ -44,7 +42,7 @@ int Game::getEntitiesNumber() {
 void Game::run(std::shared_ptr<sf::RenderWindow> window) {
     setLibToUse();
     bool sendListEvent = false;
-    while (!_display->getClosed()) {
+    while (!_display->getClosed() && closed == false) {
         if (!_client->Incoming().empty()) {
             auto msg = _client->Incoming().pop_front().msg;
             _client->HandleMessage(msg);
@@ -84,6 +82,8 @@ void Game::run(std::shared_ptr<sf::RenderWindow> window) {
             }
         }
     }
+    _instanceMenu.reset();
+    std::cout << "reset instance menu" << std::endl;
 }
 
 void Game::update(std::map<int, std::shared_ptr<IEntity>>* entitiesCopy) {
@@ -167,7 +167,7 @@ void Game::handleEvent() {
 }
 
 void Game::LoopUDPMessages() {
-    while (isUDPClientConnected) {
+    while (isUDPClientConnected && closed == false) {
         if (_udpClient->Incoming().empty() == false) {
             auto msg = _udpClient->Incoming().pop_front();
             _udpClient->HandleMessage(msg);
@@ -176,7 +176,7 @@ void Game::LoopUDPMessages() {
 }
 
 void Game::loopEventQueue() {
-    while (isUDPClientConnected) {
+    while (isUDPClientConnected && closed == false) {
         if (_udpClient->getEventQueue().empty() == false) {
             auto evt = _udpClient->getEventQueue().pop_front();
             handleReceivedEvent(evt);
@@ -353,6 +353,8 @@ void Game::sendQuitEvent() {
         std::string body = targetHost + " " + targetPort;
         Event evt = {ACTION::QUIT, body};
         isUDPClientConnected = false;
+        _entities.clear();
+        _entitiesToRemove.clear();
         _display.get()->closeWindow();
         _client.get()->SendEvent(evt);
     }

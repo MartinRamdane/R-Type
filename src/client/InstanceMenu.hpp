@@ -38,7 +38,7 @@ private:
     std::map <std::string, std::unique_ptr<sf::Text>> _texts;
     std::map <std::string, std::unique_ptr<EntitySFML>> _gameSelector;
     bool _errorConnect = true;
-    std::shared_ptr <Game> _game;
+    Game *_game;
     bool _openInstanceModal = false;
     std::map<int, std::unique_ptr<InstanceButton>> _instanceButtons;
     std::shared_ptr <TCPClientImpl> _client;

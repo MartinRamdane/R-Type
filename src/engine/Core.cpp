@@ -18,9 +18,14 @@ Core::Core(std::string gameName) {
         _game = std::make_unique<RType>(_engine);
 }
 
-Core::~Core() {}
+Core::~Core() {
+    while (loopRunning) {
+        std::cout << "loop is running" << std::endl;
+    }
+}
 
 std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event>& events) {
+    loopRunning = true;
     if (_engine->frameRateControl()) {
         // get events
         _engine->update();
@@ -33,9 +38,11 @@ std::vector<std::string> Core::mainLoop(ThreadSafeQueue<Event>& events) {
             _lastFrameTime = std::chrono::high_resolution_clock::now();
             auto entities = _engine->getEntities();
             std::vector<std::string> protocol = Protocol::transformEntitiesToProtocol(entities);
+            loopRunning = false;
             return protocol;
         }
     }
+    loopRunning = false;
     return {};
 }
 

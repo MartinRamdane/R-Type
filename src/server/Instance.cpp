@@ -33,7 +33,6 @@ Instance::~Instance() {
     std::cout << "running false" << std::endl;
     _io_service.stop();
     std::cout << "io_service stopped" << std::endl;
-    // std::cout << "threadpool destroyed" << std::endl;
     delete _udpServer;
     std::cout << "udpserver destroyed" << std::endl;
     delete _core;

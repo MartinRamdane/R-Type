@@ -18,31 +18,37 @@ JsonParser::~JsonParser()
 nlohmann::json JsonParser::readFile(std::string const &fileName)
 {
     std::cout << "Reading file : " << fileName << std::endl;
-    std::string directory = ".";
-    for (const auto &entry : std::filesystem::recursive_directory_iterator(directory))
-    {
-        if (entry.is_regular_file())
+    std::vector<std::string> directories;
+    directories.push_back("config/");
+    directories.push_back("assets/");
+    directories.push_back("font/");
+    directories.push_back("sounds/");
+    directories.push_back(".");
+    for (auto directory : directories) {
+        for (const auto &entry : std::filesystem::recursive_directory_iterator(directory))
         {
-            std::string filePath = entry.path().string();
-            std::string key = entry.path().stem().string();
-            key = key + ".json";
-            if (key == fileName)
+            if (entry.is_regular_file())
             {
-                std::ifstream inputFile(filePath);
-                if (inputFile.is_open())
+                std::string filePath = entry.path().string();
+                std::string key = entry.path().stem().string();
+                key = key + ".json";
+                if (key == fileName)
                 {
-                    return nlohmann::json::parse(inputFile);
-                }
-                else
-                {
-                    std::cerr << "Impossible de trouver le JSON : " << key << std::endl;
-                    // Handle the case where the file couldn't be opened
-                    // You might want to throw an exception or return a default JSON object.
+                    std::ifstream inputFile(filePath);
+                    if (inputFile.is_open())
+                    {
+                        return nlohmann::json::parse(inputFile);
+                    }
+                    else
+                    {
+                        std::cerr << "Impossible de trouver le JSON : " << key << std::endl;
+                        // Handle the case where the file couldn't be opened
+                        // You might want to throw an exception or return a default JSON object.
+                    }
                 }
             }
         }
     }
-
     // Handle the case where the JSON file was not found
     std::cerr << "Here Impossible de trouver le JSON : " << fileName << std::endl;
     // You might want to throw an exception or return a default JSON object.

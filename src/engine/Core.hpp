@@ -27,4 +27,5 @@ class Core {
     std::shared_ptr<Engine> _engine;
     std::unique_ptr<IGame> _game;
     std::chrono::high_resolution_clock::time_point _lastFrameTime;
+    bool loopRunning = false;
 };

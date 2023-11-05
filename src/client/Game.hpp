@@ -97,6 +97,8 @@ public:
 
     void clearUDPClient();
 
+    void setClosed(bool state) { closed = state; };
+
 private:
     sf::View _view;
     sf::Clock _clock;

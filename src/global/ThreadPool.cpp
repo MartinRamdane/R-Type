@@ -42,6 +42,7 @@ ThreadPool::~ThreadPool()
   {
     worker.join();
   }
+  std::cout << "destroyed thread pool" << std::endl;
 }
 
 void ThreadPool::addThread()
