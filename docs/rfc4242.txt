@@ -1,0 +1,246 @@
+Updated by:                                                  Adam ELAOUMARI
+La Table Ronde                                               Florian GRIMA
+Request for Comments: 4242                                   Martin Ramdane
+                                                             Gabriel MORAIS
+                                                             Lucas Rizutto
+                                                             Epitech Marseille
+                                                            November 2023
+Category: Standards Track
+                            R-TYPE Protocol
+
+Status of this Memo
+
+This memo is the official specification of the R-TYPE protocol. Distribution
+of this memo is unlimited.
+
+Table of contents
+
+    1. Introduction....................................................1
+    2. R-TYPE Network Model.............................................2
+      2.1. Compression.................................................2
+      2.2. CRC.........................................................2
+      2.3. Dropped Packets.............................................2
+      2.4. Binary encoding.............................................2
+    3. R-TYPE Protocol TCP.............................................3
+    4. R-TYPE Protocol UDP.............................................4
+    5. Security and speed considerations...............................5
+
+1. Introduction
+
+    First of all, the R-TYPE is an online multiplayer game. The game is
+    played by multiple players on a server. In order to implement this game
+    we need to define a protocol that allows the client to communicate with
+    the server. The protocol is called R-TYPE protocol.
+
+    The R-TYPE protocol is a simple protocol that allows a client to
+    request a resource from a server. The server can then respond with
+    the requested resource or an error code.
+    To send a request, we only need to specify and ACTION and a message.
+
+    Mutliple actions exists:
+    KO, CONNECT, CREATE, LIST, JOIN, JOINED, READY, START, LEFT, RIGHT,
+    UP, DOWN, SPACE, QUIT, PING, PONG, SPRITE, TEXT, DEAD, FLIP,
+    RESET, UNKNOWN, CHECK, SOUND, KEY
+
+    The message is a string that can be empty. It is then interpreted by
+    the parser of the server/client.
+
+Elaoumari                  Standards Track                    [Page 2]
+
+RFC 4242                    R-TYPE Protocol               November 2023
+
+2. R-Type Network Model
+
+    When we want to send a request using our protocol we create an Event struct.
+    The struct contains the following fields:
+        ACTION ACTION_NAME; // The action to perform
+        std::string body; // The message to send
+    We then create an object of EventHandler that will handle the event.
+    The EventHandler will then create a NetworkEvent struct that contains the
+    messages and other data to send.
+    The NetworkEvent struct contains the following fields:
+
+    ACTION ACTION_NAME; // The action to perform
+    int original_size; // The size of the message
+    int compressed_size; // The size of the compressed message
+    char* body; // The compressed message
+
+    2.1. Compression
+
+        As you can read, the NetworkEvent struct contains a compressed message.
+        This message is compressed using the lz4 algorithm. The compressed message
+        is then sent to the server/client. In order for the message to be decompressed
+        by the server/client, we need to send the original size of the message.
+        The server/client will then decompress the message and interpret it by
+        creating a new Event struct that only contains the ACTION and the message.
+
+    2.2. CRC
+
+        In order to be sure that the message is not corrupted, we use a CRC.
+        We use the CRC32 algorithm to calculate the CRC of the message.
+        4 CRCs are added to the binary message.
+        The first CRC is the CRC of the original message.
+        The second CRC is the CRC of the compressed size.
+        The third CRC is the CRC of the original size.
+        The fourth CRC is the CRC of the ACTION.
+
+        When the server/client receives the message, it will calculate the CRC
+        of each field and compare it to the CRCs in the message. If one of the
+        CRCs is different, the message is corrupted and the server/client will
+        ignore it. And throw an error. But the game won't be affected.
+
+    2.3. Dropped packets
+        In UDP, packets can be dropped. In order to avoid the player to be
+        disrupted by the dropped packets, we use a prediction system.
+        The client will predict the position of the entities around him
+        and will update the position when the server sends the new position.
+        This way, the player won't see the entities teleporting.
+        For example, when a player shoot, he knows that the bullet will
+        go straight. So he can predict the position of the bullet and
+        update it when the server sends the new position. This way, the
+        player won't see the bullet teleporting. The same goes for the
+        enemies.
+
+    2.4 Binary encoding
+
+            In order to send the message, we need to encode it in binary.
+            We use the following format:
+
+            \------------------/
+            |      ACTION      |
+            \------------------/
+            | ORIGINAL_SIZE    |
+            \------------------/
+            | COMPRESSED_SIZE  |
+            \------------------/
+            | COMPRESSED_MSG   |
+            \------------------/
+            |      CRC1        |
+            \------------------/
+            |      CRC2        |
+            \------------------/
+            |      CRC3        |
+            \------------------/
+            |      CRC4        |
+            \------------------/
+
+            ACTION is the action to perform
+            ORIGINAL_SIZE is the size of the original message
+            COMPRESSED_SIZE is the size of the compressed message
+            COMPRESSED_MESSAGE is the compressed message
+            CRC1 is the CRC of the original message
+            CRC2 is the CRC of the compressed size
+            CRC3 is the CRC of the original size
+            CRC4 is the CRC of the ACTION
+            The CRCs are 4 bytes long.
+            The ACTION is 1 byte long.
+            The COMPRESSED_SIZE is 4 bytes long.
+            The ORIGINAL_SIZE is 4 bytes long.
+            The COMPRESSED_MESSAGE is COMPRESSED_SIZE bytes long.
+            The message is then sent to the server/client.
+
+
+Elaoumari                  Standards Track                    [Page 3]
+
+RFC 4242                    R-TYPE Protocol               November 2023
+
+3. R-TYPE Protocol TCP
+    We use TCP to communicate between the client and the server. Because
+    of the reliability of TCP, we can be sure that the message will be
+    received by the server/client. This protocol is only used in some cases :
+    - When the client wants to connect to the server
+    - When the client wants to create a instance
+    - When the client wants to join a instance
+
+    Therefore only a few actions will be used for the TCP protocol.
+
+    When the client joins, he will send a LIST action to the server in order
+    to get the list of instances. The server will then send a LIST action
+    with the list of instances to the client. The server will send a LIST action
+    for each instance. The body of the message would contain information about
+    the instance. (INSTANCE_NAME GAME_NAME PLAYERS_COUNT MAX_PLAYERS_COUNT PORT ID)
+
+        Example of a client joining a server:
+
+    \------------------/          \------------------/
+    |      Client      |          |      Server      |
+    \------------------/          \------------------/
+    |                  |          |                  |
+    |   CONNECTION     |          |                  |
+    |----------------->|          |                  |
+    |    LIST          |          |                  |
+    |----------------->|          |                  |
+    |                  |          |      LIST        |
+    |                  |          | A RTPE 0 4 4240 0|
+    |                  |          |                  |
+    |                  |          |<-----------------|
+    |                  |          |                  |
+    |      JOIN        |          |                  |
+    |      4240        |          |                  |
+    |----------------->|          | USER JOINED GAME |
+    |                  |          |                  |
+    \------------------/          \------------------/
+
+    Here the client connects in TCP to the server. Then he sends a LIST action
+    to the server. The server then sends a LIST action with the list of instances
+    to the client. The client then sends a JOIN action to the server with the
+    port of the instance. And connect to the instance in UDP.
+
+    When the client wants to create an instance, he will send a CREATE action
+    to the server. The server will then create an instance and send a JOINED
+    action to the client. The client will then connect in UDP to the instance.
+
+
+Elaoumari                  Standards Track                    [Page 4]
+
+RFC 4242                    R-TYPE Protocol               November 2023
+
+4. R-TYPE Protocol UDP
+
+    This protocol is used for the game itself. As it's low latency.
+    This protocol uses the same Event struct, and ACTION enum as the TCP protocol.
+    It also uses the same compression and CRC system to ensure reliability.
+
+    Most of the actions used in UDP are : LEFT, RIGHT, UP, DOWN, SPACE, QUIT,
+    PING, PONG, SPRITE, TEXT, DEAD, FLIP, RESET, UNKNOWN, CHECK, SOUND, KEY
+
+    When the client wants to move, he will send a LEFT, RIGHT, UP or DOWN action
+    to the server. The server will then update the position of the player and
+    send a SPRITE action to all clients containing new position inside of the body.
+
+    When the client wants to shoot, he will send a SPACE action to the server.
+    The server will then create a bullet and send a SPRITE action to all clients
+    containing the bullet position inside of the body.
+
+    When the client wants to quit, he will send a QUIT action to the server.
+
+    When the client presses a KEY on his keyboard, he will send a KEY action
+    to the server, containing the key pressed inside of the body.
+
+    To handle packet losses in critical moment (e.g when reicieving a SPRITE),
+    the UDP server will send a CHECK action all clients every 1000ms.
+    Inside of the body of the CHECK action, the server will send the number of
+    entities in the game. The client will then compare the number of entities
+    with the number of entities he has. If the number is different, the client
+    will send a CHECK action to the server. The server will then send all
+    entities to the client.
+
+Elaoumari                  Standards Track                    [Page 5]
+
+RFC 4242                    R-TYPE Protocol               November 2023
+
+5. Security and speed considerations
+
+    Because of the simplicity and the non criticality of the game, we don't
+    need to use a complex protocol. We only need to be sure that the message
+    is not corrupted. And that the message is received by the server/client.
+    We use a CRC to be sure that the message is not corrupted. And we use TCP
+    to be sure that the message is received by the server/client during critical
+    moments.
+
+    Also, each UDP and TCP server/client runs on a different thread. This way,
+    the game won't be affected by the network. And the game will run smoothly.
+
+    When ressources are shared between thread (e.g entities, events, etc..) we
+    use a ThreadSafeQueue and a mutex to be sure that the ressources are not
+    corrupted.

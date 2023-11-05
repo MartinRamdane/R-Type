@@ -41,7 +41,11 @@ This is the ACTION enum:
 
 You can add new Action if you want.
 
-Each event is compressed before being sent and decompressed when received.
+Each event is compressed before being sent and decompressed when received. We used the lz4 library to compress and decompress the event body.
+
+Also, each event is protected from corruption by a checksum. The checksum is calculated by the server when the event is sent, and the client checks that the checksum is correct when the event is received.
+
+Full information about our RFC is available in the **rfc4242.txt** file inside of the **docs** folder.
 
 An Event is composed by an ACTION and a body that is a string.
 
