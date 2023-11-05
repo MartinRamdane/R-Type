@@ -17,5 +17,17 @@ services:
       - data:/rtype
     depends_on:
       - builder
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: run-container
+    volumes:
+      - data:/rtype
+    ports:
+      - "4244:4244"
+      - "4210-4220:4210-4220/udp"
+    depends_on:
+      - tester
 volumes:
   data:

@@ -77,6 +77,29 @@ Depending on your Release mode you need to specify if you're in Debug or Release
 
 You can find details on the installation here [wiki](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Installation)
 
+## Docker
+
+You can also use Docker to build the project. Two Dockerfile and a docker-compose.yml are available at the root of the repository.
+
+You can also use our compiler image available on Docker Hub [here](https://hub.docker.com/r/adamelm/r-type-compiler) to build the project.
+This image contains all the dependencies needed to build the project and is based on ubuntu:latest
+
+### Build the project with Docker
+
+You can directly use the Dockerfile at the root of the repository to build the project.
+
+You can use the following commands to build the project :
+
+`docker build -t r-type .\Dockerfile.build`
+
+### Build and run the server with Docker
+
+You can use docker compose to build and run the server.
+
+Simply use the following command at the root of the repository :
+
+`docker-compose up`
+
 ## Executing
 
 ### Release mode

@@ -22,7 +22,6 @@ enum class ACTION : uint8_t
   JOIN,
   JOINED,
   READY,
-  START,
   LEFT,
   RIGHT,
   UP,
