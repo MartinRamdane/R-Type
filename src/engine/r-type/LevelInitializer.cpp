@@ -10,6 +10,14 @@
 
 LevelInitializer::LevelInitializer(IGame* game) {
     _game = dynamic_cast<RType*>(game);
+    //count the number of level
+    nlohmann::json levelsFile = JsonParser::readFile("rTypeLevels.json");
+    int i = 1;
+    for (const auto& [key, value] : levelsFile.items()) {
+        if (key == "Level-" + std::to_string(i))
+            i++;
+    }
+    _game->_maxLevel = i - 1;
 }
 
 LevelInitializer::~LevelInitializer() {}

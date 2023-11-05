@@ -257,3 +257,7 @@ void EntitySFML::setSound(const std::string& path) {
         it++;
     }
 }
+
+void EntitySFML::setSpriteColor(sf::Color color) {
+    _sprite.setColor(color);
+}

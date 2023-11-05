@@ -63,6 +63,7 @@ class RType : public IGame {
     std::vector<std::shared_ptr<AEntity>> getEnemies();
     void createSound(std::string path);
     void createMusic(std::string path);
+    int _maxLevel = 1;
 
    private:
     std::shared_ptr<Engine> _engine;
@@ -94,5 +95,4 @@ class RType : public IGame {
     int _currentLevel = 1;
     bool _reset = false;
     std::unique_ptr<LevelInitializer> _levelInitializer;
-    int _maxLevel = 1;
 };

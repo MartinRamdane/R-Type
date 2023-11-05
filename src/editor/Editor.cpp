@@ -68,7 +68,8 @@ Editor::Editor() {
     _entitiesJsonConfig["wall3"] = "Wall3.rType.json";
 
     for (auto& entity : _entitiesSelectMenu) {
-        entity.second->setPosition(5, 5);
+        //opacity
+        entity.second->setSpriteColor(sf::Color(255, 255, 255, 100));
     }
 
     _saveButton = std::make_unique<EntitySFML>(_ressourceManager);

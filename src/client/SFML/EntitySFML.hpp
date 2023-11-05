@@ -42,6 +42,7 @@ class EntitySFML : public IEntity {
     bool isDead() const;
     void setEventForm(std::string form);
     void setObjectType(std::string type);
+    void setSpriteColor(sf::Color color);
     sf::Color getColor(std::string color);
     IEntity::Type getType() const;
     void makePrediction();
