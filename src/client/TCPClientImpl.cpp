@@ -11,14 +11,6 @@
 
 void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
     switch (msg.header.id) {
-        case ACTION::CONNECT: {
-            try {
-                EventHandler evt;
-                evt.decodeMessage(msg.body);
-            } catch (std::exception &e) {
-            }
-            break;
-        }
         case ACTION::CREATE: {
             try {
                 EventHandler evt;
@@ -88,9 +80,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
         case ACTION::READY: {
             break;
         }
-        case ACTION::START: {
-            break;
-        }
         case ACTION::LEFT: {
             break;
         }
@@ -113,9 +102,6 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
             break;
         }
         case ACTION::PONG: {
-            break;
-        }
-        case ACTION::KO: {
             break;
         }
         case ACTION::SPRITE: {

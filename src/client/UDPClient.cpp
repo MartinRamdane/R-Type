@@ -10,10 +10,6 @@
 
 std::string actionToString(ACTION action) {
     switch (action) {
-        case ACTION::KO:
-            return "KO";
-        case ACTION::CONNECT:
-            return "CONNECT";
         case ACTION::CREATE:
             return "CREATE";
         case ACTION::LIST:
@@ -24,8 +20,6 @@ std::string actionToString(ACTION action) {
             return "JOINED";
         case ACTION::READY:
             return "READY";
-        case ACTION::START:
-            return "START";
         case ACTION::LEFT:
             return "LEFT";
         case ACTION::RIGHT:

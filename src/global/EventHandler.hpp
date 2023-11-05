@@ -17,8 +17,6 @@
 
 enum class ACTION : uint8_t
 {
-  KO,
-  CONNECT,
   CREATE,
   LIST,
   JOIN,
@@ -86,10 +84,6 @@ public:
   }
   std::string actionToString(ACTION action) {
     switch (action) {
-        case ACTION::KO:
-            return "KO";
-        case ACTION::CONNECT:
-            return "CONNECT";
         case ACTION::CREATE:
             return "CREATE";
         case ACTION::LIST:
@@ -100,8 +94,6 @@ public:
             return "JOINED";
         case ACTION::READY:
             return "READY";
-        case ACTION::START:
-            return "START";
         case ACTION::LEFT:
             return "LEFT";
         case ACTION::RIGHT:

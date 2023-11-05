@@ -37,14 +37,6 @@ public:
 protected:
     virtual void OnMessage(std::shared_ptr <TCPConnection<ACTION>> client, message<ACTION> &msg) {
         switch (msg.header.id) {
-            case ACTION::CONNECT: {
-                try {
-                    EventHandler evt;
-                    evt.decodeMessage(msg.body);
-                } catch (std::exception &e) {
-                }
-            }
-                break;
             case ACTION::CREATE: {
                 try {
                     EventHandler handler;
@@ -116,10 +108,6 @@ protected:
                 std::cout << "[" << client->GetID() << "]: READY" << std::endl;
             }
                 break;
-            case ACTION::START: {
-                std::cout << "[" << client->GetID() << "]: START" << std::endl;
-            }
-                break;
             case ACTION::LEFT: {
                 std::cout << "[" << client->GetID() << "]: LEFT" << std::endl;
             }
@@ -170,10 +158,6 @@ protected:
                 break;
             case ACTION::PONG: {
                 std::cout << "[" << client->GetID() << "]: PONG" << std::endl;
-            }
-                break;
-            case ACTION::KO: {
-                std::cout << "[" << client->GetID() << "]: KO" << std::endl;
             }
                 break;
             case ACTION::UNKNOWN: {
