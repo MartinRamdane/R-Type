@@ -97,30 +97,30 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "r-type")
 
 # Include files and directories you want in the package
 install(
-    DIRECTORY "${CMAKE_SOURCE_DIR}/Release/"
-    DESTINATION bin
+    DIRECTORY "${CMAKE_SOURCE_DIR}/Release/."
+    DESTINATION r-type/
     PATTERN ".pdb" EXCLUDE  # Exclude .pdb files on Windows
 )
 
 # Include your assets directory
 install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/assets/"
-    DESTINATION assets
+    DESTINATION r-type/assets
 )
 
 install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/font/"
-    DESTINATION font
+    DESTINATION r-type/font
 )
 
 install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/sounds/"
-    DESTINATION sounds
+    DESTINATION r-type/sounds
 )
 
 install (
     DIRECTORY "${CMAKE_SOURCE_DIR}/config/"
-    DESTINATION config
+    DESTINATION r-type/config
 )
 
 
