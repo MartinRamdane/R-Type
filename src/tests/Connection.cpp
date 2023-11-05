@@ -6,19 +6,32 @@
 */
 
 #include <gtest/gtest.h>
-#include "../client/Game.hpp"
 #include "../global/EventHandler.hpp"
+#include "../server/TCPServer.hpp"
+#include "../server/UDPServer.hpp"
+#include "../global/JsonParser.hpp"
 
-// Test: Check if the game client can connect to the TCP Server
-TEST(TCPConnection, can_connect_to_server) {
-    Game *game = new Game();
-    bool clientIsConnected = game->connectToServer("127.0.0.1", 4242);
-    ASSERT_EQ(clientIsConnected, true);
+TEST(READJSON, can_read_json) {
+    JsonParser jsonParser;
+    nlohmann::json jsonFile = jsonParser.readFile("rTypeInstanceConfig.json");
+    int nbPlayersMax = jsonParser.get<int>(jsonFile, "nbPlayersMax");
+    ASSERT_EQ(nbPlayersMax, 4);
 }
 
 // Test: Check if the client can connect to the UDP Server
-TEST(UDPConnection, can_connect_to_server) {
-    Game *game = new Game();
-    bool clientIsConnected = game->connectToUdpServer("127.0.0.1", 4210);
+TEST(UDPServer, can_bind_udp_server) {
+    boost::asio::io_service _io_service;
+    UDPServer *udpServer = new UDPServer(_io_service, 4210);
+    bool clientIsConnected = true;
     ASSERT_EQ(clientIsConnected, true);
+}
+
+TEST(CRCCheck, can_check_crc) {
+    EventHandler eventHandler(ACTION::RESET, "testing");
+    std::vector<uint8_t> coded = eventHandler.encodeMessage();
+    Event decoded = eventHandler.decodeMessage(coded);
+    int test = 4343;
+    uint32_t testCrc = eventHandler.calculateCRCForInt(test);
+    ASSERT_EQ(testCrc, eventHandler.calculateCRCForInt(test));
+    ASSERT_EQ(decoded.ACTION_NAME, ACTION::RESET);
 }

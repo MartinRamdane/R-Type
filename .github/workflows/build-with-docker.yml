@@ -1,0 +1,23 @@
+name: Compiling and testing with docker compose
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and run Docker Compose
+        run: |
+          docker-compose up -d
+          docker-compose ps
+
+      - name: Clean up
+        run: |
+          docker-compose down -v  # Stop and remove containers and volumes
+

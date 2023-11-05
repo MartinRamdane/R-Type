@@ -1,0 +1,11 @@
+FROM adamelm/r-type-compiler:latest
+WORKDIR /rtype
+COPY src/ src/
+COPY CMakeLists.txt .
+COPY conanfile.py .
+COPY config/ config/
+COPY assets/ assets/
+COPY font/ font/
+COPY sounds/ sounds/
+CMD ["sh", "-c", "./Release/r-type_test"]
+
