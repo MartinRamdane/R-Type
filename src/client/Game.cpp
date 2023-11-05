@@ -22,14 +22,12 @@ Game::Game() : _threadPool(3) {
     _instanceMenu = std::make_unique<InstanceMenu>(this);
 }
 
-Game::~Game() {
-}
+Game::~Game() {}
 
 void Game::setLibToUse() {
     if (_lib == Lib::SDL) {
         _display = std::make_unique<DisplaySDL>();
-    }
-    else if (_lib == Lib::SFML) {
+    } else if (_lib == Lib::SFML) {
         _display = std::make_unique<DisplaySFML>();
     }
 }

@@ -13,11 +13,7 @@
 
 class IEntity {
    public:
-    enum Type {
-        SPRITE,
-        TEXT,
-        SOUND
-    };
+    enum Type { SPRITE, TEXT, SOUND };
     typedef struct EntityInfos {
         int id;
         std::string path;

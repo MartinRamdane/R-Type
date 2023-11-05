@@ -14,8 +14,8 @@ RessourceManagerSDL::RessourceManagerSDL(SDL_Renderer* renderer) {
             std::string filePath = entry.path().string();
             std::string key = entry.path().stem().string();
             key = key + ".png";
-            SDL_Surface *imageSurface = IMG_Load(filePath.c_str());
-            SDL_Texture *spriteTexture = SDL_CreateTextureFromSurface(renderer, imageSurface);
+            SDL_Surface* imageSurface = IMG_Load(filePath.c_str());
+            SDL_Texture* spriteTexture = SDL_CreateTextureFromSurface(renderer, imageSurface);
             if (spriteTexture == nullptr) {
                 SDL_Log("Failed to load texture %s: %s", key.c_str(), SDL_GetError());
             } else {

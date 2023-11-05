@@ -14,7 +14,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-
 class Boss : public Character {
    public:
     enum LastMove { UP, DOWN, LEFT, RIGHT, NONE };

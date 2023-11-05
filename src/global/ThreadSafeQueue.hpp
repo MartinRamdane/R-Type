@@ -12,82 +12,70 @@
 #include <condition_variable>
 
 template <typename T>
-class ThreadSafeQueue
-{
-public:
+class ThreadSafeQueue {
+   public:
     ThreadSafeQueue() = default;
-    ThreadSafeQueue(const ThreadSafeQueue<T> &) = delete;
+    ThreadSafeQueue(const ThreadSafeQueue<T>&) = delete;
     virtual ~ThreadSafeQueue() { clear(); };
 
-    const T &front()
-    {
+    const T& front() {
         std::scoped_lock lock(_mutex);
         return _queue.front();
     }
-    const T &back()
-    {
+    const T& back() {
         std::scoped_lock lock(_mutex);
         return _queue.back();
     }
-    T pop_front()
-    {
+    T pop_front() {
         std::scoped_lock lock(_mutex);
         auto t = std::move(_queue.front());
         _queue.pop_front();
         return t;
     }
-    T pop_back()
-    {
+    T pop_back() {
         std::scoped_lock lock(_mutex);
         auto t = std::move(_queue.back());
         _queue.pop_back();
         return t;
     }
-    void push_back(const T &item)
-    {
+    void push_back(const T& item) {
         std::scoped_lock lock(_mutex);
         _queue.push_back(std::move(item));
         std::unique_lock<std::mutex> ul(muxBlocking);
         _cond.notify_one();
     }
-    void push_front(const T &item)
-    {
+    void push_front(const T& item) {
         std::scoped_lock lock(_mutex);
         _queue.push_front(std::move(item));
         std::unique_lock<std::mutex> ul(muxBlocking);
         _cond.notify_one();
     }
-    bool empty()
-    {
+    bool empty() {
         std::scoped_lock lock(_mutex);
         return _queue.empty();
     }
-    size_t count()
-    {
+    size_t count() {
         std::scoped_lock lock(_mutex);
         return _queue.size();
     }
-    void clear()
-    {
+    void clear() {
         std::scoped_lock lock(_mutex);
         _queue.clear();
     }
-    void wait()
-    {
-        while (empty())
-        {
+    void wait() {
+        while (empty()) {
             std::unique_lock<std::mutex> ul(muxBlocking);
             _cond.wait(ul);
         }
     }
 
-protected:
+   protected:
     std::mutex _mutex;
     std::deque<T> _queue;
     std::condition_variable _cond;
     std::mutex muxBlocking;
 
-private:
+   private:
 };
 
 #endif /* !THREADSAFEQUEUE_HPP_ */

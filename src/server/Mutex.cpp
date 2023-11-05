@@ -7,25 +7,18 @@
 
 #include "Mutex.hpp"
 
-Mutex::Mutex()
-{
-}
+Mutex::Mutex() {}
 
-Mutex::~Mutex()
-{
-}
+Mutex::~Mutex() {}
 
-void Mutex::lock()
-{
+void Mutex::lock() {
     _mut.lock();
 }
 
-void Mutex::unlock()
-{
+void Mutex::unlock() {
     _mut.unlock();
 }
 
-bool Mutex::trylock()
-{
+bool Mutex::trylock() {
     return _mut.try_lock();
 }

@@ -7,7 +7,8 @@
 
 #include "Input.hpp"
 
-Input::Input(std::string texture, std::string textureHover, std::string textValue, std::shared_ptr<RessourceManagerSFML> ressourceManager)
+Input::Input(std::string texture, std::string textureHover, std::string textValue,
+             std::shared_ptr<RessourceManagerSFML> ressourceManager)
     : _textureFile(texture), _textureFileHover(textureHover) {
     _textValue = textValue;
     this->_font.loadFromFile(std::string("font/pixel.ttf"));

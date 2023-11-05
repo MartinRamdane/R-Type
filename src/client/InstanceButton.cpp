@@ -10,13 +10,13 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
 
     if (!_font.loadFromFile(std::string("font/pixel.ttf")))
         std::cerr << "Error: could not load font" << std::endl;
-    std::shared_ptr <RessourceManagerSFML> ressourceManager = std::make_shared<RessourceManagerSFML>();
+    std::shared_ptr<RessourceManagerSFML> ressourceManager =
+        std::make_shared<RessourceManagerSFML>();
     _instance = instance;
     _x = x;
     _y = y;
     _entities[formatText("instanceBackground")] = std::make_shared<EntitySFML>(ressourceManager);
-    _entities[formatText("instanceBackground")]->setTexture(
-            "instanceBackground.png");
+    _entities[formatText("instanceBackground")]->setTexture("instanceBackground.png");
     _entities[formatText("instanceBackground")]->setPosition(_x, _y);
     _entities[formatText("instanceBackground")]->setRect(1, 0);
     _entities[formatText("instanceBackground")]->setSpriteScale(1, 1);
@@ -42,14 +42,14 @@ InstanceButton::InstanceButton(InstanceType instance, int x, int y) {
     _entities[formatText("userIcon")]->setRect(1, 0);
 
     std::string playersText =
-            std::to_string(_instance.nbPlayers) + " / " + std::to_string(_instance.maxPlayers);
+        std::to_string(_instance.nbPlayers) + " / " + std::to_string(_instance.maxPlayers);
     _texts[formatText("playersText")] = std::make_shared<sf::Text>();
     _texts[formatText("playersText")]->setFont(_font);
     _texts[formatText("playersText")]->setString(playersText);
     _texts[formatText("playersText")]->setCharacterSize(16);
     _texts[formatText("playersText")]->setFillColor(sf::Color::White);
     _texts[formatText("playersText")]->setPosition(sf::Vector2f(_x + 30, _y + 55));
-    
+
     if (instance.nbPlayers < instance.maxPlayers) {
         _entities[formatText("submitButton")] = std::make_shared<EntitySFML>(ressourceManager);
         _entities[formatText("submitButton")]->setTexture("button.png");
@@ -71,7 +71,7 @@ std::string InstanceButton::formatText(std::string toFormat) {
     return toFormat + std::to_string(_instance.id);
 }
 
-EntitySFML *InstanceButton::getSubmitButton() {
+EntitySFML* InstanceButton::getSubmitButton() {
     return _entities[formatText("submitButton")].get();
 }
 

@@ -9,14 +9,13 @@
 #include "Game.hpp"
 #include "InstanceMenu.hpp"
 
-void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
+void TCPClientImpl::HandleMessage(message<ACTION>& msg) {
     switch (msg.header.id) {
         case ACTION::CONNECT: {
             try {
                 EventHandler evt;
                 evt.decodeMessage(msg.body);
-            } catch (std::exception &e) {
-            }
+            } catch (std::exception& e) {}
             break;
         }
         case ACTION::CREATE: {
@@ -35,8 +34,7 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
                 Event evtToSend = {ACTION::JOIN, serverToJoinInfos};
                 _game->getClient().get()->SendEvent(evtToSend);
                 // TODO : Interepereter réponse de création d'instance -> Connecter au serveur UDP de l'instance du coup
-            } catch (std::exception &e) {
-            }
+            } catch (std::exception& e) {}
             break;
         }
         case ACTION::LIST: {
@@ -60,11 +58,10 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
                 int maxPlayers = std::stoi(instanceMaxPlayers);
                 int port = std::stoi(instancePort);
                 int id = std::stoi(instanceId);
-                InstanceType instance = {instanceName, instanceGameName, nbPlayers,
-                                         maxPlayers, port, id};
+                InstanceType instance = {
+                    instanceName, instanceGameName, nbPlayers, maxPlayers, port, id};
                 _game->getInstanceMenu()->addInstanceButton(instance, 0, 0);
-            } catch (std::exception &e) {
-            }
+            } catch (std::exception& e) {}
             break;
         }
         case ACTION::JOIN: {
@@ -81,8 +78,7 @@ void TCPClientImpl::HandleMessage(message<ACTION> &msg) {
                 ss >> getPort;
                 _game->setPlayerId(std::stoi(playerId));
                 _game->connectToUdpServer(_game->getHost(), std::stoi(getPort));
-            } catch (std::exception &e) {
-            }
+            } catch (std::exception& e) {}
             break;
         }
         case ACTION::READY: {

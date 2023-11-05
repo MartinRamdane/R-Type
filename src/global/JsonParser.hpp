@@ -14,29 +14,23 @@
 #include <string>
 #include <algorithm>
 
-class JsonParser
-{
-public:
+class JsonParser {
+   public:
     JsonParser();
     ~JsonParser();
 
-    static nlohmann::json readFile(std::string const &path);
-    static std::unordered_map<std::string, std::string> getJsonFile(std::string const &path);
+    static nlohmann::json readFile(std::string const& path);
+    static std::unordered_map<std::string, std::string> getJsonFile(std::string const& path);
 
-    std::vector<std::string> split(std::string const &str, char const delim) noexcept;
+    std::vector<std::string> split(std::string const& str, char const delim) noexcept;
 
     template <typename T>
-    T get(nlohmann::json const jsonData, std::string const key)
-    {
+    T get(nlohmann::json const jsonData, std::string const key) {
         //if there is no dot in the key, we return the value
-        if (key.find('.') == std::string::npos)
-        {
-            if (jsonData.contains(key))
-            {
+        if (key.find('.') == std::string::npos) {
+            if (jsonData.contains(key)) {
                 return jsonData.at(key).get<T>();
-            }
-            else
-            {
+            } else {
                 std::cerr << "Key '" << key << "' not found!" << std::endl;
                 return T();
             }
@@ -45,18 +39,13 @@ public:
         int cou = count(key.begin(), key.end(), '.');
         std::vector<std::string> keys = JsonParser::split(key, '.');
 
-        nlohmann::json const *leaf = &jsonData;
+        nlohmann::json const* leaf = &jsonData;
 
-        if (cou > 0)
-        {
-            for (int i = 0; i <= cou; i++)
-            {
-                if (leaf->contains(keys[i]))
-                {
+        if (cou > 0) {
+            for (int i = 0; i <= cou; i++) {
+                if (leaf->contains(keys[i])) {
                     leaf = &leaf->at(keys[i]);
-                }
-                else
-                {
+                } else {
                     std::cerr << "Key '" << keys[i] << "' not found!" << std::endl;
                     return T();
                 }

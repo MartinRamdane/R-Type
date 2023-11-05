@@ -8,7 +8,7 @@
 #include "Instance.hpp"
 
 Instance::Instance(int id, std::string gameName)
-        : _id(id), _port((int) (4210 + id)), _gameName(gameName), _threadPool(3) {
+    : _id(id), _port((int)(4210 + id)), _gameName(gameName), _threadPool(3) {
     _isRunning = true;
     _playerIdToGive = 1;
     std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
@@ -18,7 +18,7 @@ Instance::Instance(int id, std::string gameName)
     _onlyMultiplayer = _jsonParser.get<bool>(jsonFile, "onlyMultiplayer");
     std::cout << "nbplayersmax: " << _nbPlayersMax << " only multiplayer " << _onlyMultiplayer
               << std::endl;
-    _udpServer = new UDPServer(_io_service, (int) (4210 + id));
+    _udpServer = new UDPServer(_io_service, (int)(4210 + id));
     _udpServer->setNbPlayers(1);
     _core = new Core(gameName);
     _udpServer->setInstance(this);
@@ -38,7 +38,6 @@ Instance::~Instance() {
     delete _core;
     std::cout << "core destroyed" << std::endl;
     std::cout << "Instance destroyed" << std::endl;
-
 }
 
 void Instance::MessagesLoop() {
@@ -59,11 +58,11 @@ void Instance::EventLoop() {
         }
         if (std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::high_resolution_clock::now() - _lastCheck)
-                    .count() > 500) {
+                .count() > 500) {
             _lastCheck = std::chrono::high_resolution_clock::now();
             checkEntitiesInClients();
         }
-        std::vector <std::string> protocol = _core->mainLoop(_events);
+        std::vector<std::string> protocol = _core->mainLoop(_events);
         if (_core->isReset()) {
             _core->setReset(false);
             Event evt;
@@ -71,7 +70,7 @@ void Instance::EventLoop() {
             evt.body = "";
             _udpServer->sendEventToAllClients(evt);
         }
-        for (auto message: protocol) {
+        for (auto message : protocol) {
             if (message.substr(0, message.find(" ")) == "esound") {
                 Event evt;
                 evt.ACTION_NAME = ACTION::SOUND;
@@ -100,8 +99,8 @@ void Instance::EventLoop() {
 
 void Instance::checkEntitiesInClients() {
     int entitiesNb = 0;
-    for (auto entityType: _core->getEngine()->getEntities()) {
-        for (auto entity: entityType->getEntities()) {
+    for (auto entityType : _core->getEngine()->getEntities()) {
+        for (auto entity : entityType->getEntities()) {
             entitiesNb++;
         }
     }

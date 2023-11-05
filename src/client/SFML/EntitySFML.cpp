@@ -215,7 +215,8 @@ IEntity::Type EntitySFML::getType() const {
 }
 
 void EntitySFML::makePrediction() {
-    if (_direction == "left" || _direction == "right" || _direction == "up" || _direction == "down") {
+    if (_direction == "left" || _direction == "right" || _direction == "up" ||
+        _direction == "down") {
         float speed = _speed;
         if (_direction == "left" || _direction == "up") {
             speed = _speed * -1;

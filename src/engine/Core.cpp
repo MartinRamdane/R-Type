@@ -56,7 +56,7 @@ std::vector<std::string> Core::getCreateEntities() {
     std::vector<std::string> entitiesList;
     auto entities = _engine->getEntities();
     for (auto entityType : entities) {
-        for (auto entity: entityType->getEntities()) {
+        for (auto entity : entityType->getEntities()) {
             entitiesList.push_back(Protocol::transformEntityCreateToProtocol(entity));
         }
     }

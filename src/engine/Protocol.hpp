@@ -29,6 +29,7 @@ class Protocol {
         std::list<EntityType<IEntity>*> entities);
     static std::string getKeyFromBody(std::string body);
     static int getIdFromBodyKey(std::string body);
+
    protected:
    private:
 };

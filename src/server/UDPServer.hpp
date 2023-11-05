@@ -18,28 +18,25 @@
 
 class Instance;
 
-struct Client
-{
+struct Client {
     boost::asio::ip::udp::endpoint client;
     std::chrono::system_clock::time_point timestamp;
 };
 
-struct UDPMessage
-{
+struct UDPMessage {
     std::vector<uint8_t> data;
     boost::asio::ip::udp::endpoint endpoint;
 };
 
-class UDPServer
-{
-public:
+class UDPServer {
+   public:
     /**
      * @brief Construct a new UDPServer::UDPServer object
      *
      * @param io_service service used for async ops
      * @param port port the server needs to listen on
      */
-    UDPServer(boost::asio::io_service &io_service, int port);
+    UDPServer(boost::asio::io_service& io_service, int port);
 
     /**
      * @brief Destroy the UDPServer::UDPServer object
@@ -58,7 +55,7 @@ public:
      *
      * @param msg messages data
      */
-    void checkConnection(UDPMessage &msg);
+    void checkConnection(UDPMessage& msg);
 
     /**
      * @brief Removes client from the vector
@@ -73,7 +70,7 @@ public:
      * @param host client's ip
      * @param port client's port
      */
-    void sendEvent(Event evt, const std::string &host, int port);
+    void sendEvent(Event evt, const std::string& host, int port);
 
     /**
      * @brief Sends event to all the clients (adds to the send queue)
@@ -90,20 +87,21 @@ public:
      * @param endpoint  client's endpoint
      * @param client  client's class
      */
-    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint, std::vector<Client>::iterator client);
+    void handleEvents(Event evt, boost::asio::ip::udp::endpoint endpoint,
+                      std::vector<Client>::iterator client);
 
-        /**
+    /**
          * @brief Process send queue and send data to the clients
          *
          */
-        void processSendQueue();
+    void processSendQueue();
 
     /**
      * @brief Process the message received from the client
      *
      * @param msg message received
      */
-    void processMessage(UDPMessage &msg);
+    void processMessage(UDPMessage& msg);
 
     /**
      * @brief Send data to the client asynchronously
@@ -120,8 +118,8 @@ public:
      */
     void userJoined(Client client);
 
-    void setInstance(Instance *instance) { _instanceRef = instance; }
-    ThreadSafeQueue<UDPMessage> &incoming() { return _queue; }
+    void setInstance(Instance* instance) { _instanceRef = instance; }
+    ThreadSafeQueue<UDPMessage>& incoming() { return _queue; }
     void handleEngineEvents(std::string request);
     void handleMessages(size_t maxMessages = -1, bool bWait = false);
     int getNbPlayers() const { return _nbPlayers; }
@@ -130,7 +128,8 @@ public:
     std::map<int, std::string> getPlayerEntity() const { return _playerEntities; }
     void sendSpriteToReadyClient(std::vector<Client>::iterator client);
     void handleUnknownEntities(std::vector<Client>::iterator client);
-private:
+
+   private:
     /**
      * @brief Start receiving data from the client
      *
@@ -143,7 +142,7 @@ private:
      * @param error
      * @param bytes_recvd
      */
-    void handler(const std::error_code &error, std::size_t bytes_recvd);
+    void handler(const std::error_code& error, std::size_t bytes_recvd);
 
     /**
      * @brief Send a ping to all the clients every 2 seconds
@@ -158,7 +157,7 @@ private:
     std::thread ping_thread_;
     int _nbPlayers;
     Mutex mutex_;
-    Instance *_instanceRef;
+    Instance* _instanceRef;
     ThreadSafeQueue<UDPMessage> _queue;
     ThreadSafeQueue<UDPMessage> _toSendQueue;
     std::vector<uint8_t> recv_buffer_ = std::vector<uint8_t>(1024);

@@ -21,7 +21,7 @@ struct InstanceInfos {
 };
 
 class ServerClass {
-public:
+   public:
     ServerClass();
 
     ~ServerClass();
@@ -34,22 +34,22 @@ public:
 
     int getNbPlayersInstance(int instanceId) { return _instances[instanceId]->getNbPlayers(); }
 
-    void interpretEvent(Event &event);
+    void interpretEvent(Event& event);
 
     int getInstancesNb() { return _instances.size(); }
 
-    std::vector<Instance *> getInstances() { return _instances; }
+    std::vector<Instance*> getInstances() { return _instances; }
 
-    Instance *getInstance(int id) { return _instances[id]; }
+    Instance* getInstance(int id) { return _instances[id]; }
 
-    Instance *getInstanceByPort(int port);
+    Instance* getInstanceByPort(int port);
 
     void loop();
 
-protected:
-private:
+   protected:
+   private:
     boost::asio::io_service _io_service;
     ThreadPool _threadPool;
-    MyServer *_server;
-    std::vector<Instance *> _instances;
+    MyServer* _server;
+    std::vector<Instance*> _instances;
 };

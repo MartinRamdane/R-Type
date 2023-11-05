@@ -10,11 +10,9 @@
 #include <string>
 #include <tuple>
 
-class IEntity
-{
-public:
-    enum Direction
-    {
+class IEntity {
+   public:
+    enum Direction {
         NONE,
         UP,
         DOWN,
