@@ -54,9 +54,13 @@ At the root of the repository you can now use ```conan install . --output-folder
 You can disable the compilation of some part of our project using CMAKE flags.
 
 You can disable the compilation of the client using ```-DBUILD_CLIENT=OFF```
+
 You can disable the compilation of the server using ```-DBUILD_SERVER=OFF```
+
 You can disable the compilation of the editor using ```-DBUILD_EDITOR=OFF```
+
 You can disable the compilation of the tests using ```-DBUILD_TESTS=OFF```
+
 
 ### Windows
 
