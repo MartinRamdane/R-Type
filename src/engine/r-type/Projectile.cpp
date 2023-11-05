@@ -45,7 +45,6 @@ void Projectile::trackPlayer() {
     int xDiff = targetX - _x;
     int yDiff = targetY - _y;
     int distance = std::sqrt(xDiff * xDiff + yDiff * yDiff);
-    std::cout << "distance: " << distance << std::endl;
 
     if (distance > minDistanceToStop && !_directionalMove) {
         // Calculate the angle between the projectile and the player

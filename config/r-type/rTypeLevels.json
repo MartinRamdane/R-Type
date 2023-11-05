@@ -4,52 +4,12 @@
       "Type": "Background"
     },
     "Entity2": {
-      "Config": "Wall1.rType.json",
-      "Count": 3,
+      "Config": "Boss2.rType.json",
+      "Count": 1,
       "Positions": [
         {
-          "X": 281,
-          "Y": 18
-        },
-        {
-          "X": 353,
-          "Y": 85
-        },
-        {
-          "X": 433,
-          "Y": 147
-        }
-      ]
-    },
-    "Entity3": {
-      "Config": "Wall2.rType.json",
-      "Count": 3,
-      "Positions": [
-        {
-          "X": 445,
-          "Y": 319
-        },
-        {
-          "X": 380,
-          "Y": 385
-        },
-        {
-          "X": 277,
-          "Y": 432
-        }
-      ]
-    },
-    "Entity4": {
-      "Config": "Wall3.rType.json",
-      "Count": 2,
-      "Positions": [
-        {
-          "X": 361,
-          "Y": 166
-        },
-        {
-          "X": 371,
-          "Y": 294
+          "X": 661,
+          "Y": 183
         }
       ]
     },

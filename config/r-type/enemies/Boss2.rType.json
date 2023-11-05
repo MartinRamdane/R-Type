@@ -1,8 +1,8 @@
 {
     "Type": "Boss",
-    "Name": "Boss1",
-    "MovementType": "Boss1",
-    "ProjectileType": "Boss1Projectile",
+    "Name": "Boss2",
+    "MovementType": "Boss2",
+    "ProjectileType": "Boss2Projectile",
     "FireRate": 1,
     "ProjectileSpeed": 2,
     "Speed": 2,
