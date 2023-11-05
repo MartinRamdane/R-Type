@@ -190,6 +190,8 @@ RFC 4242                    R-TYPE Protocol               November 2023
     to the server. The server will then create an instance and send a JOINED
     action to the client. The client will then connect in UDP to the instance.
 
+    You can find more details about our protocol inside of the docs/server.md file.
+
 
 Elaoumari                  Standards Track                    [Page 4]
 
@@ -200,6 +202,8 @@ RFC 4242                    R-TYPE Protocol               November 2023
     This protocol is used for the game itself. As it's low latency.
     This protocol uses the same Event struct, and ACTION enum as the TCP protocol.
     It also uses the same compression and CRC system to ensure reliability.
+
+    You can find more details about our protocol inside of the docs/server.md file.
 
     Most of the actions used in UDP are : LEFT, RIGHT, UP, DOWN, SPACE, QUIT,
     PING, PONG, SPRITE, TEXT, DEAD, FLIP, RESET, UNKNOWN, CHECK, SOUND, KEY
