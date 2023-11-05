@@ -49,11 +49,20 @@ If you haven't created a conan profile yet, use ```conan profile detect --force`
 
 At the root of the repository you can now use ```conan install . --output-folder=build --build=missing``` to generate the build/ folder and install our dependencies.
 
+### Disabling compilation
+
+You can disable the compilation of some part of our project using CMAKE flags.
+
+You can disable the compilation of the client using ```-DBUILD_CLIENT=OFF```
+You can disable the compilation of the server using ```-DBUILD_SERVER=OFF```
+You can disable the compilation of the editor using ```-DBUILD_EDITOR=OFF```
+You can disable the compilation of the tests using ```-DBUILD_TESTS=OFF```
+
 ### Windows
 
 For Windows, in order to generate the executables you need to execute theses commands in the **build folder** : 
 
-`cmake ..`
+`cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake`
 ***
 Depending on your Release mode you need to specify if you're in Debug or Release mode (it is specified in your conan profile).
 ***
