@@ -21,10 +21,56 @@ There is a **IDisplay** class and a child class named **DisplaySFML** that handl
 If you want to add another graphic lib you can create a new **Display** class that inherit from **IDsiplay**.
 It's the same thing for the entities handling, there is a **IEntity** class and a **EntitySFML** class to create and manage game entities.
 So you have to create a new **Entity** class if you add a new graphic lib.
+We can aslo use the SDL lib and for that all the class named with SFML are existing with SDL.
 
 The main loop is handle by the `Game.run()` function.
-All the event are get by the **DisplaySFML** class and the Game get them for doing action for each event.
 All the entities are display in the draw function of the **DisplaySFML** class.
+The event actions are manage in the `handleEvent()` function in the **Display** class. this function return a string corresponding to the event like this.
+```
+if (std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::high_resolution_clock::now() - _lastFrameTime)
+            .count() > 10) {
+        _lastFrameTime = std::chrono::high_resolution_clock::now();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            _events.push_back("left");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            _events.push_back("right");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            _events.push_back("up");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            _events.push_back("down");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            _events.push_back("space");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            _events.push_back("s");
+```
+and in the **Game** class the function `getEvent` is doing a action for each event like this 
+```
+std::vector<std::string> events = _display->getEvents();
+    Event evt;
+    std::string playerId = "p" + std::to_string(_playerId);
+    for (auto event : events) {
+        if (event == "close")
+            _client->Disconnect();
+        if (event == "r")
+            evt.ACTION_NAME = ACTION::FLIP;
+        if (event == "left")
+            evt.ACTION_NAME = ACTION::LEFT;
+        if (event == "right")
+            evt.ACTION_NAME = ACTION::RIGHT;
+        if (event == "up")
+            evt.ACTION_NAME = ACTION::UP;
+        if (event == "down")
+            evt.ACTION_NAME = ACTION::DOWN;
+        if (event == "space")
+            evt.ACTION_NAME = ACTION::SPACE;
+        if (event == "s")
+            evt.ACTION_NAME = ACTION::KEY_S;
+        evt.body = playerId;
+        _udpClient->sendEvent(evt);
+    }
+```
+So if you want to add action and event you have to modify this 2 functions.
 
 It retrieves the information sent by the parser and creates a map of class **IEntity**.
 This map contains all the Sprites and their Id to be displayed during the game.
