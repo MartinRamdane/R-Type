@@ -232,7 +232,6 @@ void Editor::keyEvent(sf::Event event) {
         } else if (event.key.code == sf::Keyboard::Equal) {
             _selectedEntity = "wall3";
         } else if (event.key.code == sf::Keyboard::S) {
-            "Saving..." << std::endl;
             _savingMode = true;
         }
     }
