@@ -244,6 +244,11 @@ void RType::update(ThreadSafeQueue<Event>& events) {
     std::string key = "";
     while (!events.empty()) {
         auto event = events.pop_front();
+        if (!_players.empty() && (int)_players.size() >= getId(event)) {
+            if (_players[getId(event) - 1]->isDead()){
+                continue;
+            }
+        }
         switch (event.ACTION_NAME) {
             case ACTION::LEFT:
                 if (!_players.empty() && (int)_players.size() >= getId(event))
