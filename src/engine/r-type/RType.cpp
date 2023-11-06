@@ -244,35 +244,54 @@ void RType::update(ThreadSafeQueue<Event>& events) {
     std::string key = "";
     while (!events.empty()) {
         auto event = events.pop_front();
-        if (!_players.empty() && (int)_players.size() >= getId(event)) {
-            if (_players[getId(event) - 1]->isDead()){
-                continue;
-            }
-        }
         switch (event.ACTION_NAME) {
             case ACTION::LEFT:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event)) {
+                    if (_players[getId(event) - 1]->isDead()){
+                        continue;
+                    }
                     _players[getId(event) - 1]->move(-1, 0);
+                }
                 break;
             case ACTION::RIGHT:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event)) {
+                    if (_players[getId(event) - 1]->isDead()){
+                        continue;
+                    }
                     _players[getId(event) - 1]->move(1, 0);
+                }
                 break;
             case ACTION::UP:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event)) {
+                    if (_players[getId(event) - 1]->isDead()){
+                        continue;
+                    }
                     _players[getId(event) - 1]->move(0, -1);
+                }
                 break;
             case ACTION::DOWN:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event)) {
+                    if (_players[getId(event) - 1]->isDead()){
+                        continue;
+                    }
                     _players[getId(event) - 1]->move(0, 1);
+                }
                 break;
             case ACTION::SPACE:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event)) {
+                    if (_players[getId(event) - 1]->isDead()){
+                        continue;
+                    }
                     _players[getId(event) - 1]->shoot();
+                }
                 break;
             case ACTION::FLIP:
-                if (!_players.empty() && (int)_players.size() >= getId(event))
+                if (!_players.empty() && (int)_players.size() >= getId(event)) {
+                    if (_players[getId(event) - 1]->isDead()){
+                        continue;
+                    }
                     _players[getId(event) - 1]->flip();
+                }
                 break;
             case ACTION::READY:
                 _players.push_back(getRandomSpaceship());
@@ -284,15 +303,22 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 if (key == "s") {
                     if (!_players.empty() &&
                         (int)_players.size() >=
-                            Protocol::getIdFromBodyKey(event.body))
+                            Protocol::getIdFromBodyKey(event.body)) {
+                                if (_players[Protocol::getIdFromBodyKey(event.body) - 1]->isDead()){
+                                    continue;
+                                }
                         _players[Protocol::getIdFromBodyKey(event.body) - 1]
                             ->action();
+                            }
                 }
                 if (key == "l") {
                     for (auto supportShip : _supportShips) {
                         if (supportShip->getRelatedPlayerId() ==
                             _players[Protocol::getIdFromBodyKey(event.body) - 1]
                                 ->getId()) {
+                                    if (_players[Protocol::getIdFromBodyKey(event.body) - 1]->isDead()){
+                                        continue;
+                                    }
                             supportShip->launch();
                             break;
                         }
@@ -303,6 +329,9 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                         if (supportShip->getRelatedPlayerId() ==
                             _players[Protocol::getIdFromBodyKey(event.body) - 1]
                                 ->getId()) {
+                                    if (_players[Protocol::getIdFromBodyKey(event.body) - 1]->isDead()){
+                                        continue;
+                                    }
                             supportShip->setEntitiesHasCollided(true);
                             _players[Protocol::getIdFromBodyKey(event.body) - 1]
                                 ->setEntitiesHasCollided(true);
