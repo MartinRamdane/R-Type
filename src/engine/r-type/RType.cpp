@@ -354,6 +354,7 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
+        _levelInitializer->loadLevel(_currentLevel);
         for (auto player : _players) {
             for (auto player : _players) {
                 int randomY = rand() % 4;
@@ -367,7 +368,6 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 player->setPosition(50, y);
             }
         }
-        _levelInitializer->loadLevel(_currentLevel);
     }
 }
 
