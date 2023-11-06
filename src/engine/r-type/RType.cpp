@@ -130,7 +130,6 @@ RType::RType(std::shared_ptr<Engine>& engine) : _engine(engine) {
 
 RType::~RType() {
     // Destroy all entities
-    instance = nullptr;
     std::cout << "starting clearing " << std::endl;
     _players.clear();
     _enemies.clear();
@@ -141,6 +140,7 @@ RType::~RType() {
     _assets.clear();
     _musics.clear();
     _wall.clear();
+    instance = nullptr;
 }
 
 void RType::createAssetList() {
