@@ -30,19 +30,19 @@ Instance::Instance(int id, std::string gameName)
 
 Instance::~Instance() {
     _isRunning = false;
-    while (!finishedLoop) {
-        std::cout << "waiting for loop to finish" << std::endl;
-    }
     std::cout << "running false" << std::endl;
     _io_service.stop();
     std::cout << "io_service stopped" << std::endl;
     delete _udpServer;
     std::cout << "udpserver destroyed" << std::endl;
+    while (!finishedLoop) {
+        std::cout << "waiting for loop to finish" << std::endl;
+    }
+    delete _core;
+    std::cout << "core destroyed" << std::endl;
     std::cout << "Instance destroyed" << std::endl;
     _events.clear();
     std::cout << "events cleared" << std::endl;
-    delete _core;
-    std::cout << "core destroyed" << std::endl;
 }
 
 void Instance::MessagesLoop() {
