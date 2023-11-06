@@ -41,7 +41,6 @@ Instance::~Instance() {
     std::cout << "Instance destroyed" << std::endl;
     _events.clear();
     std::cout << "events cleared" << std::endl;
-    _core->getEngine()->instance = nullptr;
     delete _core;
     std::cout << "core destroyed" << std::endl;
 }
