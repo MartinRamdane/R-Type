@@ -119,7 +119,6 @@ void Boss::shoot() {
         info.damage = getDamage();
         info.spriteConfigJsonObjectName = getProjectileAsset();
         info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
-        std::cout << info.name << std::endl;
         info.direction = info.name.find("Boss2") ? IEntity::Direction::TRACKING
                                                  : IEntity::Direction::LEFT;
         info.relatedPlayerId = player->getId();
