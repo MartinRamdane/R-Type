@@ -12,7 +12,7 @@ Instance::Instance(int id, std::string gameName)
     _isRunning = true;
     _playerIdToGive = 1;
     std::string gameConfigFilePathName = gameName + "InstanceConfig.json";
-    _name = "toChange";
+    _name = gameName + std::to_string(id);
     nlohmann::json jsonFile = _jsonParser.readFile(gameConfigFilePathName);
     _nbPlayersMax = _jsonParser.get<int>(jsonFile, "nbPlayersMax");
     _onlyMultiplayer = _jsonParser.get<bool>(jsonFile, "onlyMultiplayer");
