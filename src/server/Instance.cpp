@@ -30,6 +30,9 @@ Instance::Instance(int id, std::string gameName)
 
 Instance::~Instance() {
     _isRunning = false;
+    while (!finishedLoop) {
+        std::cout << "waiting for loop to finish" << std::endl;
+    }
     std::cout << "running false" << std::endl;
     _io_service.stop();
     std::cout << "io_service stopped" << std::endl;
@@ -40,10 +43,6 @@ Instance::~Instance() {
     std::cout << "Instance destroyed" << std::endl;
     _events.clear();
     std::cout << "events cleared" << std::endl;
-    while (!finishedLoop) {
-        std::cout << "waiting for loop to finish" << std::endl;
-    }
-
 }
 
 void Instance::MessagesLoop() {
