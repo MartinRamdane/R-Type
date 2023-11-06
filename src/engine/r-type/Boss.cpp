@@ -64,7 +64,6 @@ void Boss::update() {
     } else if (movementType == "Boss2" &&
                RType::instance->getEnemies().size() == 1) {
         auto pos = getPosition();
-        std::cout << "Boss2" << std::endl;
         if (std::get<0>(pos) > 750) {
             move(-1, 0);
         } else {
@@ -113,7 +112,6 @@ void Boss::shoot() {
             info.scaleX = 1.7;
             info.scaleY = 1.7;
         } else {
-            std::cout << "Boss2" << std::endl;
             info.x = std::get<0>(pos) - 45;
             info.y = std::get<1>(pos) + 25;
         }
