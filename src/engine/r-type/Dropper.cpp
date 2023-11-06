@@ -21,3 +21,13 @@ void Dropper::update() {
         RType::instance->createSupportShip(_x, _y);
     move(-1, 0);
 }
+
+void Dropper::move(float x, float y) {
+    if ((_x + x * getSpeed()) < 0 - _radius) {
+        kill();
+        return;
+    }
+    setOldPosition(_x, _y);
+    _x += x * getSpeed();
+    _y += y * getSpeed();
+}

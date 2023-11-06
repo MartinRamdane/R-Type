@@ -16,6 +16,7 @@
 #include "Speed.hpp"
 #include "SupportShip.hpp"
 #include "Tank.hpp"
+#include "Wall.hpp"
 
 RType* RType::instance = nullptr;
 
@@ -138,6 +139,8 @@ RType::~RType() {
     _supportShips.clear();
     _dropper.clear();
     _assets.clear();
+    _musics.clear();
+    _wall.clear();
 }
 
 void RType::createAssetList() {
@@ -207,7 +210,7 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
 
     info.x = 50;
     int randomY = rand() % 4;
-    info.y = 100 + randomY * 100;
+    info.y = 100 + randomY * 40;
 
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Spaceship";
@@ -358,7 +361,7 @@ void RType::createProjectile(IEntity::EntityInfo info, bool flip,
         _projectiles.push_back(projectile);
     } else if (group == ProjectileGroup::ENEMY ||
                group == ProjectileGroup::BOSS) {
-        if (info.name == "Bomb")
+        if (info.name == "Bomb" || info.name == "Boss2Projectile")
             _bombGroups->insert(projectile);
         else
             _enemyProjectilesGroups->insert(projectile);
@@ -477,6 +480,12 @@ void RType::eraseDeadEntity() {
             break;
         }
     }
+    for (auto it = _wall.begin(); it != _wall.end(); it++) {
+        if ((*it)->isDead()) {
+            _wall.erase(it);
+            break;
+        }
+    }
 }
 
 void RType::setAllEntitiesToCreated() {
@@ -501,6 +510,9 @@ void RType::setAllEntitiesToCreated() {
     for (auto music : _musics) {
         music->setCreated(false);
     }
+    for (auto wall : _wall) {
+        wall->setCreated(false);
+    }
 }
 
 void RType::deleteAllEntities() {
@@ -521,6 +533,7 @@ void RType::deleteAllEntities() {
     _projectiles.clear();
     _supportShips.clear();
     _dropper.clear();
+    _wall.clear();
     _staticObjectsGroups->clear();
     _greenRobotGroups->clear();
     _flyerGroups->clear();
@@ -593,8 +606,8 @@ void RType::createBackground(IEntity::EntityInfo info) {
 }
 
 void RType::createWall(IEntity::EntityInfo info) {
-    std::shared_ptr<AEntity> wall = std::make_shared<Enemy>(info);
-    _enemies.push_back(wall);
+    std::shared_ptr<Wall> wall = std::make_shared<Wall>(info);
+    _wall.push_back(wall);
     _wallGroups->insert(wall);
 }
 

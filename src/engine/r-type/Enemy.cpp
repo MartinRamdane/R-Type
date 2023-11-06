@@ -62,17 +62,16 @@ void Enemy::update() {
         int verticalDirection = 0;
         int horizontalDirection = 0;
 
-        //check if the enemy is going to go out of the screen change direction if so
         if (_x < 0 - _radius) {
             _lastMove = RIGHT;
             _lastMoveTime = currentTime;
         } else if (_x > 700 + _radius) {
             _lastMove = LEFT;
             _lastMoveTime = currentTime;
-        } else if (_y < 60 - _radius) {
+        } else if (_y < 130 - _radius) {
             _lastMove = UP;
             _lastMoveTime = currentTime;
-        } else if (_y > 400 + _radius) {
+        } else if (_y > 300 + _radius) {
             _lastMove = DOWN;
             _lastMoveTime = currentTime;
         } else if (_x < 200) {

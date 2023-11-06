@@ -26,6 +26,7 @@ class Projectile;
 class SupportShip;
 class Dropper;
 class Boss;
+class Wall;
 
 class RType : public IGame {
    public:
@@ -59,6 +60,7 @@ class RType : public IGame {
     std::shared_ptr<AEntity> createSupportShip(int x, int y);
     std::shared_ptr<AEntity> getPlayer(int id);
     std::vector<std::shared_ptr<AEntity>> getPlayers();
+    std::vector<std::shared_ptr<Wall>> getWalls() { return _wall; };
     void setPlayerHasSupport(int id, bool support);
     void createAssetList();
     std::vector<std::shared_ptr<AEntity>> getEnemies();
@@ -91,6 +93,7 @@ class RType : public IGame {
     std::vector<std::shared_ptr<SupportShip>> _supportShips;
     std::vector<std::shared_ptr<Dropper>> _dropper;
     std::vector<std::shared_ptr<AEntity>> _musics;
+    std::vector<std::shared_ptr<Wall>> _wall;
     int _lastId = 0;
     std::map<std::string, std::string> _assets;
     int _currentLevel = 1;

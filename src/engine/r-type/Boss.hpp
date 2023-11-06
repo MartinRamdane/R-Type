@@ -27,4 +27,5 @@ class Boss : public Character {
    private:
     LastMove _lastMove = NONE;
     std::chrono::high_resolution_clock::time_point _lastMoveTime;
+    bool _didOnce = false;
 };

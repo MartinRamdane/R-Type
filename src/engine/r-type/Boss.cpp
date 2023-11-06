@@ -6,6 +6,7 @@
 */
 
 #include "Boss.hpp"
+#include "Wall.hpp"
 
 Boss::Boss(EntityInfo info) : Character(info) {
     setShootAsset(info.projectileType);
@@ -25,6 +26,13 @@ void Boss::update() {
     }
 
     std::string movementType = getMovementType();
+
+    auto wall = RType::instance->getWalls();
+    if (RType::instance->getEnemies().size() == 1 && wall.size() > 0) {
+        for (auto w : wall) {
+            w->setShouldMove(false);
+        }
+    }
 
     if (movementType == "Boss1" && RType::instance->getEnemies().size() == 1) {
         auto pos = getPosition();
@@ -56,11 +64,34 @@ void Boss::update() {
     } else if (movementType == "Boss2" &&
                RType::instance->getEnemies().size() == 1) {
         auto pos = getPosition();
-        //make an up and down movement
-
-        if (std::get<1>(pos) > 440) {
-            move(0, -1);
+        std::cout << "Boss2" << std::endl;
+        if (std::get<0>(pos) > 750) {
+            move(-1, 0);
         } else {
+            //move up and down for some time
+            const auto currentTime = std::chrono::high_resolution_clock::now();
+            const auto timeElapsed =
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    currentTime - _lastMoveTime)
+                    .count();
+            bool needsDirectionChange;
+            needsDirectionChange = timeElapsed > 2000;
+            if (needsDirectionChange) {
+                _lastMove = (_lastMove == NONE || _lastMove == UP) ? DOWN : UP;
+                _lastMoveTime = currentTime;
+            }
+            double verticalDisplacement;
+            if (_didOnce == false) {
+                _didOnce = true;
+                verticalDisplacement =
+                    std::sin(2 * M_PI * timeElapsed / 3000.0);
+            } else {
+                verticalDisplacement =
+                    std::sin(2 * M_PI * timeElapsed / 4000.0);
+            }
+            int verticalDirection = (_lastMove == UP) ? 1 : -1;
+            int horizontalDirection = 0;
+            move(horizontalDirection, verticalDirection * verticalDisplacement);
         }
     }
     shoot();

@@ -2,20 +2,22 @@
 ** EPITECH PROJECT, 2023
 ** r-type
 ** File description:
-** Dropper
+** Enemy
 */
 
 #pragma once
 
 #include "../Character.hpp"
 
-class Dropper : public Character {
+class Wall : public Character {
    public:
-    Dropper(EntityInfo info);
-    ~Dropper();
+    Wall(EntityInfo info);
+    ~Wall();
     void update() override;
     void move(float x, float y) override;
+    void setShouldMove(bool shouldMove) { _shouldMove = shouldMove; }
 
    protected:
    private:
+    bool _shouldMove = true;
 };

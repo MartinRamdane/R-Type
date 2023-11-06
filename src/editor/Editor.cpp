@@ -206,7 +206,7 @@ void Editor::keyEvent(sf::Event event) {
             _entities["background"]->setPosition(
                 _entities["background"]->getSprite().getPosition().x,
                 _entities["background"]->getSprite().getPosition().y + 15);
-            _y += 5;
+            _y += 15;
         } else if (event.key.code == sf::Keyboard::Num1) {
             _selectedEntity = "flyer";
         } else if (event.key.code == sf::Keyboard::Num2) {
@@ -317,7 +317,7 @@ void Editor::mouseEvent(sf::Event event) {
                 if (entity.first == "background") {
                     continue;
                 } else {
-                    if (entity.second == 0)
+                    if (entity.second <= 0)
                         continue;
                     for (int j = 0; j <= entity.second; j++) {
                         if (_entities.find(entity.first + std::to_string(j)) ==
@@ -376,7 +376,7 @@ void Editor::saveLevel() {
             entity.first == "wall2" || entity.first == "wall3") {
             continue;
         } else {
-            if (entity.second == 0)
+            if (entity.second <= 0)
                 continue;
             level[_levelName]["Entity" + std::to_string(i)]["Count"] =
                 entity.second;
@@ -568,11 +568,11 @@ void Editor::mainloop() {
                 continue;
             _window->draw(entity.second->getSprite());
         }
+        _window->draw(_entitiesSelectMenu[_selectedEntity]->getSprite());
         _window->setView(_menuView);
         for (auto& text : _texts) {
             _window->draw(*text.second);
         }
-        _window->draw(_entitiesSelectMenu[_selectedEntity]->getSprite());
         for (auto& text : _texts) {
             _window->draw(*text.second);
         }
