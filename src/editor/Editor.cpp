@@ -232,7 +232,7 @@ void Editor::keyEvent(sf::Event event) {
         } else if (event.key.code == sf::Keyboard::Equal) {
             _selectedEntity = "wall3";
         } else if (event.key.code == sf::Keyboard::S) {
-            std::cout << "Saving..." << std::endl;
+            "Saving..." << std::endl;
             _savingMode = true;
         }
     }
@@ -249,7 +249,6 @@ void Editor::mouseEvent(sf::Event event) {
 
             if (_saveButton->getSprite().getGlobalBounds().contains(
                     worldPosition)) {
-                std::cout << "Saving..." << std::endl;
                 _savingMode = true;
                 return;
             }
@@ -365,7 +364,6 @@ void Editor::update() {
 void Editor::saveLevel() {
     nlohmann::json level = JsonParser::readFile("rTypeLevels.json");
 
-    std::cout << level[_levelName] << std::endl;
     int i = 1;
     level[_levelName] = {};
     level[_levelName]["Entity" + std::to_string(i)]["Type"] = "Background";
@@ -387,7 +385,6 @@ void Editor::saveLevel() {
                     _entities.find(entity.first + std::to_string(j)) ==
                         _entities.end())
                     continue;
-                std::cout << entity.first + std::to_string(j) << std::endl;
                 level[_levelName]["Entity" + std::to_string(i)]["Positions"][j]
                      ["X"] = (int)_entities[entity.first + std::to_string(j)]
                                  ->getSprite()
