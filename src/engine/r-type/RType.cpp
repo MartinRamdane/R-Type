@@ -316,14 +316,13 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         }
     }
     if (_enemies.size() == 0 && _currentLevel != _maxLevel) {
-        _lastId = 0;
+        _lastId = _players.size() - 1;
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
         _levelInitializer->loadLevel(_currentLevel);
         for (auto player : _players) {
             for (auto player : _players) {
-                player->setId(_lastId++);
                 int randomY = rand() % 4;
                 int y = 100 + randomY * 20;
                 player->resetLife();
