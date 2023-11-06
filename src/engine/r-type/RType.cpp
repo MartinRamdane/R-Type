@@ -316,15 +316,15 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         }
     }
     if (_enemies.size() == 0 && _currentLevel != _maxLevel) {
-        _lastId = _players.size() - 1;
+        _lastId = 0;
         _currentLevel++;
         deleteAllEntities();
         _reset = true;
-        _levelInitializer->loadLevel(_currentLevel);
         for (auto player : _players) {
             for (auto player : _players) {
                 int randomY = rand() % 4;
                 int y = 100 + randomY * 20;
+                player->setId(_lastId++);
                 player->resetLife();
                 player->setCreated(false);
                 player->setEntitiesHasCollided(false);
@@ -333,6 +333,7 @@ void RType::update(ThreadSafeQueue<Event>& events) {
                 player->setPosition(50, y);
             }
         }
+        _levelInitializer->loadLevel(_currentLevel);
     }
 }
 
