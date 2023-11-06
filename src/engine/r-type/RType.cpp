@@ -210,7 +210,7 @@ std::shared_ptr<Character> RType::getRandomSpaceship() {
 
     info.x = 50;
     int randomY = rand() % 4;
-    info.y = 100 + randomY * 40;
+    info.y = 100 + randomY * 20;
 
     info.spriteConfigJsonFileName = "rTypeAnimationConfig.json";
     info.spriteConfigJsonObjectName = "Spaceship";
@@ -324,11 +324,14 @@ void RType::update(ThreadSafeQueue<Event>& events) {
         for (auto player : _players) {
             for (auto player : _players) {
                 player->setId(_lastId++);
+                int randomY = rand() % 4;
+                int y = 100 + randomY * 20;
                 player->resetLife();
                 player->setCreated(false);
                 player->setEntitiesHasCollided(false);
                 player->setHasSupport(false);
                 player->setDirection(IEntity::Direction::RIGHT);
+                player->setPosition(50, y);
             }
         }
     }
