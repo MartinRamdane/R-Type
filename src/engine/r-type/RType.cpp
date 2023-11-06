@@ -451,7 +451,7 @@ void RType::eraseDeadEntity() {
                     }
                 }
             }
-            _players.erase(it);
+            // _players.erase(it);
             break;
         }
     }
