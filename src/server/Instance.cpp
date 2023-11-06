@@ -38,11 +38,12 @@ Instance::~Instance() {
     std::cout << "io_service stopped" << std::endl;
     delete _udpServer;
     std::cout << "udpserver destroyed" << std::endl;
-    delete _core;
-    std::cout << "core destroyed" << std::endl;
     std::cout << "Instance destroyed" << std::endl;
     _events.clear();
     std::cout << "events cleared" << std::endl;
+    _core->getEngine()->instance = nullptr;
+    delete _core;
+    std::cout << "core destroyed" << std::endl;
 }
 
 void Instance::MessagesLoop() {

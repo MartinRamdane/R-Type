@@ -21,7 +21,6 @@ Engine::Engine() {
 }
 
 Engine::~Engine() {
-    instance = nullptr;
     _isRunning = false;
 }
 
