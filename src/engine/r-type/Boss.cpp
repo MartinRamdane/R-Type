@@ -36,7 +36,7 @@ void Boss::update() {
 
     if (movementType == "Boss1" && RType::instance->getEnemies().size() == 1) {
         auto pos = getPosition();
-        if (std::get<1>(pos) > 440) {
+        if (std::get<1>(pos) > 420) {
             move(0, -1);
         } else {
             const auto currentTime = std::chrono::high_resolution_clock::now();
