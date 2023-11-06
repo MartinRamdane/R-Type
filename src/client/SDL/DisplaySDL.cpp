@@ -53,6 +53,18 @@ void DisplaySDL::handleEvent() {
             if (_event.key.keysym.sym == SDLK_r)
                 _events.push_back("r");
         }
+        if (_event.type == SDL_KEYDOWN) {
+            if (_event.key.keysym.sym == SDLK_ESCAPE)
+                _events.push_back("escape");
+        }
+        if (_event.type == SDL_KEYDOWN) {
+            if (_event.key.keysym.sym == SDLK_s)
+                _events.push_back("s");
+        }
+        if (_event.type == SDL_KEYDOWN) {
+            if (_event.key.keysym.sym == SDLK_l)
+                _events.push_back("l");
+        }
     }
     if (_lastFrameTime.time_since_epoch().count() == 0)
         _lastFrameTime = std::chrono::high_resolution_clock::now();
