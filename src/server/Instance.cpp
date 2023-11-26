@@ -31,13 +31,15 @@ Instance::Instance(int id, std::string gameName)
 Instance::~Instance() {
     _isRunning = false;
     std::cout << "running false" << std::endl;
-    _io_service.stop();
-    std::cout << "io_service stopped" << std::endl;
-    delete _udpServer;
-    std::cout << "udpserver destroyed" << std::endl;
     while (!finishedLoop) {
         std::cout << "waiting for loop to finish" << std::endl;
     }
+    std::cout << "io_service stopped" << std::endl;
+    _io_service.stop();
+    // _threadPool.joinAll();
+    std::cout << "threadpool joined" << std::endl;
+    delete _udpServer;
+    std::cout << "udpserver destroyed" << std::endl;
     delete _core;
     std::cout << "core destroyed" << std::endl;
     std::cout << "Instance destroyed" << std::endl;
