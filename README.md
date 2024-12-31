@@ -4,13 +4,21 @@
 Main C++ project in 3rd year at Epitech.
 The R-TYPE is a mutliplayer game based on existing R-Type game.
 
+## Trailer
+
+
+
+https://github.com/AdamLBS/R-Type/assets/30260219/5ea93bac-7ca3-450c-b0d6-718f513e5613
+
+
+
 ## Project parts
 The project is split in 3 parts :
  - Client side
  - Server side (in UDP and TCP protocol)
  - Game Engine
 
-<img width="949" alt="CleanShot 2023-10-09 at 11 05 40@2x" src="https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/assets/91624379/0e3d18fb-7132-4f78-a555-86ab2678dd3e">
+<img width="949" alt="CleanShot 2023-10-09 at 11 05 40@2x" src="https://uploads.admlbs.fr/r-type/assets/parts.png">
 
 ### Client side
 The Client is the player's program. It connects to the server, creates/joins a game instance and displays the game. It is itself divided into 3 parts : 
@@ -26,14 +34,14 @@ The Game Engine is the core of the R-TYPE. It manages the game and the entity as
 
 You can learn more about each part using the sections in our wiki or inside of the docs folder.
 
-* [Client documentation](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Client-documentation)
-* [Server documentation](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Server-documentation)
-* [Game Engine Documentation](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Game-Engine-documentation)
-* [RFC](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/blob/main/rfc4242.txt)
+* [Client documentation](https://uploads.admlbs.fr/r-type/client)
+* [Server documentation](https://uploads.admlbs.fr/r-type/server/)
+* [Game Engine Documentation](https://uploads.admlbs.fr/r-type/engine/)
+* [RFC](https://github.com/AdamLBS/R-Type/blob/main/rfc4242.txt)
 
 ## Documentation
 
-You can find documentation regarding our project in the [wiki](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki)
+You can find documentation regarding our project in the [wiki](https://uploads.admlbs.fr/r-type/)
 
 ## Dependencies
 
@@ -110,7 +118,7 @@ Depending on your Release mode you need to specify if you're in Debug or Release
 ### Debug mode
 `cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug`
 
-You can find details on the installation here [wiki](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/wiki/Installation)
+You can find details on the installation here [wiki](https://github.com/AdamLBS/R-Type/wiki/Installation)
 
 ## Docker
 
@@ -153,7 +161,7 @@ You can then execute theses files with ```./r-type_client.exe``` or ```./r-type_
 
 ## Releases
 
-All releases are available [here](https://github.com/EpitechPromo2026/B-CPP-500-MAR-5-1-rtype-martin.ramdane/releases)
+All releases are available [here](https://github.com/AdamLBS/R-Type/releases)
 
 ## Authors
 
@@ -162,6 +170,3 @@ All releases are available [here](https://github.com/EpitechPromo2026/B-CPP-500-
 - [@gabrielmorais](https://github.com/gabrielmorais4) Game Engine side
 - [@martinramdane](https://github.com/MartinRamdane) Game Engine side
 - [@luluri](https://github.com/Luluri) Client side
-
-
-
